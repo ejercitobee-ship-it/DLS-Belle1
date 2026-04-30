@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import BrandBar from './components/BrandBar';
 import Collections from './components/Collections';
 import FeaturedProducts from './components/FeaturedProducts';
 import Bespoke from './components/Bespoke';
@@ -204,7 +203,6 @@ function AppInner() {
       ) : (
         <>
           <Hero />
-          <BrandBar />
           <Collections />
           <FeaturedProducts />
           <Bespoke />
