@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function CartDrawer({ onCheckout }: Props) {
-  const { items, isOpen, closeCart, removeItem, updateQty, totalItems, subtotal, shopifyCheckout } = useCart();
+  const { items, isOpen, closeCart, removeItem, updateQty, totalItems, subtotal, shopifyCheckout, checkoutUrl } = useCart();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const isShopifyConfigured = getShopifyConfigured();
 
@@ -164,6 +164,11 @@ export default function CartDrawer({ onCheckout }: Props) {
             <button
               onClick={async () => {
                 if (isShopifyConfigured) {
+                  // Use pre-synced checkout URL if available (instant)
+                  if (checkoutUrl) {
+                    window.location.href = checkoutUrl;
+                    return;
+                  }
                   setCheckoutLoading(true);
                   const { url, fallback } = await shopifyCheckout();
                   setCheckoutLoading(false);

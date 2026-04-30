@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { fetchCollections, type ShopifyCollection } from '../lib/shopify';
 
-const collections = [
+const STATIC_COLLECTIONS = [
   {
     id: 'cabinet-humidors',
+    handle: 'cabinet-humidors',
     name: 'Cabinet Humidors',
     description: 'Floor-standing masterpieces from 600 to 4,000+ cigars — classic cedar cabinets, dual-zone wine & cigar pairings, and precision smart-climate systems.',
     image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
@@ -11,6 +14,7 @@ const collections = [
   },
   {
     id: 'desktop',
+    handle: 'desktop-humidors',
     name: 'Desktop Humidors',
     description: 'Elegant stationary humidors for the discerning home collector.',
     image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_53_15_20PM_58d3c7d7-0abd-4484-9134-6aadfd64abfd.png',
@@ -19,6 +23,7 @@ const collections = [
   },
   {
     id: 'electronic',
+    handle: 'electronic-hunidors',
     name: 'Electronic Humidors',
     description: 'Climate-controlled precision storage with digital humidity management.',
     image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_a49256d8-5931-453f-be44-8d33853ae843.png',
@@ -27,6 +32,7 @@ const collections = [
   },
   {
     id: 'travel',
+    handle: 'travel-humidors',
     name: 'Travel Humidors',
     description: 'Protect your prized cigars wherever your journey takes you.',
     image: 'https://dunnluxuryselections.com/cdn/shop/collections/Chat-GPT-Image-Apr-15-2026-03-58-42-PM_4b5fd768-7cd5-41d5-95bf-a8e2aa58523e.png',
@@ -35,6 +41,7 @@ const collections = [
   },
   {
     id: 'accessories',
+    handle: 'accessories-1',
     name: 'Accessories',
     description: 'Premium cutters, lighters, and care essentials for the aficionado.',
     image: 'https://dunnluxuryselections.com/cdn/shop/collections/Gemini_Generated_Image_kb1oj6kb1oj6kb1o_0c77e364-831a-459f-9d43-be7b388ae4dc.png',
@@ -43,6 +50,7 @@ const collections = [
   },
   {
     id: 'bespoke-walkins',
+    handle: 'bespoke-walkins',
     name: 'Walk-in Humidors',
     description: 'Bespoke floor-to-ceiling installations for the ultimate cigar sanctuary.',
     image: 'https://dunnluxuryselections.com/cdn/shop/files/ChatGPT_Image_Apr_24_2026_01_29_33_PM.png',
@@ -51,7 +59,68 @@ const collections = [
   },
 ];
 
+type DisplayCollection = {
+  id: string;
+  handle: string;
+  name: string;
+  description: string;
+  image: string;
+  count: string;
+  featured: boolean;
+};
+
+// Map Shopify handle → local nav id
+const HANDLE_TO_NAV: Record<string, string> = {
+  'cabinet-humidors': 'cabinet-humidors',
+  'desktop-humidors': 'desktop',
+  'electronic-hunidors': 'electronic',
+  'electronic-humidors': 'electronic',
+  'travel-humidors': 'travel',
+  'accessories-1': 'accessories',
+  'accessories': 'accessories',
+  'bespoke-walkins': 'bespoke-walkins',
+};
+
+const FEATURED_HANDLES = new Set([
+  'cabinet-humidors',
+  'electronic-hunidors',
+  'electronic-humidors',
+  'bespoke-walkins',
+]);
+
+function fromShopify(col: ShopifyCollection, index: number): DisplayCollection {
+  const navId = HANDLE_TO_NAV[col.handle] ?? col.handle;
+  return {
+    id: navId,
+    handle: col.handle,
+    name: col.title,
+    description: col.description,
+    image: col.image?.url ?? '',
+    count: `${col.products.length > 0 ? col.products.length + ' Products' : 'View'}`,
+    featured: FEATURED_HANDLES.has(col.handle) || index === 0,
+  };
+}
+
 export default function Collections() {
+  const [collections, setCollections] = useState<DisplayCollection[]>(STATIC_COLLECTIONS);
+
+  useEffect(() => {
+    fetchCollections(20)
+      .then((cols) => {
+        if (!cols.length) return;
+        const mapped = cols
+          .filter((c) => {
+            // Only show collections that map to a known nav section
+            return HANDLE_TO_NAV[c.handle] !== undefined ||
+              FEATURED_HANDLES.has(c.handle) ||
+              ['cabinet-humidors','desktop-humidors','electronic-hunidors','electronic-humidors','travel-humidors','accessories-1','accessories'].includes(c.handle);
+          })
+          .map((c, i) => fromShopify(c, i));
+        if (mapped.length >= 4) setCollections(mapped);
+      })
+      .catch(() => {/* keep static fallback */});
+  }, []);
+
   return (
     <section id="collections" className="py-24 bg-charcoal-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,11 +153,15 @@ export default function Collections() {
               }`}
               style={{ minHeight: col.featured && i === 0 ? '480px' : '280px' }}
             >
-              <img
-                src={col.image}
-                alt={col.name}
-                className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              />
+              {col.image ? (
+                <img
+                  src={col.image}
+                  alt={col.name}
+                  className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-charcoal-800" />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/95 via-charcoal-950/40 to-transparent" />
               <div className="absolute inset-0 border border-transparent group-hover:border-gold-500/30 rounded-lg transition-colors duration-300" />
 
