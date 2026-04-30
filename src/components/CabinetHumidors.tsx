@@ -14,16 +14,20 @@ import {
   Maximize2,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useShopifyCollection, getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
+import type { ShopifyProduct } from '../lib/shopify';
 
 type Category = 'All' | 'Dual-Zone' | 'Classic Cabinet' | 'Smart Climate';
 
-type Product = {
-  id: number;
+type DisplayProduct = {
+  id: string;
+  shopifyId: string;
+  shopifyVariantId: string;
   name: string;
   subtitle: string;
   price: string;
   priceNum: number;
-  originalPrice?: string;
+  compareAt?: string;
   category: Category;
   capacity: string;
   capacityNum: number;
@@ -35,14 +39,17 @@ type Product = {
   features: string[];
   description: string;
   image: string;
+  images: string[];
   badge?: string;
   rating?: number;
   reviews?: number;
 };
 
-const products: Product[] = [
+const STATIC_PRODUCTS: DisplayProduct[] = [
   {
-    id: 1,
+    id: 'ch-1',
+    shopifyId: '',
+    shopifyVariantId: '',
     name: 'Raching SD800',
     subtitle: 'Dual-Zone Cigar & Wine Cabinet',
     price: '$7,600',
@@ -50,32 +57,23 @@ const products: Product[] = [
     category: 'Dual-Zone',
     capacity: '~1,600 cigars · ~130 wine bottles',
     capacityNum: 1600,
-    dimensions: '1200 × 610 × 1920 mm · ~190 kg',
+    dimensions: '1200 × 610 × 1920 mm',
     material: 'Spanish cedar (cigar) · Beech wood (wine)',
     finish: 'Refined glass door with wooden accents',
-    storage: [
-      '8 layers Spanish cedar cigar shelves',
-      '9 layers beech wood wine shelves',
-      'Independent doors per zone',
-    ],
-    humidification: 'Integrated water-cooling system · High-performance compressor',
-    features: [
-      'Independently controlled dual zones',
-      'Cigar zone: 16–22°C (±1°C), 60–75% RH (±1%)',
-      'Wine zone: 5–22°C (±1°C)',
-      'Advanced airflow & quiet operation',
-      'Large glass door with wooden accents',
-      '2-year warranty',
-    ],
-    description:
-      'The SD800 is the pinnacle of dual-zone preservation — independently controlled cigar and wine compartments in a single showroom-worthy cabinet. Spanish cedar enhances aroma while the water-cooling system maintains precision climate across both zones. A centerpiece for luxury lounges, executive offices, and private showrooms.',
-    image: 'https://images.pexels.com/photos/1283219/pexels-photo-1283219.jpeg',
+    storage: ['8 layers Spanish cedar cigar shelves', '9 layers beech wood wine shelves', 'Independent doors per zone'],
+    humidification: 'Integrated water-cooling · High-performance compressor',
+    features: ['Dual zones 16–22°C ±1°C, 60–75% RH ±1%', 'Wine zone: 5–22°C ±1°C', 'Advanced airflow & quiet operation', '2-year warranty'],
+    description: 'The SD800 is the pinnacle of dual-zone preservation — independently controlled cigar and wine compartments in a single showroom-worthy cabinet.',
+    image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    images: [],
     badge: 'Flagship',
     rating: 4.9,
     reviews: 7,
   },
   {
-    id: 2,
+    id: 'ch-2',
+    shopifyId: '',
+    shopifyVariantId: '',
     name: 'Raching CS600',
     subtitle: 'Luxury Wine & Cigar Humidor Cabinet',
     price: '$4,450',
@@ -86,29 +84,20 @@ const products: Product[] = [
     dimensions: '1200 W × 610 D × 1760 H mm',
     material: 'Spanish cedar (cigar) · Beech wood (wine)',
     finish: 'Large glass door with digital control panel',
-    storage: [
-      '7 Spanish cedar cigar shelves',
-      '10 beech wood wine shelves',
-      'Double-door cabinet design',
-    ],
+    storage: ['7 Spanish cedar cigar shelves', '10 beech wood wine shelves', 'Double-door cabinet design'],
     humidification: 'Dual-zone precision climate control',
-    features: [
-      'Dual-zone precision climate control',
-      'Wine zone: 5–22°C (±1°C)',
-      'Cigar zone: 16–22°C (±1°C), 60–75% RH (±2%)',
-      'Digital control panel',
-      'Whisper-quiet, energy-efficient operation',
-      '2-year warranty',
-    ],
-    description:
-      'The CS600 combines wine and cigar storage in an elegant double-door cabinet with independent climate controls. Spanish cedar lining enhances cigar aroma while beech wood shelves cradle up to 110 bottles. A refined focal point for luxury homes, lounges, and retail environments.',
-    image: 'https://images.pexels.com/photos/3407777/pexels-photo-3407777.jpeg',
+    features: ['Wine zone: 5–22°C ±1°C', 'Cigar zone: 16–22°C, 60–75% RH', 'Whisper-quiet, energy-efficient', '2-year warranty'],
+    description: 'The CS600 combines wine and cigar storage in an elegant double-door cabinet with independent climate controls.',
+    image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    images: [],
     badge: 'Popular',
     rating: 4.8,
     reviews: 11,
   },
   {
-    id: 3,
+    id: 'ch-3',
+    shopifyId: '',
+    shopifyVariantId: '',
     name: 'Bermuda',
     subtitle: 'High-Capacity Collection Cabinet',
     price: '$3,800',
@@ -118,95 +107,20 @@ const products: Product[] = [
     capacityNum: 4000,
     material: 'Spanish cedar lining',
     finish: 'Dark cherry',
-    storage: [
-      '12 oversized removable trays with adjustable dividers',
-      '4 pull-out drawers housing 24 humidifiers',
-      'Dual full-length framed glass doors',
-    ],
+    storage: ['12 oversized removable trays with adjustable dividers', '4 pull-out drawers housing 24 humidifiers', 'Dual full-length framed glass doors'],
     humidification: '24 built-in humidifiers + external hygrometer',
-    features: [
-      'Dual full-length framed glass doors with lock & key',
-      '24 integrated humidifiers across 4 pull-out drawers',
-      'Optional touch-activated dimmable LED lighting',
-      'Rear wiring port for electric upgrades',
-      'Spanish cedar interior throughout',
-      'Sturdy long-term construction',
-    ],
-    description:
-      'The Bermuda is built for serious collectors who refuse to compromise on scale. With capacity for 4,000 cigars across 12 oversized removable trays and 24 integrated humidifiers, it combines massive storage with immaculate presentation. Optional touch-activated LED lighting transforms it into a living display.',
-    image: 'https://images.pexels.com/photos/5481916/pexels-photo-5481916.jpeg',
+    features: ['Optional touch-activated dimmable LED', 'Rear wiring port for electric upgrades', 'Spanish cedar interior throughout'],
+    description: 'The Bermuda is built for serious collectors who refuse to compromise on scale. 4,000 cigars, 12 oversized trays, 24 integrated humidifiers.',
+    image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    images: [],
     badge: 'Best Capacity',
     rating: 4.8,
     reviews: 9,
   },
   {
-    id: 4,
-    name: 'Saint Regis',
-    subtitle: 'Trophy-Worthy Display Cabinet',
-    price: '$4,450',
-    priceNum: 4450,
-    category: 'Classic Cabinet',
-    capacity: 'Large collection',
-    capacityNum: 2000,
-    material: 'Spanish cedar lining',
-    finish: 'Rich cherry with crown molding & embossed door',
-    storage: [
-      '3 adjustable angled shelves',
-      '1 removable 9-division tray',
-      'Lower storage compartment for boxes/accessories',
-    ],
-    humidification: '6 large oblong humidifiers + precise hygrometer',
-    features: [
-      'Dual full-length framed glass doors',
-      'Elegant glass side panels for 270° display',
-      'Crown molding and embossed door accents',
-      'Two lock & key sets for security',
-      'Rear wiring port for electric upgrades',
-      'Spanish cedar interior for aroma & humidity',
-    ],
-    description:
-      'The Saint Regis is a trophy-worthy display cabinet built for collectors who treat their cigars as an art collection. Dual glass doors and glass side panels offer 270° visibility while crown molding and embossed accents deliver hotel-grade refinement. Ideal for boutique lounges, private tasting rooms, and dedicated collectors.',
-    image: '/generated-1777557773655-n04ui.png',
-    rating: 4.9,
-    reviews: 5,
-  },
-  {
-    id: 5,
-    name: 'Custom Melamine',
-    subtitle: 'Precision Climate Control — 10 Finishes',
-    price: '$3,800',
-    priceNum: 3800,
-    category: 'Smart Climate',
-    capacity: 'Customizable',
-    capacityNum: 1000,
-    dimensions: '52" H × 25" W × 24" D (external)',
-    material: 'Cedar-lined trays · Melamine exterior',
-    finish: '10 distinct custom melamine finishes',
-    storage: [
-      '4 drawer-style cedar-lined shelves on metal slides',
-      '3 adjustable dividers per shelf',
-      'Removable cedar-lined trays',
-    ],
-    humidification: 'Integrated electronic system · Refillable water reservoir · Auxiliary fan · De-mist feature',
-    features: [
-      'Touchscreen digital control panel',
-      'Temperature: 41°F–71°F (°F/°C toggle)',
-      'Humidity: 56%–78% with dehumidification assist',
-      'White LED lighting on all shelves',
-      'Sleek tempered glass door with heavy-duty seal',
-      'Smooth metal-slide drawer shelves',
-      '10 custom melamine finishes available',
-      'Standard 110/120V (220/240V on inquiry)',
-    ],
-    description:
-      'The Custom Melamine delivers precision electronic climate control in a contemporary cabinet available in 10 distinct finishes. A touchscreen panel, white LED shelf lighting, and dehumidification assist place it firmly in the modern collector\'s arsenal. Lead time is typically 9–12 weeks for custom orders.',
-    image: 'https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg',
-    badge: 'Customizable',
-    rating: 4.7,
-    reviews: 6,
-  },
-  {
-    id: 6,
+    id: 'ch-4',
+    shopifyId: '',
+    shopifyVariantId: '',
     name: 'Spartacus',
     subtitle: 'Showroom-Worthy 1,000-Cigar Cabinet',
     price: '$1,145',
@@ -216,88 +130,14 @@ const products: Product[] = [
     capacityNum: 1000,
     material: 'Spanish cedar interior',
     finish: 'Rich dark cherry',
-    storage: [
-      '3 oversized trays with 8 adjustable dividers each',
-      'Pull-out drawer with 6 built-in humidifiers',
-      'Full-length framed glass door',
-    ],
+    storage: ['3 oversized trays with 8 adjustable dividers', 'Pull-out drawer with 6 built-in humidifiers', 'Full-length framed glass door'],
     humidification: '6 built-in humidifiers + dedicated hygrometer',
-    features: [
-      'Full-length framed glass door',
-      'Brass lock and key',
-      'Real-time hygrometer readings',
-      'Rear wiring port for optional electric upgrade',
-      'Versatile storage for all cigar formats',
-      'Spanish cedar interior throughout',
-    ],
-    description:
-      'The Spartacus brings showroom-quality cabinetry within reach. Three oversized trays with 8 adjustable dividers each, a dedicated pull-out humidifier drawer, and a full-length glass door make it an ideal centrepiece for home lounges, cigar bars, and serious home collectors.',
-    image: '/generated-1777558518629-e3jz3.png',
+    features: ['Full-length framed glass door', 'Brass lock and key', 'Rear wiring port for optional electric upgrade'],
+    description: 'Three oversized trays with 8 adjustable dividers each, a dedicated pull-out humidifier drawer, and a full-length glass door.',
+    image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    images: [],
     rating: 4.7,
     reviews: 13,
-  },
-  {
-    id: 7,
-    name: 'Santiago',
-    subtitle: 'End Table Humidor Hybrid — 700 Cigars',
-    price: '$570',
-    priceNum: 570,
-    category: 'Classic Cabinet',
-    capacity: '700 cigars',
-    capacityNum: 700,
-    material: 'Spanish cedar lining',
-    finish: 'Rich walnut with polished silver hardware',
-    storage: [
-      '2 smooth-slide pull-out drawers with 3 adjustable dividers each',
-      'Lower storage shelf for boxes & bulk reserves',
-      'Beveled glass top for at-a-glance inventory',
-    ],
-    humidification: '6 humidifiers + silver digital hygrometer (visible through glass top)',
-    features: [
-      'Beveled glass top — hygrometer visible at a glance',
-      'Embossed wood panels on all sides',
-      'Polished silver hardware',
-      'Lock & key set for each section',
-      'Functions as furniture — end table silhouette',
-      'Rear wiring port for optional electric upgrade',
-      'Spanish cedar throughout',
-    ],
-    description:
-      'The Santiago is a premium hybrid: a 700-cigar humidor that doubles as a living room end table. A beveled glass top puts your hygrometer reading in plain sight while embossed panels and polished silver hardware ensure it blends seamlessly into high-end interiors. A museum-quality piece for collectors who live with their collection.',
-    image: 'https://images.pexels.com/photos/1034940/pexels-photo-1034940.jpeg',
-    rating: 4.8,
-    reviews: 10,
-  },
-  {
-    id: 8,
-    name: 'Belmont',
-    subtitle: 'Comfort & Style — 600 Cigars',
-    price: '$495',
-    priceNum: 495,
-    category: 'Classic Cabinet',
-    capacity: '600 cigars',
-    capacityNum: 600,
-    material: 'Spanish cedar lining',
-    finish: 'Bronze mahogany',
-    storage: [
-      '3 removable trays with 6 adjustable dividers',
-      'Pull-out drawer for accessories/tools',
-      'Full-length glass door',
-    ],
-    humidification: '3 built-in humidifiers + external hygrometer',
-    features: [
-      'Full-length glass door with lock and key',
-      '3 built-in humidifiers',
-      'External hygrometer',
-      'Rear wiring port for future electric upgrades',
-      'Premium build quality',
-      'Spanish cedar preserves flavor and aroma',
-    ],
-    description:
-      'The Belmont is the refined entry point into the cabinet collection. A bronze mahogany finish, full-length glass door, and Spanish cedar interior provide all the essentials for casual enthusiasts and seasoned aficionados alike — at an accessible price point without compromise on craftsmanship.',
-    image: '/generated-1777557978041-zp1qj.png',
-    rating: 4.6,
-    reviews: 17,
   },
 ];
 
@@ -317,12 +157,51 @@ const badgeStyles: Record<string, string> = {
   Customizable: 'bg-stone-600 text-white',
 };
 
-const categoryColors: Record<Category, string> = {
-  All: '',
-  'Classic Cabinet': 'text-amber-400',
-  'Dual-Zone': 'text-emerald-400',
-  'Smart Climate': 'text-sky-400',
-};
+function inferCategory(p: ShopifyProduct): Category {
+  const t = (p.title + ' ' + p.tags.join(' ')).toLowerCase();
+  if (t.includes('dual') || t.includes('wine')) return 'Dual-Zone';
+  if (t.includes('smart') || t.includes('electronic') || t.includes('digital')) return 'Smart Climate';
+  return 'Classic Cabinet';
+}
+
+function extractCapacity(p: ShopifyProduct): number {
+  const nums = (p.title + ' ' + p.description + ' ' + p.tags.join(' '))
+    .match(/\d[\d,]*/g)
+    ?.map((n) => parseInt(n.replace(/,/g, ''), 10))
+    .filter((n) => n >= 100 && n <= 10000) ?? [];
+  return nums.length ? Math.max(...nums) : 500;
+}
+
+function fromShopify(p: ShopifyProduct): DisplayProduct {
+  const { price, priceNum, compareAt } = getProductPrice(p);
+  const variantId = getDefaultVariantId(p);
+  const variant = p.variants.find((v) => v.id === variantId) ?? p.variants[0];
+  const image = variant?.image?.url ?? p.featuredImage?.url ?? '';
+  const capacityNum = extractCapacity(p);
+  const category = inferCategory(p);
+
+  return {
+    id: `shopify-${p.id}`,
+    shopifyId: p.id,
+    shopifyVariantId: variantId,
+    name: p.title,
+    subtitle: p.productType || 'Cabinet Humidor',
+    price,
+    priceNum,
+    compareAt: compareAt ?? undefined,
+    category,
+    capacity: `${capacityNum.toLocaleString()} cigars`,
+    capacityNum,
+    material: 'Spanish cedar lining',
+    finish: 'Premium finish',
+    storage: [],
+    humidification: 'Integrated humidification system',
+    features: p.tags.slice(0, 6),
+    description: p.description || p.title,
+    image,
+    images: p.images.map((img) => img.url),
+  };
+}
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -338,12 +217,41 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-function ProductDetail({ product, onBack }: { product: Product; onBack: () => void }) {
+function SkeletonCard() {
+  return (
+    <div className="bg-charcoal-900 border border-charcoal-800/50 rounded-lg overflow-hidden animate-pulse">
+      <div className="aspect-[4/3] bg-charcoal-800" />
+      <div className="p-4 space-y-2">
+        <div className="h-3 bg-charcoal-800 rounded w-3/4" />
+        <div className="h-2.5 bg-charcoal-800 rounded w-1/2" />
+        <div className="h-2 bg-charcoal-800 rounded w-1/3" />
+        <div className="flex justify-between items-center pt-2">
+          <div className="h-4 bg-charcoal-800 rounded w-1/4" />
+          <div className="h-3 bg-charcoal-800 rounded w-1/6" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: () => void }) {
   const [added, setAdded] = useState(false);
+  const [mainImg, setMainImg] = useState(product.image);
   const { addItem } = useCart();
 
+  const allImages = product.images.length ? product.images : [product.image].filter(Boolean);
+
   const handleAdd = () => {
-    addItem({ id: `ch-${product.id}`, name: product.name, subtitle: product.subtitle, price: product.price, priceNum: product.priceNum, image: product.image, category: product.category });
+    addItem({
+      id: product.id,
+      name: product.name,
+      subtitle: product.subtitle,
+      price: product.price,
+      priceNum: product.priceNum,
+      image: product.image,
+      category: product.category,
+      shopifyVariantId: product.shopifyVariantId || undefined,
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
@@ -360,15 +268,28 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Image */}
+          {/* Images */}
           <div className="relative">
             <div className="rounded-lg overflow-hidden aspect-[4/5]">
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover" loading="lazy" />
+              <img src={mainImg || product.image} alt={product.name} className="w-full h-full object-cover" loading="lazy" />
             </div>
             {product.badge && (
               <span className={`absolute top-4 left-4 text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded ${badgeStyles[product.badge] || 'bg-charcoal-700 text-white'}`}>
                 {product.badge}
               </span>
+            )}
+            {allImages.length > 1 && (
+              <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+                {allImages.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setMainImg(img)}
+                    className={`flex-shrink-0 w-16 h-16 rounded overflow-hidden border-2 transition-colors ${mainImg === img ? 'border-gold-500' : 'border-charcoal-700/50 hover:border-gold-600/40'}`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
             )}
             <div className="absolute -top-3 -left-3 w-16 h-16 border-l-2 border-t-2 border-gold-600/20 pointer-events-none" />
             <div className="absolute -bottom-3 -right-3 w-16 h-16 border-r-2 border-b-2 border-gold-600/20 pointer-events-none" />
@@ -403,8 +324,8 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
 
             <div className="flex items-baseline gap-3 mb-6">
               <span className="text-3xl font-bold text-white font-serif">{product.price}</span>
-              {product.originalPrice && (
-                <span className="text-cream-200/40 text-lg line-through">{product.originalPrice}</span>
+              {product.compareAt && (
+                <span className="text-cream-200/40 text-lg line-through">{product.compareAt}</span>
               )}
             </div>
 
@@ -429,31 +350,33 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
               ))}
             </div>
 
-            {/* Storage config */}
-            <div className="mb-6">
-              <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Storage Configuration</p>
-              <ul className="space-y-2">
-                {product.storage.map((s) => (
-                  <li key={s} className="flex items-start gap-3 text-sm text-cream-200/65">
-                    <CheckCircle2 size={13} className="text-gold-500 flex-shrink-0 mt-0.5" />
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {product.storage.length > 0 && (
+              <div className="mb-6">
+                <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Storage Configuration</p>
+                <ul className="space-y-2">
+                  {product.storage.map((s) => (
+                    <li key={s} className="flex items-start gap-3 text-sm text-cream-200/65">
+                      <CheckCircle2 size={13} className="text-gold-500 flex-shrink-0 mt-0.5" />
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-            {/* Features */}
-            <div className="mb-8">
-              <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Key Features</p>
-              <ul className="space-y-2">
-                {product.features.map((f) => (
-                  <li key={f} className="flex items-start gap-3 text-sm text-cream-200/65">
-                    <Lock size={11} className="text-gold-500/60 flex-shrink-0 mt-0.5" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {product.features.length > 0 && (
+              <div className="mb-8">
+                <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Key Features</p>
+                <ul className="space-y-2">
+                  {product.features.map((f) => (
+                    <li key={f} className="flex items-start gap-3 text-sm text-cream-200/65">
+                      <Lock size={11} className="text-gold-500/60 flex-shrink-0 mt-0.5" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <div className="flex flex-col sm:flex-row gap-3">
               <button
@@ -477,19 +400,34 @@ export default function CabinetHumidors() {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
   const [sort, setSort] = useState('featured');
   const [sortOpen, setSortOpen] = useState(false);
-  const [selected, setSelected] = useState<Product | null>(null);
-  const [addedId, setAddedId] = useState<number | null>(null);
+  const [selected, setSelected] = useState<DisplayProduct | null>(null);
+  const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
 
-  const handleAddToCart = (e: React.MouseEvent, product: Product) => {
+  const { products: shopifyProducts, loading, collectionImage } = useShopifyCollection('cabinet-humidors');
+
+  const products: DisplayProduct[] = shopifyProducts.length
+    ? shopifyProducts.map(fromShopify)
+    : STATIC_PRODUCTS;
+
+  const handleAddToCart = (e: React.MouseEvent, product: DisplayProduct) => {
     e.stopPropagation();
-    addItem({ id: `ch-${product.id}`, name: product.name, subtitle: product.subtitle, price: product.price, priceNum: product.priceNum, image: product.image, category: product.category });
+    addItem({
+      id: product.id,
+      name: product.name,
+      subtitle: product.subtitle,
+      price: product.price,
+      priceNum: product.priceNum,
+      image: product.image,
+      category: product.category,
+      shopifyVariantId: product.shopifyVariantId || undefined,
+    });
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 1500);
   };
 
   const filtered = products.filter(
-    (p) => activeCategory === 'All' || p.category === activeCategory
+    (p) => activeCategory === 'All' || p.category === activeCategory,
   );
 
   const sorted = [...filtered].sort((a, b) => {
@@ -501,12 +439,14 @@ export default function CabinetHumidors() {
 
   if (selected) return <ProductDetail product={selected} onBack={() => setSelected(null)} />;
 
+  const heroImage = collectionImage || 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png';
+
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
         <img
-          src="https://images.pexels.com/photos/1034940/pexels-photo-1034940.jpeg"
+          src={heroImage}
           alt="Cabinet Humidors"
           className="w-full h-full object-cover object-center"
         />
@@ -602,7 +542,11 @@ export default function CabinetHumidors() {
         </div>
 
         {/* Product grid */}
-        {sorted.length === 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+        ) : sorted.length === 0 ? (
           <div className="py-24 text-center text-cream-200/30">No products in this category.</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
@@ -614,19 +558,26 @@ export default function CabinetHumidors() {
               >
                 {/* Image */}
                 <div className="relative overflow-hidden aspect-[4/3]">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
+                  {product.image ? (
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-charcoal-800 flex items-center justify-center">
+                      <Package size={32} className="text-charcoal-600" />
+                    </div>
+                  )}
                   {product.badge && (
                     <span className={`absolute top-2.5 left-2.5 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded ${badgeStyles[product.badge] || 'bg-charcoal-700 text-white'}`}>
                       {product.badge}
                     </span>
                   )}
-                  {/* Category indicator */}
-                  <span className={`absolute top-2.5 right-2.5 text-[9px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-charcoal-950/80 ${categoryColors[product.category]}`}>
+                  <span className={`absolute top-2.5 right-2.5 text-[9px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-charcoal-950/80 ${
+                    product.category === 'Dual-Zone' ? 'text-emerald-400' : product.category === 'Smart Climate' ? 'text-sky-400' : 'text-amber-400'
+                  }`}>
                     {product.category}
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -646,7 +597,6 @@ export default function CabinetHumidors() {
                   </h3>
                   <p className="text-cream-200/40 text-xs leading-snug mb-2 line-clamp-1">{product.subtitle}</p>
 
-                  {/* Capacity chip */}
                   <div className="flex items-center gap-1.5 mb-2.5">
                     <span className="text-[10px] text-cream-200/40 bg-charcoal-950/60 px-2 py-0.5 rounded-full flex items-center gap-1">
                       <Package size={9} /> {product.capacity}
@@ -663,8 +613,8 @@ export default function CabinetHumidors() {
                   <div className="flex items-center justify-between pt-2.5 border-t border-charcoal-800/40">
                     <div className="flex items-baseline gap-2">
                       <span className="text-white font-bold text-base font-serif">{product.price}</span>
-                      {product.originalPrice && (
-                        <span className="text-cream-200/30 text-xs line-through">{product.originalPrice}</span>
+                      {product.compareAt && (
+                        <span className="text-cream-200/30 text-xs line-through">{product.compareAt}</span>
                       )}
                     </div>
                     <span className="text-gold-400 text-xs font-medium group-hover:text-gold-300 transition-colors">
@@ -688,7 +638,7 @@ export default function CabinetHumidors() {
               { label: 'Electronic Humidors', href: '#electronic' },
               { label: 'Travel Humidors', href: '#travel' },
               { label: 'Accessories', href: '#accessories' },
-              { label: 'Walk-In Humidors', href: '#walk-in' },
+              { label: 'Walk-In Humidors', href: '#bespoke-walkins' },
             ].map(({ label, href }) => (
               <a
                 key={label}

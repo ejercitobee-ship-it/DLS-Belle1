@@ -17,11 +17,14 @@ import {
   CheckCircle2 as Check,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useShopifyCollection, getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
+import type { ShopifyProduct } from '../lib/shopify';
 
 type Category = 'All' | 'Grand Cabinets' | 'Desktop' | 'Travel';
 
 type Product = {
-  id: number;
+  id: string;
+  shopifyVariantId?: string;
   name: string;
   subtitle: string;
   price: string;
@@ -38,15 +41,16 @@ type Product = {
   features: string[];
   description: string;
   image: string;
+  images?: string[];
   badge?: string;
   rating?: number;
   reviews?: number;
   isNew: boolean;
 };
 
-const products: Product[] = [
+const STATIC_PRODUCTS: Product[] = [
   {
-    id: 1,
+    id: 'na-1',
     name: 'Raching RR980',
     subtitle: 'Grand Estate Cigar Humidor',
     price: '$8,255',
@@ -82,7 +86,7 @@ const products: Product[] = [
     isNew: true,
   },
   {
-    id: 2,
+    id: 'na-2',
     name: 'Raching CT48A',
     subtitle: 'Stainless Steel Grand Humidor',
     price: '$6,350',
@@ -117,7 +121,7 @@ const products: Product[] = [
     isNew: true,
   },
   {
-    id: 3,
+    id: 'na-3',
     name: 'Raching SD800',
     subtitle: 'Dual-Zone Cigar & Wine Cabinet',
     price: '$7,600',
@@ -152,7 +156,7 @@ const products: Product[] = [
     isNew: true,
   },
   {
-    id: 4,
+    id: 'na-4',
     name: 'Raching CS600',
     subtitle: 'Luxury Wine & Cigar Humidor Cabinet',
     price: '$4,450',
@@ -186,7 +190,7 @@ const products: Product[] = [
     isNew: true,
   },
   {
-    id: 5,
+    id: 'na-5',
     name: 'Marciano',
     subtitle: 'Countertop Display Humidor — 250 Cigars',
     price: '$420',
@@ -220,7 +224,7 @@ const products: Product[] = [
     isNew: true,
   },
   {
-    id: 6,
+    id: 'na-6',
     name: 'Modena',
     subtitle: 'Desktop Display Humidor — 100 Cigars',
     price: '$178',
@@ -253,7 +257,7 @@ const products: Product[] = [
     isNew: true,
   },
   {
-    id: 7,
+    id: 'na-7',
     name: 'Santiago',
     subtitle: 'End Table Humidor — 700 Cigars',
     price: '$570',
@@ -287,7 +291,7 @@ const products: Product[] = [
     isNew: true,
   },
   {
-    id: 8,
+    id: 'na-8',
     name: 'Traveler 15',
     subtitle: 'Travel Humidor by Humidor Supreme®',
     price: '$42',
@@ -316,7 +320,7 @@ const products: Product[] = [
     isNew: true,
   },
   {
-    id: 9,
+    id: 'na-9',
     name: 'Traveler 5',
     subtitle: 'Travel Humidor by Humidor Supreme®',
     price: '$34',
@@ -345,7 +349,7 @@ const products: Product[] = [
     isNew: true,
   },
   {
-    id: 10,
+    id: 'na-10',
     name: 'Traveler 10',
     subtitle: 'Desktop Travel Humidor by Humidor Supreme®',
     price: '$39',
@@ -385,6 +389,47 @@ const sortOptions = [
   { label: 'Capacity: High to Low', value: 'capacity-desc' },
 ];
 
+function inferCategory(p: ShopifyProduct): Category {
+  const t = (p.title + ' ' + p.productType + ' ' + p.tags.join(' ')).toLowerCase();
+  if (t.includes('travel') || t.includes('portable')) return 'Travel';
+  if (t.includes('desktop') || t.includes('countertop') || t.includes('tabletop')) return 'Desktop';
+  return 'Grand Cabinets';
+}
+
+function fromShopify(p: ShopifyProduct): Product {
+  const { price, priceNum, compareAt } = getProductPrice(p);
+  const variantId = getDefaultVariantId(p);
+  const variant = p.variants.find((v) => v.id === variantId) ?? p.variants[0];
+  const image = variant?.image?.url ?? p.featuredImage?.url ?? '';
+  const nums = (p.title + ' ' + p.description).match(/\d[\d,]*/g)
+    ?.map((n) => parseInt(n.replace(/,/g, ''), 10))
+    .filter((n) => n >= 5 && n <= 10000) ?? [];
+  const capacityNum = nums.length ? Math.max(...nums) : 100;
+
+  return {
+    id: `shopify-${p.id}`,
+    shopifyVariantId: variantId,
+    name: p.title,
+    subtitle: p.productType || 'Luxury Humidor',
+    price,
+    priceNum,
+    originalPrice: compareAt ?? undefined,
+    category: inferCategory(p),
+    capacity: `${capacityNum.toLocaleString()} cigars`,
+    capacityNum,
+    material: 'Premium construction',
+    finish: 'Premium finish',
+    storage: [],
+    humidification: 'Integrated humidification',
+    features: p.tags.slice(0, 6),
+    description: p.description || p.title,
+    image,
+    images: p.images.map((img) => img.url),
+    badge: 'New',
+    isNew: true,
+  };
+}
+
 const categoryColors: Record<Category, { text: string; border: string; bg: string }> = {
   All: { text: '', border: '', bg: '' },
   'Grand Cabinets': { text: 'text-amber-400', border: 'border-amber-600/30', bg: 'bg-amber-700/10' },
@@ -409,13 +454,14 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
 
   const handleAdd = () => {
     addItem({
-      id: `na-${product.id}`,
+      id: product.id,
       name: product.name,
       subtitle: product.subtitle,
       price: product.price,
       priceNum: product.priceNum,
       image: product.image,
       category: product.category,
+      shopifyVariantId: product.shopifyVariantId,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
@@ -542,19 +588,25 @@ export default function NewArrivals() {
   const [sort, setSort] = useState('featured');
   const [sortOpen, setSortOpen] = useState(false);
   const [selected, setSelected] = useState<Product | null>(null);
-  const [addedId, setAddedId] = useState<number | null>(null);
+  const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
+
+  const { products: shopifyProducts } = useShopifyCollection('new-arrivals');
+  const products: Product[] = shopifyProducts.length
+    ? shopifyProducts.map(fromShopify)
+    : STATIC_PRODUCTS;
 
   const handleAddToCart = useCallback((e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
     addItem({
-      id: `na-${product.id}`,
+      id: product.id,
       name: product.name,
       subtitle: product.subtitle,
       price: product.price,
       priceNum: product.priceNum,
       image: product.image,
       category: product.category,
+      shopifyVariantId: product.shopifyVariantId,
     });
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 1500);

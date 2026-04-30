@@ -22,6 +22,15 @@ const STATIC_COLLECTIONS = [
     featured: true,
   },
   {
+    id: 'cabinet-humidors',
+    handle: 'cabinet-humidors',
+    name: 'Cabinet Humidors',
+    description: 'Floor-standing masterpieces from 600 to 4,000+ cigars — classic cedar cabinets and precision smart-climate systems.',
+    image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    count: '8 Products',
+    featured: false,
+  },
+  {
     id: 'travel',
     handle: 'travel-humidors',
     name: 'Travel Humidors',
@@ -65,6 +74,7 @@ const HANDLE_TO_NAV: Record<string, string> = {
   'desktop-humidors': 'desktop',
   'electronic-hunidors': 'electronic',
   'electronic-humidors': 'electronic',
+  'cabinet-humidors': 'cabinet-humidors',
   'travel-humidors': 'travel',
   'accessories-1': 'accessories',
   'accessories': 'accessories',
@@ -102,7 +112,7 @@ export default function Collections() {
             // Only show collections that map to a known nav section
             return HANDLE_TO_NAV[c.handle] !== undefined ||
               FEATURED_HANDLES.has(c.handle) ||
-              ['desktop-humidors','electronic-hunidors','electronic-humidors','travel-humidors','accessories-1','accessories'].includes(c.handle);
+              ['desktop-humidors','electronic-hunidors','electronic-humidors','cabinet-humidors','travel-humidors','accessories-1','accessories'].includes(c.handle);
           })
           .map((c, i) => fromShopify(c, i));
         if (mapped.length >= 4) setCollections(mapped);
