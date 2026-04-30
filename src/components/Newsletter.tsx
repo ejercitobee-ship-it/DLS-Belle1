@@ -24,6 +24,7 @@ export default function Newsletter() {
           src="https://images.pexels.com/photos/2159065/pexels-photo-2159065.jpeg"
           alt=""
           className="w-full h-full object-cover"
+          loading="lazy"
         />
       </div>
       <div className="absolute inset-0 bg-charcoal-950/60" />

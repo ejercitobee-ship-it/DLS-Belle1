@@ -87,7 +87,7 @@ export default function CartDrawer({ onCheckout }: Props) {
               >
                 {/* Image */}
                 <div className="w-18 h-18 flex-shrink-0 rounded overflow-hidden" style={{ width: 72, height: 72 }}>
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
                 </div>
 
                 {/* Details */}

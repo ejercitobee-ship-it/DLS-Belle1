@@ -66,30 +66,33 @@ export default function WhyUs() {
           </div>
 
           {/* Image collage */}
-          <div className="relative grid grid-cols-2 gap-3 h-[500px]">
+          <div className="relative grid grid-cols-2 gap-3 h-[500px] overflow-hidden lg:overflow-visible">
             <div className="relative rounded-lg overflow-hidden row-span-2">
               <img
-                src="https://images.pexels.com/photos/2159065/pexels-photo-2159065.jpeg"
-                alt="Luxury cigar"
+                src="https://cdn.shopify.com/s/files/1/0903/1429/0371/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg"
+                alt="Raching CS600 luxury cabinet humidor"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="relative rounded-lg overflow-hidden">
               <img
-                src="https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg"
-                alt="Humidor display"
+                src="https://cdn.shopify.com/s/files/1/0903/1429/0371/files/Santiago_700_cigar_end_table_humidor_with_walnut_finish_and_beveled_glass_top.jpg"
+                alt="Santiago desktop humidor"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="relative rounded-lg overflow-hidden">
               <img
-                src="https://images.pexels.com/photos/1034940/pexels-photo-1034940.jpeg"
-                alt="Electronic humidor"
+                src="https://cdn.shopify.com/s/files/1/0903/1429/0371/files/CT48A-silver.jpg"
+                alt="CT48A electronic humidor"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             {/* Stats overlay */}
-            <div className="absolute -bottom-4 -left-4 bg-charcoal-950 border border-gold-700/30 rounded-lg p-4 shadow-xl">
+            <div className="absolute bottom-2 left-2 bg-charcoal-950 border border-gold-700/30 rounded-lg p-4 shadow-xl">
               <div className="text-2xl font-serif font-bold text-gradient-gold">$30 – $7,750</div>
               <div className="text-cream-200/50 text-xs mt-0.5">Curated price range</div>
             </div>

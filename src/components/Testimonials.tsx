@@ -81,6 +81,9 @@ export default function Testimonials() {
                   src={t.avatar}
                   alt={t.name}
                   className="w-10 h-10 rounded-full object-cover object-top grayscale group-hover:grayscale-0 transition-all"
+                  loading="lazy"
+                  width="40"
+                  height="40"
                 />
                 <div>
                   <div className="text-white text-sm font-semibold">{t.name}</div>

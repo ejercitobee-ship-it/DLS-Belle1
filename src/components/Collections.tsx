@@ -158,6 +158,7 @@ export default function Collections() {
                   src={col.image}
                   alt={col.name}
                   className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
                 />
               ) : (
                 <div className="absolute inset-0 bg-charcoal-800" />

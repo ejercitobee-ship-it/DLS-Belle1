@@ -15,18 +15,19 @@ export default function Bespoke() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Image */}
-          <div className="relative">
+          <div className="relative overflow-hidden lg:overflow-visible">
             <div className="relative rounded-lg overflow-hidden aspect-[4/5] lg:aspect-auto lg:h-[600px]">
               <img
                 src="https://images.pexels.com/photos/1559650/pexels-photo-1559650.jpeg"
                 alt="Bespoke walk-in humidor"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/60 to-transparent" />
             </div>
 
             {/* Floating stat card */}
-            <div className="absolute -bottom-6 -right-4 md:right-0 bg-charcoal-900 border border-gold-700/30 rounded-lg p-5 shadow-xl shadow-black/50 max-w-[200px]">
+            <div className="absolute bottom-4 right-4 bg-charcoal-900 border border-gold-700/30 rounded-lg p-5 shadow-xl shadow-black/50 max-w-[200px]">
               <div className="text-3xl font-serif font-bold text-gradient-gold mb-1">50+</div>
               <div className="text-cream-200/60 text-sm leading-snug">Bespoke installations worldwide</div>
             </div>

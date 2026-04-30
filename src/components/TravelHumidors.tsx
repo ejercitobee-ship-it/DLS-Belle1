@@ -288,7 +288,7 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
           {/* Image */}
           <div className="relative">
             <div className="rounded-lg overflow-hidden aspect-square">
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" loading="lazy" />
             </div>
             {product.badge && (
               <span className={`absolute top-4 left-4 text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded ${badgeStyles[product.badge] || ''}`}>
@@ -548,6 +548,7 @@ export default function TravelHumidors() {
                     src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
                   />
                   {product.badge && (
                     <span className={`absolute top-2.5 left-2.5 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded ${badgeStyles[product.badge] || ''}`}>

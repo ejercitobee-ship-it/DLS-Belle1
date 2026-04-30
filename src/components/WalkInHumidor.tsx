@@ -107,12 +107,49 @@ export default function WalkInHumidor() {
     spaceSize: '',
     message: '',
   });
+  const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const validate = () => {
+    const errs: Partial<typeof formData> = {};
+    if (!formData.name.trim()) errs.name = 'Full name is required.';
+    if (!formData.email.trim()) {
+      errs.email = 'Email address is required.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errs.email = 'Please enter a valid email address.';
+    }
+    if (!formData.projectType) errs.projectType = 'Please select a project type.';
+    return errs;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    const errs = validate();
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setErrors({});
+    setSubmitting(true);
+
+    const subject = encodeURIComponent(`Walk-In Humidor Enquiry — ${formData.projectType}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone || 'Not provided'}\nProject Type: ${formData.projectType}\nSpace Size: ${formData.spaceSize || 'Not specified'}\n\nMessage:\n${formData.message || 'No message provided.'}`
+    );
+    window.location.href = `mailto:support@dunnluxuryselections.com?subject=${subject}&body=${body}`;
+
+    setTimeout(() => {
+      setSubmitting(false);
+      setSubmitted(true);
+    }, 500);
   };
+
+  const field = (key: keyof typeof formData) => ({
+    value: formData[key],
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+      setFormData({ ...formData, [key]: e.target.value }),
+  });
 
   return (
     <div className="min-h-screen bg-charcoal-950">
@@ -434,29 +471,27 @@ export default function WalkInHumidor() {
                   <h3 className="font-serif text-xl text-white font-semibold mb-6">
                     Request a Consultation
                   </h3>
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Full Name *</label>
                         <input
-                          required
                           type="text"
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors"
+                          {...field('name')}
+                          className={`w-full bg-charcoal-950 border ${errors.name ? 'border-red-500/70' : 'border-charcoal-700'} focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors`}
                           placeholder="John Smith"
                         />
+                        {errors.name && <p className="text-red-400 text-[10px] mt-1">{errors.name}</p>}
                       </div>
                       <div>
                         <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Email Address *</label>
                         <input
-                          required
                           type="email"
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors"
+                          {...field('email')}
+                          className={`w-full bg-charcoal-950 border ${errors.email ? 'border-red-500/70' : 'border-charcoal-700'} focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors`}
                           placeholder="john@example.com"
                         />
+                        {errors.email && <p className="text-red-400 text-[10px] mt-1">{errors.email}</p>}
                       </div>
                     </div>
 
@@ -465,8 +500,7 @@ export default function WalkInHumidor() {
                         <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Phone Number</label>
                         <input
                           type="tel"
-                          value={formData.phone}
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          {...field('phone')}
                           className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors"
                           placeholder="(555) 000-0000"
                         />
@@ -474,17 +508,16 @@ export default function WalkInHumidor() {
                       <div>
                         <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Project Type *</label>
                         <select
-                          required
-                          value={formData.projectType}
-                          onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-                          className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 text-sm px-4 py-3 rounded outline-none transition-colors appearance-none"
+                          {...field('projectType')}
+                          className={`w-full bg-charcoal-950 border ${errors.projectType ? 'border-red-500/70' : 'border-charcoal-700'} focus:border-gold-500 text-cream-100 text-sm px-4 py-3 rounded outline-none transition-colors appearance-none`}
                         >
                           <option value="" disabled className="text-cream-200/30">Select type</option>
-                          <option value="residential">Residential Cigar Room</option>
-                          <option value="commercial">Retail / Hospitality</option>
-                          <option value="monitoring">Electronic Monitoring Only</option>
-                          <option value="other">Other</option>
+                          <option value="Residential Cigar Room">Residential Cigar Room</option>
+                          <option value="Retail / Hospitality">Retail / Hospitality</option>
+                          <option value="Electronic Monitoring Only">Electronic Monitoring Only</option>
+                          <option value="Other">Other</option>
                         </select>
+                        {errors.projectType && <p className="text-red-400 text-[10px] mt-1">{errors.projectType}</p>}
                       </div>
                     </div>
 
@@ -492,8 +525,7 @@ export default function WalkInHumidor() {
                       <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Approximate Space Size</label>
                       <input
                         type="text"
-                        value={formData.spaceSize}
-                        onChange={(e) => setFormData({ ...formData, spaceSize: e.target.value })}
+                        {...field('spaceSize')}
                         className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors"
                         placeholder="e.g. 10 × 12 ft, large closet, full room…"
                       />
@@ -503,8 +535,7 @@ export default function WalkInHumidor() {
                       <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Tell Us About Your Vision</label>
                       <textarea
                         rows={4}
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        {...field('message')}
                         className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors resize-none"
                         placeholder="Describe your project, collection size, preferred materials, timeline…"
                       />
@@ -512,9 +543,10 @@ export default function WalkInHumidor() {
 
                     <button
                       type="submit"
-                      className="w-full bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded hover:opacity-90 active:scale-95 transition-all"
+                      disabled={submitting}
+                      className="w-full bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded hover:opacity-90 active:scale-95 transition-all disabled:opacity-70"
                     >
-                      Submit Enquiry
+                      {submitting ? 'Opening Email Client…' : 'Submit Enquiry'}
                     </button>
 
                     <p className="text-cream-200/25 text-xs text-center">

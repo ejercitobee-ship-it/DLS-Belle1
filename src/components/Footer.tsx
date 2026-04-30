@@ -1,22 +1,21 @@
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 
 const shopLinks = [
-  { label: 'Counter Displays', href: '#counter-displays' },
-  { label: 'Desktop Humidors', href: '#desktop' },
-  { label: 'Electronic Humidors', href: '#electronic' },
-  { label: 'Travel Humidors', href: '#travel' },
+  { label: 'Cabinet Humidors', href: '#cabinet-humidors' },
+  { label: 'Desktop Humidors', href: '#desktop-humidors' },
+  { label: 'Electronic Humidors', href: '#electronic-humidors' },
+  { label: 'Travel Humidors', href: '#travel-humidors' },
   { label: 'Accessories', href: '#accessories' },
-  { label: 'Bespoke Walk-ins', href: '#bespoke' },
+  { label: 'New Arrivals', href: '#new-arrivals' },
 ];
 
 const infoLinks = [
   { label: 'About Us', href: '#about' },
-  { label: 'Bespoke Consultations', href: '#bespoke' },
-  { label: 'Delivery Information', href: '#' },
-  { label: 'Returns & Warranty', href: '#' },
-  { label: 'Care Guides', href: '#' },
+  { label: 'Bespoke Walk-In Humidors', href: '#walk-in-humidor' },
+  { label: 'Delivery Information', href: '#delivery-info' },
+  { label: 'Returns & Warranty', href: '#returns-warranty' },
+  { label: 'Care Guides', href: '#care-guides' },
   { label: 'Contact Us', href: '#contact' },
-  { label: 'Shopify Integration', href: '#shopify-setup' },
 ];
 
 export default function Footer() {
@@ -39,21 +38,25 @@ export default function Footer() {
             </p>
             <div className="flex gap-3">
               <a
-                href="#"
+                href="https://www.instagram.com/dunnluxuryselections"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="w-9 h-9 border border-charcoal-700 hover:border-gold-600/50 rounded flex items-center justify-center text-cream-200/40 hover:text-gold-500 transition-colors"
               >
                 <Instagram size={15} />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/dunnluxuryselections"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Facebook"
                 className="w-9 h-9 border border-charcoal-700 hover:border-gold-600/50 rounded flex items-center justify-center text-cream-200/40 hover:text-gold-500 transition-colors"
               >
                 <Facebook size={15} />
               </a>
               <a
-                href="#"
+                href="mailto:support@dunnluxuryselections.com"
                 aria-label="Email"
                 className="w-9 h-9 border border-charcoal-700 hover:border-gold-600/50 rounded flex items-center justify-center text-cream-200/40 hover:text-gold-500 transition-colors"
               >
@@ -142,10 +145,14 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Dunn's Luxury Selections. All rights reserved.
           </p>
           <div className="flex gap-5">
-            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((label) => (
+            {[
+              { label: 'Privacy Policy', href: '#privacy-policy' },
+              { label: 'Terms of Service', href: '#terms-of-service' },
+              { label: 'Cookie Policy', href: '#cookie-policy' },
+            ].map(({ label, href }) => (
               <a
                 key={label}
-                href="#"
+                href={href}
                 className="text-cream-200/30 text-xs hover:text-gold-500/60 transition-colors"
               >
                 {label}

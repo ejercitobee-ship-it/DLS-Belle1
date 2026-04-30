@@ -20,6 +20,13 @@ import NewArrivals from './components/NewArrivals';
 import CartDrawer from './components/CartDrawer';
 import Checkout from './components/Checkout';
 import ShopifySetup from './components/ShopifySetup';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService';
+import CookiePolicy from './components/CookiePolicy';
+import DeliveryInfo from './components/DeliveryInfo';
+import ReturnsWarranty from './components/ReturnsWarranty';
+import CareGuides from './components/CareGuides';
+import About from './components/About';
 import { CartProvider, useCart } from './context/CartContext';
 
 type Page =
@@ -32,7 +39,14 @@ type Page =
   | 'cabinet-humidors'
   | 'new-arrivals'
   | 'checkout'
-  | 'shopify-setup';
+  | 'shopify-setup'
+  | 'privacy-policy'
+  | 'terms-of-service'
+  | 'cookie-policy'
+  | 'delivery-info'
+  | 'returns-warranty'
+  | 'care-guides'
+  | 'about';
 
 function getInitialPage(): Page {
   if (window.location.hash === '#electronic-humidors') return 'electronic-humidors';
@@ -43,6 +57,13 @@ function getInitialPage(): Page {
   if (window.location.hash === '#cabinet-humidors') return 'cabinet-humidors';
   if (window.location.hash === '#new-arrivals') return 'new-arrivals';
   if (window.location.hash === '#shopify-setup') return 'shopify-setup';
+  if (window.location.hash === '#privacy-policy') return 'privacy-policy';
+  if (window.location.hash === '#terms-of-service') return 'terms-of-service';
+  if (window.location.hash === '#cookie-policy') return 'cookie-policy';
+  if (window.location.hash === '#delivery-info') return 'delivery-info';
+  if (window.location.hash === '#returns-warranty') return 'returns-warranty';
+  if (window.location.hash === '#care-guides') return 'care-guides';
+  if (window.location.hash === '#about') return 'about';
   return 'home';
 }
 
@@ -67,6 +88,13 @@ function AppInner() {
         '#cabinet-humidors': 'cabinet-humidors',
         '#new-arrivals': 'new-arrivals',
         '#shopify-setup': 'shopify-setup',
+        '#privacy-policy': 'privacy-policy',
+        '#terms-of-service': 'terms-of-service',
+        '#cookie-policy': 'cookie-policy',
+        '#delivery-info': 'delivery-info',
+        '#returns-warranty': 'returns-warranty',
+        '#care-guides': 'care-guides',
+        '#about': 'about',
       };
       const next = map[window.location.hash];
       if (next) { setPage(next); window.scrollTo(0, 0); }
@@ -100,6 +128,13 @@ function AppInner() {
       '#cabinet-humidors': 'cabinet-humidors',
       '#new-arrivals': 'new-arrivals',
       '#shopify-setup': 'shopify-setup',
+      '#privacy-policy': 'privacy-policy',
+      '#terms-of-service': 'terms-of-service',
+      '#cookie-policy': 'cookie-policy',
+      '#delivery-info': 'delivery-info',
+      '#returns-warranty': 'returns-warranty',
+      '#care-guides': 'care-guides',
+      '#about': 'about',
     };
 
     const onClick = (e: MouseEvent) => {
@@ -126,9 +161,11 @@ function AppInner() {
     return () => document.removeEventListener('click', onClick);
   }, [page]);
 
+  const isFullPageOverlay = page === 'checkout' || page === 'shopify-setup';
+
   return (
     <div className="min-h-screen bg-charcoal-950">
-      {page !== 'checkout' && page !== 'shopify-setup' && (
+      {!isFullPageOverlay && (
         <Navbar currentPage={page} onCartOpen={openCart} />
       )}
 
@@ -150,6 +187,20 @@ function AppInner() {
         <CabinetHumidors />
       ) : page === 'new-arrivals' ? (
         <NewArrivals />
+      ) : page === 'privacy-policy' ? (
+        <PrivacyPolicy />
+      ) : page === 'terms-of-service' ? (
+        <TermsOfService />
+      ) : page === 'cookie-policy' ? (
+        <CookiePolicy />
+      ) : page === 'delivery-info' ? (
+        <DeliveryInfo />
+      ) : page === 'returns-warranty' ? (
+        <ReturnsWarranty />
+      ) : page === 'care-guides' ? (
+        <CareGuides />
+      ) : page === 'about' ? (
+        <About />
       ) : (
         <>
           <Hero />
@@ -164,7 +215,7 @@ function AppInner() {
         </>
       )}
 
-      {page !== 'checkout' && page !== 'shopify-setup' && <Footer />}
+      {!isFullPageOverlay && <Footer />}
 
       <CartDrawer onCheckout={() => navigate('checkout')} />
     </div>

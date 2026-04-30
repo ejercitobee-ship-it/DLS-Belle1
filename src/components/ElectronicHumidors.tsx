@@ -287,6 +287,7 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
                 src={product.image}
                 alt={product.name}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             {product.badge && (
@@ -477,6 +478,7 @@ export default function ElectronicHumidors() {
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
                 {product.badge && (
                   <span className={`absolute top-3 left-3 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded ${badgeStyles[product.badge] || ''}`}>
