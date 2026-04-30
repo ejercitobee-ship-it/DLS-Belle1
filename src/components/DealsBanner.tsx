@@ -13,7 +13,7 @@ const deals = [
     original: '$220',
     sale: '$185',
     saving: '16% Off',
-    image: 'https://images.pexels.com/photos/1267317/pexels-photo-1267317.jpeg',
+    image: '/generated-1777557978041-zp1qj.png',
   },
   {
     name: 'Chalet Portable Humidor',

@@ -295,7 +295,7 @@ const products: Product[] = [
     ],
     description:
       'The Belmont is the refined entry point into the cabinet collection. A bronze mahogany finish, full-length glass door, and Spanish cedar interior provide all the essentials for casual enthusiasts and seasoned aficionados alike — at an accessible price point without compromise on craftsmanship.',
-    image: 'https://images.pexels.com/photos/1267317/pexels-photo-1267317.jpeg',
+    image: '/generated-1777557978041-zp1qj.png',
     rating: 4.6,
     reviews: 17,
   },
