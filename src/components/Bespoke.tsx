@@ -18,7 +18,7 @@ export default function Bespoke() {
           <div className="relative overflow-hidden lg:overflow-visible">
             <div className="relative rounded-lg overflow-hidden aspect-[4/5] lg:aspect-auto lg:h-[600px]">
               <img
-                src="https://images.pexels.com/photos/1559650/pexels-photo-1559650.jpeg"
+                src="/generated-1777557488471-ycjey.png"
                 alt="Bespoke walk-in humidor"
                 className="w-full h-full object-cover"
                 loading="lazy"

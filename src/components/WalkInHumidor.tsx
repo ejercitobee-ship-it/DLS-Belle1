@@ -158,7 +158,7 @@ export default function WalkInHumidor() {
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.pexels.com/photos/1559650/pexels-photo-1559650.jpeg"
+            src="/generated-1777557488471-ycjey.png"
             alt="Bespoke walk-in humidor"
             className="w-full h-full object-cover object-center"
           />
