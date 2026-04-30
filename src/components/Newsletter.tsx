@@ -21,7 +21,7 @@ export default function Newsletter() {
       {/* Background texture */}
       <div className="absolute inset-0 opacity-5">
         <img
-          src="https://images.pexels.com/photos/2159065/pexels-photo-2159065.jpeg"
+          src="/generated-1777557213922-8v5be.png"
           alt=""
           className="w-full h-full object-cover"
           loading="lazy"
