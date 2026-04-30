@@ -166,7 +166,7 @@ const products: Product[] = [
     ],
     description:
       'The Saint Regis is a trophy-worthy display cabinet built for collectors who treat their cigars as an art collection. Dual glass doors and glass side panels offer 270° visibility while crown molding and embossed accents deliver hotel-grade refinement. Ideal for boutique lounges, private tasting rooms, and dedicated collectors.',
-    image: 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg',
+    image: '/generated-1777557773655-n04ui.png',
     rating: 4.9,
     reviews: 5,
   },

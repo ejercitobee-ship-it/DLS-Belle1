@@ -6,7 +6,7 @@ const deals = [
     original: '$44',
     sale: '$30',
     saving: '32% Off',
-    image: 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg',
+    image: '/generated-1777557773655-n04ui.png',
   },
   {
     name: 'Dane Desktop Humidor',
