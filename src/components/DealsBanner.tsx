@@ -20,7 +20,7 @@ const deals = [
     original: '$50',
     sale: '$38',
     saving: '24% Off',
-    image: 'https://images.pexels.com/photos/2526878/pexels-photo-2526878.jpeg',
+    image: '/generated-1777558518629-e3jz3.png',
   },
 ];
 

@@ -232,7 +232,7 @@ const products: Product[] = [
     ],
     description:
       'The Spartacus brings showroom-quality cabinetry within reach. Three oversized trays with 8 adjustable dividers each, a dedicated pull-out humidifier drawer, and a full-length glass door make it an ideal centrepiece for home lounges, cigar bars, and serious home collectors.',
-    image: 'https://images.pexels.com/photos/2526878/pexels-photo-2526878.jpeg',
+    image: '/generated-1777558518629-e3jz3.png',
     rating: 4.7,
     reviews: 13,
   },
