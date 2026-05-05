@@ -80,7 +80,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'Redefines what a premium aging vault should be. With expanded storage, smart locking, and real-time cigar diagnostics, the RR980 is built for serious collectors who demand precision, prestige, and presence.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg',
     badge: 'Flagship',
     rating: 5.0,
     reviews: 3,
@@ -114,7 +114,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       "A bold fusion of industrial strength and refined luxury. The CT48A's stainless steel finish is as striking as its performance — built for collections that demand both beauty and precision.",
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg',
     badge: 'Premium',
     rating: 4.9,
     reviews: 1,
@@ -149,7 +149,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'Redefines luxury cigar storage by blending furniture-grade elegance with professional-grade climate control. The Reagan Cabinet is the centrepiece of any serious cigar room or lounge.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg',
     badge: 'Bestseller',
     rating: 4.9,
     reviews: 6,
@@ -182,7 +182,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'Blends precise climate control with sophisticated design — housing a world-class cigar collection and premium wine cellar in a single, stunning cabinet.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
     badge: 'New',
     rating: 4.8,
     reviews: 5,
@@ -215,7 +215,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'Fuses precision dual-zone climate control with sophisticated design — a double-door cabinet that makes wine and cigar preservation equally effortless.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
     badge: 'New',
     rating: 4.8,
     reviews: 8,
@@ -247,7 +247,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'Professional-grade climate control wrapped in striking carbon fiber. The MON800A Carbon Fiber Edition combines advanced technology with contemporary aesthetics for the modern aficionado.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
     badge: 'New',
     rating: 4.8,
     reviews: 4,
@@ -278,7 +278,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'Professional-grade cabinet for serious cigar enthusiasts and premium venues. Combines industrial reliability with elegant design, delivering consistent precision climate control.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
     rating: 4.8,
     reviews: 1,
     isNew: true,
@@ -599,7 +599,7 @@ export default function NewArrivals() {
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
         <img
-          src="https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_a49256d8-5931-453f-be44-8d33853ae843.png"
+          src="https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_a49256d8-5931-453f-be44-8d33853ae843.png"
           alt="Electronic Humidors"
           className="w-full h-full object-cover object-center"
         />

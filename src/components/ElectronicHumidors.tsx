@@ -35,8 +35,8 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$6,387',
     priceNum: 6387,
     badge: 'Flagship',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg',
-    secondImage: 'https://dunnluxuryselections.com/cdn/shop/files/e1c939f2e749e72ea7323ff5cf6f9c1f.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg',
+    secondImage: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/e1c939f2e749e72ea7323ff5cf6f9c1f.jpg',
     capacity: '3,000–4,000 cigars',
     temperature: '16–22°C (±1°C)',
     humidity: '60–75% RH (±1%)',
@@ -54,8 +54,8 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$4,752',
     priceNum: 4752,
     badge: 'Premium',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg',
-    secondImage: 'https://dunnluxuryselections.com/cdn/shop/files/1_1.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg',
+    secondImage: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/1_1.jpg',
     capacity: '2,500–3,000 cigars',
     temperature: '16–22°C (±1°C)',
     humidity: '60–75% (±1%)',
@@ -73,7 +73,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$2,352',
     priceNum: 2352,
     badge: 'New',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
     capacity: '500–600 cigars (~150L)',
     temperature: '16–22°C (±1°C)',
     humidity: '60–75% RH (±1%)',
@@ -90,7 +90,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     brand: 'Raching',
     price: '$1,824',
     priceNum: 1824,
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
     capacity: '500–600 cigars (~150L)',
     temperature: '16–22°C (±1°C)',
     humidity: '60–75% RH (±1%)',
@@ -108,7 +108,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$6,147',
     priceNum: 6147,
     badge: 'Bestseller',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg',
     capacity: 'Up to 4,000 cigars',
     temperature: '41–71°F (dual climate zones)',
     humidity: '56–78% (dual zones)',
@@ -126,7 +126,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$5,972',
     priceNum: 5972,
     badge: 'Featured',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
     capacity: '1,500–1,600 cigars + 120–130 wine bottles',
     temperature: 'Cigar: 16–22°C · Wine: 5–22°C',
     humidity: '60–75% RH (±1%)',
@@ -143,7 +143,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     brand: 'Raching',
     price: '$3,360',
     priceNum: 3360,
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
     capacity: '1,200–1,400 cigars + 100–110 wine bottles',
     temperature: 'Cigar: 16–22°C · Wine: 5–22°C',
     humidity: '60–75% RH (±2%)',
@@ -495,7 +495,7 @@ export default function ElectronicHumidors() {
   if (selected) return <ProductDetail product={selected} onBack={() => setSelected(null)} />;
 
   const heroImage = collectionImage
-    || 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_a49256d8-5931-453f-be44-8d33853ae843.png';
+    || 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_a49256d8-5931-453f-be44-8d33853ae843.png';
 
   const currentSortLabel = sortOptions.find((o) => o.value === sort)?.label ?? 'Featured';
 

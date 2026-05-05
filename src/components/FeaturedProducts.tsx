@@ -45,14 +45,14 @@ function makeProduct(
 }
 
 const STATIC_FEATURED: ShopifyProduct[] = [
-  makeProduct('sf-1', 'Raching RR980 Cigar Humidor', 'Electronic Humidor', '8255.00', 'https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg', ['Electronic Humidor', 'Flagship']),
-  makeProduct('sf-2', 'Raching CT48A Stainless Steel', 'Electronic Humidor', '6350.00', 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg', ['Electronic Humidor', 'Premium']),
-  makeProduct('sf-3', 'Raching SD800 Dual-Zone Cabinet', 'Electronic Humidor', '7600.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg', ['Electronic Humidor', 'Featured']),
-  makeProduct('sf-4', 'Raching CS600 Luxury Cabinet', 'Electronic Humidor', '4450.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg', ['Electronic Humidor']),
-  makeProduct('sf-5', 'Reagan Electronic Cabinet Humidor', 'Electronic Humidor', '6147.00', 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg', ['Electronic Humidor', 'Bestseller']),
-  makeProduct('sf-6', 'Raching MON800A Carbon Fiber', 'Electronic Humidor', '2352.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg', ['Electronic Humidor', 'New']),
-  makeProduct('sf-7', 'Raching MON800A Precision Climate', 'Electronic Humidor', '1824.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg', ['Electronic Humidor']),
-  makeProduct('sf-8', 'Raching CS600 Wine & Cigar Cabinet', 'Electronic Humidor', '3360.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg', ['Electronic Humidor']),
+  makeProduct('sf-1', 'Raching RR980 Cigar Humidor', 'Electronic Humidor', '8255.00', 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg', ['Electronic Humidor', 'Flagship']),
+  makeProduct('sf-2', 'Raching CT48A Stainless Steel', 'Electronic Humidor', '6350.00', 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg', ['Electronic Humidor', 'Premium']),
+  makeProduct('sf-3', 'Raching SD800 Dual-Zone Cabinet', 'Electronic Humidor', '7600.00', 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg', ['Electronic Humidor', 'Featured']),
+  makeProduct('sf-4', 'Raching CS600 Luxury Cabinet', 'Electronic Humidor', '4450.00', 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg', ['Electronic Humidor']),
+  makeProduct('sf-5', 'Reagan Electronic Cabinet Humidor', 'Electronic Humidor', '6147.00', 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg', ['Electronic Humidor', 'Bestseller']),
+  makeProduct('sf-6', 'Raching MON800A Carbon Fiber', 'Electronic Humidor', '2352.00', 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg', ['Electronic Humidor', 'New']),
+  makeProduct('sf-7', 'Raching MON800A Precision Climate', 'Electronic Humidor', '1824.00', 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg', ['Electronic Humidor']),
+  makeProduct('sf-8', 'Raching CS600 Wine & Cigar Cabinet', 'Electronic Humidor', '3360.00', 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg', ['Electronic Humidor']),
 ];
 
 function getDefaultVariant(product: ShopifyProduct): ShopifyProductVariant | null {
