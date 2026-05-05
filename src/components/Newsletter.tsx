@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Mail, CheckCircle } from 'lucide-react';
+import { submitForm } from '../lib/submitForm';
 
-const EDGE_FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shopify-customer`;
+const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || 'support@dunnluxuryselections.com';
 
 export default function Newsletter() {
   const [email, setEmail] = useState('');
@@ -14,25 +15,13 @@ export default function Newsletter() {
     if (!email) return;
     setLoading(true);
     setError('');
-    try {
-      await fetch(EDGE_FN_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({
-          type: 'newsletter',
-          email,
-        }),
-      });
-      // Always show success — don't leak whether email exists
+    const err = await submitForm({ type: 'newsletter', email });
+    if (err) {
+      setError('Something went wrong. Please try again or email us at ' + SUPPORT_EMAIL);
+    } else {
       setSubmitted(true);
-    } catch {
-      setError('Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -80,9 +69,15 @@ export default function Newsletter() {
         </p>
 
         {submitted ? (
-          <div className="flex items-center justify-center gap-3 text-emerald-400">
-            <CheckCircle size={20} />
-            <span className="font-medium">Thank you — you're on the list.</span>
+          <div className="flex flex-col items-center gap-2 text-emerald-400">
+            <div className="flex items-center gap-3">
+              <CheckCircle size={20} />
+              <span className="font-medium">Thank you — you're on the list.</span>
+            </div>
+            <p className="text-cream-200/40 text-xs">
+              Questions? Reach us at{' '}
+              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-gold-400 hover:underline">{SUPPORT_EMAIL}</a>
+            </p>
           </div>
         ) : (
           <>
