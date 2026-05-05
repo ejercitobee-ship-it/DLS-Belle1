@@ -73,7 +73,7 @@ function StarRating({ rating, size = 11 }: { rating: number; size?: number }) {
   );
 }
 
-function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: () => void }) {
+export function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: () => void }) {
   const [added, setAdded] = useState(false);
   const [visible, setVisible] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
