@@ -73,7 +73,7 @@ export default function DealsBanner() {
                 key={product.id}
                 className="group relative rounded-lg overflow-hidden bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/30 card-hover cursor-pointer"
               >
-                <div className="aspect-[16/9] overflow-hidden bg-[#f5f0eb]">
+                <div className="aspect-[16/9] overflow-hidden">
                   {image && (
                     <img
                       src={image}

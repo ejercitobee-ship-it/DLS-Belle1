@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 
 const shopLinks = [
@@ -18,7 +19,9 @@ const infoLinks = [
   { label: 'Contact Us', href: '#contact' },
 ];
 
-export default function Footer() {
+export default memo(Footer);
+
+function Footer() {
   return (
     <footer className="bg-charcoal-950 border-t border-charcoal-800/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   ShoppingBag,
   Star,
@@ -19,10 +19,10 @@ import {
   X,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useShopifyCollection, getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
-import type { ShopifyProduct } from '../lib/shopify';
+import { fetchCollectionByHandle, fetchProducts, type ShopifyProduct } from '../lib/shopify';
+import { getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
 
-type Category = 'All' | 'Grand Cabinets' | 'Desktop' | 'Travel';
+type Category = 'All' | 'Grand Cabinets' | 'Dual-Zone' | 'Compact';
 
 type Product = {
   id: string;
@@ -54,35 +54,34 @@ const STATIC_PRODUCTS: Product[] = [
   {
     id: 'na-1',
     name: 'Raching RR980',
-    subtitle: 'Grand Estate Cigar Humidor',
+    subtitle: 'Grand Electronic Cigar Humidor',
     price: '$8,255',
     priceNum: 8255,
     category: 'Grand Cabinets',
     capacity: '3,000–4,000 cigars',
     capacityNum: 4000,
-    dimensions: '27.2" W × 27.6" D × 73.4" H',
-    material: 'Premium Spanish Cedar shelves & drawers',
-    finish: 'Available in Brown & Forest Green',
+    dimensions: '690 × 700 × 1865 mm',
+    material: 'Spanish cedar shelves & drawers',
+    finish: 'Brown or Forest Green',
     storage: [
       '6 Spanish cedar shelves',
       '4 Spanish cedar drawers',
-      'Fingerprint + password dual-lock access',
+      'Fingerprint + password dual-lock',
       'Mobile App Remote Unlock',
     ],
     humidification: 'High-Efficiency Water-Cooling · 16–22°C (±1°C) · 60–75% RH (±1%)',
     features: [
-      'TFT display with integrated cigar diagnostics',
-      'Draw resistance detection — verifies smoking readiness',
+      'TFT touchscreen display with cigar diagnostics',
+      'Draw resistance detection',
       'Fingerprint & password locks + Mobile App unlock',
-      'Ammonia removal control for pristine aging',
-      'Customizable lighting schedules & brightness',
-      '215mm taller than RR880 (+1,000 cigar capacity)',
+      'Ammonia removal control',
+      'Customizable lighting schedules',
       '110V/220V global compatibility',
     ],
     description:
-      'The RR980 is the definitive grand estate humidor — a monumental cabinet engineered for collectors who demand the absolute apex of environmental precision. TFT diagnostics, draw resistance detection, and mobile app remote unlock place it in a category of its own. Spanish cedar throughout, ammonia removal, and customizable lighting make this the centerpiece of any serious private lounge or tasting room.',
+      'Redefines what a premium aging vault should be. With expanded storage, smart locking, and real-time cigar diagnostics, the RR980 is built for serious collectors who demand precision, prestige, and presence.',
     image: 'https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg',
-    badge: 'New',
+    badge: 'Flagship',
     rating: 5.0,
     reviews: 3,
     isNew: true,
@@ -90,48 +89,82 @@ const STATIC_PRODUCTS: Product[] = [
   {
     id: 'na-2',
     name: 'Raching CT48A',
-    subtitle: 'Stainless Steel Grand Humidor',
+    subtitle: 'Stainless Steel Grand Electronic Humidor',
     price: '$6,350',
     priceNum: 6350,
     category: 'Grand Cabinets',
     capacity: '2,500–3,000 cigars',
     capacityNum: 3000,
-    dimensions: '27.2" W × 27.6" D × 72.8" H',
+    dimensions: '690 × 700 × 1850 mm',
     material: 'Spanish cedar interior · Anti-fingerprint stainless steel exterior',
     finish: 'Silver Anti-Fingerprint Stainless Steel',
     storage: [
       '8 layers Spanish cedar shelves',
-      '3 slide-rail shelves for deep storage access',
-      'Partition boards for brand/strength/age organization',
+      '3 slide-rail shelves for deep access',
       'Quick Dehumidification Drawer',
+      'Partition boards included',
     ],
     humidification: 'Advanced Water-Cooling · 16–22°C (±1°C) · 60–75% RH (±1%)',
     features: [
       'Anti-fingerprint stainless steel exterior',
-      'Quick Dehumidification Drawer for rapid moisture reduction',
+      'Quick Dehumidification Drawer',
       'Ammonia Removal Device',
       'Slide-rail shelves for effortless deep access',
-      'Partition boards — organize by brand, strength, or age',
       'Silent, stable compressor operation',
     ],
     description:
-      'The CT48A is the Pro-User model that marries industrial-grade durability with refined luxury. An anti-fingerprint stainless steel exterior handles the demands of high-traffic environments, while warm Spanish cedar shelves inside ensure flawless cigar preservation. Built for serious collectors, upscale lounges, and boutique cigar retailers who refuse to compromise.',
+      "A bold fusion of industrial strength and refined luxury. The CT48A's stainless steel finish is as striking as its performance — built for collections that demand both beauty and precision.",
     image: 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg',
-    badge: 'New',
+    badge: 'Premium',
     rating: 4.9,
     reviews: 1,
     isNew: true,
   },
   {
     id: 'na-3',
+    name: 'Reagan Electronic Cabinet',
+    subtitle: 'Furniture-Grade Electronic Humidor Cabinet',
+    price: '$6,147',
+    priceNum: 6147,
+    category: 'Grand Cabinets',
+    capacity: 'Up to 4,000 cigars',
+    capacityNum: 4000,
+    dimensions: 'Furniture-grade cabinet',
+    material: 'Cedar-lined sliding shelves',
+    finish: 'Crown molding with embossed panels',
+    storage: [
+      '12 cedar-lined sliding shelves',
+      'Dual climate zones',
+      'Dual water reservoirs',
+      'Tinted tempered glass doors',
+    ],
+    humidification: 'Dual circulating fans + reservoirs · 41–71°F · 56–78% dual zones',
+    features: [
+      'LCD touchscreen display',
+      'Dual climate zones',
+      'Tinted tempered glass doors',
+      'White LED interior lighting',
+      'De-mist function',
+      '110/120V or 220/240V',
+    ],
+    description:
+      'Redefines luxury cigar storage by blending furniture-grade elegance with professional-grade climate control. The Reagan Cabinet is the centrepiece of any serious cigar room or lounge.',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg',
+    badge: 'Bestseller',
+    rating: 4.9,
+    reviews: 6,
+    isNew: true,
+  },
+  {
+    id: 'na-4',
     name: 'Raching SD800',
     subtitle: 'Dual-Zone Cigar & Wine Cabinet',
     price: '$7,600',
     priceNum: 7600,
-    category: 'Grand Cabinets',
+    category: 'Dual-Zone',
     capacity: '~1,600 cigars · ~130 wine bottles',
     capacityNum: 1600,
-    dimensions: '1200 × 610 × 1920 mm · ~190 kg',
+    dimensions: '1200 × 610 × 1920 mm',
     material: 'Spanish cedar (cigar) · Beech wood (wine)',
     finish: 'Refined glass door with wooden accents',
     storage: [
@@ -139,18 +172,16 @@ const STATIC_PRODUCTS: Product[] = [
       '9 layers beech wood wine shelves',
       'Independent doors per zone',
     ],
-    humidification: 'Integrated water-cooling · Cigar: 16–22°C, 60–75% RH · Wine: 5–22°C',
+    humidification: 'Water-cooling · Cigar: 16–22°C, 60–75% RH · Wine: 5–22°C',
     features: [
       'Two independently controlled climate zones',
-      'Cigar zone: 16–22°C (±1°C), 60–75% RH (±1%)',
-      'Wine zone: 5–22°C (±1°C)',
-      'Quiet high-performance compressor',
-      'Minimal energy loss between zones',
-      'Large glass door with refined wooden accents',
-      '2-year warranty',
+      'Spanish cedar cigar zone',
+      'Beech wood wine shelving',
+      'Whisper-quiet operation',
+      'Large glass door with wooden accents',
     ],
     description:
-      'The SD800 combines precision cigar and wine storage in a single statement cabinet with two fully independent climate zones. Spanish cedar cigar shelves and beech wood wine shelves sit behind a large glass door framed in refined wooden accents — a natural centerpiece for collectors who entertain at the highest level.',
+      'Blends precise climate control with sophisticated design — housing a world-class cigar collection and premium wine cellar in a single, stunning cabinet.',
     image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
     badge: 'New',
     rating: 4.8,
@@ -158,15 +189,15 @@ const STATIC_PRODUCTS: Product[] = [
     isNew: true,
   },
   {
-    id: 'na-4',
+    id: 'na-5',
     name: 'Raching CS600',
-    subtitle: 'Luxury Wine & Cigar Humidor Cabinet',
+    subtitle: 'Luxury Wine & Cigar Dual-Zone Cabinet',
     price: '$4,450',
     priceNum: 4450,
-    category: 'Grand Cabinets',
+    category: 'Dual-Zone',
     capacity: '1,200–1,400 cigars · 100–110 wine bottles',
     capacityNum: 1400,
-    dimensions: '1200 W × 610 D × 1760 H mm',
+    dimensions: '1200 × 610 × 1760 mm',
     material: 'Spanish cedar (cigar) · Beech wood (wine)',
     finish: 'Large glass door with digital control panel',
     storage: [
@@ -174,17 +205,16 @@ const STATIC_PRODUCTS: Product[] = [
       '10 beech wood wine shelves',
       'Double-door cabinet design',
     ],
-    humidification: 'Dual-zone precision · Wine: 5–22°C · Cigar: 16–22°C, 60–75% RH (±2%)',
+    humidification: 'Integrated compressor · Wine: 5–22°C · Cigar: 16–22°C, 60–75% RH',
     features: [
       'Independent temperature controls per zone',
-      'Digital control panel for intuitive management',
+      'Digital control panel',
       'Whisper-quiet, energy-efficient operation',
       'Spanish cedar lining throughout cigar chamber',
       'Large glass door for 360° collection viewing',
-      '2-year warranty',
     ],
     description:
-      'The CS600 fuses precision dual-zone climate control with sophisticated design — a double-door cabinet that makes wine and cigar preservation equally effortless. Ideal for private lounges, luxury homes, upscale hotels, and premium retail environments that demand both form and function.',
+      'Fuses precision dual-zone climate control with sophisticated design — a double-door cabinet that makes wine and cigar preservation equally effortless.',
     image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
     badge: 'New',
     rating: 4.8,
@@ -192,197 +222,70 @@ const STATIC_PRODUCTS: Product[] = [
     isNew: true,
   },
   {
-    id: 'na-5',
-    name: 'Marciano',
-    subtitle: 'Countertop Display Humidor — 250 Cigars',
-    price: '$420',
-    priceNum: 420,
-    category: 'Desktop',
-    capacity: 'Up to 250 cigars',
-    capacityNum: 250,
-    dimensions: '26" W × 11.5" D × 20" H',
-    material: 'Spanish cedar trays',
-    finish: 'Deep dark mahogany',
+    id: 'na-6',
+    name: 'Raching MON800A Carbon Fiber',
+    subtitle: 'Compact Electronic Humidor — Carbon Fiber Edition',
+    price: '$2,352',
+    priceNum: 2352,
+    category: 'Compact',
+    capacity: '500–600 cigars',
+    capacityNum: 600,
+    dimensions: '600 × 610 × 820 mm',
+    material: 'Carbon fiber exterior · Spanish cedar interior',
+    finish: 'Carbon Fiber',
     storage: [
-      '3 removable & reversible Spanish cedar trays on gold-plated pins',
-      '6 adjustable dividers for custom organization',
-      'Flexible layout — trays face forward or toward double doors',
+      '2-layer Spanish cedar shelves',
+      'Compact form factor — 59 kg',
     ],
-    humidification: 'Two large humidifiers · Calibrated external hygrometer',
+    humidification: 'Water-Cooling · 16–22°C (±1°C) · 60–75% RH (±1%)',
     features: [
-      '360° view with four glass sides',
-      'Magnetic doors with airtight seal',
-      'Lock & key set for secure storage',
-      'Calibrated external hygrometer',
-      'Gold-plated support pins',
-      'Deep dark mahogany premium finish',
+      'Carbon fiber exterior',
+      'LCD digital control panel',
+      'Whisper-quiet operation',
+      'Professional-grade cooling',
+      'Contemporary design',
     ],
     description:
-      'The Marciano is a countertop showpiece — four glass sides deliver a complete 360° view of your collection while magnetic airtight doors and two large humidifiers maintain perfect conditions. Gold-plated support pins and deep dark mahogany finish make it equally at home in home bars, offices, luxury lounges, and boutique shops.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Marciano_250-cigar_countertop_display_humidor_with_Spanish_cedar_trays.jpg',
+      'Professional-grade climate control wrapped in striking carbon fiber. The MON800A Carbon Fiber Edition combines advanced technology with contemporary aesthetics for the modern aficionado.',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
     badge: 'New',
     rating: 4.8,
     reviews: 4,
     isNew: true,
   },
   {
-    id: 'na-6',
-    name: 'Modena',
-    subtitle: 'Desktop Display Humidor — 100 Cigars',
-    price: '$178',
-    priceNum: 178,
-    category: 'Desktop',
-    capacity: 'Up to 100 cigars',
-    capacityNum: 100,
-    dimensions: '21.5" W × 10" D × 7" H',
-    material: 'Spanish cedar interior',
-    finish: 'Dark cherry',
-    storage: [
-      '5 compartments via 4 adjustable Spanish cedar dividers',
-      'Internal locking hinges',
-    ],
-    humidification: '2 gold-polished humidifiers · Built-in hygrometer',
-    features: [
-      'Angled glass top for effortless at-a-glance viewing',
-      'Lock & key set',
-      'Internal locking hinges',
-      'Elegant gold hardware — handles, lid pull',
-      'Built-in hygrometer',
-      'Premium dark cherry finish',
-    ],
-    description:
-      'The Modena elevates cigar storage into an architectural experience. An angled glass top, gold hardware, and dark cherry finish combine precision engineering with refined visual character. Perfectly sized for desktop, credenza, or shelf placement — for both the new collector and the seasoned aficionado refining a curated stash.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Modena_cherry_finish_humidor_21.5x10x7_inches_perfect_for_countertop_display.jpg',
-    badge: 'New',
-    rating: 4.7,
-    reviews: 6,
-    isNew: true,
-  },
-  {
     id: 'na-7',
-    name: 'Santiago',
-    subtitle: 'End Table Humidor — 700 Cigars',
-    price: '$570',
-    priceNum: 570,
-    category: 'Desktop',
-    capacity: 'Up to 700 cigars',
-    capacityNum: 700,
-    dimensions: 'End table silhouette with beveled glass top',
-    material: 'Spanish cedar lining throughout',
-    finish: 'Rich walnut with polished silver hardware',
+    name: 'Raching MON800A Precision',
+    subtitle: 'Compact Electronic Humidor — Precision Climate',
+    price: '$1,824',
+    priceNum: 1824,
+    category: 'Compact',
+    capacity: '500–600 cigars',
+    capacityNum: 600,
+    dimensions: '600 × 610 × 820 mm',
+    material: 'Spanish cedar lining · Durable elegant exterior',
+    finish: 'Classic Elegant',
     storage: [
-      '2 smooth-slide pull-out drawers with 3 dividers each',
-      'Lower sturdy shelf for boxes & bulk reserves',
-      'Lockable sections with lock & key sets',
+      '2-layer Spanish cedar shelves',
     ],
-    humidification: '6 humidifiers · Silver digital hygrometer visible through glass top',
+    humidification: 'Water-Cooling Technology · 16–22°C (±1°C) · 60–75% RH (±1%)',
     features: [
-      'Beveled glass top — hygrometer visible at a glance',
-      'Embossed wood panels on all sides',
-      'Polished silver hardware throughout',
-      'Rear wiring port for optional electric upgrade',
-      'Doubles as functional furniture end table',
-      'Museum-quality sculpted presentation',
+      'LCD digital screen',
+      'Industrial-grade reliability',
+      'Integrated cooling system',
+      'Easy maintenance design',
+      'Durable elegant finish',
     ],
     description:
-      'The Santiago fuses timeless craftsmanship with modern practicality — a 700-cigar humidor that doubles as a living room end table. A beveled glass top puts your silver digital hygrometer in plain sight while embossed panels and polished silver hardware ensure it belongs in the finest interiors. For collectors who live with their collection.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Santiago_700_cigar_end_table_humidor_with_walnut_finish_and_beveled_glass_top.jpg',
-    badge: 'New',
+      'Professional-grade cabinet for serious cigar enthusiasts and premium venues. Combines industrial reliability with elegant design, delivering consistent precision climate control.',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
     rating: 4.8,
-    reviews: 7,
-    isNew: true,
-  },
-  {
-    id: 'na-8',
-    name: 'Traveler 15',
-    subtitle: 'Travel Humidor by Humidor Supreme®',
-    price: '$42',
-    priceNum: 42,
-    category: 'Travel',
-    capacity: '9–12 cigars',
-    capacityNum: 12,
-    dimensions: '9" W × 8" D × 2" H',
-    material: 'Durable exterior · Built-in humidifier',
-    finish: 'Available in Mahogany, Cherry, Burl',
-    storage: ['Built-in humidifier', 'Compact travel-ready footprint'],
-    humidification: 'Built-in humidifier · Includes XIKAR® Boveda® 60G RH seasoning packs',
-    features: [
-      'Ready out-of-box with pre-installed humidity packs',
-      'Available in Mahogany, Cherry, and Burl finishes',
-      'Compact for luggage, backpacks, desk drawers',
-      'Durable exterior resistant to travel stress',
-      'XIKAR® Boveda® 60G RH included',
-    ],
-    description:
-      'The Traveler 15 is the sleek, travel-ready companion engineered for portability without compromising flavor. Compact enough for luggage or a backpack, it ships ready to use with pre-installed Boveda® humidity packs. Three classic finish options ensure it matches any traveler\'s style.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Portable_cigar_humidor_with_built_in_humidifier_and_XIKAR_Boveda_60G_RH_packs.png',
-    badge: 'New',
-    rating: 4.6,
-    reviews: 9,
-    isNew: true,
-  },
-  {
-    id: 'na-9',
-    name: 'Traveler 5',
-    subtitle: 'Travel Humidor by Humidor Supreme®',
-    price: '$34',
-    priceNum: 34,
-    category: 'Travel',
-    capacity: '8–12 cigars',
-    capacityNum: 12,
-    dimensions: '8¾" W × 5 11/16" D × 2" H',
-    material: 'Sleek Mahogany exterior',
-    finish: 'Sleek Mahogany',
-    storage: ['Clear acrylic window for inventory check without opening'],
-    humidification: 'Built-in humidification · Embedded hygrometer · XIKAR® Boveda® 60G RH',
-    features: [
-      'Clear acrylic window — check inventory without opening',
-      'Embedded hygrometer for real-time humidity monitoring',
-      'Built-in humidification system',
-      'XIKAR® Boveda® 60G RH seasoning packs included',
-      'Fits bags, backpacks, and briefcases',
-    ],
-    description:
-      'The Traveler 5 is the ultimate compact travel companion — a clear acrylic window lets you check your inventory at a glance without ever breaking the seal. Embedded hygrometer, built-in humidification, and included Boveda® packs mean it\'s ready to protect your cigars from the moment it arrives.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Humidor_Supreme_Traveler_5_travel_cigar_humidor_holding_8_12_cigars.png',
-    badge: 'New',
-    rating: 4.6,
-    reviews: 11,
-    isNew: true,
-  },
-  {
-    id: 'na-10',
-    name: 'Traveler 10',
-    subtitle: 'Desktop Travel Humidor by Humidor Supreme®',
-    price: '$39',
-    priceNum: 39,
-    category: 'Travel',
-    capacity: '20–30 cigars',
-    capacityNum: 30,
-    dimensions: '8¾" W × 5 11/16" D × 3 3/16" H',
-    material: 'Spanish cedar lining · Mahogany exterior',
-    finish: 'Classic Mahogany',
-    storage: ['Spanish cedar lining throughout'],
-    humidification: 'Built-in humidification · Precision hygrometer · XIKAR® Boveda® 60G RH',
-    features: [
-      'Spanish cedar lining for natural moisture management',
-      'Precision hygrometer included',
-      'Built-in humidification system',
-      'XIKAR® Boveda® 60G RH seasoning packs included',
-      'Dual purpose — desktop display or travel',
-      'Classic mahogany exterior — gift-ready',
-    ],
-    description:
-      'The Traveler 10 bridges the gap between desktop display and travel companion. Spanish cedar lining, a precision hygrometer, and included Boveda® packs keep up to 30 cigars in perfect condition — whether on your desk, in a carry-on, or gifted to the aficionado in your life.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Traveler_10_cigar_humidor_with_Spanish_cedar_interior_and_Boveda_60G_RH_seasoning_packs.png',
-    badge: 'New',
-    rating: 4.7,
-    reviews: 8,
+    reviews: 1,
     isNew: true,
   },
 ];
 
-const categories: Category[] = ['All', 'Grand Cabinets', 'Desktop', 'Travel'];
+const categories: Category[] = ['All', 'Grand Cabinets', 'Dual-Zone', 'Compact'];
 
 const sortOptions = [
   { label: 'Newest First', value: 'featured' },
@@ -393,8 +296,8 @@ const sortOptions = [
 
 function inferCategory(p: ShopifyProduct): Category {
   const t = (p.title + ' ' + p.productType + ' ' + p.tags.join(' ')).toLowerCase();
-  if (t.includes('travel') || t.includes('portable')) return 'Travel';
-  if (t.includes('desktop') || t.includes('countertop') || t.includes('tabletop')) return 'Desktop';
+  if (t.includes('dual') || t.includes('wine') || t.includes('cs6') || t.includes('sd8')) return 'Dual-Zone';
+  if (t.includes('compact') || t.includes('mon8') || t.includes('mini')) return 'Compact';
   return 'Grand Cabinets';
 }
 
@@ -435,8 +338,8 @@ function fromShopify(p: ShopifyProduct): Product {
 const categoryColors: Record<Category, { text: string; border: string; bg: string }> = {
   All: { text: '', border: '', bg: '' },
   'Grand Cabinets': { text: 'text-amber-400', border: 'border-amber-600/30', bg: 'bg-amber-700/10' },
-  Desktop: { text: 'text-sky-400', border: 'border-sky-600/30', bg: 'bg-sky-700/10' },
-  Travel: { text: 'text-emerald-400', border: 'border-emerald-600/30', bg: 'bg-emerald-700/10' },
+  'Dual-Zone': { text: 'text-purple-400', border: 'border-purple-600/30', bg: 'bg-purple-700/10' },
+  Compact: { text: 'text-sky-400', border: 'border-sky-600/30', bg: 'bg-sky-700/10' },
 };
 
 function StarRating({ rating }: { rating: number }) {
@@ -631,9 +534,33 @@ export default function NewArrivals() {
   const [sortOpen, setSortOpen] = useState(false);
   const [selected, setSelected] = useState<Product | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
+  const [shopifyProducts, setShopifyProducts] = useState<ShopifyProduct[]>([]);
   const { addItem } = useCart();
 
-  const { products: shopifyProducts } = useShopifyCollection('new-arrivals');
+  useEffect(() => {
+    let cancelled = false;
+    async function loadNewArrivals() {
+      try {
+        // Strategy 1: fetch the "new-arrivals" collection (confirmed to have products)
+        const col = await fetchCollectionByHandle('new-arrivals', 50);
+        if (!cancelled && col && col.products.length) {
+          console.log('[NewArrivals] Loaded', col.products.length, 'products from collection');
+          setShopifyProducts(col.products);
+          return;
+        }
+        // Strategy 2: fall back to all products sorted newest first
+        const { products: newest } = await fetchProducts(12);
+        if (!cancelled && newest.length) {
+          console.log('[NewArrivals] Fallback: loaded', newest.length, 'newest products');
+          setShopifyProducts(newest);
+        }
+      } catch (err) {
+        console.warn('[NewArrivals] Fetch failed, using static fallback:', err);
+      }
+    }
+    loadNewArrivals();
+    return () => { cancelled = true; };
+  }, []);
   const products: Product[] = shopifyProducts.length
     ? shopifyProducts.map(fromShopify)
     : STATIC_PRODUCTS;
@@ -672,8 +599,8 @@ export default function NewArrivals() {
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
         <img
-          src="https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg"
-          alt="New Arrivals"
+          src="https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_a49256d8-5931-453f-be44-8d33853ae843.png"
+          alt="Electronic Humidors"
           className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/70 to-charcoal-950/20" />
@@ -696,13 +623,13 @@ export default function NewArrivals() {
             <div className="flex items-center gap-3 mb-3">
               <div className="h-px w-8 bg-gold-500" />
               <Sparkles size={12} className="text-gold-400" />
-              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Just In</span>
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Collection</span>
             </div>
             <h1 className="font-serif text-4xl md:text-5xl text-white font-bold">
               New <span className="text-gradient-gold italic">Arrivals</span>
             </h1>
             <p className="text-cream-200/60 mt-2 max-w-xl">
-              The latest additions to our collection — grand estate cabinets, precision desktop humidors, and travel companions, all arriving fresh to the catalogue.
+              The latest additions to our curated humidor collection — freshly arrived luxury pieces from the world's finest makers.
             </p>
           </div>
         </div>
@@ -713,10 +640,10 @@ export default function NewArrivals() {
         {/* Stats strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
           {[
-            { label: '10 New Products', sub: 'All freshly added' },
-            { label: 'Up to 4,000 Cigars', sub: 'Raching RR980' },
-            { label: 'Dual-Zone Options', sub: 'Wine + cigar storage' },
-            { label: 'From $34', sub: 'Traveler 5 travel humidor' },
+            { label: '7 Flagship Models', sub: 'Raching, Reagan & more' },
+            { label: 'Up to 4,000 Cigars', sub: 'Raching RR980 capacity' },
+            { label: 'Dual-Zone Available', sub: 'Cigar + wine storage' },
+            { label: 'From $1,824', sub: 'MON800A Precision' },
           ].map(({ label, sub }) => (
             <div key={label} className="bg-charcoal-900 border border-charcoal-800/40 rounded-lg px-4 py-3 flex items-start gap-3">
               <Zap size={14} className="text-gold-500 flex-shrink-0 mt-0.5" />
@@ -796,7 +723,7 @@ export default function NewArrivals() {
                 className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
               >
                 {/* Image */}
-                <div className="relative overflow-hidden aspect-[4/3] bg-[#f5f0eb]">
+                <div className="relative overflow-hidden aspect-[4/3]">
                   <img
                     src={product.image}
                     alt={product.name}

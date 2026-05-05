@@ -49,6 +49,84 @@
     @apply -translate-y-1;
   }
 
+  /* ── Scroll-triggered fade-in animations ── */
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fade-in-scale {
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .fade-in-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ── Staggered children animation ── */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+  .stagger-children.visible > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.visible > *:nth-child(2) { transition-delay: 60ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.visible > *:nth-child(3) { transition-delay: 120ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.visible > *:nth-child(4) { transition-delay: 180ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.visible > *:nth-child(5) { transition-delay: 240ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.visible > *:nth-child(6) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.visible > *:nth-child(n+7) { transition-delay: 360ms; opacity: 1; transform: translateY(0); }
+
+  /* ── Image lazy load fade-in ── */
+  .img-lazy {
+    opacity: 0;
+    transition: opacity 0.4s ease-in;
+  }
+  .img-lazy.loaded {
+    opacity: 1;
+  }
+
+  /* ── Shimmer loading effect ── */
+  .shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* ── Cart badge pop ── */
+  @keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── Button press micro-interaction ── */
+  .btn-press {
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  .btn-press:active {
+    transform: scale(0.96);
+  }
+
+  /* ── Smooth focus rings ── */
+  .focus-gold:focus-visible {
+    outline: 2px solid rgba(229, 165, 36, 0.6);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
   /* ── Article body rich-text styles ── */
   .prose-article {
     color: theme('colors.cream.200' / 70%);

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { X, ShoppingBag, Minus, Plus, Trash2, Package, ExternalLink, AlertCircle } from 'lucide-react';
+import { X, ShoppingBag, Minus, Plus, Trash2, Package, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 type Props = {
   onCheckout: () => void;
 };
 
-export default function CartDrawer({ onCheckout }: Props) {
+export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
+  void _onCheckout;
   const { items, isOpen, closeCart, removeItem, updateQty, totalItems, subtotal, shopifyCheckout, checkoutUrl } = useCart();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState(false);
@@ -36,9 +37,12 @@ export default function CartDrawer({ onCheckout }: Props) {
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full h-[100dvh] w-full sm:w-[420px] bg-charcoal-950 border-l border-charcoal-800/60 flex flex-col transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 z-50 h-full h-[100dvh] w-full sm:w-[420px] bg-charcoal-950 border-l border-charcoal-800/60 flex flex-col shadow-2xl shadow-black/50 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
+        style={{
+          transition: 'transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)',
+        }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-charcoal-800/50">
@@ -188,7 +192,7 @@ export default function CartDrawer({ onCheckout }: Props) {
               {checkoutLoading ? (
                 <><div className="w-4 h-4 border-2 border-charcoal-950/30 border-t-charcoal-950 rounded-full animate-spin" /> Preparing Checkout...</>
               ) : (
-                <>Checkout on Shopify <ExternalLink size={14} /></>
+                <>CHECKOUT</>
               )}
             </button>
 

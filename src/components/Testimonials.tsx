@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Star, Quote } from 'lucide-react';
 
 const testimonials = [
@@ -30,7 +31,9 @@ const testimonials = [
   },
 ];
 
-export default function Testimonials() {
+export default memo(Testimonials);
+
+function Testimonials() {
   return (
     <section className="py-24 bg-charcoal-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

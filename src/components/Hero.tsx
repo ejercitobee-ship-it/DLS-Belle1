@@ -1,4 +1,5 @@
 import { ArrowRight, Award, Shield, Truck } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const trustBadges = [
   { icon: Award, label: 'Curated Luxury', sub: 'Handpicked collections' },
@@ -7,6 +8,14 @@ const trustBadges = [
 ];
 
 export default function Hero() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger entrance animation after mount
+    const timer = setTimeout(() => setVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section className="relative min-h-[85vh] md:min-h-[90vh] flex items-center overflow-hidden">
       {/* Background image */}
@@ -14,7 +23,8 @@ export default function Hero() {
         <img
           src="/generated-1777557213922-8v5be.png"
           alt="Luxury humidor"
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-center transition-transform duration-[1.2s] ease-out"
+          style={{ transform: visible ? 'scale(1)' : 'scale(1.05)' }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/75 to-charcoal-950/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/70 via-transparent to-transparent" />
@@ -24,7 +34,14 @@ export default function Hero() {
       <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gold-500/60 to-transparent" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24 w-full">
-        <div className="max-w-2xl">
+        <div
+          className="max-w-2xl transition-all duration-700 ease-out"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(20px)',
+            transitionDelay: '200ms',
+          }}
+        >
           {/* Eyebrow */}
           <div className="flex items-center gap-3 mb-4 md:mb-6">
             <div className="h-px w-10 bg-gold-500" />

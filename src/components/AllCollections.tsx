@@ -48,11 +48,12 @@ function priceNum(p: ShopifyProduct): number {
   return parseFloat(p.priceRange.minVariantPrice.amount);
 }
 
-function formatMoney(amount: string, currency: string): string {
+function _formatMoney(amount: string, currency: string): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(
     parseFloat(amount),
   );
 }
+void _formatMoney; // available for future use
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 
@@ -84,7 +85,7 @@ function ProductCard({ product }: { product: ShopifyProduct }) {
   return (
     <div className="group relative flex flex-col bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/40 rounded-xl overflow-hidden transition-all duration-300">
       {/* Image */}
-      <div className="relative aspect-square overflow-hidden bg-[#f5f0eb] flex-shrink-0">
+      <div className="relative aspect-square overflow-hidden flex-shrink-0">
         {imgUrl ? (
           <img
             src={imgUrl}

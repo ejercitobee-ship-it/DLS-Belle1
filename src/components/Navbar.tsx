@@ -50,9 +50,12 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
   return (
     <>
       {/* Announcement bar */}
-      <div className="bg-gold-600 text-charcoal-950 text-center py-2 px-4 text-xs font-medium tracking-widest uppercase">
-        Complimentary Shipping on Orders Over $150 &mdash; Shop the Collection
-      </div>
+      <a
+        href="/all-collections"
+        className="block bg-gold-600 text-charcoal-950 text-center py-2 px-4 text-xs font-medium tracking-widest uppercase hover:bg-gold-500 transition-colors"
+      >
+        FREE SHIPPING ON SELECTED ITEMS - SHOP THE COLLECTIONS
+      </a>
 
       <nav
         ref={navRef}
@@ -146,7 +149,7 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
               >
                 <ShoppingBag size={22} />
                 {totalItems > 0 && (
-                  <span className="absolute top-1 right-1 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center bg-gold-500 text-charcoal-950">
+                  <span className="absolute top-1 right-1 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center bg-gold-500 text-charcoal-950 animate-[pop_0.3s_ease-out]" key={totalItems}>
                     {totalItems > 9 ? '9+' : totalItems}
                   </span>
                 )}

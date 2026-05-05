@@ -499,7 +499,7 @@ export default function TravelHumidors() {
                   onClick={() => setSelected(product)}
                   className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
                 >
-                  <div className="relative overflow-hidden aspect-[4/3] bg-[#f5f0eb]">
+                  <div className="relative overflow-hidden aspect-[4/3]">
                     {product.image ? (
                       <img
                         src={product.image}

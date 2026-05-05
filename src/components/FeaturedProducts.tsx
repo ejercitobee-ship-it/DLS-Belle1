@@ -1,11 +1,59 @@
-import { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Star, ArrowRight, CheckCircle2, X, Loader2, ZoomIn, Sparkles } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { ShoppingBag, Star, ArrowRight, CheckCircle2, X, ZoomIn, Sparkles, Zap } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { fetchProductsByTag, fetchProducts, type ShopifyProduct, type ShopifyProductVariant } from '../lib/shopify';
+import { useShopifyCollection } from '../hooks/useShopifyCollection';
+import type { ShopifyProduct, ShopifyProductVariant, Money } from '../lib/shopify';
 
 function formatMoney(amount: string, currency: string) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(parseFloat(amount));
 }
+
+function makeMoney(amount: string): Money {
+  return { amount, currencyCode: 'USD' };
+}
+
+function makeProduct(
+  id: string,
+  title: string,
+  productType: string,
+  price: string,
+  imageUrl: string,
+  tags: string[],
+): ShopifyProduct {
+  const variant: ShopifyProductVariant = {
+    id: `v-${id}`,
+    title: 'Default',
+    price: makeMoney(price),
+    compareAtPrice: null,
+    availableForSale: true,
+    image: { url: imageUrl, altText: title },
+  };
+  const img = { url: imageUrl, altText: title };
+  return {
+    id,
+    handle: id,
+    title,
+    description: title,
+    descriptionHtml: `<p>${title}</p>`,
+    productType,
+    tags,
+    featuredImage: img,
+    images: [img],
+    variants: [variant],
+    priceRange: { minVariantPrice: makeMoney(price), maxVariantPrice: makeMoney(price) },
+  };
+}
+
+const STATIC_FEATURED: ShopifyProduct[] = [
+  makeProduct('sf-1', 'Raching RR980 Cigar Humidor', 'Electronic Humidor', '8255.00', 'https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg', ['Electronic Humidor', 'Flagship']),
+  makeProduct('sf-2', 'Raching CT48A Stainless Steel', 'Electronic Humidor', '6350.00', 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg', ['Electronic Humidor', 'Premium']),
+  makeProduct('sf-3', 'Raching SD800 Dual-Zone Cabinet', 'Electronic Humidor', '7600.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg', ['Electronic Humidor', 'Featured']),
+  makeProduct('sf-4', 'Raching CS600 Luxury Cabinet', 'Electronic Humidor', '4450.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg', ['Electronic Humidor']),
+  makeProduct('sf-5', 'Reagan Electronic Cabinet Humidor', 'Electronic Humidor', '6147.00', 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg', ['Electronic Humidor', 'Bestseller']),
+  makeProduct('sf-6', 'Raching MON800A Carbon Fiber', 'Electronic Humidor', '2352.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg', ['Electronic Humidor', 'New']),
+  makeProduct('sf-7', 'Raching MON800A Precision Climate', 'Electronic Humidor', '1824.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg', ['Electronic Humidor']),
+  makeProduct('sf-8', 'Raching CS600 Wine & Cigar Cabinet', 'Electronic Humidor', '3360.00', 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg', ['Electronic Humidor']),
+];
 
 function getDefaultVariant(product: ShopifyProduct): ShopifyProductVariant | null {
   return product.variants.find((v) => v.availableForSale) ?? product.variants[0] ?? null;
@@ -273,35 +321,16 @@ function ProductCardSkeleton() {
 }
 
 export default function FeaturedProducts() {
-  const [products, setProducts] = useState<ShopifyProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [addedId, setAddedId] = useState<string | null>(null);
   const [selected, setSelected] = useState<ShopifyProduct | null>(null);
   const { addItem } = useCart();
 
-  useEffect(() => {
-    async function load() {
-      try {
-        // Try common Shopify tag variants used for new arrivals
-        let p = await fetchProductsByTag('New Arrival', 20);
-        if (!p.length) p = await fetchProductsByTag('new-arrival', 20);
-        if (!p.length) p = await fetchProductsByTag('new_arrival', 20);
-        if (!p.length) p = await fetchProductsByTag('New', 20);
-        // Final fallback: latest products
-        if (!p.length) {
-          const result = await fetchProducts(12);
-          p = result.products;
-        }
-        setProducts(p);
-      } catch {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
-  }, []);
+  const { products: shopifyProducts, loading } = useShopifyCollection(
+    'electronic-humidors',
+    'electronic-hunidors',
+  );
+
+  const products = shopifyProducts.length ? shopifyProducts : STATIC_FEATURED;
 
   const handleAddToCart = (e: React.MouseEvent, product: ShopifyProduct) => {
     e.stopPropagation();
@@ -336,23 +365,23 @@ export default function FeaturedProducts() {
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-px w-8 bg-gold-500" />
                 <span className="inline-flex items-center gap-2 text-gold-400 text-xs font-semibold tracking-[0.4em] uppercase">
-                  <Sparkles size={11} className="text-gold-400" />
-                  New Arrivals
+                  <Zap size={11} className="text-gold-400" />
+                  Electronic Humidors
                 </span>
                 <div className="h-px w-8 bg-gold-500" />
               </div>
               <h2 className="font-serif text-3xl md:text-5xl text-white font-bold leading-tight">
-                Just <span className="text-gradient-gold italic">Arrived</span>
+                Electronic <span className="text-gradient-gold italic">Humidors</span>
               </h2>
               <p className="text-cream-200/45 text-sm mt-2 max-w-md">
-                The latest additions to our curated humidor collection — freshly sourced, ready to impress.
+                Precision climate-controlled cabinets for discerning collectors — advanced technology meets luxury design.
               </p>
             </div>
             <a
-              href="/new-arrivals"
+              href="/electronic-humidors"
               className="inline-flex items-center gap-2 text-gold-400 text-sm font-medium hover:text-gold-300 transition-colors group self-start md:self-auto border border-gold-600/30 hover:border-gold-500/50 px-5 py-2.5 rounded-lg hover:bg-gold-700/10"
             >
-              View All New Arrivals
+              View All Electronic Humidors
               <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
@@ -363,14 +392,7 @@ export default function FeaturedProducts() {
             </div>
           )}
 
-          {error && !loading && (
-            <div className="text-center py-16">
-              <Loader2 size={32} className="text-charcoal-600 mx-auto mb-4" />
-              <p className="text-cream-200/40 text-sm">Unable to load products. Please refresh the page.</p>
-            </div>
-          )}
-
-          {!loading && !error && (
+          {!loading && (
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
               {products.map((product, idx) => {
                 const variant = getDefaultVariant(product);
@@ -389,7 +411,7 @@ export default function FeaturedProducts() {
                     className="group bg-charcoal-950 rounded-xl overflow-hidden border border-charcoal-800/50 hover:border-gold-600/50 card-hover cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-gold-900/10"
                   >
                     {/* Image */}
-                    <div className="relative overflow-hidden aspect-square bg-[#f5f0eb]">
+                    <div className="relative overflow-hidden aspect-square">
                       {image && (
                         <img
                           src={image.url}

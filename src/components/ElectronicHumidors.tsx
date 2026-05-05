@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ShoppingBag, Star, ChevronDown, ArrowLeft, Zap, Thermometer, Droplets, Box, CheckCircle2, Loader2, ZoomIn, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useShopifyCollection, formatMoney, getDefaultVariantId } from '../hooks/useShopifyCollection';
+import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
 
 // ─── Static fallback data ─────────────────────────────────────────────────────
@@ -581,7 +581,7 @@ export default function ElectronicHumidors() {
                 onClick={() => setSelected(product)}
                 className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
               >
-                <div className="relative overflow-hidden aspect-[4/3] bg-[#f5f0eb]">
+                <div className="relative overflow-hidden aspect-[4/3]">
                   {product.image ? (
                     <img
                       src={product.image}

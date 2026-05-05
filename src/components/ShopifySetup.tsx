@@ -265,11 +265,11 @@ export default function ShopifySetup({ onBack }: Props) {
           <Step
             number={7}
             title="Restart the dev server and test"
-            description='Run "npm run dev" to restart the server with the new env vars. Add a product to cart — the "Checkout on Shopify" button will appear in the cart drawer. Clicking it will create a Shopify cart and redirect you to your Shopify checkout page.'
+            description='Run "npm run dev" to restart the server with the new env vars. Add a product to cart — the "Checkout" button will appear in the cart drawer. Clicking it will create a Shopify cart and redirect you to your Shopify checkout page.'
           >
             <div className="space-y-2">
               {[
-                { check: 'Cart drawer shows "Checkout on Shopify" button with external link icon', ok: true },
+                { check: 'Cart drawer shows "CHECKOUT" button', ok: true },
                 { check: 'Clicking checkout redirects to your-store.myshopify.com/checkouts/...', ok: true },
                 { check: 'Items, quantities and prices match in Shopify checkout', ok: true },
                 { check: 'Shopify handles payment, email confirmation, and order management', ok: true },

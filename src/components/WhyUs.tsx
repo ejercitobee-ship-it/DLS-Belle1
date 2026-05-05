@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Gem, Settings, Headphones as HeadphonesIcon, Globe } from 'lucide-react';
 
 const reasons = [
@@ -27,7 +28,9 @@ const reasons = [
   },
 ];
 
-export default function WhyUs() {
+export default memo(WhyUs);
+
+function WhyUs() {
   return (
     <section id="about" className="py-24 bg-charcoal-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
