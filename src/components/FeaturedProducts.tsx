@@ -129,22 +129,21 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
         onClick={handleBack}
       />
 
-      {/* Drawer — full screen bottom sheet on mobile, centered panel on desktop */}
+      {/* Centering wrapper — vertically and horizontally centers the modal on mobile and desktop */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 pointer-events-none">
+
+      {/* Modal panel */}
       <div
         ref={scrollRef}
-        className={`fixed inset-x-0 bottom-0 z-50 bg-charcoal-950 rounded-t-2xl flex flex-col
-          md:inset-0 md:m-auto md:rounded-xl md:max-w-3xl md:shadow-2xl
+        className={`pointer-events-auto relative w-full bg-charcoal-950 rounded-2xl flex flex-col
+          md:max-w-3xl md:rounded-xl md:shadow-2xl
           transition-all duration-300 ease-out
           ${visible
-            ? 'translate-y-0 opacity-100 md:scale-100'
-            : 'translate-y-full opacity-0 md:scale-95'
+            ? 'opacity-100 scale-100'
+            : 'opacity-0 scale-95'
           }`}
-        style={{ maxHeight: '92dvh' }}
+        style={{ maxHeight: '90dvh' }}
       >
-        {/* Handle bar (mobile) */}
-        <div className="md:hidden flex justify-center pt-3 pb-1 flex-shrink-0">
-          <div className="w-10 h-1 bg-charcoal-700 rounded-full" />
-        </div>
 
         {/* Close button */}
         <button
@@ -317,6 +316,7 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
           </button>
         </div>
       </div>
+      </div>{/* end centering wrapper */}
     </>
   );
 }

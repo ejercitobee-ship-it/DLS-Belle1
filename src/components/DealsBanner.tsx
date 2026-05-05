@@ -51,7 +51,7 @@ export default function DealsBanner() {
           </div>
           <a
             href="/all-collections"
-            className="inline-flex items-center gap-2 text-gold-400 text-sm font-medium group hover:text-gold-300 transition-colors"
+            className="inline-flex items-center gap-2 text-gold-400 text-sm font-medium group hover:text-gold-300 transition-colors border border-gold-600/30 hover:border-gold-500/50 px-4 py-2 rounded-lg hover:bg-gold-700/10 min-h-[44px]"
           >
             All Deals <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </a>
@@ -71,7 +71,8 @@ export default function DealsBanner() {
             return (
               <div
                 key={product.id}
-                className="group relative rounded-lg overflow-hidden bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/30 card-hover cursor-pointer"
+                onClick={() => { window.location.href = `/products/${product.handle}`; }}
+                className="group relative rounded-lg overflow-hidden bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/50 card-hover cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-gold-900/20 active:scale-[0.98]"
               >
                 <div className="aspect-[16/9] overflow-hidden">
                   {image && (
@@ -92,7 +93,8 @@ export default function DealsBanner() {
                     <span className="text-cream-200/40 text-sm line-through">{origFmt}</span>
                   </div>
                   <button
-                    onClick={() =>
+                    onClick={(e) => {
+                      e.stopPropagation();
                       addItem({
                         id: getDefaultVariantId(product),
                         name: product.title,
@@ -100,9 +102,9 @@ export default function DealsBanner() {
                         priceNum: salePrice,
                         image,
                         shopifyVariantId: getDefaultVariantId(product),
-                      })
-                    }
-                    className="mt-3 w-full text-center text-xs font-semibold tracking-widest uppercase text-charcoal-950 bg-gold-gradient py-3.5 rounded hover:opacity-90 transition-opacity min-h-[48px]"
+                      });
+                    }}
+                    className="mt-3 w-full text-center text-xs font-semibold tracking-widest uppercase text-charcoal-950 bg-gold-gradient py-3.5 rounded hover:opacity-90 active:scale-95 transition-all min-h-[48px] shadow-md"
                   >
                     Shop Now
                   </button>

@@ -72,7 +72,7 @@ function WhyUs() {
           <div className="relative hidden lg:grid grid-cols-2 gap-3 h-[500px]">
             <div className="relative rounded-lg overflow-hidden row-span-2">
               <img
-                src="/generated-1777557213922-8v5be.png"
+                src="https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg"
                 alt="Raching CS600 luxury cabinet humidor"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -80,16 +80,16 @@ function WhyUs() {
             </div>
             <div className="relative rounded-lg overflow-hidden">
               <img
-                src="/generated-1777557773655-n04ui.png"
-                alt="Santiago desktop humidor"
+                src="https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg"
+                alt="Raching RR980 flagship cigar humidor"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
             </div>
             <div className="relative rounded-lg overflow-hidden">
               <img
-                src="/generated-1777557978041-zp1qj.png"
-                alt="CT48A electronic humidor"
+                src="https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg"
+                alt="Raching CT48A stainless steel electronic humidor"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
