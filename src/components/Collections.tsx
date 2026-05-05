@@ -172,13 +172,7 @@ export default function Collections() {
                     <h3 className="font-serif text-lg md:text-2xl text-white font-semibold mb-1 leading-snug">
                       {col.name}
                     </h3>
-                    {/* Description: always visible on mobile, hover-reveal on md+ */}
-                    <p className="text-cream-200/60 text-xs md:text-sm leading-snug max-w-xs md:hidden md:group-hover:block transition-all">
-                      {col.description}
-                    </p>
-                    <p className="text-cream-200/60 text-sm leading-snug max-w-xs hidden md:block opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-                      {col.description}
-                    </p>
+                    {/* Description hidden — Shopify returns long blog text */}
                   </div>
                   {/* Arrow: always visible on mobile, hover-reveal on md+ */}
                   <div className="w-9 h-9 md:w-9 md:h-9 rounded-full border border-gold-500/50 flex items-center justify-center text-gold-400 flex-shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
