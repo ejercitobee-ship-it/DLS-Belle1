@@ -121,10 +121,10 @@ export default function Collections() {
   }, []);
 
   return (
-    <section id="collections" className="py-24 bg-charcoal-950">
+    <section id="collections" className="py-12 md:py-24 bg-charcoal-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-10 bg-gold-500" />
             <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
@@ -132,17 +132,17 @@ export default function Collections() {
             </span>
             <div className="h-px w-10 bg-gold-500" />
           </div>
-          <h2 className="font-serif text-4xl md:text-5xl text-white font-bold mb-4">
+          <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-4">
             Curated for <span className="text-gradient-gold italic">Connoisseurs</span>
           </h2>
-          <p className="text-cream-200/60 text-lg max-w-xl mx-auto">
+          <p className="text-cream-200/60 text-sm md:text-lg max-w-xl mx-auto">
             Each collection is handpicked for quality, craftsmanship, and the
             signature of true luxury.
           </p>
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {collections.map((col, i) => (
             <a
               key={col.id}
@@ -150,7 +150,7 @@ export default function Collections() {
               className={`group relative overflow-hidden rounded-lg card-hover ${
                 col.featured && i === 0 ? 'sm:col-span-2 lg:col-span-1 row-span-2' : ''
               }`}
-              style={{ minHeight: col.featured && i === 0 ? '480px' : '280px' }}
+              style={{ minHeight: col.featured && i === 0 ? '320px' : '240px' }}
             >
               {col.image ? (
                 <img
@@ -162,21 +162,26 @@ export default function Collections() {
               ) : (
                 <div className="absolute inset-0 bg-charcoal-800" />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/95 via-charcoal-950/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/95 via-charcoal-950/50 to-transparent" />
               <div className="absolute inset-0 border border-transparent group-hover:border-gold-500/30 rounded-lg transition-colors duration-300" />
 
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="flex items-end justify-between">
-                  <div>
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+                <div className="flex items-end justify-between gap-3">
+                  <div className="min-w-0">
                     <p className="text-gold-400 text-[10px] tracking-[0.3em] uppercase mb-1">{col.count}</p>
-                    <h3 className="font-serif text-xl md:text-2xl text-white font-semibold mb-1">
+                    <h3 className="font-serif text-lg md:text-2xl text-white font-semibold mb-1 leading-snug">
                       {col.name}
                     </h3>
-                    <p className="text-cream-200/60 text-sm leading-snug max-w-xs hidden group-hover:block transition-all">
+                    {/* Description: always visible on mobile, hover-reveal on md+ */}
+                    <p className="text-cream-200/60 text-xs md:text-sm leading-snug max-w-xs md:hidden md:group-hover:block transition-all">
+                      {col.description}
+                    </p>
+                    <p className="text-cream-200/60 text-sm leading-snug max-w-xs hidden md:block opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                       {col.description}
                     </p>
                   </div>
-                  <div className="w-9 h-9 rounded-full border border-gold-500/50 flex items-center justify-center text-gold-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0 ml-3">
+                  {/* Arrow: always visible on mobile, hover-reveal on md+ */}
+                  <div className="w-9 h-9 md:w-9 md:h-9 rounded-full border border-gold-500/50 flex items-center justify-center text-gold-400 flex-shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                     <ArrowRight size={15} />
                   </div>
                 </div>

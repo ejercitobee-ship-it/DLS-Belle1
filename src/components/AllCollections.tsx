@@ -115,10 +115,10 @@ function ProductCard({ product }: { product: ShopifyProduct }) {
           )}
         </div>
 
-        {/* Add to Cart — hover only */}
+        {/* Add to Cart — always visible on mobile, hover-reveal on md+ */}
         <button
           onClick={handleAddToCart}
-          className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-2 bg-charcoal-950/90 backdrop-blur-sm border border-gold-500/40 hover:border-gold-400 hover:bg-gold-500/10 text-gold-400 hover:text-gold-300 text-[10px] font-semibold tracking-[0.2em] uppercase py-2.5 rounded transition-all duration-200 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0"
+          className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-2 bg-charcoal-950/90 backdrop-blur-sm border border-gold-500/40 hover:border-gold-400 hover:bg-gold-500/10 text-gold-400 hover:text-gold-300 text-[10px] font-semibold tracking-[0.2em] uppercase py-3 rounded transition-all duration-200 opacity-100 md:opacity-0 md:group-hover:opacity-100 translate-y-0 md:translate-y-1 md:group-hover:translate-y-0 min-h-[44px]"
         >
           <ShoppingBag size={12} />
           {added ? 'Added!' : 'Add to Cart'}

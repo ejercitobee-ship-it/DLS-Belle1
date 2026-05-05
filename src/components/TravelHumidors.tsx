@@ -171,7 +171,7 @@ function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: (
           onClick={() => setZoomImg(null)}
         >
           <button
-            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
+            className="absolute top-4 right-4 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
             onClick={() => setZoomImg(null)}
             aria-label="Close zoom"
           >
@@ -528,7 +528,7 @@ export default function TravelHumidors() {
                     <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <button
                       onClick={(e) => handleAddToCart(e, product)}
-                      className={`absolute bottom-2.5 right-2.5 w-8 h-8 bg-gold-gradient rounded flex items-center justify-center text-charcoal-950 shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ${addedKey === product.key ? 'opacity-100 translate-y-0' : ''}`}
+                      className={`absolute bottom-2.5 right-2.5 flex items-center justify-center min-w-[44px] min-h-[44px] bg-gold-gradient rounded text-charcoal-950 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 translate-y-0 md:translate-y-2 md:group-hover:translate-y-0 transition-all duration-300 ${addedKey === product.key ? 'opacity-100 translate-y-0' : ''}`}
                       aria-label="Add to cart"
                     >
                       {addedKey === product.key ? <CheckCircle2 size={13} /> : <ShoppingBag size={13} />}

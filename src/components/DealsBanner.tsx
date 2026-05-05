@@ -102,7 +102,7 @@ export default function DealsBanner() {
                         shopifyVariantId: getDefaultVariantId(product),
                       })
                     }
-                    className="mt-3 w-full text-center text-xs font-semibold tracking-widest uppercase text-charcoal-950 bg-gold-gradient py-2.5 rounded hover:opacity-90 transition-opacity"
+                    className="mt-3 w-full text-center text-xs font-semibold tracking-widest uppercase text-charcoal-950 bg-gold-gradient py-3.5 rounded hover:opacity-90 transition-opacity min-h-[48px]"
                   >
                     Shop Now
                   </button>

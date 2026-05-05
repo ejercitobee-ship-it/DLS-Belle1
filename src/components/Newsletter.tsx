@@ -38,7 +38,7 @@ export default function Newsletter() {
   return (
     <section
       id="contact"
-      className="relative py-24 overflow-hidden"
+      className="relative py-16 md:py-24 overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #211e1c 0%, #3d3634 50%, #211e1c 100%)',
       }}
@@ -71,10 +71,10 @@ export default function Newsletter() {
           <div className="h-px w-8 bg-gold-500" />
         </div>
 
-        <h2 className="font-serif text-4xl md:text-5xl text-white font-bold mb-4">
+        <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-4">
           Stay <span className="text-gradient-gold italic">Ahead</span>
         </h2>
-        <p className="text-cream-200/60 text-lg mb-10 max-w-lg mx-auto">
+        <p className="text-cream-200/60 text-sm md:text-lg mb-8 md:mb-10 max-w-lg mx-auto">
           Be first to receive new arrivals, exclusive deals, and expert guidance
           from our team of cigar storage specialists.
         </p>
@@ -93,12 +93,12 @@ export default function Newsletter() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
-                className="flex-1 bg-charcoal-900/80 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/30 text-sm px-4 py-3 rounded outline-none transition-colors"
+                className="flex-1 bg-charcoal-900/80 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/30 text-sm px-4 py-3.5 rounded outline-none transition-colors min-h-[52px]"
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-6 py-3 rounded hover:opacity-90 active:scale-95 transition-all whitespace-nowrap disabled:opacity-70"
+                className="bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-6 py-3.5 rounded hover:opacity-90 active:scale-95 transition-all whitespace-nowrap disabled:opacity-70 min-h-[52px]"
               >
                 {loading ? 'Subscribing…' : 'Subscribe'}
               </button>

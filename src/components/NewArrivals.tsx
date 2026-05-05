@@ -381,7 +381,7 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
           onClick={() => setZoomImg(null)}
         >
           <button
-            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
+            className="absolute top-4 right-4 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
             onClick={() => setZoomImg(null)}
             aria-label="Close zoom"
           >
@@ -625,10 +625,10 @@ export default function NewArrivals() {
               <Sparkles size={12} className="text-gold-400" />
               <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Collection</span>
             </div>
-            <h1 className="font-serif text-4xl md:text-5xl text-white font-bold">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-bold">
               New <span className="text-gradient-gold italic">Arrivals</span>
             </h1>
-            <p className="text-cream-200/60 mt-2 max-w-xl">
+            <p className="text-cream-200/60 mt-2 max-w-xl text-sm md:text-base">
               The latest additions to our curated humidor collection — freshly arrived luxury pieces from the world's finest makers.
             </p>
           </div>
@@ -663,7 +663,7 @@ export default function NewArrivals() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all min-h-[44px] ${
                   activeCategory === cat
                     ? 'bg-gold-gradient text-charcoal-950'
                     : 'bg-charcoal-900 border border-charcoal-700/60 text-cream-200/60 hover:text-cream-100 hover:border-gold-600/30'
@@ -744,7 +744,7 @@ export default function NewArrivals() {
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <button
                     onClick={(e) => handleAddToCart(e, product)}
-                    className={`absolute bottom-2.5 right-2.5 w-8 h-8 bg-gold-gradient rounded flex items-center justify-center text-charcoal-950 shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ${addedId === product.id ? 'opacity-100 translate-y-0' : ''}`}
+                    className={`absolute bottom-2.5 right-2.5 flex items-center justify-center min-w-[44px] min-h-[44px] bg-gold-gradient rounded text-charcoal-950 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 translate-y-0 md:translate-y-2 md:group-hover:translate-y-0 transition-all duration-300 ${addedId === product.id ? 'opacity-100 translate-y-0' : ''}`}
                     aria-label="Add to cart"
                   >
                     {addedId === product.id ? <Check size={13} /> : <ShoppingBag size={13} />}

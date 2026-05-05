@@ -35,7 +35,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         onClick={closeCart}
       />
 
-      {/* Drawer */}
+      {/* Drawer — full width on mobile, fixed 420px on sm+ */}
       <div
         className={`fixed top-0 right-0 z-50 h-full h-[100dvh] w-full sm:w-[420px] bg-charcoal-950 border-l border-charcoal-800/60 flex flex-col shadow-2xl shadow-black/50 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
@@ -45,7 +45,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-charcoal-800/50">
+        <div className="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-charcoal-800/50 flex-shrink-0">
           <div className="flex items-center gap-3">
             <ShoppingBag size={18} className="text-gold-400" />
             <span className="font-serif text-lg text-white font-semibold">Your Cart</span>
@@ -55,17 +55,18 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               </span>
             )}
           </div>
+          {/* Close button — min 44px touch target */}
           <button
             onClick={closeCart}
-            className="w-8 h-8 flex items-center justify-center text-cream-200/50 hover:text-white hover:bg-charcoal-800 rounded transition-colors"
+            className="flex items-center justify-center min-w-[44px] min-h-[44px] text-cream-200/50 hover:text-white hover:bg-charcoal-800 rounded-lg transition-colors"
             aria-label="Close cart"
           >
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+        <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-4 space-y-4">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center pb-12">
               <div className="w-16 h-16 rounded-full bg-charcoal-900 flex items-center justify-center">
@@ -77,7 +78,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               </div>
               <button
                 onClick={closeCart}
-                className="text-xs text-gold-400 hover:text-gold-300 font-medium transition-colors border border-gold-600/30 px-4 py-2 rounded hover:bg-gold-700/10"
+                className="text-xs text-gold-400 hover:text-gold-300 font-medium transition-colors border border-gold-600/30 px-5 py-3 rounded hover:bg-gold-700/10 min-h-[44px]"
               >
                 Continue Shopping
               </button>
@@ -89,52 +90,53 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 className="flex gap-3 bg-charcoal-900 rounded-lg p-3 border border-charcoal-800/40"
               >
                 {/* Image */}
-                <div className="w-18 h-18 flex-shrink-0 rounded overflow-hidden" style={{ width: 72, height: 72 }}>
+                <div className="flex-shrink-0 rounded overflow-hidden" style={{ width: 72, height: 72 }}>
                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
                 </div>
 
                 {/* Details */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-cream-100 text-xs font-semibold leading-snug line-clamp-2 mb-0.5">
+                  <p className="text-cream-100 text-sm font-semibold leading-snug line-clamp-2 mb-0.5">
                     {item.name}
                   </p>
                   {item.subtitle && (
-                    <p className="text-cream-200/40 text-[10px] line-clamp-1 mb-1">{item.subtitle}</p>
+                    <p className="text-cream-200/40 text-xs line-clamp-1 mb-1">{item.subtitle}</p>
                   )}
                   {item.category && (
                     <p className="text-gold-500/60 text-[10px] tracking-wider uppercase mb-2">{item.category}</p>
                   )}
 
                   <div className="flex items-center justify-between gap-2">
-                    {/* Qty controls */}
-                    <div className="flex items-center gap-1 bg-charcoal-950 border border-charcoal-700/50 rounded">
+                    {/* Qty controls — min 44px touch targets */}
+                    <div className="flex items-center gap-0.5 bg-charcoal-950 border border-charcoal-700/50 rounded-lg overflow-hidden">
                       <button
                         onClick={() => updateQty(item.id, item.quantity - 1)}
-                        className="w-7 h-7 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors"
+                        className="flex items-center justify-center min-w-[44px] min-h-[44px] text-cream-200/50 hover:text-white active:bg-charcoal-800 transition-colors"
                         aria-label="Decrease quantity"
                       >
-                        <Minus size={11} />
+                        <Minus size={13} />
                       </button>
-                      <span className="text-white text-xs font-medium w-5 text-center">{item.quantity}</span>
+                      <span className="text-white text-sm font-medium w-6 text-center flex-shrink-0">{item.quantity}</span>
                       <button
                         onClick={() => updateQty(item.id, item.quantity + 1)}
-                        className="w-7 h-7 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors"
+                        className="flex items-center justify-center min-w-[44px] min-h-[44px] text-cream-200/50 hover:text-white active:bg-charcoal-800 transition-colors"
                         aria-label="Increase quantity"
                       >
-                        <Plus size={11} />
+                        <Plus size={13} />
                       </button>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
                       <span className="text-white text-sm font-bold font-serif">
                         {fmt(item.priceNum * item.quantity)}
                       </span>
+                      {/* Trash — min 44px touch target */}
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="text-cream-200/30 hover:text-red-400 transition-colors p-1"
+                        className="flex items-center justify-center min-w-[44px] min-h-[44px] text-cream-200/30 hover:text-red-400 active:text-red-400 transition-colors rounded-lg"
                         aria-label="Remove item"
                       >
-                        <Trash2 size={12} />
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   </div>
@@ -146,7 +148,10 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="px-5 py-5 border-t border-charcoal-800/50 space-y-4 bg-charcoal-900/40 safe-bottom" style={{ paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))' }}>
+          <div
+            className="px-4 sm:px-5 py-5 border-t border-charcoal-800/50 space-y-4 bg-charcoal-900/40 flex-shrink-0"
+            style={{ paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))' }}
+          >
             {/* Subtotal */}
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -163,11 +168,10 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               </div>
             </div>
 
-            {/* Checkout CTA */}
+            {/* Checkout CTA — prominent, full width */}
             <button
               onClick={async () => {
                 setCheckoutError(false);
-                // Use pre-synced URL immediately (background cart sync already ran)
                 if (checkoutUrl) {
                   window.location.href = checkoutUrl;
                   return;
@@ -187,7 +191,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 }
               }}
               disabled={checkoutLoading}
-              className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-bold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-70"
+              className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-bold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-70 min-h-[52px]"
             >
               {checkoutLoading ? (
                 <><div className="w-4 h-4 border-2 border-charcoal-950/30 border-t-charcoal-950 rounded-full animate-spin" /> Preparing Checkout...</>
@@ -213,7 +217,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
             <button
               onClick={closeCart}
-              className="w-full text-center text-xs text-cream-200/40 hover:text-cream-200/70 transition-colors py-1"
+              className="w-full text-center text-xs text-cream-200/40 hover:text-cream-200/70 transition-colors py-2 min-h-[44px]"
             >
               Continue Shopping
             </button>

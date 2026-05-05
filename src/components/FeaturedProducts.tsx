@@ -85,9 +85,7 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Animate in
     requestAnimationFrame(() => setVisible(true));
-    // Lock body scroll on mobile
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
@@ -131,11 +129,11 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
         onClick={handleBack}
       />
 
-      {/* Drawer — full screen on mobile, centered panel on desktop */}
+      {/* Drawer — full screen bottom sheet on mobile, centered panel on desktop */}
       <div
         ref={scrollRef}
-        className={`fixed inset-x-0 bottom-0 z-50 bg-charcoal-950 rounded-t-2xl overflow-y-auto
-          md:inset-0 md:m-auto md:rounded-xl md:max-w-3xl md:max-h-[90vh] md:shadow-2xl
+        className={`fixed inset-x-0 bottom-0 z-50 bg-charcoal-950 rounded-t-2xl flex flex-col
+          md:inset-0 md:m-auto md:rounded-xl md:max-w-3xl md:shadow-2xl
           transition-all duration-300 ease-out
           ${visible
             ? 'translate-y-0 opacity-100 md:scale-100'
@@ -144,21 +142,22 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
         style={{ maxHeight: '92dvh' }}
       >
         {/* Handle bar (mobile) */}
-        <div className="md:hidden flex justify-center pt-3 pb-1">
+        <div className="md:hidden flex justify-center pt-3 pb-1 flex-shrink-0">
           <div className="w-10 h-1 bg-charcoal-700 rounded-full" />
         </div>
 
         {/* Close button */}
         <button
           onClick={handleBack}
-          className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-charcoal-800 hover:bg-charcoal-700 text-cream-200/60 hover:text-white transition-colors"
+          className="absolute top-3 right-3 md:top-4 md:right-4 z-10 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800 hover:bg-charcoal-700 text-cream-200/60 hover:text-white transition-colors"
           aria-label="Close"
         >
-          <X size={17} />
+          <X size={18} />
         </button>
 
-        <div className="px-4 pt-2 pb-6 md:px-8 md:pt-6 md:pb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto px-4 pt-2 pb-2 md:px-8 md:pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
             {/* Image */}
             <div className="relative rounded-xl overflow-hidden aspect-square bg-charcoal-900">
               {zoomImg && (
@@ -167,7 +166,7 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
                   onClick={() => setZoomImg(null)}
                 >
                   <button
-                    className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
+                    className="absolute top-4 right-4 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
                     onClick={() => setZoomImg(null)}
                     aria-label="Close zoom"
                   >
@@ -212,11 +211,11 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
                   {product.productType}
                 </p>
               )}
-              <h2 className="font-serif text-2xl md:text-3xl text-white font-bold leading-tight mb-4">
+              <h2 className="font-serif text-xl md:text-3xl text-white font-bold leading-tight mb-3 md:mb-4">
                 {product.title}
               </h2>
 
-              <div className="flex items-baseline gap-3 mb-4">
+              <div className="flex items-baseline gap-3 mb-3 md:mb-4">
                 <span className="text-2xl md:text-3xl font-bold text-white font-serif">
                   {formatMoney(price.amount, price.currencyCode)}
                 </span>
@@ -230,7 +229,7 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
               <StarRating rating={5} size={13} />
 
               {product.description && (
-                <div className="mt-4 mb-4">
+                <div className="mt-3 mb-3 md:mt-4 md:mb-4">
                   <p className={`text-cream-200/60 text-sm leading-relaxed transition-all duration-300 ${descExpanded ? '' : 'line-clamp-2'}`}>
                     {product.description}
                   </p>
@@ -247,7 +246,7 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
 
               {/* Variant selector */}
               {product.variants.length > 1 && (
-                <div className="mb-5">
+                <div className="mb-4 md:mb-5">
                   <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Select Option</p>
                   <div className="flex flex-wrap gap-2">
                     {product.variants.map((v) => (
@@ -255,7 +254,7 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
                         key={v.id}
                         onClick={() => setSelectedVariant(v)}
                         disabled={!v.availableForSale}
-                        className={`px-4 py-2.5 text-xs rounded border transition-colors ${
+                        className={`px-4 py-2.5 text-xs rounded border transition-colors min-h-[44px] ${
                           selectedVariant?.id === v.id
                             ? 'border-gold-500 bg-gold-700/20 text-gold-300'
                             : 'border-charcoal-700 text-cream-200/60 hover:border-gold-600/50 hover:text-cream-100 disabled:opacity-30 disabled:cursor-not-allowed'
@@ -270,7 +269,7 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
 
               {/* Tags */}
               {product.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-5">
+                <div className="flex flex-wrap gap-2 mb-4 md:mb-5">
                   {product.tags.slice(0, 4).map((tag) => (
                     <span key={tag} className="text-[10px] tracking-wider uppercase text-cream-200/30 border border-charcoal-700 px-2.5 py-1 rounded">
                       {tag}
@@ -279,12 +278,12 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
                 </div>
               )}
 
-              {/* CTAs — sticky at bottom on mobile */}
-              <div className="mt-auto flex flex-col sm:flex-row gap-3 pt-2">
+              {/* CTA — visible on desktop, hidden on mobile (sticky footer handles it) */}
+              <div className="hidden md:flex flex-col sm:flex-row gap-3 mt-auto pt-2">
                 <button
                   onClick={handleAdd}
                   disabled={!variant?.availableForSale}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[52px]"
                 >
                   {added ? (
                     <><CheckCircle2 size={16} /> Added to Cart!</>
@@ -298,6 +297,25 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
             </div>
           </div>
         </div>
+
+        {/* Sticky Add to Cart footer — mobile only */}
+        <div className="md:hidden flex-shrink-0 px-4 pb-4 pt-3 border-t border-charcoal-800/50 bg-charcoal-950"
+          style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom, 16px))' }}
+        >
+          <button
+            onClick={handleAdd}
+            disabled={!variant?.availableForSale}
+            className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[52px]"
+          >
+            {added ? (
+              <><CheckCircle2 size={16} /> Added to Cart!</>
+            ) : !variant?.availableForSale ? (
+              'Out of Stock'
+            ) : (
+              <><ShoppingBag size={16} /> Add to Cart</>
+            )}
+          </button>
+        </div>
       </div>
     </>
   );
@@ -306,14 +324,14 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
 function ProductCardSkeleton() {
   return (
     <div className="bg-charcoal-950 rounded-xl overflow-hidden border border-charcoal-800/50 animate-pulse">
-      <div className="aspect-[4/3] bg-charcoal-800" />
-      <div className="p-4 space-y-2">
+      <div className="aspect-square bg-charcoal-800" />
+      <div className="p-3 md:p-4 space-y-2">
         <div className="h-2.5 bg-charcoal-800 rounded w-1/2" />
         <div className="h-3.5 bg-charcoal-800 rounded w-3/4" />
         <div className="h-2.5 bg-charcoal-800 rounded w-1/3" />
         <div className="flex justify-between items-center pt-1">
           <div className="h-4 bg-charcoal-800 rounded w-1/4" />
-          <div className="h-8 bg-charcoal-800 rounded w-24" />
+          <div className="h-8 bg-charcoal-800 rounded w-20" />
         </div>
       </div>
     </div>
@@ -354,15 +372,15 @@ export default function FeaturedProducts() {
 
   return (
     <>
-      <section id="featured-products" className="py-16 md:py-24 bg-charcoal-900 relative overflow-hidden">
+      <section id="featured-products" className="py-12 md:py-24 bg-charcoal-900 relative overflow-hidden">
         {/* Subtle background texture */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(180,140,60,0.06),_transparent_60%)] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 md:mb-14">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 md:mb-14">
             <div>
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-3 mb-3 md:mb-4">
                 <div className="h-px w-8 bg-gold-500" />
                 <span className="inline-flex items-center gap-2 text-gold-400 text-xs font-semibold tracking-[0.4em] uppercase">
                   <Zap size={11} className="text-gold-400" />
@@ -370,7 +388,7 @@ export default function FeaturedProducts() {
                 </span>
                 <div className="h-px w-8 bg-gold-500" />
               </div>
-              <h2 className="font-serif text-3xl md:text-5xl text-white font-bold leading-tight">
+              <h2 className="font-serif text-2xl md:text-5xl text-white font-bold leading-tight">
                 Electronic <span className="text-gradient-gold italic">Humidors</span>
               </h2>
               <p className="text-cream-200/45 text-sm mt-2 max-w-md">
@@ -379,7 +397,7 @@ export default function FeaturedProducts() {
             </div>
             <a
               href="/electronic-humidors"
-              className="inline-flex items-center gap-2 text-gold-400 text-sm font-medium hover:text-gold-300 transition-colors group self-start md:self-auto border border-gold-600/30 hover:border-gold-500/50 px-5 py-2.5 rounded-lg hover:bg-gold-700/10"
+              className="inline-flex items-center gap-2 text-gold-400 text-sm font-medium hover:text-gold-300 transition-colors group self-start md:self-auto border border-gold-600/30 hover:border-gold-500/50 px-5 py-2.5 rounded-lg hover:bg-gold-700/10 min-h-[44px]"
             >
               View All Electronic Humidors
               <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
@@ -387,13 +405,13 @@ export default function FeaturedProducts() {
           </div>
 
           {loading && (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
               {Array.from({ length: 8 }).map((_, i) => <ProductCardSkeleton key={i} />)}
             </div>
           )}
 
           {!loading && (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
               {products.map((product, idx) => {
                 const variant = getDefaultVariant(product);
                 const price = variant?.price ?? product.priceRange.minVariantPrice;
@@ -416,34 +434,29 @@ export default function FeaturedProducts() {
                         <img
                           src={image.url}
                           alt={image.altText ?? product.title}
-                          className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-contain p-3 md:p-4 transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                         />
                       )}
 
-                      {/* New arrival badge — every card */}
-                      <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5">
-                        <span className="inline-flex items-center gap-1 bg-charcoal-950 text-gold-400 text-[9px] font-bold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full border border-gold-600/40 shadow-md">
-                          <Sparkles size={7} />
+                      {/* Badges */}
+                      <div className="absolute top-2 left-2 flex flex-col gap-1">
+                        <span className="inline-flex items-center gap-0.5 bg-charcoal-950 text-gold-400 text-[8px] md:text-[9px] font-bold tracking-[0.2em] uppercase px-2 py-0.5 md:px-2.5 md:py-1 rounded-full border border-gold-600/40 shadow-md">
+                          <Sparkles size={6} />
                           New
                         </span>
                         {hasDiscount && (
-                          <span className="inline-flex items-center bg-red-700 text-white text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full shadow-md">
+                          <span className="inline-flex items-center bg-red-700 text-white text-[8px] md:text-[9px] font-bold tracking-widest uppercase px-2 py-0.5 md:px-2.5 md:py-1 rounded-full shadow-md">
                             Sale
                           </span>
                         )}
                       </div>
 
-                      {/* Sequence number — subtle luxury touch */}
-                      <span className="absolute bottom-2.5 right-3 text-[10px] font-mono text-charcoal-600 select-none">
+                      {/* Sequence number */}
+                      <span className="absolute bottom-2 right-2 text-[10px] font-mono text-charcoal-600 select-none">
                         {String(idx + 1).padStart(2, '0')}
                       </span>
 
-                      {inStock && (
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center pointer-events-none">
-                          <ZoomIn size={22} className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 drop-shadow-lg" />
-                        </div>
-                      )}
                       {!inStock && (
                         <div className="absolute inset-0 bg-charcoal-950/60 flex items-center justify-center">
                           <span className="text-[10px] font-bold tracking-widest uppercase text-cream-200/60 bg-charcoal-900/80 px-3 py-1.5 rounded">
@@ -454,7 +467,7 @@ export default function FeaturedProducts() {
                     </div>
 
                     {/* Info */}
-                    <div className="p-3 md:p-4">
+                    <div className="p-2.5 md:p-4">
                       {product.productType && (
                         <p className="text-gold-500/60 text-[9px] md:text-[10px] tracking-[0.3em] uppercase mb-1 truncate">
                           {product.productType}
@@ -464,32 +477,31 @@ export default function FeaturedProducts() {
                         {product.title}
                       </h3>
                       <StarRating rating={5} />
-                      <div className="flex items-center justify-between mt-2.5 gap-2">
-                        <div className="flex items-baseline gap-1.5 min-w-0">
-                          <span className="text-white font-bold text-sm md:text-base truncate">
+                      <div className="flex items-center justify-between mt-2 gap-1.5">
+                        <div className="flex items-baseline gap-1 min-w-0">
+                          <span className="text-white font-bold text-sm truncate">
                             {formatMoney(price.amount, price.currencyCode)}
                           </span>
-                          {hasDiscount && (
-                            <span className="text-cream-200/35 text-[10px] line-through hidden sm:inline">
-                              {formatMoney(compareAt!.amount, compareAt!.currencyCode)}
-                            </span>
-                          )}
                         </div>
+                        {/* Add to Cart button — always visible, proper touch target */}
                         <button
                           onClick={(e) => handleAddToCart(e, product)}
                           disabled={!inStock}
-                          className={`flex-shrink-0 flex items-center gap-1 text-[10px] md:text-xs font-semibold tracking-wide uppercase py-1.5 px-2.5 md:px-3 rounded-lg transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed ${
+                          className={`flex-shrink-0 flex items-center justify-center gap-1 text-[10px] md:text-xs font-semibold tracking-wide uppercase py-2 px-2.5 md:px-3 rounded-lg transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed min-h-[36px] min-w-[36px] md:min-h-[40px] ${
                             isAdded
                               ? 'bg-emerald-700/20 text-emerald-400 border border-emerald-700/40'
                               : 'bg-gold-gradient text-charcoal-950 hover:opacity-90'
                           }`}
-                          aria-label="Add to cart"
+                          aria-label={isAdded ? 'Added to cart' : 'Add to cart'}
                         >
                           {isAdded ? (
-                            <><CheckCircle2 size={11} /> <span className="hidden sm:inline">Added</span></>
+                            <CheckCircle2 size={13} />
                           ) : (
-                            <><ShoppingBag size={11} /> <span className="hidden sm:inline">Add</span></>
+                            <ShoppingBag size={13} />
                           )}
+                          <span className="hidden sm:inline">
+                            {isAdded ? 'Added' : 'Add'}
+                          </span>
                         </button>
                       </div>
                     </div>
