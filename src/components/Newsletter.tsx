@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, CheckCircle } from 'lucide-react';
+import { Mail, CheckCircle, AlertCircle } from 'lucide-react';
 import { submitForm } from '../lib/submitForm';
 
 const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || 'support@dunnluxuryselections.com';
@@ -9,18 +9,31 @@ export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // mailtoFallback: set to the pre-filled mailto URL when Supabase fails
+  const [mailtoFallback, setMailtoFallback] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setLoading(true);
     setError('');
+    setMailtoFallback('');
+
     const err = await submitForm({ type: 'newsletter', email });
+
     if (err) {
-      setError('Something went wrong. Please try again or email us at ' + SUPPORT_EMAIL);
+      console.error('[Newsletter] Submission failed, showing mailto fallback. Error:', err);
+      // Build a pre-filled mailto link so the user can still reach us
+      const mailtoUrl =
+        `mailto:${SUPPORT_EMAIL}` +
+        `?subject=${encodeURIComponent('Newsletter Subscription Request')}` +
+        `&body=${encodeURIComponent(`Please add me to the newsletter list.\n\nEmail: ${email}`)}`;
+      setMailtoFallback(mailtoUrl);
+      setError('We could not save your subscription automatically. Please use the button below to send us your email directly.');
     } else {
       setSubmitted(true);
     }
+
     setLoading(false);
   };
 
@@ -76,7 +89,9 @@ export default function Newsletter() {
             </div>
             <p className="text-cream-200/40 text-xs">
               Questions? Reach us at{' '}
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-gold-400 hover:underline">{SUPPORT_EMAIL}</a>
+              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-gold-400 hover:underline">
+                {SUPPORT_EMAIL}
+              </a>
             </p>
           </div>
         ) : (
@@ -98,7 +113,24 @@ export default function Newsletter() {
                 {loading ? 'Subscribing…' : 'Subscribe'}
               </button>
             </form>
-            {error && <p className="text-red-400 text-xs mt-3">{error}</p>}
+
+            {error && (
+              <div className="mt-4 max-w-md mx-auto">
+                <div className="flex items-start gap-2 text-amber-400 text-xs mb-3">
+                  <AlertCircle size={14} className="mt-0.5 shrink-0" />
+                  <p>{error}</p>
+                </div>
+                {mailtoFallback && (
+                  <a
+                    href={mailtoFallback}
+                    className="inline-flex items-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-6 py-3 rounded hover:opacity-90 transition-opacity"
+                  >
+                    <Mail size={14} />
+                    Subscribe via Email
+                  </a>
+                )}
+              </div>
+            )}
           </>
         )}
 
