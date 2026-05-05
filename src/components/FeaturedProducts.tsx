@@ -129,194 +129,202 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
         onClick={handleBack}
       />
 
-      {/* Centering wrapper — vertically and horizontally centers the modal on mobile and desktop */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 pointer-events-none">
-
-      {/* Modal panel */}
+      {/*
+        Mobile  : fixed inset-0, overflow-y-auto — full-screen scrollable overlay
+        Desktop : fixed inset-0, flex centering  — centered modal with inner scroll
+      */}
       <div
-        ref={scrollRef}
-        className={`pointer-events-auto relative w-full bg-charcoal-950 rounded-2xl flex flex-col
-          md:max-w-3xl md:rounded-xl md:shadow-2xl
-          transition-all duration-300 ease-out
-          ${visible
-            ? 'opacity-100 scale-100'
-            : 'opacity-0 scale-95'
-          }`}
-        style={{ maxHeight: '90dvh' }}
+        className={`fixed inset-0 z-50 overflow-y-auto md:overflow-hidden md:flex md:items-center md:justify-center md:p-8 transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
       >
-
-        {/* Close button */}
-        <button
-          onClick={handleBack}
-          className="absolute top-3 right-3 md:top-4 md:right-4 z-10 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800 hover:bg-charcoal-700 text-cream-200/60 hover:text-white transition-colors"
-          aria-label="Close"
+        {/* Modal panel */}
+        <div
+          ref={scrollRef}
+          className={`relative w-full min-h-full bg-charcoal-950 flex flex-col
+            md:min-h-0 md:max-h-[90dvh] md:max-w-3xl md:rounded-xl md:shadow-2xl
+            md:transition-transform md:duration-300 md:ease-out
+            ${visible ? 'md:scale-100' : 'md:scale-95'}`}
         >
-          <X size={18} />
-        </button>
+          {/* Sticky close bar — mobile only, stays visible while scrolling */}
+          <div className="sticky top-0 z-10 flex items-center justify-end px-4 py-3 bg-charcoal-950/95 backdrop-blur-sm border-b border-charcoal-800/40 md:hidden">
+            <button
+              onClick={handleBack}
+              className="flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800 hover:bg-charcoal-700 text-cream-200/60 hover:text-white transition-colors"
+              aria-label="Close"
+            >
+              <X size={18} />
+            </button>
+          </div>
 
-        {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto px-4 pt-2 pb-2 md:px-8 md:pt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
-            {/* Image */}
-            <div className="relative rounded-xl overflow-hidden aspect-square bg-charcoal-900">
-              {zoomImg && (
-                <div
-                  className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4"
-                  onClick={() => setZoomImg(null)}
-                >
-                  <button
-                    className="absolute top-4 right-4 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
+          {/* Desktop close button */}
+          <button
+            onClick={handleBack}
+            className="hidden md:flex absolute top-4 right-4 z-10 items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800 hover:bg-charcoal-700 text-cream-200/60 hover:text-white transition-colors"
+            aria-label="Close"
+          >
+            <X size={18} />
+          </button>
+
+          {/* Content — desktop: this div scrolls; mobile: outer div scrolls */}
+          <div className="flex-1 px-4 pt-4 pb-8 md:overflow-y-auto md:px-8 md:pt-6 md:pb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
+              {/* Image */}
+              <div className="relative rounded-xl overflow-hidden aspect-square bg-charcoal-900">
+                {zoomImg && (
+                  <div
+                    className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4"
                     onClick={() => setZoomImg(null)}
-                    aria-label="Close zoom"
                   >
-                    <X size={20} />
-                  </button>
-                  <img
-                    src={zoomImg}
-                    alt={product.title}
-                    className="max-w-full max-h-full object-contain rounded-lg select-none"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </div>
-              )}
-              {image && (
-                <button
-                  className="w-full h-full block relative group/img focus:outline-none"
-                  onClick={() => setZoomImg(image.url)}
-                  aria-label="View full image"
-                >
-                  <img
-                    src={image.url}
-                    alt={image.altText ?? product.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                    <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
+                    <button
+                      className="absolute top-4 right-4 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
+                      onClick={() => setZoomImg(null)}
+                      aria-label="Close zoom"
+                    >
+                      <X size={20} />
+                    </button>
+                    <img
+                      src={zoomImg}
+                      alt={product.title}
+                      className="max-w-full max-h-full object-contain rounded-lg select-none"
+                      onClick={(e) => e.stopPropagation()}
+                    />
                   </div>
-                </button>
-              )}
-              {discount && (
-                <div className="absolute top-3 left-3 bg-red-700 text-white text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded pointer-events-none">
-                  Save {discount}%
-                </div>
-              )}
-            </div>
-
-            {/* Info */}
-            <div className="flex flex-col">
-              {product.productType && (
-                <p className="text-gold-500/70 text-[10px] tracking-[0.4em] uppercase mb-2">
-                  {product.productType}
-                </p>
-              )}
-              <h2 className="font-serif text-xl md:text-3xl text-white font-bold leading-tight mb-3 md:mb-4">
-                {product.title}
-              </h2>
-
-              <div className="flex items-baseline gap-3 mb-3 md:mb-4">
-                <span className="text-2xl md:text-3xl font-bold text-white font-serif">
-                  {formatMoney(price.amount, price.currencyCode)}
-                </span>
-                {compareNum && compareNum > priceNum && (
-                  <span className="text-cream-200/40 text-lg line-through">
-                    {formatMoney(compareAt!.amount, compareAt!.currencyCode)}
-                  </span>
+                )}
+                {image && (
+                  <button
+                    className="w-full h-full block relative group/img focus:outline-none"
+                    onClick={() => setZoomImg(image.url)}
+                    aria-label="View full image"
+                  >
+                    <img
+                      src={image.url}
+                      alt={image.altText ?? product.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                      <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
+                    </div>
+                  </button>
+                )}
+                {discount && (
+                  <div className="absolute top-3 left-3 bg-red-700 text-white text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded pointer-events-none">
+                    Save {discount}%
+                  </div>
                 )}
               </div>
 
-              <StarRating rating={5} size={13} />
-
-              {product.description && (
-                <div className="mt-3 mb-3 md:mt-4 md:mb-4">
-                  <p className={`text-cream-200/60 text-sm leading-relaxed transition-all duration-300 ${descExpanded ? '' : 'line-clamp-2'}`}>
-                    {product.description}
+              {/* Info */}
+              <div className="flex flex-col">
+                {product.productType && (
+                  <p className="text-gold-500/70 text-[10px] tracking-[0.4em] uppercase mb-2">
+                    {product.productType}
                   </p>
-                  {product.description.length > 120 && (
-                    <button
-                      onClick={() => setDescExpanded(!descExpanded)}
-                      className="mt-1.5 text-gold-400 text-xs font-medium hover:text-gold-300 transition-colors"
-                    >
-                      {descExpanded ? 'Show less' : 'Read more'}
-                    </button>
+                )}
+                <h2 className="font-serif text-xl md:text-3xl text-white font-bold leading-tight mb-3 md:mb-4">
+                  {product.title}
+                </h2>
+
+                <div className="flex items-baseline gap-3 mb-3 md:mb-4">
+                  <span className="text-2xl md:text-3xl font-bold text-white font-serif">
+                    {formatMoney(price.amount, price.currencyCode)}
+                  </span>
+                  {compareNum && compareNum > priceNum && (
+                    <span className="text-cream-200/40 text-lg line-through">
+                      {formatMoney(compareAt!.amount, compareAt!.currencyCode)}
+                    </span>
                   )}
                 </div>
-              )}
 
-              {/* Variant selector */}
-              {product.variants.length > 1 && (
-                <div className="mb-4 md:mb-5">
-                  <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Select Option</p>
-                  <div className="flex flex-wrap gap-2">
-                    {product.variants.map((v) => (
+                <StarRating rating={5} size={13} />
+
+                {product.description && (
+                  <div className="mt-3 mb-3 md:mt-4 md:mb-4">
+                    <p className={`text-cream-200/60 text-sm leading-relaxed transition-all duration-300 ${descExpanded ? '' : 'line-clamp-2'}`}>
+                      {product.description}
+                    </p>
+                    {product.description.length > 120 && (
                       <button
-                        key={v.id}
-                        onClick={() => setSelectedVariant(v)}
-                        disabled={!v.availableForSale}
-                        className={`px-4 py-2.5 text-xs rounded border transition-colors min-h-[44px] ${
-                          selectedVariant?.id === v.id
-                            ? 'border-gold-500 bg-gold-700/20 text-gold-300'
-                            : 'border-charcoal-700 text-cream-200/60 hover:border-gold-600/50 hover:text-cream-100 disabled:opacity-30 disabled:cursor-not-allowed'
-                        }`}
+                        onClick={() => setDescExpanded(!descExpanded)}
+                        className="mt-1.5 text-gold-400 text-xs font-medium hover:text-gold-300 transition-colors"
                       >
-                        {v.title}
+                        {descExpanded ? 'Show less' : 'Read more'}
                       </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Variant selector */}
+                {product.variants.length > 1 && (
+                  <div className="mb-4 md:mb-5">
+                    <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Select Option</p>
+                    <div className="flex flex-wrap gap-2">
+                      {product.variants.map((v) => (
+                        <button
+                          key={v.id}
+                          onClick={() => setSelectedVariant(v)}
+                          disabled={!v.availableForSale}
+                          className={`px-4 py-2.5 text-xs rounded border transition-colors min-h-[44px] ${
+                            selectedVariant?.id === v.id
+                              ? 'border-gold-500 bg-gold-700/20 text-gold-300'
+                              : 'border-charcoal-700 text-cream-200/60 hover:border-gold-600/50 hover:text-cream-100 disabled:opacity-30 disabled:cursor-not-allowed'
+                          }`}
+                        >
+                          {v.title}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Tags */}
+                {product.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4 md:mb-5">
+                    {product.tags.slice(0, 4).map((tag) => (
+                      <span key={tag} className="text-[10px] tracking-wider uppercase text-cream-200/30 border border-charcoal-700 px-2.5 py-1 rounded">
+                        {tag}
+                      </span>
                     ))}
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Tags */}
-              {product.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-4 md:mb-5">
-                  {product.tags.slice(0, 4).map((tag) => (
-                    <span key={tag} className="text-[10px] tracking-wider uppercase text-cream-200/30 border border-charcoal-700 px-2.5 py-1 rounded">
-                      {tag}
-                    </span>
-                  ))}
+                {/* Mobile Add to Cart — in content flow, scrolls with the page */}
+                <div className="md:hidden mt-4 mb-2">
+                  <button
+                    onClick={handleAdd}
+                    disabled={!variant?.availableForSale}
+                    className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[52px]"
+                  >
+                    {added ? (
+                      <><CheckCircle2 size={16} /> Added to Cart!</>
+                    ) : !variant?.availableForSale ? (
+                      'Out of Stock'
+                    ) : (
+                      <><ShoppingBag size={16} /> Add to Cart</>
+                    )}
+                  </button>
                 </div>
-              )}
 
-              {/* CTA — visible on desktop, hidden on mobile (sticky footer handles it) */}
-              <div className="hidden md:flex flex-col sm:flex-row gap-3 mt-auto pt-2">
-                <button
-                  onClick={handleAdd}
-                  disabled={!variant?.availableForSale}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[52px]"
-                >
-                  {added ? (
-                    <><CheckCircle2 size={16} /> Added to Cart!</>
-                  ) : !variant?.availableForSale ? (
-                    'Out of Stock'
-                  ) : (
-                    <><ShoppingBag size={16} /> Add to Cart</>
-                  )}
-                </button>
+                {/* Desktop Add to Cart */}
+                <div className="hidden md:flex flex-col sm:flex-row gap-3 mt-auto pt-2">
+                  <button
+                    onClick={handleAdd}
+                    disabled={!variant?.availableForSale}
+                    className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[52px]"
+                  >
+                    {added ? (
+                      <><CheckCircle2 size={16} /> Added to Cart!</>
+                    ) : !variant?.availableForSale ? (
+                      'Out of Stock'
+                    ) : (
+                      <><ShoppingBag size={16} /> Add to Cart</>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Sticky Add to Cart footer — mobile only */}
-        <div className="md:hidden flex-shrink-0 px-4 pb-4 pt-3 border-t border-charcoal-800/50 bg-charcoal-950"
-          style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom, 16px))' }}
-        >
-          <button
-            onClick={handleAdd}
-            disabled={!variant?.availableForSale}
-            className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[52px]"
-          >
-            {added ? (
-              <><CheckCircle2 size={16} /> Added to Cart!</>
-            ) : !variant?.availableForSale ? (
-              'Out of Stock'
-            ) : (
-              <><ShoppingBag size={16} /> Add to Cart</>
-            )}
-          </button>
-        </div>
       </div>
-      </div>{/* end centering wrapper */}
     </>
   );
 }

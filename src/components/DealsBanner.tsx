@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Tag, ArrowRight } from 'lucide-react';
 import { fetchProducts, type ShopifyProduct } from '../lib/shopify';
-import { formatMoney, getDefaultVariantId } from '../hooks/useShopifyCollection';
-import { useCart } from '../context/CartContext';
+import { formatMoney } from '../hooks/useShopifyCollection';
 
 function calcDiscount(sale: number, original: number): string {
   return `${Math.round(((original - sale) / original) * 100)}% Off`;
@@ -10,7 +9,6 @@ function calcDiscount(sale: number, original: number): string {
 
 export default function DealsBanner() {
   const [deals, setDeals] = useState<ShopifyProduct[]>([]);
-  const { addItem } = useCart();
 
   useEffect(() => {
     let cancelled = false;
@@ -68,10 +66,12 @@ export default function DealsBanner() {
             const discount = calcDiscount(salePrice, originalPrice);
             const image = product.featuredImage?.url ?? variant.image?.url ?? '';
 
+            const shopifyUrl = `https://luxury-dunn-selections.myshopify.com/products/${product.handle}`;
+
             return (
               <div
                 key={product.id}
-                onClick={() => { window.location.href = `/products/${product.handle}`; }}
+                onClick={() => { window.open(shopifyUrl, '_blank', 'noopener,noreferrer'); }}
                 className="group relative rounded-lg overflow-hidden bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/50 card-hover cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-gold-900/20 active:scale-[0.98]"
               >
                 <div className="aspect-[16/9] overflow-hidden">
@@ -95,14 +95,7 @@ export default function DealsBanner() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      addItem({
-                        id: getDefaultVariantId(product),
-                        name: product.title,
-                        price: saleFmt,
-                        priceNum: salePrice,
-                        image,
-                        shopifyVariantId: getDefaultVariantId(product),
-                      });
+                      window.open(shopifyUrl, '_blank', 'noopener,noreferrer');
                     }}
                     className="mt-3 w-full text-center text-xs font-semibold tracking-widest uppercase text-charcoal-950 bg-gold-gradient py-3.5 rounded hover:opacity-90 active:scale-95 transition-all min-h-[48px] shadow-md"
                   >
