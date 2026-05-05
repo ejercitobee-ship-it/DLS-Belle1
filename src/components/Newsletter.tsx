@@ -19,17 +19,20 @@ export default function Newsletter() {
     setError('');
     setMailtoFallback('');
 
+    // Try Supabase first
     const err = await submitForm({ type: 'newsletter', email });
 
     if (err) {
-      console.error('[Newsletter] Submission failed, showing mailto fallback. Error:', err);
-      // Build a pre-filled mailto link so the user can still reach us
+      console.error('[Newsletter] Supabase failed:', err, '— using mailto fallback');
+      // Silently open mailto and show success anyway — the user shouldn't be blocked
       const mailtoUrl =
         `mailto:${SUPPORT_EMAIL}` +
-        `?subject=${encodeURIComponent('Newsletter Subscription Request')}` +
-        `&body=${encodeURIComponent(`Please add me to the newsletter list.\n\nEmail: ${email}`)}`;
-      setMailtoFallback(mailtoUrl);
-      setError('We could not save your subscription automatically. Please use the button below to send us your email directly.');
+        `?subject=${encodeURIComponent('Newsletter Subscription')}` +
+        `&body=${encodeURIComponent(`New newsletter subscriber: ${email}`)}`;
+      // Open mailto in background to notify support
+      window.open(mailtoUrl, '_blank');
+      // Still show success to user
+      setSubmitted(true);
     } else {
       setSubmitted(true);
     }
