@@ -56,7 +56,7 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
       >
         {/* Shorter text on mobile to prevent overflow */}
         <span className="sm:hidden text-[10px] font-medium tracking-wide uppercase">
-          FREE SHIPPING — SHOP NOW
+          Free Shipping on Selected Items!
         </span>
         <span className="hidden sm:inline text-xs font-medium tracking-widest uppercase">
           FREE SHIPPING ON SELECTED ITEMS · SHOP THE COLLECTIONS

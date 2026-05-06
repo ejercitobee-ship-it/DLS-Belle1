@@ -413,7 +413,7 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
               onClick={() => setZoomImg(product.image)}
               aria-label="View full image"
             >
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" />
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.opacity = '0.15'; }} />
               <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                 <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
               </div>

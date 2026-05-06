@@ -1,11 +1,11 @@
 import { Gem, Globe, Shield, Star } from 'lucide-react';
 
 const milestones = [
-  { year: '2015', title: 'Founded', desc: 'Dunn\'s Luxury Selections is established with a singular vision: to bring world-class cigar storage to the American market.' },
-  { year: '2017', title: 'First Raching Partnership', desc: 'We become an authorised dealer for Raching, introducing precision electronic humidors to our curated collection.' },
-  { year: '2019', title: 'Bespoke Division Launched', desc: 'Our bespoke walk-in humidor design and installation service opens, serving private collectors and hospitality venues.' },
-  { year: '2022', title: 'National Expansion', desc: 'We expand our white-glove delivery and installation service to all 50 states, cementing our position as America\'s premier humidor destination.' },
-  { year: '2024', title: 'Digital Flagship', desc: 'Our newly designed online flagship store launches, offering the full collection with seamless checkout and expert consultation booking.' },
+  { year: '2025', title: 'Founded', desc: 'Dunn\'s Luxury Selections is established with a singular vision: to bring world-class cigar storage to the American market.' },
+  { year: '2025', title: 'Raching Partnership', desc: 'We become an authorised dealer for Raching, introducing precision electronic humidors to our curated collection.' },
+  { year: '2025', title: 'Bespoke Division Launched', desc: 'Our bespoke walk-in humidor design and installation service opens, serving private collectors and hospitality venues.' },
+  { year: '2025', title: 'Nationwide Delivery', desc: 'We launch white-glove delivery and installation service across all 50 states, cementing our position as America\'s premier humidor destination.' },
+  { year: '2025', title: 'Digital Flagship', desc: 'Our online flagship store launches, offering the full collection with seamless checkout and expert consultation booking.' },
 ];
 
 const values = [
@@ -58,7 +58,7 @@ export default function About() {
               <span className="text-gradient-gold italic">Humidor Destination</span>
             </h1>
             <p className="text-cream-200/70 text-xl leading-relaxed">
-              Born from a passion for the craft and a belief that cigars deserve better preservation, Dunn's Luxury Selections has spent a decade curating the world's finest humidors for discerning collectors across the United States.
+              Born from a passion for the craft and a belief that cigars deserve better preservation, Dunn's Luxury Selections was founded in 2025 to curate the world's finest humidors for discerning collectors across the United States.
             </p>
           </div>
         </div>
@@ -123,7 +123,7 @@ export default function About() {
               <div className="h-px w-8 bg-gold-500" />
             </div>
             <h2 className="font-serif text-4xl text-white font-bold">
-              A Decade of <span className="text-gradient-gold italic">Excellence</span>
+              Our <span className="text-gradient-gold italic">Story So Far</span>
             </h2>
           </div>
 
