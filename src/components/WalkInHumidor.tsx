@@ -1,0 +1,586 @@
+import { useState } from 'react';
+import {
+  Phone,
+  Mail,
+  Clock,
+  ArrowRight,
+  CheckCircle2,
+  Thermometer,
+  TreePine,
+  Sparkles,
+  Home,
+  Store,
+  Wifi,
+  ChevronDown,
+} from 'lucide-react';
+
+const pillars = [
+  {
+    icon: Thermometer,
+    title: 'Advanced Climate Integration',
+    description:
+      'We consult on industrial-grade humidification systems and specialised HVAC cooling to ensure consistent 70/70 conditions — even across large-scale spaces.',
+  },
+  {
+    icon: TreePine,
+    title: 'Spanish Cedar Artistry',
+    description:
+      'Only the finest sustainably sourced Spanish Cedar is used for shelving and wall lining — enhancing aging, regulating moisture, and guarding against tobacco beetles.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Executive Aesthetic',
+    description:
+      'From tempered glass entryways to custom LED accent lighting, we design spaces that are as visually stunning as they are functionally precise.',
+  },
+];
+
+const capabilities = [
+  {
+    icon: Home,
+    title: 'Residential Cigar Rooms',
+    description:
+      'Tailored to fit your home\'s unique architecture — from intimate studies to dedicated full-room sanctuaries.',
+    features: [
+      'Custom floor-to-ceiling cedar lining',
+      'Integrated humidification systems',
+      'Bespoke shelving and display',
+      'Ambient LED lighting design',
+    ],
+  },
+  {
+    icon: Store,
+    title: 'Retail & Hospitality',
+    description:
+      'High-traffic solutions built for cigar bars, lounges, golf clubs, and fine dining establishments.',
+    features: [
+      'Commercial-grade climate control',
+      'High-capacity storage configurations',
+      'Tempered glass display walls',
+      'POS and access integration',
+    ],
+  },
+  {
+    icon: Wifi,
+    title: 'Electronic Monitoring',
+    description:
+      'Remote humidity and temperature tracking systems, accessible via smartphone from anywhere in the world.',
+    features: [
+      'Real-time sensor dashboards',
+      'Automated alert notifications',
+      'Multi-zone climate logging',
+      'App-based remote control',
+    ],
+  },
+];
+
+const faqs = [
+  {
+    q: 'How long does a bespoke walk-in humidor installation take?',
+    a: 'Project timelines vary based on scope and complexity. Residential installations typically take 4–8 weeks from design sign-off to completion. Commercial builds may range from 8–16 weeks. Our team provides a detailed schedule during the consultation phase.',
+  },
+  {
+    q: 'What size room do I need for a walk-in humidor?',
+    a: 'Walk-in humidors can be built in spaces as small as a large closet (approximately 4×6 ft) or as grand as a full dedicated room. We assess your available space and design accordingly to maximise storage capacity and climate efficiency.',
+  },
+  {
+    q: 'Do you handle the full installation or just consultation?',
+    a: 'We offer end-to-end project management — from initial design and material procurement through to full installation and commissioning. You receive a single point of contact throughout the entire process.',
+  },
+  {
+    q: 'What are the ongoing maintenance requirements?',
+    a: 'Properly designed walk-in humidors require minimal maintenance. We provide a handover guide covering humidity system upkeep, cedar care, and seasonal calibration checks. Optional remote monitoring packages are available for hands-off management.',
+  },
+  {
+    q: 'Can you work with an existing room or space?',
+    a: 'Absolutely. The majority of our projects involve converting existing rooms, closets, or custom-built additions. Our design team evaluates insulation, existing HVAC, and structural factors before recommending the optimal approach.',
+  },
+];
+
+const EDGE_FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shopify-customer`;
+
+export default function WalkInHumidor() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    projectType: '',
+    spaceSize: '',
+    message: '',
+  });
+  const [errors, setErrors] = useState<Partial<typeof formData>>({});
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const validate = () => {
+    const errs: Partial<typeof formData> = {};
+    if (!formData.name.trim()) errs.name = 'Full name is required.';
+    if (!formData.email.trim()) {
+      errs.email = 'Email address is required.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errs.email = 'Please enter a valid email address.';
+    }
+    if (!formData.projectType) errs.projectType = 'Please select a project type.';
+    return errs;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setErrors({});
+    setSubmitError('');
+    setSubmitting(true);
+
+    try {
+      await fetch(EDGE_FN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          type: 'inquiry',
+          email: formData.email,
+          name: formData.name.trim(),
+          phone: formData.phone || undefined,
+          projectType: formData.projectType,
+          spaceSize: formData.spaceSize || undefined,
+          message: formData.message || undefined,
+        }),
+      });
+      setSubmitted(true);
+    } catch {
+      setSubmitError('Something went wrong. Please try again or call us directly.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const field = (key: keyof typeof formData) => ({
+    value: formData[key],
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+      setFormData({ ...formData, [key]: e.target.value }),
+  });
+
+  return (
+    <div className="min-h-screen bg-charcoal-950">
+
+      {/* ── Hero ── */}
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/generated-1777557488471-ycjey.png"
+            alt="Bespoke walk-in humidor"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/75 to-charcoal-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/50 via-transparent to-transparent" />
+        </div>
+        <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gold-500/50 to-transparent" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px w-10 bg-gold-500" />
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
+                Bespoke Services
+              </span>
+            </div>
+            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-5">
+              Bespoke Walk-In
+              <br />
+              <span className="text-gradient-gold italic">Humidor Design</span>
+            </h1>
+            <p className="text-cream-200/70 text-xl leading-relaxed mb-10 max-w-xl">
+              Precision engineering for professional and private collections. We transform rooms into world-class preservation sanctuaries.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="/about"
+                className="inline-flex items-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase px-7 py-4 rounded hover:opacity-90 active:scale-95 transition-all"
+              >
+                Start Your Project
+                <ArrowRight size={15} />
+              </a>
+              <a
+                href="tel:8884319214"
+                className="inline-flex items-center gap-2 border border-gold-500/50 text-gold-400 font-medium text-sm tracking-widest uppercase px-7 py-4 rounded hover:bg-gold-700/10 transition-colors"
+              >
+                <Phone size={14} />
+                (888) 431-9214
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Intro strip ── */}
+      <section className="bg-charcoal-900 border-y border-charcoal-800/50 py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-cream-200/60 text-lg leading-relaxed">
+            At <span className="text-white font-medium">Dunn's Luxury Selections</span>, we specialise in transforming rooms into world-class preservation sanctuaries. Whether you are a private collector building a dedicated home cigar lounge or a business owner requiring a high-capacity commercial walk-in, our team provides the expertise to maintain a perfect, climate-controlled environment.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Three Pillars ── */}
+      <section className="py-24 bg-charcoal-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="h-px w-8 bg-gold-500" />
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
+                Our Design Philosophy
+              </span>
+              <div className="h-px w-8 bg-gold-500" />
+            </div>
+            <h2 className="font-serif text-4xl md:text-5xl text-white font-bold">
+              Why Choose a Custom Build
+              <br />
+              <span className="text-gradient-gold italic">from Dunn's?</span>
+            </h2>
+            <p className="text-cream-200/50 mt-4 max-w-xl mx-auto">
+              A true walk-in humidor is more than a cedar-lined room — it is a complex ecosystem. Our design philosophy rests on three pillars of luxury preservation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {pillars.map(({ icon: Icon, title, description }, i) => (
+              <div
+                key={title}
+                className="relative bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg p-8 transition-colors duration-300 group"
+              >
+                <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-gold-600/30 to-transparent" />
+                <div className="w-12 h-12 rounded-lg border border-gold-600/30 bg-gold-700/10 flex items-center justify-center mb-6 group-hover:bg-gold-700/20 transition-colors">
+                  <Icon size={22} className="text-gold-500" />
+                </div>
+                <div className="text-gold-600/40 font-serif text-5xl font-bold absolute top-6 right-8 leading-none">
+                  0{i + 1}
+                </div>
+                <h3 className="font-serif text-xl text-white font-semibold mb-3">{title}</h3>
+                <p className="text-cream-200/55 text-sm leading-relaxed">{description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Capabilities ── */}
+      <section className="py-24 bg-charcoal-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="h-px w-8 bg-gold-500" />
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
+                What We Build
+              </span>
+              <div className="h-px w-8 bg-gold-500" />
+            </div>
+            <h2 className="font-serif text-4xl md:text-5xl text-white font-bold">
+              Our Custom <span className="text-gradient-gold italic">Capabilities</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {capabilities.map(({ icon: Icon, title, description, features }) => (
+              <div key={title} className="bg-charcoal-950 border border-charcoal-800/50 hover:border-gold-700/30 rounded-lg overflow-hidden transition-colors duration-300 group">
+                {/* Top accent bar */}
+                <div className="h-1 bg-gold-gradient" />
+                <div className="p-8">
+                  <div className="w-11 h-11 rounded-full border border-gold-600/40 flex items-center justify-center mb-5">
+                    <Icon size={18} className="text-gold-500" />
+                  </div>
+                  <h3 className="font-serif text-xl text-white font-semibold mb-3">{title}</h3>
+                  <p className="text-cream-200/55 text-sm leading-relaxed mb-6">{description}</p>
+                  <ul className="space-y-2.5">
+                    {features.map((f) => (
+                      <li key={f} className="flex items-center gap-3 text-sm text-cream-200/60">
+                        <CheckCircle2 size={13} className="text-gold-500 flex-shrink-0" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Process timeline ── */}
+      <section className="py-24 bg-charcoal-950">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="h-px w-8 bg-gold-500" />
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
+                How It Works
+              </span>
+              <div className="h-px w-8 bg-gold-500" />
+            </div>
+            <h2 className="font-serif text-4xl md:text-5xl text-white font-bold">
+              From Vision to <span className="text-gradient-gold italic">Reality</span>
+            </h2>
+          </div>
+
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-gold-600/40 via-gold-600/20 to-transparent" />
+
+            {[
+              { step: '01', title: 'Initial Consultation', desc: 'Our executive sales team discusses your vision, reviews your space, and outlines the technical and aesthetic possibilities for your project.' },
+              { step: '02', title: 'Design & Specification', desc: 'We produce detailed design drawings, material specifications, and a comprehensive quote covering all aspects of the build.' },
+              { step: '03', title: 'Material Procurement', desc: 'Sustainably sourced Spanish Cedar, premium hardware, and climate systems are procured to exacting standards before construction begins.' },
+              { step: '04', title: 'Build & Installation', desc: 'Our specialist installation team manages the full build process — cedar lining, shelving, climate integration, and lighting — on your timeline.' },
+              { step: '05', title: 'Commissioning & Handover', desc: 'We calibrate and test all systems to target conditions, provide a full care guide, and hand over your completed sanctuary.' },
+            ].map(({ step, title, desc }, i) => (
+              <div
+                key={step}
+                className={`relative flex items-start gap-8 mb-12 last:mb-0 ${
+                  i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                }`}
+              >
+                {/* Step bubble */}
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-charcoal-900 border-2 border-gold-600/50 flex items-center justify-center z-10 md:absolute md:left-1/2 md:-translate-x-1/2">
+                  <span className="text-gold-400 text-xs font-bold">{step}</span>
+                </div>
+
+                {/* Content */}
+                <div className={`md:w-[calc(50%-3rem)] bg-charcoal-900 border border-charcoal-800/50 rounded-lg p-6 ml-16 md:ml-0 ${i % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'}`}>
+                  <h3 className="text-white font-semibold mb-2">{title}</h3>
+                  <p className="text-cream-200/55 text-sm leading-relaxed">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="py-24 bg-charcoal-900">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="h-px w-8 bg-gold-500" />
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">FAQ</span>
+              <div className="h-px w-8 bg-gold-500" />
+            </div>
+            <h2 className="font-serif text-4xl text-white font-bold">
+              Common <span className="text-gradient-gold italic">Questions</span>
+            </h2>
+          </div>
+
+          <div className="space-y-3">
+            {faqs.map((faq, i) => (
+              <div
+                key={i}
+                className="bg-charcoal-950 border border-charcoal-800/50 hover:border-gold-700/30 rounded-lg overflow-hidden transition-colors duration-200"
+              >
+                <button
+                  className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                >
+                  <span className="text-cream-100 text-sm font-medium">{faq.q}</span>
+                  <ChevronDown
+                    size={16}
+                    className={`text-gold-500 flex-shrink-0 transition-transform duration-200 ${openFaq === i ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${openFaq === i ? 'max-h-48' : 'max-h-0'}`}
+                >
+                  <p className="px-6 pb-5 text-cream-200/55 text-sm leading-relaxed">{faq.a}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Contact / Enquiry ── */}
+      <section id="enquire" className="py-24 bg-charcoal-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+            {/* Left — copy & contact details */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="h-px w-8 bg-gold-500" />
+                <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
+                  Start Your Project
+                </span>
+              </div>
+              <h2 className="font-serif text-4xl md:text-5xl text-white font-bold leading-tight mb-6">
+                Ready to Elevate
+                <br />
+                <span className="text-gradient-gold italic">Your Collection?</span>
+              </h2>
+              <p className="text-cream-200/60 text-lg leading-relaxed mb-10">
+                Our executive sales team is available to discuss your vision, provide technical specifications, and offer a comprehensive quote for your custom build.
+              </p>
+
+              {/* Contact cards */}
+              <div className="space-y-4 mb-10">
+                <a
+                  href="tel:8884319214"
+                  className="flex items-center gap-4 bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/30 rounded-lg p-5 transition-colors group"
+                >
+                  <div className="w-11 h-11 rounded-full border border-gold-600/40 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-700/10 transition-colors">
+                    <Phone size={17} className="text-gold-500" />
+                  </div>
+                  <div>
+                    <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-0.5">Direct Line</p>
+                    <p className="text-white font-semibold">(888) 431-9214</p>
+                  </div>
+                </a>
+
+                <a
+                  href="mailto:support@dunnluxuryselections.com"
+                  className="flex items-center gap-4 bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/30 rounded-lg p-5 transition-colors group"
+                >
+                  <div className="w-11 h-11 rounded-full border border-gold-600/40 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-700/10 transition-colors">
+                    <Mail size={17} className="text-gold-500" />
+                  </div>
+                  <div>
+                    <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-0.5">Executive Support</p>
+                    <p className="text-white font-semibold">support@dunnluxuryselections.com</p>
+                  </div>
+                </a>
+
+                <div className="flex items-center gap-4 bg-charcoal-900 border border-charcoal-800/50 rounded-lg p-5">
+                  <div className="w-11 h-11 rounded-full border border-gold-600/40 flex items-center justify-center flex-shrink-0">
+                    <Clock size={17} className="text-gold-500" />
+                  </div>
+                  <div>
+                    <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-0.5">Availability</p>
+                    <p className="text-white font-semibold">Monday – Friday &nbsp;|&nbsp; 9:00 AM – 6:00 PM CST</p>
+                  </div>
+                </div>
+              </div>
+
+              <blockquote className="border-l-2 border-gold-500/50 pl-5">
+                <p className="text-cream-200/50 text-sm italic leading-relaxed">
+                  "A collection of such distinction deserves white-glove service."
+                </p>
+              </blockquote>
+            </div>
+
+            {/* Right — enquiry form */}
+            <div className="bg-charcoal-900 border border-charcoal-800/50 rounded-lg p-8">
+              {submitted ? (
+                <div className="h-full flex flex-col items-center justify-center text-center py-12">
+                  <div className="w-16 h-16 rounded-full border-2 border-gold-500/50 flex items-center justify-center mb-6">
+                    <CheckCircle2 size={28} className="text-gold-500" />
+                  </div>
+                  <h3 className="font-serif text-2xl text-white font-bold mb-3">Enquiry Received</h3>
+                  <p className="text-cream-200/55 leading-relaxed max-w-xs">
+                    Thank you for reaching out. Our executive sales team will be in touch within one business day.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <h3 className="font-serif text-xl text-white font-semibold mb-6">
+                    Request a Consultation
+                  </h3>
+                  <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Full Name *</label>
+                        <input
+                          type="text"
+                          {...field('name')}
+                          className={`w-full bg-charcoal-950 border ${errors.name ? 'border-red-500/70' : 'border-charcoal-700'} focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors`}
+                          placeholder="John Smith"
+                        />
+                        {errors.name && <p className="text-red-400 text-[10px] mt-1">{errors.name}</p>}
+                      </div>
+                      <div>
+                        <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Email Address *</label>
+                        <input
+                          type="email"
+                          {...field('email')}
+                          className={`w-full bg-charcoal-950 border ${errors.email ? 'border-red-500/70' : 'border-charcoal-700'} focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors`}
+                          placeholder="john@example.com"
+                        />
+                        {errors.email && <p className="text-red-400 text-[10px] mt-1">{errors.email}</p>}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Phone Number</label>
+                        <input
+                          type="tel"
+                          {...field('phone')}
+                          className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors"
+                          placeholder="(555) 000-0000"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Project Type *</label>
+                        <select
+                          {...field('projectType')}
+                          className={`w-full bg-charcoal-950 border ${errors.projectType ? 'border-red-500/70' : 'border-charcoal-700'} focus:border-gold-500 text-cream-100 text-sm px-4 py-3 rounded outline-none transition-colors appearance-none`}
+                        >
+                          <option value="" disabled className="text-cream-200/30">Select type</option>
+                          <option value="Residential Cigar Room">Residential Cigar Room</option>
+                          <option value="Retail / Hospitality">Retail / Hospitality</option>
+                          <option value="Electronic Monitoring Only">Electronic Monitoring Only</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        {errors.projectType && <p className="text-red-400 text-[10px] mt-1">{errors.projectType}</p>}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Approximate Space Size</label>
+                      <input
+                        type="text"
+                        {...field('spaceSize')}
+                        className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors"
+                        placeholder="e.g. 10 × 12 ft, large closet, full room…"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Tell Us About Your Vision</label>
+                      <textarea
+                        rows={4}
+                        {...field('message')}
+                        className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors resize-none"
+                        placeholder="Describe your project, collection size, preferred materials, timeline…"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="w-full bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded hover:opacity-90 active:scale-95 transition-all disabled:opacity-70"
+                    >
+                      {submitting ? 'Submitting…' : 'Submit Enquiry'}
+                    </button>
+
+                    {submitError && (
+                      <p className="text-red-400 text-xs text-center">{submitError}</p>
+                    )}
+
+                    <p className="text-cream-200/25 text-xs text-center">
+                      We respond within one business day. All enquiries are strictly confidential.
+                    </p>
+                  </form>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}
