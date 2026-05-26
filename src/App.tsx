@@ -10,6 +10,7 @@ import WhyUs from './components/WhyUs';
 import Newsletter from './components/Newsletter';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
+import ErrorBoundary from './components/ErrorBoundary';
 import { CartProvider, useCart } from './context/CartContext';
 
 const ElectronicHumidors = lazy(() => import('./components/ElectronicHumidors'));
@@ -318,7 +319,9 @@ function AppInner() {
 export default function App() {
   return (
     <CartProvider>
-      <AppInner />
+      <ErrorBoundary>
+        <AppInner />
+      </ErrorBoundary>
     </CartProvider>
   );
 }
