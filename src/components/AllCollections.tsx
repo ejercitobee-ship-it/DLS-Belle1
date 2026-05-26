@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import {
   ArrowLeft,
   ChevronDown,
+  ChevronRight,
   Loader2,
   ShoppingBag,
   SlidersHorizontal,
@@ -64,10 +65,11 @@ function ProductCard({ product }: { product: ShopifyProduct }) {
   const imgAlt = product.featuredImage?.altText ?? product.title;
   const { price, compareAt } = getProductPrice(product);
   const isNew = isNewArrival(product);
-  const productPageHref = `https://dunnluxuryselections.com/products/${product.handle}`;
+  const productPageHref = `/product/${product.handle}`;
 
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault();
+    e.stopPropagation();
     const variantId = getDefaultVariantId(product);
     addItem({
       id: product.id,
@@ -83,7 +85,10 @@ function ProductCard({ product }: { product: ShopifyProduct }) {
   }
 
   return (
-    <div className="group relative flex flex-col bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/40 rounded-xl overflow-hidden transition-all duration-300">
+    <a
+      href={productPageHref}
+      className="group relative flex flex-col bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/40 rounded-xl overflow-hidden transition-all duration-300"
+    >
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-charcoal-900 flex-shrink-0">
         {imgUrl ? (
@@ -133,18 +138,18 @@ function ProductCard({ product }: { product: ShopifyProduct }) {
         {/* Price */}
         <div className="flex items-baseline gap-2 mb-4 mt-auto pt-2">
           <span className="text-gold-400 font-semibold text-sm md:text-base">{price}</span>
+          {compareAt && (
+            <span className="text-cream-200/30 text-xs line-through">{compareAt}</span>
+          )}
         </div>
 
-        <a
-          href={productPageHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center text-cream-200/50 hover:text-gold-400 text-[10px] font-medium tracking-[0.15em] uppercase transition-colors border-t border-charcoal-700/50 pt-3 -mx-1"
+        <span className="inline-flex items-center justify-center text-cream-200/50 group-hover:text-gold-400 text-[10px] font-medium tracking-[0.15em] uppercase transition-colors border-t border-charcoal-700/50 pt-3 -mx-1"
         >
           View Product
-        </a>
+          <ChevronRight size={12} className="ml-1 group-hover:translate-x-0.5 transition-transform" />
+        </span>
       </div>
-    </div>
+    </a>
   );
 }
 

@@ -33,6 +33,8 @@ const AllCollections = lazy(() => import('./components/AllCollections'));
 const Journal = lazy(() => import('./components/Journal'));
 const ArticlePage = lazy(() => import('./components/ArticlePage'));
 
+const ProductPage = lazy(() => import('./components/ProductPage'));
+
 type Page =
   | 'home'
   | 'electronic-humidors'
@@ -53,7 +55,8 @@ type Page =
   | 'about'
   | 'all-collections'
   | 'journal'
-  | 'article';
+  | 'article'
+  | 'product';
 
 const PATH_TO_PAGE: Record<string, Page> = {
   '/electronic-humidors': 'electronic-humidors',
@@ -106,6 +109,7 @@ function getInitialPage(): Page {
 
   // Path-based routing (preferred)
   if (path.startsWith('/article/')) return 'article';
+  if (path.startsWith('/product/')) return 'product';
   if (PATH_TO_PAGE[path]) return PATH_TO_PAGE[path];
 
   // Legacy hash-based routing fallback
@@ -128,6 +132,14 @@ function getArticleHandles(): { blogHandle: string; articleHandle: string } {
     return { blogHandle: parts[0] ?? '', articleHandle: parts[1] ?? '' };
   }
   return { blogHandle: '', articleHandle: '' };
+}
+
+function getProductHandle(): string {
+  const path = window.location.pathname;
+  if (path.startsWith('/product/')) {
+    return path.slice('/product/'.length);
+  }
+  return '';
 }
 
 function PageContent({ page }: { page: Page }) {
@@ -162,6 +174,10 @@ function PageContent({ page }: { page: Page }) {
   if (page === 'article') {
     const { blogHandle, articleHandle } = getArticleHandles();
     return <ArticlePage blogHandle={blogHandle} articleHandle={articleHandle} />;
+  }
+  if (page === 'product') {
+    const handle = getProductHandle();
+    return <ProductPage handle={handle} />;
   }
 
   // Home
@@ -215,6 +231,10 @@ function AppInner() {
         navigate('article', handle);
         return;
       }
+      if (path.startsWith('/product/')) {
+        navigate('product');
+        return;
+      }
       // Legacy hash fallback
       if (hash.startsWith('#article/')) {
         const handle = hash.slice('#article/'.length);
@@ -259,6 +279,14 @@ function AppInner() {
       if (!target) return;
       const href = target.getAttribute('href');
       if (!href) return;
+
+      // Product links
+      if (href.startsWith('/product/')) {
+        e.preventDefault();
+        navigate('product');
+        window.history.pushState(null, '', href);
+        return;
+      }
 
       // Article links
       if (href.startsWith('/article/')) {
