@@ -15,6 +15,7 @@ import {
 import { useCart } from '../context/CartContext';
 import { fetchProductByHandle, type ShopifyProduct } from '../lib/shopify';
 import { getProductPrice, getDefaultVariantId, formatMoney } from '../hooks/useShopifyCollection';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -138,6 +139,17 @@ export default function ProductPage({ handle }: { handle: string }) {
 
   // After this point product is guaranteed non-null
   const prod = product!;
+
+  // Dynamic meta tags for this product
+  const metaPrice = getProductPrice(prod);
+  usePageMeta({
+    title: `${prod.title} | Dunn's Luxury Selections`,
+    description: prod.description
+      ? prod.description.slice(0, 160)
+      : `Shop ${prod.title} at Dunn's Luxury Selections. ${metaPrice.price}`,
+    canonicalPath: `/product/${handle}`,
+    ogImage: prod.featuredImage?.url,
+  });
 
   const { price, compareAt } = getProductPrice(prod);
   const variant = prod.variants[selectedVariant] ?? prod.variants[0];
