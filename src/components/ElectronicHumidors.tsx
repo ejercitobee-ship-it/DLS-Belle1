@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ShoppingBag, Star, ChevronDown, ArrowLeft, Zap, Thermometer, Droplets, Box, CheckCircle2, Loader2, ZoomIn, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
+import { useShopifyCollection, formatMoney, getDefaultVariantId } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
 
 // ─── Static fallback data ─────────────────────────────────────────────────────
@@ -35,8 +35,8 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$6,387',
     priceNum: 6387,
     badge: 'Flagship',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg',
-    secondImage: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/e1c939f2e749e72ea7323ff5cf6f9c1f.jpg',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg',
+    secondImage: 'https://dunnluxuryselections.com/cdn/shop/files/e1c939f2e749e72ea7323ff5cf6f9c1f.jpg',
     capacity: '3,000–4,000 cigars',
     temperature: '16–22°C (±1°C)',
     humidity: '60–75% RH (±1%)',
@@ -54,8 +54,8 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$4,752',
     priceNum: 4752,
     badge: 'Premium',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg',
-    secondImage: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/1_1.jpg',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg',
+    secondImage: 'https://dunnluxuryselections.com/cdn/shop/files/1_1.jpg',
     capacity: '2,500–3,000 cigars',
     temperature: '16–22°C (±1°C)',
     humidity: '60–75% (±1%)',
@@ -73,7 +73,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$2,352',
     priceNum: 2352,
     badge: 'New',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
     capacity: '500–600 cigars (~150L)',
     temperature: '16–22°C (±1°C)',
     humidity: '60–75% RH (±1%)',
@@ -90,7 +90,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     brand: 'Raching',
     price: '$1,824',
     priceNum: 1824,
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
     capacity: '500–600 cigars (~150L)',
     temperature: '16–22°C (±1°C)',
     humidity: '60–75% RH (±1%)',
@@ -108,7 +108,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$6,147',
     priceNum: 6147,
     badge: 'Bestseller',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg',
     capacity: 'Up to 4,000 cigars',
     temperature: '41–71°F (dual climate zones)',
     humidity: '56–78% (dual zones)',
@@ -126,7 +126,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     price: '$5,972',
     priceNum: 5972,
     badge: 'Featured',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
     capacity: '1,500–1,600 cigars + 120–130 wine bottles',
     temperature: 'Cigar: 16–22°C · Wine: 5–22°C',
     humidity: '60–75% RH (±1%)',
@@ -143,7 +143,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
     brand: 'Raching',
     price: '$3,360',
     priceNum: 3360,
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
+    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
     capacity: '1,200–1,400 cigars + 100–110 wine bottles',
     temperature: 'Cigar: 16–22°C · Wine: 5–22°C',
     humidity: '60–75% RH (±2%)',
@@ -299,7 +299,7 @@ function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: (
           onClick={() => setZoomImg(null)}
         >
           <button
-            className="absolute top-4 right-4 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
+            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
             onClick={() => setZoomImg(null)}
             aria-label="Close zoom"
           >
@@ -328,7 +328,7 @@ function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: (
               onClick={() => setZoomImg(activeImg)}
               aria-label="View full image"
             >
-              <img src={activeImg} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.opacity = '0.15'; }} />
+              <img src={activeImg} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" />
               <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                 <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
               </div>
@@ -495,7 +495,7 @@ export default function ElectronicHumidors() {
   if (selected) return <ProductDetail product={selected} onBack={() => setSelected(null)} />;
 
   const heroImage = collectionImage
-    || 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_a49256d8-5931-453f-be44-8d33853ae843.png';
+    || 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_a49256d8-5931-453f-be44-8d33853ae843.png';
 
   const currentSortLabel = sortOptions.find((o) => o.value === sort)?.label ?? 'Featured';
 
@@ -581,7 +581,7 @@ export default function ElectronicHumidors() {
                 onClick={() => setSelected(product)}
                 className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
               >
-                <div className="relative overflow-hidden aspect-[4/3]">
+                <div className="relative overflow-hidden aspect-[4/3] bg-charcoal-900">
                   {product.image ? (
                     <img
                       src={product.image}
@@ -605,7 +605,7 @@ export default function ElectronicHumidors() {
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <button
                     onClick={(e) => handleAddToCart(e, product)}
-                    className={`absolute bottom-3 right-3 flex items-center justify-center min-w-[44px] min-h-[44px] bg-gold-gradient rounded text-charcoal-950 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 translate-y-0 md:translate-y-2 md:group-hover:translate-y-0 transition-all duration-300 ${addedKey === product.key ? 'opacity-100 translate-y-0' : ''}`}
+                    className={`absolute bottom-3 right-3 w-9 h-9 bg-gold-gradient rounded flex items-center justify-center text-charcoal-950 shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ${addedKey === product.key ? 'opacity-100 translate-y-0' : ''}`}
                     aria-label="Add to cart"
                   >
                     {addedKey === product.key ? <CheckCircle2 size={15} /> : <ShoppingBag size={15} />}

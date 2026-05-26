@@ -212,13 +212,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const subtotal = items.reduce((s, i) => s + i.priceNum * i.quantity, 0);
 
   const shopifyCheckout = async (): Promise<{ url: string | null; fallback: boolean }> => {
-    if (checkoutUrl) return { url: checkoutUrl, fallback: false };
     if (!getShopifyConfigured()) return { url: null, fallback: true };
     const lines = items
       .filter((i) => i.shopifyVariantId)
       .map((i) => ({ merchandiseId: i.shopifyVariantId!, quantity: i.quantity }));
     if (lines.length === 0) return { url: null, fallback: true };
     try {
+      // Always create a fresh cart to avoid expired checkout URLs
+      clearCartId();
       const cart = await cartCreate(lines);
       saveCartId(cart.id);
       setShopifyCart(cart);

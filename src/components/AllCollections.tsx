@@ -14,7 +14,6 @@ import {
 } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import { getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
-import { ProductDetail } from './FeaturedProducts';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -49,27 +48,25 @@ function priceNum(p: ShopifyProduct): number {
   return parseFloat(p.priceRange.minVariantPrice.amount);
 }
 
-function _formatMoney(amount: string, currency: string): string {
+function formatMoney(amount: string, currency: string): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(
     parseFloat(amount),
   );
 }
-void _formatMoney; // available for future use
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 
-const IMG_PLACEHOLDER = 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%22200%22 height%3D%22200%22 viewBox%3D%220 0 200 200%22%3E%3Crect width%3D%22200%22 height%3D%22200%22 fill%3D%22%231a1a1a%22%2F%3E%3Ctext x%3D%2250%25%22 y%3D%2250%25%22 dominant-baseline%3D%22middle%22 text-anchor%3D%22middle%22 fill%3D%22%23555%22 font-size%3D%2212%22%3ENo Image%3C%2Ftext%3E%3C%2Fsvg%3E';
-
-function ProductCard({ product, onSelect }: { product: ShopifyProduct; onSelect: (p: ShopifyProduct) => void }) {
+function ProductCard({ product }: { product: ShopifyProduct }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
-  const [imgSrc, setImgSrc] = useState(product.featuredImage?.url ?? product.images[0]?.url ?? '');
+  const imgUrl = product.featuredImage?.url ?? product.images[0]?.url ?? '';
   const imgAlt = product.featuredImage?.altText ?? product.title;
   const { price, compareAt } = getProductPrice(product);
   const isNew = isNewArrival(product);
+  const productPageHref = `https://dunnluxuryselections.com/products/${product.handle}`;
 
   function handleAddToCart(e: React.MouseEvent) {
-    e.stopPropagation();
+    e.preventDefault();
     const variantId = getDefaultVariantId(product);
     addItem({
       id: product.id,
@@ -77,7 +74,7 @@ function ProductCard({ product, onSelect }: { product: ShopifyProduct; onSelect:
       name: product.title,
       price,
       priceNum: parseFloat(product.priceRange.minVariantPrice.amount),
-      image: imgSrc,
+      image: imgUrl,
       category: product.productType,
     });
     setAdded(true);
@@ -85,18 +82,13 @@ function ProductCard({ product, onSelect }: { product: ShopifyProduct; onSelect:
   }
 
   return (
-    <div
-      onClick={() => onSelect(product)}
-      className="group relative flex flex-col bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/40 rounded-xl overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-2xl hover:-translate-y-0.5 active:scale-[0.98]"
-    >
+    <div className="group relative flex flex-col bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/40 rounded-xl overflow-hidden transition-all duration-300">
       {/* Image */}
-      <div className="relative aspect-square overflow-hidden flex-shrink-0">
-        {imgSrc ? (
+      <div className="relative aspect-square overflow-hidden bg-charcoal-900 flex-shrink-0">
+        {imgUrl ? (
           <img
-            src={imgSrc}
+            src={imgUrl}
             alt={imgAlt}
-            loading="lazy"
-            onError={() => setImgSrc(IMG_PLACEHOLDER)}
             className="w-full h-full object-contain p-3 transition-transform duration-700 group-hover:scale-105"
           />
         ) : (
@@ -119,13 +111,12 @@ function ProductCard({ product, onSelect }: { product: ShopifyProduct; onSelect:
             <span className="bg-charcoal-950/80 backdrop-blur-sm border border-red-500/40 text-red-400 text-[9px] font-semibold tracking-widest uppercase px-2 py-1 rounded">
               Sale
             </span>
-          )}
-        </div>
+          )}        </div>
 
-        {/* Add to Cart — always visible on mobile, hover-reveal on md+ */}
+        {/* Add to Cart — hover only */}
         <button
           onClick={handleAddToCart}
-          className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-2 bg-charcoal-950/90 backdrop-blur-sm border border-gold-500/40 hover:border-gold-400 hover:bg-gold-500/10 text-gold-400 hover:text-gold-300 text-[10px] font-semibold tracking-[0.2em] uppercase py-3 rounded transition-all duration-200 opacity-100 md:opacity-0 md:group-hover:opacity-100 translate-y-0 md:translate-y-1 md:group-hover:translate-y-0 min-h-[44px]"
+          className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-2 bg-charcoal-950/90 backdrop-blur-sm border border-gold-500/40 hover:border-gold-400 hover:bg-gold-500/10 text-gold-400 hover:text-gold-300 text-[10px] font-semibold tracking-[0.2em] uppercase py-2.5 rounded transition-all duration-200 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0"
         >
           <ShoppingBag size={12} />
           {added ? 'Added!' : 'Add to Cart'}
@@ -139,12 +130,18 @@ function ProductCard({ product, onSelect }: { product: ShopifyProduct; onSelect:
         </h3>
 
         {/* Price */}
-        <div className="flex items-baseline gap-2 mt-auto pt-2">
+        <div className="flex items-baseline gap-2 mb-4 mt-auto pt-2">
           <span className="text-gold-400 font-semibold text-sm md:text-base">{price}</span>
-          {compareAt && (
-            <span className="text-cream-200/30 text-xs line-through">{compareAt}</span>
-          )}
         </div>
+
+        <a
+          href={productPageHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center text-cream-200/50 hover:text-gold-400 text-[10px] font-medium tracking-[0.15em] uppercase transition-colors border-t border-charcoal-700/50 pt-3 -mx-1"
+        >
+          View Product
+        </a>
       </div>
     </div>
   );
@@ -217,7 +214,6 @@ export default function AllCollections() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [endCursor, setEndCursor] = useState<string | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<ShopifyProduct | null>(null);
 
   const [selectedCollection, setSelectedCollection] = useState('');
   const [sort, setSort] = useState<SortKey>('featured');
@@ -371,7 +367,7 @@ export default function AllCollections() {
               <>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                   {displayed.map((product) => (
-                    <ProductCard key={product.id} product={product} onSelect={setSelectedProduct} />
+                    <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
 
@@ -393,11 +389,6 @@ export default function AllCollections() {
           </>
         )}
       </div>
-
-      {/* Product Detail Modal */}
-      {selectedProduct && (
-        <ProductDetail product={selectedProduct} onBack={() => setSelectedProduct(null)} />
-      )}
     </div>
   );
 }

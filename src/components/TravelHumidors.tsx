@@ -26,14 +26,14 @@ type StaticProduct = {
 };
 
 const STATIC_PRODUCTS: StaticProduct[] = [
-  { id: 1, name: 'Novelist', price: '$452', priceNum: 452, capacity: '5–10 cigars', capacityMax: 10, finish: 'Rich brown leather — book-style', dimensions: 'Compact, shelf-ready', features: ['Book-style exterior for discreet storage', 'Removable cigar tray', 'Silver hygrometer included', 'Humidifier included', 'Magnetic lid closure', 'Guillotine cutter included', 'Display-worthy design'], description: 'Literature-inspired elegance for the discerning traveler. The Novelist mimics a hardcover book — hide your collection in plain sight on a shelf, tuck it into luggage, or present it as a gift.', image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Novelist_brown_leather_book_style_travel_cigar_humidor_with_cutter_and_hygrometer.jpg', badge: 'Premium', rating: 4.9, reviews: 8, includesTools: true },
-  { id: 2, name: 'Manhattan Travel Humidor (Brown)', price: '$50', priceNum: 50, capacity: '4–8 cigars', capacityMax: 8, finish: 'Brown ostrich-motif leather', dimensions: '8⅛" L × 5½" W × 3⅛" H', features: ['180° flat opening — full access', 'Removable cigar bed with Velcro strap', 'Integrated perforated humidifier', 'Spanish cedar lining', 'Guillotine cutter included', 'Refillable butane torch lighter', 'Secure zipper closure'], description: 'Brown ostrich-pattern leather engineered for enthusiasts who never compromise on freshness. The Manhattan opens flat at 180° for easy access, with a cutter and torch lighter built in.', image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Manhattan_brown_leather_humidor_with_zipper_closure_for_cigars_up_to_7_inches.jpg', badge: 'Popular', rating: 4.8, reviews: 14, includesTools: true },
-  { id: 3, name: 'Manhattan Travel Humidor (Black)', price: '$50', priceNum: 50, capacity: '4–8 cigars', capacityMax: 8, finish: 'Black ostrich-style bonded leather', dimensions: '8⅛" L × 5½" W × 3⅛" H', features: ['180° flat opening — full access', 'Removable cigar bed with Velcro strap', 'Integrated perforated humidifier', 'Spanish cedar interior', 'Guillotine cutter included', 'Refillable butane torch lighter', 'Secure zipper closure'], description: 'Sleek black ostrich-style bonded leather — refined style meets travel-ready practicality. Identical to the Brown Manhattan in every specification, with a darker, more contemporary aesthetic.', image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Portable_Manhattan_travel_humidor_holding_4_8_cigars_up_to_7_inches.jpg', rating: 4.8, reviews: 11, includesTools: true },
-  { id: 4, name: '6 Cigar Leather Humidor', price: '$44', priceNum: 44, capacity: '6–15 cigars', capacityMax: 15, finish: 'PVC leather with white contrast stitching', dimensions: '7.25" W × 10.75" D × 1.5" H', features: ['Dual slide-out removable beds', 'Spanish cedar lining', 'Black humidifier included', 'Up to 60 ring gauge capacity', 'Lightweight yet sturdy', 'Flexible storage configuration'], description: 'Elegant PVC leather with contrasting white stitching — a sophisticated slim case that holds 6 to 15 cigars depending on configuration. The dual slide-out beds accommodate wider ring gauges with ease.', image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/portable_6-cigar_PVC_leather_travel_humidor_with_slide-out_beds.jpg', rating: 4.6, reviews: 6 },
-  { id: 5, name: 'Traveler 15 by Humidor Supreme', price: '$32', priceNum: 32, capacity: '9–12 cigars', capacityMax: 12, finish: 'Mahogany, Cherry, or Burl', dimensions: '9" W × 8" D × 2" H', features: ['Built-in humidification system', 'XIKAR Boveda 60G RH seasoning packs', 'Compact travel footprint', 'Durable exterior — travel-resistant', 'Available in 3 finishes'], description: 'A sleek travel-ready companion from Humidor Supreme. The Traveler 15 holds 9–12 cigars in a low-profile case built to resist the knocks of daily travel, included with Boveda seasoning packs.', image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Portable_cigar_humidor_with_built_in_humidifier_and_XIKAR_Boveda_60G_RH_packs.png', rating: 4.5, reviews: 9 },
-  { id: 6, name: 'Traveler 10 by Humidor Supreme', price: '$30', priceNum: 30, capacity: '20–30 cigars', capacityMax: 30, finish: 'Classic mahogany', dimensions: '8¾" W × 5 11/16" D × 3 3/16" H', features: ['Built-in humidification system', 'Precision hygrometer', 'Spanish cedar lining', 'XIKAR Boveda 60G RH seasoning packs', 'Compact, portable design'], description: 'Compact elegance meets dependable cigar care. The Traveler 10 bridges desktop and travel use — at home on a desk or tucked into a weekend bag.', image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Traveler_10_cigar_humidor_with_Spanish_cedar_interior_and_Boveda_60G_RH_seasoning_packs.png', rating: 4.5, reviews: 7 },
-  { id: 7, name: 'Traveler 5 by Humidor Supreme', price: '$26', priceNum: 26, capacity: '8–12 cigars', capacityMax: 12, finish: 'Mahogany exterior', dimensions: '8¾" W × 5 11/16" D × 2" H', features: ['Clear acrylic window for instant inventory check', 'Built-in humidification system', 'Built-in hygrometer', 'XIKAR Boveda 60G RH seasoning packs', 'Premium mahogany finish'], description: 'The ultimate compact travel companion — slim enough for carry-on use, with a transparent acrylic window so you can check your cigars without ever opening the lid.', image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Humidor_Supreme_Traveler_5_travel_cigar_humidor_holding_8_12_cigars.png', rating: 4.4, reviews: 12 },
-  { id: 8, name: 'Traveler 20 Slim by Humidor Supreme', price: '$25', priceNum: 25, originalPrice: '$79', capacity: '8–24 cigars', capacityMax: 24, finish: 'Durable slim exterior', dimensions: '9" W × 8½" D × 2¼" H', features: ['Built-in humidifier', 'Spanish cedar interior', 'Hygrometer included', 'XIKAR Boveda 60G RH seasoning packs', 'Slim, lightweight profile'], description: 'The Traveler 20 Slim packs capacity for up to 24 cigars into a slim 2¼" profile — the best value in the range, currently on sale from $79.', image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Humidor_Supreme_Traveller_20_Slim_travel_cigar_case_with_XIKAR_Boveda_60G_RH_packs.png', badge: 'Sale', rating: 4.6, reviews: 18 },
+  { id: 1, name: 'Novelist', price: '$452', priceNum: 452, capacity: '5–10 cigars', capacityMax: 10, finish: 'Rich brown leather — book-style', dimensions: 'Compact, shelf-ready', features: ['Book-style exterior for discreet storage', 'Removable cigar tray', 'Silver hygrometer included', 'Humidifier included', 'Magnetic lid closure', 'Guillotine cutter included', 'Display-worthy design'], description: 'Literature-inspired elegance for the discerning traveler. The Novelist mimics a hardcover book — hide your collection in plain sight on a shelf, tuck it into luggage, or present it as a gift.', image: 'https://dunnluxuryselections.com/cdn/shop/files/Novelist_brown_leather_book_style_travel_cigar_humidor_with_cutter_and_hygrometer.jpg', badge: 'Premium', rating: 4.9, reviews: 8, includesTools: true },
+  { id: 2, name: 'Manhattan Travel Humidor (Brown)', price: '$50', priceNum: 50, capacity: '4–8 cigars', capacityMax: 8, finish: 'Brown ostrich-motif leather', dimensions: '8⅛" L × 5½" W × 3⅛" H', features: ['180° flat opening — full access', 'Removable cigar bed with Velcro strap', 'Integrated perforated humidifier', 'Spanish cedar lining', 'Guillotine cutter included', 'Refillable butane torch lighter', 'Secure zipper closure'], description: 'Brown ostrich-pattern leather engineered for enthusiasts who never compromise on freshness. The Manhattan opens flat at 180° for easy access, with a cutter and torch lighter built in.', image: 'https://dunnluxuryselections.com/cdn/shop/files/Manhattan_brown_leather_humidor_with_zipper_closure_for_cigars_up_to_7_inches.jpg', badge: 'Popular', rating: 4.8, reviews: 14, includesTools: true },
+  { id: 3, name: 'Manhattan Travel Humidor (Black)', price: '$50', priceNum: 50, capacity: '4–8 cigars', capacityMax: 8, finish: 'Black ostrich-style bonded leather', dimensions: '8⅛" L × 5½" W × 3⅛" H', features: ['180° flat opening — full access', 'Removable cigar bed with Velcro strap', 'Integrated perforated humidifier', 'Spanish cedar interior', 'Guillotine cutter included', 'Refillable butane torch lighter', 'Secure zipper closure'], description: 'Sleek black ostrich-style bonded leather — refined style meets travel-ready practicality. Identical to the Brown Manhattan in every specification, with a darker, more contemporary aesthetic.', image: 'https://dunnluxuryselections.com/cdn/shop/files/Portable_Manhattan_travel_humidor_holding_4_8_cigars_up_to_7_inches.jpg', rating: 4.8, reviews: 11, includesTools: true },
+  { id: 4, name: '6 Cigar Leather Humidor', price: '$44', priceNum: 44, capacity: '6–15 cigars', capacityMax: 15, finish: 'PVC leather with white contrast stitching', dimensions: '7.25" W × 10.75" D × 1.5" H', features: ['Dual slide-out removable beds', 'Spanish cedar lining', 'Black humidifier included', 'Up to 60 ring gauge capacity', 'Lightweight yet sturdy', 'Flexible storage configuration'], description: 'Elegant PVC leather with contrasting white stitching — a sophisticated slim case that holds 6 to 15 cigars depending on configuration. The dual slide-out beds accommodate wider ring gauges with ease.', image: 'https://dunnluxuryselections.com/cdn/shop/files/portable_6-cigar_PVC_leather_travel_humidor_with_slide-out_beds.jpg', rating: 4.6, reviews: 6 },
+  { id: 5, name: 'Traveler 15 by Humidor Supreme', price: '$32', priceNum: 32, capacity: '9–12 cigars', capacityMax: 12, finish: 'Mahogany, Cherry, or Burl', dimensions: '9" W × 8" D × 2" H', features: ['Built-in humidification system', 'XIKAR Boveda 60G RH seasoning packs', 'Compact travel footprint', 'Durable exterior — travel-resistant', 'Available in 3 finishes'], description: 'A sleek travel-ready companion from Humidor Supreme. The Traveler 15 holds 9–12 cigars in a low-profile case built to resist the knocks of daily travel, included with Boveda seasoning packs.', image: 'https://dunnluxuryselections.com/cdn/shop/files/Portable_cigar_humidor_with_built_in_humidifier_and_XIKAR_Boveda_60G_RH_packs.png', rating: 4.5, reviews: 9 },
+  { id: 6, name: 'Traveler 10 by Humidor Supreme', price: '$30', priceNum: 30, capacity: '20–30 cigars', capacityMax: 30, finish: 'Classic mahogany', dimensions: '8¾" W × 5 11/16" D × 3 3/16" H', features: ['Built-in humidification system', 'Precision hygrometer', 'Spanish cedar lining', 'XIKAR Boveda 60G RH seasoning packs', 'Compact, portable design'], description: 'Compact elegance meets dependable cigar care. The Traveler 10 bridges desktop and travel use — at home on a desk or tucked into a weekend bag.', image: 'https://dunnluxuryselections.com/cdn/shop/files/Traveler_10_cigar_humidor_with_Spanish_cedar_interior_and_Boveda_60G_RH_seasoning_packs.png', rating: 4.5, reviews: 7 },
+  { id: 7, name: 'Traveler 5 by Humidor Supreme', price: '$26', priceNum: 26, capacity: '8–12 cigars', capacityMax: 12, finish: 'Mahogany exterior', dimensions: '8¾" W × 5 11/16" D × 2" H', features: ['Clear acrylic window for instant inventory check', 'Built-in humidification system', 'Built-in hygrometer', 'XIKAR Boveda 60G RH seasoning packs', 'Premium mahogany finish'], description: 'The ultimate compact travel companion — slim enough for carry-on use, with a transparent acrylic window so you can check your cigars without ever opening the lid.', image: 'https://dunnluxuryselections.com/cdn/shop/files/Humidor_Supreme_Traveler_5_travel_cigar_humidor_holding_8_12_cigars.png', rating: 4.4, reviews: 12 },
+  { id: 8, name: 'Traveler 20 Slim by Humidor Supreme', price: '$25', priceNum: 25, capacity: '8–24 cigars', capacityMax: 24, finish: 'Durable slim exterior', dimensions: '9" W × 8½" D × 2¼" H', features: ['Built-in humidifier', 'Spanish cedar interior', 'Hygrometer included', 'XIKAR Boveda 60G RH seasoning packs', 'Slim, lightweight profile'], description: 'The Traveler 20 Slim packs capacity for up to 24 cigars into a slim 2¼" profile — the best value in the range.', image: 'https://dunnluxuryselections.com/cdn/shop/files/Humidor_Supreme_Traveller_20_Slim_travel_cigar_case_with_XIKAR_Boveda_60G_RH_packs.png', badge: 'Sale', rating: 4.6, reviews: 18 },
 ];
 
 // ─── Display type ─────────────────────────────────────────────────────────────
@@ -84,7 +84,7 @@ function fromShopify(p: ShopifyProduct): DisplayProduct {
     name: p.title,
     price: formatMoney(priceObj.amount, priceObj.currencyCode),
     priceNum: parseFloat(priceObj.amount),
-    originalPrice: compareObj ? formatMoney(compareObj.amount, compareObj.currencyCode) : undefined,
+    originalPrice: undefined,
     capacity,
     capacityMax,
     finish: p.productType || 'Premium leather',
@@ -171,7 +171,7 @@ function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: (
           onClick={() => setZoomImg(null)}
         >
           <button
-            className="absolute top-4 right-4 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
+            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
             onClick={() => setZoomImg(null)}
             aria-label="Close zoom"
           >
@@ -200,7 +200,7 @@ function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: (
               onClick={() => setZoomImg(activeImg)}
               aria-label="View full image"
             >
-              <img src={activeImg} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.opacity = '0.15'; }} />
+              <img src={activeImg} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" />
               <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                 <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
               </div>
@@ -242,14 +242,6 @@ function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: (
             )}
             <div className="flex items-baseline gap-3 mb-2">
               <span className="text-3xl font-bold text-white font-serif">{product.price}</span>
-              {product.originalPrice && (
-                <span className="text-cream-200/40 text-lg line-through">{product.originalPrice}</span>
-              )}
-              {product.originalPrice && (
-                <span className="text-red-400 text-sm font-semibold">
-                  Save {Math.round((1 - product.priceNum / parseInt(product.originalPrice.replace(/[^0-9]/g, ''), 10)) * 100)}%
-                </span>
-              )}
             </div>
             {product.includesTools && (
               <div className="flex items-center gap-2 mb-6">
@@ -371,7 +363,7 @@ export default function TravelHumidors() {
   if (selected) return <ProductDetail product={selected} onBack={() => setSelected(null)} />;
 
   const heroImage = collectionImage
-    || 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/Chat-GPT-Image-Apr-15-2026-03-58-42-PM_4b5fd768-7cd5-41d5-95bf-a8e2aa58523e.png';
+    || 'https://dunnluxuryselections.com/cdn/shop/collections/Chat-GPT-Image-Apr-15-2026-03-58-42-PM_4b5fd768-7cd5-41d5-95bf-a8e2aa58523e.png';
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
@@ -499,7 +491,7 @@ export default function TravelHumidors() {
                   onClick={() => setSelected(product)}
                   className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
                 >
-                  <div className="relative overflow-hidden aspect-[4/3]">
+                  <div className="relative overflow-hidden aspect-[4/3] bg-charcoal-900">
                     {product.image ? (
                       <img
                         src={product.image}
@@ -528,7 +520,7 @@ export default function TravelHumidors() {
                     <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <button
                       onClick={(e) => handleAddToCart(e, product)}
-                      className={`absolute bottom-2.5 right-2.5 flex items-center justify-center min-w-[44px] min-h-[44px] bg-gold-gradient rounded text-charcoal-950 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 translate-y-0 md:translate-y-2 md:group-hover:translate-y-0 transition-all duration-300 ${addedKey === product.key ? 'opacity-100 translate-y-0' : ''}`}
+                      className={`absolute bottom-2.5 right-2.5 w-8 h-8 bg-gold-gradient rounded flex items-center justify-center text-charcoal-950 shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ${addedKey === product.key ? 'opacity-100 translate-y-0' : ''}`}
                       aria-label="Add to cart"
                     >
                       {addedKey === product.key ? <CheckCircle2 size={13} /> : <ShoppingBag size={13} />}
@@ -553,9 +545,6 @@ export default function TravelHumidors() {
                     <div className="flex items-center justify-between pt-2.5 border-t border-charcoal-800/40">
                       <div className="flex items-baseline gap-2">
                         <span className="text-white font-bold text-base font-serif">{product.price}</span>
-                        {product.originalPrice && (
-                          <span className="text-cream-200/30 text-xs line-through">{product.originalPrice}</span>
-                        )}
                       </div>
                       <span className="text-gold-400 text-xs font-medium group-hover:text-gold-300 transition-colors">View →</span>
                     </div>

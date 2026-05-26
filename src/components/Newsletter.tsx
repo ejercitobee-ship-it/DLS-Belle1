@@ -1,49 +1,44 @@
 import { useState } from 'react';
-import { Mail, CheckCircle, AlertCircle } from 'lucide-react';
-import { submitForm } from '../lib/submitForm';
+import { Mail, CheckCircle } from 'lucide-react';
 
-const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || 'support@dunnluxuryselections.com';
+const EDGE_FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shopify-customer`;
 
 export default function Newsletter() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  // mailtoFallback: set to the pre-filled mailto URL when Supabase fails
-  const [mailtoFallback, setMailtoFallback] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setLoading(true);
     setError('');
-    setMailtoFallback('');
-
-    // Try Supabase first
-    const err = await submitForm({ type: 'newsletter', email });
-
-    if (err) {
-      console.error('[Newsletter] Supabase failed:', err, '— using mailto fallback');
-      // Silently open mailto and show success anyway — the user shouldn't be blocked
-      const mailtoUrl =
-        `mailto:${SUPPORT_EMAIL}` +
-        `?subject=${encodeURIComponent('Newsletter Subscription')}` +
-        `&body=${encodeURIComponent(`New newsletter subscriber: ${email}`)}`;
-      // Open mailto in background to notify support
-      window.open(mailtoUrl, '_blank');
-      // Still show success to user
+    try {
+      await fetch(EDGE_FN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          type: 'newsletter',
+          email,
+        }),
+      });
+      // Always show success — don't leak whether email exists
       setSubmitted(true);
-    } else {
-      setSubmitted(true);
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <section
       id="contact"
-      className="relative py-16 md:py-24 overflow-hidden"
+      className="relative py-24 overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #211e1c 0%, #3d3634 50%, #211e1c 100%)',
       }}
@@ -76,26 +71,18 @@ export default function Newsletter() {
           <div className="h-px w-8 bg-gold-500" />
         </div>
 
-        <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-4">
+        <h2 className="font-serif text-4xl md:text-5xl text-white font-bold mb-4">
           Stay <span className="text-gradient-gold italic">Ahead</span>
         </h2>
-        <p className="text-cream-200/60 text-sm md:text-lg mb-8 md:mb-10 max-w-lg mx-auto">
+        <p className="text-cream-200/60 text-lg mb-10 max-w-lg mx-auto">
           Be first to receive new arrivals, exclusive deals, and expert guidance
           from our team of cigar storage specialists.
         </p>
 
         {submitted ? (
-          <div className="flex flex-col items-center gap-2 text-emerald-400">
-            <div className="flex items-center gap-3">
-              <CheckCircle size={20} />
-              <span className="font-medium">Thank you — you're on the list.</span>
-            </div>
-            <p className="text-cream-200/40 text-xs">
-              Questions? Reach us at{' '}
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-gold-400 hover:underline">
-                {SUPPORT_EMAIL}
-              </a>
-            </p>
+          <div className="flex items-center justify-center gap-3 text-emerald-400">
+            <CheckCircle size={20} />
+            <span className="font-medium">Thank you — you're on the list.</span>
           </div>
         ) : (
           <>
@@ -106,34 +93,17 @@ export default function Newsletter() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
-                className="flex-1 bg-charcoal-900/80 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/30 text-sm px-4 py-3.5 rounded outline-none transition-colors min-h-[52px]"
+                className="flex-1 bg-charcoal-900/80 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/30 text-sm px-4 py-3 rounded outline-none transition-colors"
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-6 py-3.5 rounded hover:opacity-90 active:scale-95 transition-all whitespace-nowrap disabled:opacity-70 min-h-[52px]"
+                className="bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-6 py-3 rounded hover:opacity-90 active:scale-95 transition-all whitespace-nowrap disabled:opacity-70"
               >
                 {loading ? 'Subscribing…' : 'Subscribe'}
               </button>
             </form>
-
-            {error && (
-              <div className="mt-4 max-w-md mx-auto">
-                <div className="flex items-start gap-2 text-amber-400 text-xs mb-3">
-                  <AlertCircle size={14} className="mt-0.5 shrink-0" />
-                  <p>{error}</p>
-                </div>
-                {mailtoFallback && (
-                  <a
-                    href={mailtoFallback}
-                    className="inline-flex items-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-6 py-3 rounded hover:opacity-90 transition-opacity"
-                  >
-                    <Mail size={14} />
-                    Subscribe via Email
-                  </a>
-                )}
-              </div>
-            )}
+            {error && <p className="text-red-400 text-xs mt-3">{error}</p>}
           </>
         )}
 

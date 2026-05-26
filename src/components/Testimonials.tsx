@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { Star, Quote } from 'lucide-react';
 
 const testimonials = [
@@ -31,14 +30,12 @@ const testimonials = [
   },
 ];
 
-export default memo(Testimonials);
-
-function Testimonials() {
+export default function Testimonials() {
   return (
-    <section className="py-12 md:py-24 bg-charcoal-900">
+    <section className="py-24 bg-charcoal-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-10 md:mb-14">
+        <div className="text-center mb-14">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-8 bg-gold-500" />
             <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
@@ -46,7 +43,7 @@ function Testimonials() {
             </span>
             <div className="h-px w-8 bg-gold-500" />
           </div>
-          <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-4">
+          <h2 className="font-serif text-4xl md:text-5xl text-white font-bold mb-4">
             Trusted by <span className="text-gradient-gold italic">Connoisseurs</span>
           </h2>
           <div className="flex items-center justify-center gap-2 mt-4">

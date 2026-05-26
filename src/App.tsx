@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef, lazy, Suspense, memo } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Collections from './components/Collections';
-import FeaturedProducts from './components/FeaturedProducts';
+import ElectronicHumidorsSection from './components/ElectronicHumidorsSection';
 import Bespoke from './components/Bespoke';
 import DealsBanner from './components/DealsBanner';
 import Testimonials from './components/Testimonials';
@@ -11,7 +11,6 @@ import Newsletter from './components/Newsletter';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
 import { CartProvider, useCart } from './context/CartContext';
-import { useScrollReveal } from './hooks/useScrollReveal';
 
 const ElectronicHumidors = lazy(() => import('./components/ElectronicHumidors'));
 const WalkInHumidor = lazy(() => import('./components/WalkInHumidor'));
@@ -130,38 +129,6 @@ function getArticleHandles(): { blogHandle: string; articleHandle: string } {
   return { blogHandle: '', articleHandle: '' };
 }
 
-function HomePage() {
-  const scrollRef = useScrollReveal();
-  return (
-    <div ref={scrollRef}>
-      <Hero />
-      <div className="fade-in-up">
-        <Collections />
-      </div>
-      <div className="fade-in-up">
-        <FeaturedProducts />
-      </div>
-      <div className="fade-in-up">
-        <Bespoke />
-      </div>
-      <div className="fade-in-up">
-        <DealsBanner />
-      </div>
-      <div className="fade-in-up">
-        <Testimonials />
-      </div>
-      <div className="fade-in-up">
-        <WhyUs />
-      </div>
-      <div className="fade-in-up">
-        <Newsletter />
-      </div>
-    </div>
-  );
-}
-
-const MemoizedHomePage = memo(HomePage);
-
 function PageContent({ page }: { page: Page }) {
   const isFullPageOverlay = page === 'checkout' || page === 'shopify-setup';
   const { openCart } = useCart();
@@ -198,7 +165,18 @@ function PageContent({ page }: { page: Page }) {
 
   // Home
   void openCart;
-  return <MemoizedHomePage />;
+  return (
+    <>
+      <Hero />
+      <Collections />
+      <ElectronicHumidorsSection />
+      <Bespoke />
+      <DealsBanner />
+      <Testimonials />
+      <WhyUs />
+      <Newsletter />
+    </>
+  );
 }
 
 function AppInner() {
@@ -322,18 +300,10 @@ function AppInner() {
       )}
 
       <div
-        className="transition-all duration-300 ease-out"
-        style={{
-          opacity: transitioning ? 0 : 1,
-          transform: transitioning ? 'translateY(8px)' : 'translateY(0)',
-          transitionDuration: '250ms',
-        }}
+        className="transition-opacity duration-220"
+        style={{ opacity: transitioning ? 0 : 1, transitionDuration: '220ms' }}
       >
-        <Suspense fallback={
-          <div className="min-h-screen bg-charcoal-950 flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-gold-500/30 border-t-gold-500 rounded-full animate-spin" />
-          </div>
-        }>
+        <Suspense fallback={<div className="min-h-screen bg-charcoal-950" />}>
           <PageContent page={displayPage} />
         </Suspense>
       </div>

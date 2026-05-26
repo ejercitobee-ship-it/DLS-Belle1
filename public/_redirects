@@ -1,3 +1,4 @@
-/cart/c/*  https://luxury-dunn-selections.myshopify.com/cart/c/:splat  302
-/cart/*  https://luxury-dunn-selections.myshopify.com/cart/:splat  302
-/checkouts/*  https://luxury-dunn-selections.myshopify.com/checkouts/:splat  302
+/cart/c/*  https://luxury-dunn-selections.myshopify.com/cart/c/:splat  301
+/cart/*  https://luxury-dunn-selections.myshopify.com/cart/:splat  301
+/checkouts/*  https://luxury-dunn-selections.myshopify.com/checkouts/:splat  301
+/*  /index.html  200

@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://dunnluxuryselections.com/sitemap.xml
+
+Sitemap: https://www.dunnluxuryselections.com/sitemap.xml

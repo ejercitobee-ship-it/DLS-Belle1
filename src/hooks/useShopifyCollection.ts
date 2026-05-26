@@ -58,9 +58,13 @@ export function getProductPrice(product: ShopifyProduct): { price: string; price
   const variant = product.variants.find((v) => v.availableForSale) ?? product.variants[0];
   const priceObj = variant?.price ?? product.priceRange.minVariantPrice;
   const compareObj = variant?.compareAtPrice ?? null;
+  const priceNum = parseFloat(priceObj.amount);
+  const compareNum = compareObj ? parseFloat(compareObj.amount) : null;
+  // Only show compareAt if it is strictly greater than the regular price
+  const validCompare = compareNum && compareNum > priceNum ? compareObj : null;
   return {
     price: formatMoney(priceObj.amount, priceObj.currencyCode),
-    priceNum: parseFloat(priceObj.amount),
-    compareAt: compareObj ? formatMoney(compareObj.amount, compareObj.currencyCode) : null,
+    priceNum,
+    compareAt: validCompare ? formatMoney(validCompare.amount, validCompare.currencyCode) : null,
   };
 }

@@ -66,7 +66,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
     humidification: 'Integrated water-cooling · High-performance compressor',
     features: ['Dual zones 16–22°C ±1°C, 60–75% RH ±1%', 'Wine zone: 5–22°C ±1°C', 'Advanced airflow & quiet operation', '2-year warranty'],
     description: 'The SD800 is the pinnacle of dual-zone preservation — independently controlled cigar and wine compartments in a single showroom-worthy cabinet.',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
     images: [],
     badge: 'Flagship',
     rating: 4.9,
@@ -90,7 +90,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
     humidification: 'Dual-zone precision climate control',
     features: ['Wine zone: 5–22°C ±1°C', 'Cigar zone: 16–22°C, 60–75% RH', 'Whisper-quiet, energy-efficient', '2-year warranty'],
     description: 'The CS600 combines wine and cigar storage in an elegant double-door cabinet with independent climate controls.',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
     images: [],
     badge: 'Popular',
     rating: 4.8,
@@ -113,7 +113,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
     humidification: '24 built-in humidifiers + external hygrometer',
     features: ['Optional touch-activated dimmable LED', 'Rear wiring port for electric upgrades', 'Spanish cedar interior throughout'],
     description: 'The Bermuda is built for serious collectors who refuse to compromise on scale. 4,000 cigars, 12 oversized trays, 24 integrated humidifiers.',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
     images: [],
     badge: 'Best Capacity',
     rating: 4.8,
@@ -136,7 +136,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
     humidification: '6 built-in humidifiers + dedicated hygrometer',
     features: ['Full-length framed glass door', 'Brass lock and key', 'Rear wiring port for optional electric upgrade'],
     description: 'Three oversized trays with 8 adjustable dividers each, a dedicated pull-out humidifier drawer, and a full-length glass door.',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    image: 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
     images: [],
     rating: 4.7,
     reviews: 13,
@@ -190,7 +190,7 @@ function fromShopify(p: ShopifyProduct): DisplayProduct {
     subtitle: p.productType || 'Cabinet Humidor',
     price,
     priceNum,
-    compareAt: compareAt ?? undefined,
+    compareAt: undefined,
     category,
     capacity: `${capacityNum.toLocaleString()} cigars`,
     capacityNum,
@@ -300,7 +300,7 @@ function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: (
               onClick={() => setZoomImg(mainImg || product.image)}
               aria-label="View full image"
             >
-              <img src={mainImg || product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.opacity = '0.15'; }} />
+              <img src={mainImg || product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" />
               <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                 <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
               </div>
@@ -357,9 +357,6 @@ function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: (
 
             <div className="flex items-baseline gap-3 mb-6">
               <span className="text-3xl font-bold text-white font-serif">{product.price}</span>
-              {product.compareAt && (
-                <span className="text-cream-200/40 text-lg line-through">{product.compareAt}</span>
-              )}
             </div>
 
             <div className="mb-8">
@@ -482,7 +479,7 @@ export default function CabinetHumidors() {
 
   if (selected) return <ProductDetail product={selected} onBack={() => setSelected(null)} />;
 
-  const heroImage = collectionImage || 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png';
+  const heroImage = collectionImage || 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png';
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
@@ -535,7 +532,7 @@ export default function CabinetHumidors() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all min-h-[44px] ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   activeCategory === cat
                     ? 'bg-gold-gradient text-charcoal-950'
                     : 'bg-charcoal-900 border border-charcoal-700/60 text-cream-200/60 hover:text-cream-100 hover:border-gold-600/30'
@@ -600,7 +597,7 @@ export default function CabinetHumidors() {
                 className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
               >
                 {/* Image */}
-                <div className="relative overflow-hidden aspect-[4/3]">
+                <div className="relative overflow-hidden aspect-[4/3] bg-charcoal-900">
                   {product.image ? (
                     <img
                       src={product.image}
@@ -629,7 +626,7 @@ export default function CabinetHumidors() {
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <button
                     onClick={(e) => handleAddToCart(e, product)}
-                    className={`absolute bottom-2.5 right-2.5 flex items-center justify-center min-w-[44px] min-h-[44px] bg-gold-gradient rounded text-charcoal-950 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 translate-y-0 md:translate-y-2 md:group-hover:translate-y-0 transition-all duration-300 ${addedId === product.id ? 'opacity-100 translate-y-0' : ''}`}
+                    className={`absolute bottom-2.5 right-2.5 w-8 h-8 bg-gold-gradient rounded flex items-center justify-center text-charcoal-950 shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ${addedId === product.id ? 'opacity-100 translate-y-0' : ''}`}
                     aria-label="Add to cart"
                   >
                     {addedId === product.id ? <CheckCircle2 size={13} /> : <ShoppingBag size={13} />}
@@ -659,9 +656,6 @@ export default function CabinetHumidors() {
                   <div className="flex items-center justify-between pt-2.5 border-t border-charcoal-800/40">
                     <div className="flex items-baseline gap-2">
                       <span className="text-white font-bold text-base font-serif">{product.price}</span>
-                      {product.compareAt && (
-                        <span className="text-cream-200/30 text-xs line-through">{product.compareAt}</span>
-                      )}
                     </div>
                     <span className="text-gold-400 text-xs font-medium group-hover:text-gold-300 transition-colors">
                       View →

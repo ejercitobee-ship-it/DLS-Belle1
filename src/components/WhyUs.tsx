@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { Gem, Settings, Headphones as HeadphonesIcon, Globe } from 'lucide-react';
 
 const reasons = [
@@ -28,13 +27,11 @@ const reasons = [
   },
 ];
 
-export default memo(WhyUs);
-
-function WhyUs() {
+export default function WhyUs() {
   return (
-    <section id="about" className="py-12 md:py-24 bg-charcoal-900">
+    <section id="about" className="py-24 bg-charcoal-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
           <div>
             <div className="flex items-center gap-3 mb-5">
@@ -43,17 +40,17 @@ function WhyUs() {
                 Why Choose Us
               </span>
             </div>
-            <h2 className="font-serif text-3xl md:text-5xl text-white font-bold leading-tight mb-4 md:mb-6">
+            <h2 className="font-serif text-4xl md:text-5xl text-white font-bold leading-tight mb-6">
               Products with the
               <br />
               <span className="text-gradient-gold italic">Signature of Luxury</span>
             </h2>
-            <p className="text-cream-200/60 text-sm md:text-lg leading-relaxed mb-8 md:mb-10">
+            <p className="text-cream-200/60 text-lg leading-relaxed mb-10">
               Dunn's Luxury Selections is America's premier destination for fine
               cigar humidors. We exist for those who understand that the way a cigar
               is stored is as important as the cigar itself.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {reasons.map(({ icon: Icon, title, description }) => (
                 <div key={title} className="flex gap-4">
                   <div className="w-10 h-10 rounded-lg border border-gold-600/30 bg-gold-700/10 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -68,8 +65,8 @@ function WhyUs() {
             </div>
           </div>
 
-          {/* Image collage — hidden on mobile to avoid 500px height block */}
-          <div className="relative hidden lg:grid grid-cols-2 gap-3 h-[500px]">
+          {/* Image collage */}
+          <div className="relative grid grid-cols-2 gap-3 h-[500px] overflow-hidden lg:overflow-visible">
             <div className="relative rounded-lg overflow-hidden row-span-2">
               <img
                 src="/generated-1777557213922-8v5be.png"
@@ -80,16 +77,16 @@ function WhyUs() {
             </div>
             <div className="relative rounded-lg overflow-hidden">
               <img
-                src="/generated-1777865999599-45xy3.png"
-                alt="Raching RR980 flagship cigar humidor"
+                src="/generated-1777557773655-n04ui.png"
+                alt="Santiago desktop humidor"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
             </div>
             <div className="relative rounded-lg overflow-hidden">
               <img
-                src="/generated-1777557488471-ycjey.png"
-                alt="Raching CT48A stainless steel electronic humidor"
+                src="/generated-1777557978041-zp1qj.png"
+                alt="CT48A electronic humidor"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
@@ -98,17 +95,6 @@ function WhyUs() {
             <div className="absolute bottom-2 left-2 bg-charcoal-950 border border-gold-700/30 rounded-lg p-4 shadow-xl">
               <div className="text-2xl font-serif font-bold text-gradient-gold">$30 – $7,750</div>
               <div className="text-cream-200/50 text-xs mt-0.5">Curated price range</div>
-            </div>
-          </div>
-
-          {/* Mobile-only stats strip */}
-          <div className="lg:hidden bg-charcoal-900 border border-gold-700/20 rounded-xl p-5 flex items-center gap-4">
-            <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gold-700/10 border border-gold-600/30 flex items-center justify-center">
-              <Gem size={22} className="text-gold-500" />
-            </div>
-            <div>
-              <div className="text-xl font-serif font-bold text-gradient-gold">$30 – $7,750</div>
-              <div className="text-cream-200/50 text-xs mt-0.5">Curated price range for every collector</div>
             </div>
           </div>
         </div>

@@ -50,18 +50,9 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
   return (
     <>
       {/* Announcement bar */}
-      <a
-        href="/all-collections"
-        className="block bg-gold-600 text-charcoal-950 text-center py-2 px-4 hover:bg-gold-500 transition-colors"
-      >
-        {/* Shorter text on mobile to prevent overflow */}
-        <span className="sm:hidden text-[10px] font-medium tracking-wide uppercase">
-          Free Shipping on Selected Items!
-        </span>
-        <span className="hidden sm:inline text-xs font-medium tracking-widest uppercase">
-          FREE SHIPPING ON SELECTED ITEMS · SHOP THE COLLECTIONS
-        </span>
-      </a>
+      <div className="bg-gold-600 text-charcoal-950 text-center py-2 px-4 text-xs font-medium tracking-widest uppercase">
+        Free Shipping on Selected Items &mdash; <a href="/all-collections" className="underline underline-offset-2 hover:opacity-70 transition-opacity">Shop the Full Collections</a>
+      </div>
 
       <nav
         ref={navRef}
@@ -148,15 +139,14 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
 
             {/* Actions */}
             <div className="flex items-center gap-1 md:gap-4">
-              {/* Cart button — min 44px touch target */}
               <button
                 aria-label="Cart"
                 onClick={onCartOpen}
-                className="relative text-cream-200/60 hover:text-gold-400 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]"
+                className="relative text-cream-200/60 hover:text-gold-400 transition-colors p-2.5"
               >
                 <ShoppingBag size={22} />
                 {totalItems > 0 && (
-                  <span className="absolute top-1.5 right-1.5 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center bg-gold-500 text-charcoal-950 animate-[pop_0.3s_ease-out]" key={totalItems}>
+                  <span className="absolute top-1 right-1 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center bg-gold-500 text-charcoal-950">
                     {totalItems > 9 ? '9+' : totalItems}
                   </span>
                 )}
@@ -167,9 +157,8 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
               >
                 Shop Now
               </a>
-              {/* Hamburger — min 44px touch target */}
               <button
-                className="md:hidden text-cream-200/80 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-lg hover:bg-charcoal-800 active:bg-charcoal-700 transition-colors"
+                className="md:hidden text-cream-200/80 p-2.5 rounded-lg hover:bg-charcoal-800 active:bg-charcoal-700 transition-colors"
                 onClick={() => setMobileOpen(!mobileOpen)}
                 aria-label="Toggle menu"
               >
@@ -198,7 +187,7 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
             <div className="border-b border-charcoal-800/40">
               <button
                 onClick={() => setCollectionsOpen(!collectionsOpen)}
-                className="w-full flex items-center justify-between px-2 py-4 text-cream-200/80 font-medium text-base active:bg-charcoal-900 rounded transition-colors min-h-[52px]"
+                className="w-full flex items-center justify-between px-2 py-4 text-cream-200/80 font-medium text-base active:bg-charcoal-900 rounded transition-colors"
               >
                 Collections
                 <ChevronDown
@@ -206,14 +195,14 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
                   className={`text-gold-500 transition-transform duration-200 ${collectionsOpen ? 'rotate-180' : ''}`}
                 />
               </button>
-              <div className={`overflow-hidden transition-all duration-250 ${collectionsOpen ? 'max-h-96' : 'max-h-0'}`}>
+              <div className={`overflow-hidden transition-all duration-250 ${collectionsOpen ? 'max-h-72' : 'max-h-0'}`}>
                 <div className="pl-2 pb-3 space-y-0.5">
                   {navLinks[0].children!.map((child) => (
                     <a
                       key={child.label}
                       href={child.href}
                       onClick={closeMenu}
-                      className="flex items-center px-4 py-3.5 text-sm text-cream-200/60 hover:text-gold-400 active:text-gold-400 hover:bg-gold-700/10 rounded-lg transition-colors min-h-[48px]"
+                      className="flex items-center px-4 py-3.5 text-sm text-cream-200/60 hover:text-gold-400 active:text-gold-400 hover:bg-gold-700/10 rounded-lg transition-colors"
                     >
                       {child.label}
                     </a>
@@ -227,7 +216,7 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
                 key={link.label}
                 href={link.href}
                 onClick={closeMenu}
-                className="flex items-center px-2 py-4 text-cream-200/80 font-medium text-base border-b border-charcoal-800/40 hover:text-gold-400 active:text-gold-400 transition-colors last:border-b-0 min-h-[52px]"
+                className="flex items-center px-2 py-4 text-cream-200/80 font-medium text-base border-b border-charcoal-800/40 hover:text-gold-400 active:text-gold-400 transition-colors last:border-b-0"
               >
                 {link.label}
               </a>
@@ -237,7 +226,7 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
               <a
                 href="/all-collections"
                 onClick={closeMenu}
-                className="block w-full text-center bg-gold-gradient text-charcoal-950 font-bold text-sm tracking-widest uppercase px-6 py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all min-h-[52px] flex items-center justify-center"
+                className="block w-full text-center bg-gold-gradient text-charcoal-950 font-bold text-sm tracking-widest uppercase px-6 py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all"
               >
                 Shop Now
               </a>

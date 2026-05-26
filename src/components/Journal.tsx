@@ -52,7 +52,7 @@ function FeaturedArticle({ article }: { article: ShopifyArticle }) {
         </div>
 
         {/* Content */}
-        <div className="flex flex-col justify-center p-5 md:p-12 md:order-1">
+        <div className="flex flex-col justify-center p-8 md:p-12 md:order-1">
           <div className="flex items-center gap-3 mb-5">
             <span className="inline-flex items-center gap-1.5 bg-gold-500/15 border border-gold-500/30 text-gold-400 text-[10px] font-semibold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full">
               <Tag size={9} />
@@ -85,7 +85,7 @@ function FeaturedArticle({ article }: { article: ShopifyArticle }) {
 
           <a
             href={`#article/${article.blog.handle}/${article.handle}`}
-            className="inline-flex items-center gap-2 bg-gold-gradient text-charcoal-950 text-xs font-semibold tracking-widest uppercase px-6 py-3.5 rounded self-start hover:opacity-90 transition-opacity group/btn min-h-[48px]"
+            className="inline-flex items-center gap-2 bg-gold-gradient text-charcoal-950 text-xs font-semibold tracking-widest uppercase px-6 py-3 rounded self-start hover:opacity-90 transition-opacity group/btn"
           >
             Read Article
             <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
@@ -225,7 +225,7 @@ export default function Journal() {
             </span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6 max-w-3xl">
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6 max-w-3xl">
             Stories of Craft,{' '}
             <span className="text-gradient-gold italic">Culture & Connoisseurship</span>
           </h1>
@@ -243,7 +243,7 @@ export default function Journal() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-3 rounded-full text-xs font-semibold tracking-[0.15em] uppercase transition-all duration-200 border min-h-[44px] ${
+              className={`px-5 py-2.5 rounded-full text-xs font-semibold tracking-[0.15em] uppercase transition-all duration-200 border ${
                 activeCategory === cat
                   ? 'bg-gold-gradient text-charcoal-950 border-transparent shadow-lg shadow-gold-900/30'
                   : 'bg-transparent text-cream-200/50 border-charcoal-700/60 hover:border-gold-500/40 hover:text-gold-400'

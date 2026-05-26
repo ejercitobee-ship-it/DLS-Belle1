@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Lock, ShieldCheck, Truck, AlertCircle, Minus, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Lock, ShieldCheck, Truck, ExternalLink, ShoppingBag, AlertCircle, Minus, Plus, Trash2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 type Props = { onBack: () => void };
@@ -86,7 +86,9 @@ export default function Checkout({ onBack }: Props) {
                   </>
                 ) : (
                   <>
-                    CHECKOUT
+                    <ShoppingBag size={15} />
+                    Proceed to Checkout
+                    <ExternalLink size={13} />
                   </>
                 )}
               </button>

@@ -13,9 +13,6 @@ import {
   Wifi,
   ChevronDown,
 } from 'lucide-react';
-import { submitForm } from '../lib/submitForm';
-
-const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || 'support@dunnluxuryselections.com';
 
 const pillars = [
   {
@@ -100,6 +97,8 @@ const faqs = [
   },
 ];
 
+const EDGE_FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shopify-customer`;
+
 export default function WalkInHumidor() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [formData, setFormData] = useState({
@@ -138,22 +137,29 @@ export default function WalkInHumidor() {
     setSubmitError('');
     setSubmitting(true);
 
-    const err = await submitForm({
-      type: 'inquiry',
-      email: formData.email,
-      name: formData.name.trim(),
-      phone: formData.phone || undefined,
-      projectType: formData.projectType || undefined,
-      spaceSize: formData.spaceSize || undefined,
-      message: formData.message || undefined,
-    });
-
-    if (err) {
-      setSubmitError('Something went wrong. Please try again or contact us at ' + SUPPORT_EMAIL);
-    } else {
+    try {
+      await fetch(EDGE_FN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          type: 'inquiry',
+          email: formData.email,
+          name: formData.name.trim(),
+          phone: formData.phone || undefined,
+          projectType: formData.projectType,
+          spaceSize: formData.spaceSize || undefined,
+          message: formData.message || undefined,
+        }),
+      });
       setSubmitted(true);
+    } catch {
+      setSubmitError('Something went wrong. Please try again or call us directly.');
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   const field = (key: keyof typeof formData) => ({
@@ -473,15 +479,9 @@ export default function WalkInHumidor() {
                     <CheckCircle2 size={28} className="text-gold-500" />
                   </div>
                   <h3 className="font-serif text-2xl text-white font-bold mb-3">Enquiry Received</h3>
-                  <p className="text-cream-200/55 leading-relaxed max-w-xs mb-4">
+                  <p className="text-cream-200/55 leading-relaxed max-w-xs">
                     Thank you for reaching out. Our executive sales team will be in touch within one business day.
                   </p>
-                  <a
-                    href={`mailto:${SUPPORT_EMAIL}`}
-                    className="text-gold-400 text-sm hover:underline"
-                  >
-                    {SUPPORT_EMAIL}
-                  </a>
                 </div>
               ) : (
                 <>
