@@ -352,7 +352,15 @@ function AppInner() {
         return;
       }
       if (path.startsWith('/product/')) {
-        navigate('product');
+        // Force re-render even if already on product page
+        pendingPage.current = 'product';
+        setTransitioning(true);
+        setTimeout(() => {
+          setPage('product');
+          setDisplayPage('product');
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          setTransitioning(false);
+        }, 220);
         return;
       }
       // Legacy hash fallback
@@ -403,8 +411,16 @@ function AppInner() {
       // Product links
       if (href.startsWith('/product/')) {
         e.preventDefault();
-        navigate('product');
         window.history.pushState(null, '', href);
+        // Force navigation even if already on product page (different product)
+        pendingPage.current = 'product';
+        setTransitioning(true);
+        setTimeout(() => {
+          setPage('product');
+          setDisplayPage('product');
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          setTransitioning(false);
+        }, 220);
         return;
       }
 
