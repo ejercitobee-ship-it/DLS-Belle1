@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ShoppingBag, Star, ChevronDown, ArrowLeft, Zap, Thermometer, Droplets, Box, CheckCircle2, Loader2, ZoomIn, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useShopifyCollection, formatMoney, getDefaultVariantId } from '../hooks/useShopifyCollection';
+import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
 
 // ─── Static fallback data ─────────────────────────────────────────────────────

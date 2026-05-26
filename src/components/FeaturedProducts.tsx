@@ -56,10 +56,12 @@ function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: (
   const priceNum = parseFloat(price.amount);
   const compareNum = rawCompareAt ? parseFloat(rawCompareAt.amount) : null;
   // Only treat as a real discount if compareAt is strictly greater than price
-  const compareAt = compareNum && compareNum > priceNum ? rawCompareAt : null;
-  const discount = compareNum && compareNum > priceNum
+  const _compareAt = compareNum && compareNum > priceNum ? rawCompareAt : null;
+  void _compareAt;
+  const _discount = compareNum && compareNum > priceNum
     ? Math.round((1 - priceNum / compareNum) * 100)
     : null;
+  void _discount;
 
   const handleAdd = () => {
     if (!variant) return;

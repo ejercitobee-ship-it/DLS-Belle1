@@ -47,6 +47,19 @@ async function storefrontFetch<T>(
   query: string,
   variables?: Record<string, unknown>,
 ): Promise<T> {
+  if (!STOREFRONT_ENDPOINT) {
+    throw new Error(
+      'Shopify Storefront API endpoint is not configured. ' +
+        'Set VITE_SHOPIFY_STORE_DOMAIN in your environment.',
+    );
+  }
+  if (!STOREFRONT_TOKEN) {
+    throw new Error(
+      'Shopify Storefront Access Token is not configured. ' +
+        'Set VITE_SHOPIFY_STOREFRONT_TOKEN in your environment.',
+    );
+  }
+
   const res = await fetch(STOREFRONT_ENDPOINT, {
     method: 'POST',
     headers: {

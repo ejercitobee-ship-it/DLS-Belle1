@@ -64,7 +64,8 @@ export default function DealsBanner() {
             const salePrice = parseFloat(variant.price.amount);
             const originalPrice = parseFloat(variant.compareAtPrice!.amount);
             const saleFmt = formatMoney(variant.price.amount, variant.price.currencyCode);
-            const origFmt = formatMoney(variant.compareAtPrice!.amount, variant.compareAtPrice!.currencyCode);
+            const _origFmt = formatMoney(variant.compareAtPrice!.amount, variant.compareAtPrice!.currencyCode);
+            void _origFmt;
             const discount = calcDiscount(salePrice, originalPrice);
             const image = product.featuredImage?.url ?? variant.image?.url ?? '';
 

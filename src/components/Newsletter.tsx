@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Mail, CheckCircle } from 'lucide-react';
+import { Mail, CheckCircle, AlertCircle } from 'lucide-react';
 
-const EDGE_FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shopify-customer`;
+const SUPPORT_EMAIL = 'support@dunnluxuryselections.com';
 
 export default function Newsletter() {
   const [email, setEmail] = useState('');
@@ -14,31 +14,27 @@ export default function Newsletter() {
     if (!email) return;
     setLoading(true);
     setError('');
-    try {
-      await fetch(EDGE_FN_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({
-          type: 'newsletter',
-          email,
-        }),
-      });
-      // Always show success — don't leak whether email exists
-      setSubmitted(true);
-    } catch {
-      setError('Something went wrong. Please try again.');
-    } finally {
+
+    const subject = encodeURIComponent('Newsletter Subscription');
+    const body = encodeURIComponent(`New newsletter subscriber:\n\nEmail: ${email}`);
+    const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
+
+    const win = window.open(mailtoUrl, '_blank');
+    if (!win) {
+      setError('Your browser blocked the email client. Please email us directly.');
       setLoading(false);
+      return;
     }
+
+    setTimeout(() => { try { win.close(); } catch { /* ignore */ } }, 500);
+    setSubmitted(true);
+    setLoading(false);
   };
 
   return (
     <section
       id="contact"
-      className="relative py-24 overflow-hidden"
+      className="relative py-16 md:py-24 overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #211e1c 0%, #3d3634 50%, #211e1c 100%)',
       }}
@@ -71,18 +67,26 @@ export default function Newsletter() {
           <div className="h-px w-8 bg-gold-500" />
         </div>
 
-        <h2 className="font-serif text-4xl md:text-5xl text-white font-bold mb-4">
+        <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-4">
           Stay <span className="text-gradient-gold italic">Ahead</span>
         </h2>
-        <p className="text-cream-200/60 text-lg mb-10 max-w-lg mx-auto">
+        <p className="text-cream-200/60 text-sm md:text-lg mb-8 md:mb-10 max-w-lg mx-auto">
           Be first to receive new arrivals, exclusive deals, and expert guidance
           from our team of cigar storage specialists.
         </p>
 
         {submitted ? (
-          <div className="flex items-center justify-center gap-3 text-emerald-400">
-            <CheckCircle size={20} />
-            <span className="font-medium">Thank you — you're on the list.</span>
+          <div className="flex flex-col items-center gap-2 text-emerald-400">
+            <div className="flex items-center gap-3">
+              <CheckCircle size={20} />
+              <span className="font-medium">Thank you — your email client should open shortly.</span>
+            </div>
+            <p className="text-cream-200/40 text-xs">
+              If it didn't open, email us directly at{' '}
+              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-gold-400 hover:underline">
+                {SUPPORT_EMAIL}
+              </a>
+            </p>
           </div>
         ) : (
           <>
@@ -93,17 +97,28 @@ export default function Newsletter() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
-                className="flex-1 bg-charcoal-900/80 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/30 text-sm px-4 py-3 rounded outline-none transition-colors"
+                className="flex-1 bg-charcoal-900/80 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/30 text-sm px-4 py-3.5 rounded outline-none transition-colors min-h-[52px]"
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-6 py-3 rounded hover:opacity-90 active:scale-95 transition-all whitespace-nowrap disabled:opacity-70"
+                className="bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-6 py-3.5 rounded hover:opacity-90 active:scale-95 transition-all whitespace-nowrap disabled:opacity-70 min-h-[52px]"
               >
-                {loading ? 'Subscribing…' : 'Subscribe'}
+                {loading ? 'Opening email…' : 'Subscribe'}
               </button>
             </form>
-            {error && <p className="text-red-400 text-xs mt-3">{error}</p>}
+
+            {error && (
+              <div className="mt-4 max-w-md mx-auto flex items-start gap-2 text-amber-400 text-xs">
+                <AlertCircle size={14} className="mt-0.5 shrink-0" />
+                <p>
+                  {error}{' '}
+                  <a href={`mailto:${SUPPORT_EMAIL}`} className="text-gold-400 hover:underline font-medium">
+                    Send email manually
+                  </a>
+                </p>
+              </div>
+            )}
           </>
         )}
 

@@ -48,11 +48,12 @@ function priceNum(p: ShopifyProduct): number {
   return parseFloat(p.priceRange.minVariantPrice.amount);
 }
 
-function formatMoney(amount: string, currency: string): string {
+function _formatMoney(amount: string, currency: string): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(
     parseFloat(amount),
   );
 }
+void _formatMoney; // available for future use
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 

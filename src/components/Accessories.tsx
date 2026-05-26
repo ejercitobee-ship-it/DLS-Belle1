@@ -75,7 +75,8 @@ function inferCategory(p: ShopifyProduct): Category {
 function fromShopify(p: ShopifyProduct): DisplayProduct {
   const variant = p.variants.find((v) => v.availableForSale) ?? p.variants[0];
   const priceObj = variant?.price ?? p.priceRange.minVariantPrice;
-  const compareObj = variant?.compareAtPrice;
+  const _compareObj = variant?.compareAtPrice;
+  void _compareObj;
   const image = variant?.image ?? p.featuredImage;
 
   const badges = ['Premium', 'Gift Set', 'Limited', 'Popular', 'New', 'Sale'];

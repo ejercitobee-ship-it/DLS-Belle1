@@ -6,8 +6,9 @@ type Props = {
   onCheckout: () => void;
 };
 
-export default function CartDrawer({ onCheckout }: Props) {
-  const { items, isOpen, closeCart, removeItem, updateQty, totalItems, subtotal, shopifyCheckout, checkoutUrl } = useCart();
+export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
+  void _onCheckout;
+  const { items, isOpen, closeCart, removeItem, updateQty, totalItems, subtotal, shopifyCheckout } = useCart();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState(false);
 

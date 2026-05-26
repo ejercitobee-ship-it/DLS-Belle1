@@ -12,7 +12,10 @@ import {
   Store,
   Wifi,
   ChevronDown,
+  AlertCircle,
 } from 'lucide-react';
+
+const SUPPORT_EMAIL = 'support@dunnluxuryselections.com';
 
 const pillars = [
   {
@@ -97,8 +100,6 @@ const faqs = [
   },
 ];
 
-const EDGE_FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shopify-customer`;
-
 export default function WalkInHumidor() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [formData, setFormData] = useState({
@@ -137,29 +138,30 @@ export default function WalkInHumidor() {
     setSubmitError('');
     setSubmitting(true);
 
-    try {
-      await fetch(EDGE_FN_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({
-          type: 'inquiry',
-          email: formData.email,
-          name: formData.name.trim(),
-          phone: formData.phone || undefined,
-          projectType: formData.projectType,
-          spaceSize: formData.spaceSize || undefined,
-          message: formData.message || undefined,
-        }),
-      });
-      setSubmitted(true);
-    } catch {
-      setSubmitError('Something went wrong. Please try again or call us directly.');
-    } finally {
+    const subject = encodeURIComponent('Bespoke Walk-In Humidor Enquiry');
+    const body = encodeURIComponent([
+      'New bespoke walk-in humidor enquiry:',
+      '',
+      `Name: ${formData.name.trim()}`,
+      `Email: ${formData.email}`,
+      formData.phone ? `Phone: ${formData.phone}` : '',
+      `Project Type: ${formData.projectType}`,
+      formData.spaceSize ? `Space Size: ${formData.spaceSize}` : '',
+      formData.message ? `Message:\n${formData.message}` : '',
+    ].filter(Boolean).join('\n'));
+
+    const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
+    const win = window.open(mailtoUrl, '_blank');
+
+    if (!win) {
+      setSubmitError('Your browser blocked the email client. Please email us directly at ' + SUPPORT_EMAIL);
       setSubmitting(false);
+      return;
     }
+
+    setTimeout(() => { try { win.close(); } catch { /* ignore */ } }, 500);
+    setSubmitted(true);
+    setSubmitting(false);
   };
 
   const field = (key: keyof typeof formData) => ({
@@ -567,7 +569,18 @@ export default function WalkInHumidor() {
                     </button>
 
                     {submitError && (
-                      <p className="text-red-400 text-xs text-center">{submitError}</p>
+                      <div className="flex items-start gap-2 text-red-400 text-xs">
+                        <AlertCircle size={14} className="mt-0.5 shrink-0" />
+                        <p>
+                          {submitError}{' '}
+                          <a
+                            href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('Bespoke Walk-In Humidor Enquiry')}`}
+                            className="text-gold-400 hover:underline font-medium"
+                          >
+                            Send email manually
+                          </a>
+                        </p>
+                      </div>
                     )}
 
                     <p className="text-cream-200/25 text-xs text-center">

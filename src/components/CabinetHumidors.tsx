@@ -175,7 +175,8 @@ function extractCapacity(p: ShopifyProduct): number {
 }
 
 function fromShopify(p: ShopifyProduct): DisplayProduct {
-  const { price, priceNum, compareAt } = getProductPrice(p);
+  const { price, priceNum, compareAt: _compareAt } = getProductPrice(p);
+  void _compareAt;
   const variantId = getDefaultVariantId(p);
   const variant = p.variants.find((v) => v.id === variantId) ?? p.variants[0];
   const image = variant?.image?.url ?? p.featuredImage?.url ?? '';
