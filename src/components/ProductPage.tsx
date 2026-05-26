@@ -80,6 +80,18 @@ export default function ProductPage({ handle }: { handle: string }) {
   const [zoomImage, setZoomImage] = useState<string | null>(null);
   const { addItem } = useCart();
 
+  // Dynamic meta tags — must be called before any early returns
+  usePageMeta({
+    title: product
+      ? `${product.title} | Dunn's Luxury Selections`
+      : "Dunn's Luxury Selections | Humidor Collections",
+    description: product?.description
+      ? product.description.slice(0, 160)
+      : 'Explore luxury humidors and cigar accessories.',
+    canonicalPath: `/product/${handle}`,
+    ogImage: product?.featuredImage?.url,
+  });
+
   useEffect(() => {
     if (!handle) {
       setError('Invalid product URL — no handle provided');
@@ -144,17 +156,6 @@ export default function ProductPage({ handle }: { handle: string }) {
 
   // After this point product is guaranteed non-null
   const prod = product!;
-
-  // Dynamic meta tags for this product
-  const metaPrice = getProductPrice(prod);
-  usePageMeta({
-    title: `${prod.title} | Dunn's Luxury Selections`,
-    description: prod.description
-      ? prod.description.slice(0, 160)
-      : `Shop ${prod.title} at Dunn's Luxury Selections. ${metaPrice.price}`,
-    canonicalPath: `/product/${handle}`,
-    ogImage: prod.featuredImage?.url,
-  });
 
   const { price, compareAt } = getProductPrice(prod);
   const variant = prod.variants[selectedVariant] ?? prod.variants[0];
