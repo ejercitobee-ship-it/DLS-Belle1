@@ -411,6 +411,7 @@ function AppInner() {
       // Product links
       if (href.startsWith('/product/')) {
         e.preventDefault();
+        console.log('[Router] Product link clicked:', href);
         window.history.pushState(null, '', href);
         // Force navigation even if already on product page (different product)
         pendingPage.current = 'product';

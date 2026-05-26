@@ -81,6 +81,11 @@ export default function ProductPage({ handle }: { handle: string }) {
   const { addItem } = useCart();
 
   useEffect(() => {
+    if (!handle) {
+      setError('Invalid product URL — no handle provided');
+      setLoading(false);
+      return;
+    }
     let cancelled = false;
     async function load() {
       try {
