@@ -2,5 +2,5 @@
 /cart/*  https://luxury-dunn-selections.myshopify.com/cart/:splat  301
 /checkouts/*  https://luxury-dunn-selections.myshopify.com/checkouts/:splat  301
 
-# SPA fallback
+# SPA fallback - all routes serve index.html
 /*  /index.html  200
