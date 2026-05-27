@@ -106,10 +106,18 @@ async function prerender() {
     const page = await browser.newPage();
 
     const url = `http://localhost:${PORT}${route}`;
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-
-    // Wait for React to render and meta tags to update
-    await new Promise((resolve) => setTimeout(resolve, 4000));
+    
+    // Use networkidle to wait for all resources to load
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
+    
+    // Additional wait for React to hydrate and render
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    
+    // Wait for the page content to be ready (check if title is not the default)
+    await page.waitForFunction(() => {
+      const title = document.title;
+      return title && title !== 'Dunn\'s Luxury Selections' && !title.includes('Loading');
+    }, { timeout: 10000 });
 
     const html = await page.content();
 
