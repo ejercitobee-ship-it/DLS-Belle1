@@ -37,13 +37,13 @@ for (const route of routes) {
   // Replace meta tags in the HTML
   let html = baseHtml
     .replace(/\u003ctitle\u003e[^\u003c]*\u003c\/title\u003e/, `\u003ctitle\u003e${route.title}\u003c/title\u003e`)
-    .replace(/\u003cmeta name="description" content="[^"]*"\u003e/, `\u003cmeta name="description" content="${route.description}"\u003e`)
-    .replace(/\u003clink rel="canonical" href="[^"]*"\u003e/, `\u003clink rel="canonical" href="${route.canonical}"\u003e`)
-    .replace(/\u003cmeta property="og:url" content="[^"]*"\u003e/, `\u003cmeta property="og:url" content="${route.canonical}"\u003e`)
-    .replace(/\u003cmeta property="og:title" content="[^"]*"\u003e/, `\u003cmeta property="og:title" content="${route.title}"\u003e`)
-    .replace(/\u003cmeta property="og:description" content="[^"]*"\u003e/, `\u003cmeta property="og:description" content="${route.description}"\u003e`)
-    .replace(/\u003cmeta name="twitter:title" content="[^"]*"\u003e/, `\u003cmeta name="twitter:title" content="${route.title}"\u003e`)
-    .replace(/\u003cmeta name="twitter:description" content="[^"]*"\u003e/, `\u003cmeta name="twitter:description" content="${route.description}"\u003e`);
+    .replace(/\u003cmeta name="description" content="[^"]*"\s*\/?\u003e/, `\u003cmeta name="description" content="${route.description}" /\u003e`)
+    .replace(/\u003clink rel="canonical" href="[^"]*"\s*\/?\u003e/, `\u003clink rel="canonical" href="${route.canonical}" /\u003e`)
+    .replace(/\u003cmeta property="og:url" content="[^"]*"\s*\/?\u003e/, `\u003cmeta property="og:url" content="${route.canonical}" /\u003e`)
+    .replace(/\u003cmeta property="og:title" content="[^"]*"\s*\/?\u003e/, `\u003cmeta property="og:title" content="${route.title}" /\u003e`)
+    .replace(/\u003cmeta property="og:description" content="[^"]*"\s*\/?\u003e/, `\u003cmeta property="og:description" content="${route.description}" /\u003e`)
+    .replace(/\u003cmeta name="twitter:title" content="[^"]*"\s*\/?\u003e/, `\u003cmeta name="twitter:title" content="${route.title}" /\u003e`)
+    .replace(/\u003cmeta name="twitter:description" content="[^"]*"\s*\/?\u003e/, `\u003cmeta name="twitter:description" content="${route.description}" /\u003e`);
 
   // Create directory if needed
   const outputPath = path.join(DIST_DIR, route.file);
