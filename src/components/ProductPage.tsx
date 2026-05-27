@@ -356,7 +356,7 @@ export default function ProductPage({ handle }: { handle: string }) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-charcoal-800/50">
               <TrustBadge icon={Truck} title="Free Shipping" subtitle="On select orders" />
               <TrustBadge icon={ShieldCheck} title="Manufacturing Warranty" subtitle="Full coverage" />
-              <TrustBadge icon={RotateCcw} title="30-Day Returns" subtitle="Hassle-free" />
+              <TrustBadge icon={RotateCcw} title="10-Day Returns" subtitle="Hassle-free" />
             </div>
           </div>
         </div>
@@ -563,7 +563,7 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-charcoal-800/50">
               <TrustBadge icon={Truck} title="Free Shipping" subtitle="On select orders" />
               <TrustBadge icon={ShieldCheck} title="Manufacturing Warranty" subtitle="Full coverage" />
-              <TrustBadge icon={RotateCcw} title="30-Day Returns" subtitle="Hassle-free" />
+              <TrustBadge icon={RotateCcw} title="10-Day Returns" subtitle="Hassle-free" />
             </div>
           </div>
         </div>
