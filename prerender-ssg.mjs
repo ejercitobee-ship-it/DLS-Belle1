@@ -41,7 +41,9 @@ for (const route of routes) {
     .replace(/\u003clink rel="canonical" href="[^"]*"\u003e/, `\u003clink rel="canonical" href="${route.canonical}"\u003e`)
     .replace(/\u003cmeta property="og:url" content="[^"]*"\u003e/, `\u003cmeta property="og:url" content="${route.canonical}"\u003e`)
     .replace(/\u003cmeta property="og:title" content="[^"]*"\u003e/, `\u003cmeta property="og:title" content="${route.title}"\u003e`)
-    .replace(/\u003cmeta property="og:description" content="[^"]*"\u003e/, `\u003cmeta property="og:description" content="${route.description}"\u003e`);
+    .replace(/\u003cmeta property="og:description" content="[^"]*"\u003e/, `\u003cmeta property="og:description" content="${route.description}"\u003e`)
+    .replace(/\u003cmeta name="twitter:title" content="[^"]*"\u003e/, `\u003cmeta name="twitter:title" content="${route.title}"\u003e`)
+    .replace(/\u003cmeta name="twitter:description" content="[^"]*"\u003e/, `\u003cmeta name="twitter:description" content="${route.description}"\u003e`);
 
   // Create directory if needed
   const outputPath = path.join(DIST_DIR, route.file);
