@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShoppingBag, Star, ChevronDown, ArrowLeft, Box, Ruler, Layers, Tag, Filter, Luggage, Scissors, Flame, CheckCircle2, Loader2, ZoomIn, X } from 'lucide-react';
+import { ShoppingBag, Star, ChevronDown, Box, Layers, Tag, Filter, Luggage, Scissors, CheckCircle2, Loader2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
@@ -40,6 +40,7 @@ const STATIC_PRODUCTS: StaticProduct[] = [
 
 type DisplayProduct = {
   key: string;
+  handle: string;
   name: string;
   price: string;
   priceNum: number;
@@ -82,6 +83,7 @@ function fromShopify(p: ShopifyProduct): DisplayProduct {
 
   return {
     key: p.id,
+    handle: p.handle,
     name: p.title,
     price: formatMoney(priceObj.amount, priceObj.currencyCode),
     priceNum: parseFloat(priceObj.amount),
@@ -100,7 +102,8 @@ function fromShopify(p: ShopifyProduct): DisplayProduct {
 }
 
 function fromStatic(p: StaticProduct): DisplayProduct {
-  return { key: `static-${p.id}`, ...p };
+  const handle = p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return { key: `static-${p.id}`, handle, ...p };
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -136,185 +139,6 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-// ─── Product detail ───────────────────────────────────────────────────────────
-
-function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: () => void }) {
-  const [added, setAdded] = useState(false);
-  const [descExpanded, setDescExpanded] = useState(false);
-  const [mainImg, setMainImg] = useState<string>('');
-  const [zoomImg, setZoomImg] = useState<string | null>(null);
-  const { addItem } = useCart();
-
-  const handleAdd = () => {
-    addItem({
-      id: product.shopifyVariantId ? `sp-${product.shopifyVariantId}` : `th-${product.key}`,
-      name: product.name,
-      subtitle: product.capacity,
-      price: product.price,
-      priceNum: product.priceNum,
-      image: product.image,
-      category: 'Travel Humidors',
-      shopifyVariantId: product.shopifyVariantId,
-    });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  };
-
-  const images = product.shopifyProduct?.images ?? [];
-  const allImages = images.length > 0 ? images.map((i) => i.url) : [product.image];
-  const activeImg = mainImg || allImages[0];
-
-  return (
-    <>
-      {zoomImg && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
-          onClick={() => setZoomImg(null)}
-        >
-          <button
-            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
-            onClick={() => setZoomImg(null)}
-            aria-label="Close zoom"
-          >
-            <X size={20} />
-          </button>
-          <img
-            src={zoomImg}
-            alt={product.name}
-            className="max-w-full max-h-full object-contain rounded-lg select-none"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
-    <div className="min-h-screen bg-charcoal-950 pt-8 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <button onClick={onBack} className="flex items-center gap-2 text-cream-200/40 hover:text-gold-400 text-sm mb-8 transition-colors group">
-          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-          Back to Travel Humidors
-        </button>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Images */}
-          <div className="relative">
-            <button
-              className="w-full rounded-lg overflow-hidden aspect-square block relative group/img focus:outline-none"
-              onClick={() => setZoomImg(activeImg)}
-              aria-label="View full image"
-            >
-              <img src={activeImg} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" />
-              <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
-              </div>
-            </button>
-            {product.badge && (
-              <span className={`absolute top-4 left-4 text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded pointer-events-none ${badgeStyles[product.badge] || ''}`}>
-                {product.badge}
-              </span>
-            )}
-            {allImages.length > 1 && (
-              <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
-                {allImages.map((url, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setMainImg(url)}
-                    className={`flex-shrink-0 w-16 h-16 rounded overflow-hidden border-2 transition-colors ${activeImg === url ? 'border-gold-500' : 'border-charcoal-700/50 hover:border-gold-600/40'}`}
-                    aria-label={`View image ${i + 1}`}
-                  >
-                    <img src={url} alt="" className="w-full h-full object-cover" loading="lazy" />
-                  </button>
-                ))}
-              </div>
-            )}
-            <div className="absolute -top-3 -left-3 w-16 h-16 border-l-2 border-t-2 border-gold-600/20 pointer-events-none" />
-            <div className="absolute -bottom-3 -right-3 w-16 h-16 border-r-2 border-b-2 border-gold-600/20 pointer-events-none" />
-          </div>
-
-          {/* Info */}
-          <div>
-            <h1 className="font-serif text-3xl md:text-4xl text-white font-bold leading-tight mb-3">
-              {product.name}
-            </h1>
-            {product.rating && (
-              <div className="flex items-center gap-2 mb-5">
-                <StarRating rating={product.rating} />
-                <span className="text-white text-sm font-medium">{product.rating}</span>
-                <span className="text-cream-200/40 text-sm">({product.reviews} reviews)</span>
-              </div>
-            )}
-            <div className="flex items-baseline gap-3 mb-2">
-              <span className="text-3xl font-bold text-white font-serif">{product.price}</span>
-            </div>
-            {product.includesTools && (
-              <div className="flex items-center gap-2 mb-6">
-                <div className="flex items-center gap-1.5 text-xs text-gold-400 bg-gold-700/10 border border-gold-600/20 px-3 py-1 rounded-full">
-                  <Scissors size={11} /> Cutter included
-                </div>
-                <div className="flex items-center gap-1.5 text-xs text-gold-400 bg-gold-700/10 border border-gold-600/20 px-3 py-1 rounded-full">
-                  <Flame size={11} /> Lighter included
-                </div>
-              </div>
-            )}
-            <div className="mb-8">
-              <p className={`text-cream-200/60 leading-relaxed transition-all duration-300 ${descExpanded ? '' : 'line-clamp-3'}`}>
-                {product.description}
-              </p>
-              {product.description.length > 160 && (
-                <button
-                  onClick={() => setDescExpanded(!descExpanded)}
-                  className="mt-2 text-gold-400 text-xs font-medium hover:text-gold-300 transition-colors"
-                >
-                  {descExpanded ? 'Show less' : 'Read more'}
-                </button>
-              )}
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 mb-8">
-              {[
-                { icon: Box, label: 'Capacity', value: product.capacity },
-                { icon: Layers, label: 'Exterior', value: product.finish },
-                { icon: Ruler, label: 'Dimensions', value: product.dimensions ?? 'Compact carry-on' },
-                { icon: Luggage, label: 'Type', value: 'Travel Humidor' },
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="bg-charcoal-900 border border-charcoal-800/60 rounded-lg p-3">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Icon size={13} className="text-gold-500" />
-                    <span className="text-cream-200/40 text-[10px] tracking-[0.2em] uppercase">{label}</span>
-                  </div>
-                  <p className="text-cream-100 text-xs font-medium leading-snug">{value}</p>
-                </div>
-              ))}
-            </div>
-
-            {product.features.length > 0 && (
-              <div className="mb-8">
-                <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">What's Included</p>
-                <ul className="space-y-2">
-                  {product.features.map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-sm text-cream-200/65">
-                      <CheckCircle2 size={13} className="text-gold-500 flex-shrink-0" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={handleAdd}
-                className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded hover:opacity-90 active:scale-95 transition-all"
-              >
-                {added ? <><CheckCircle2 size={16} /> Added to Cart!</> : <><ShoppingBag size={16} /> Add to Cart</>}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </>
-  );
-}
-
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function TravelHumidors() {
@@ -322,7 +146,6 @@ export default function TravelHumidors() {
   const [sortOpen, setSortOpen] = useState(false);
   const [capacityFilter, setCapacityFilter] = useState(0);
   const [filterOpen, setFilterOpen] = useState(false);
-  const [selected, setSelected] = useState<DisplayProduct | null>(null);
   const [addedKey, setAddedKey] = useState<string | null>(null);
   const { addItem } = useCart();
 
@@ -334,6 +157,7 @@ export default function TravelHumidors() {
       : STATIC_PRODUCTS.map(fromStatic);
 
   const handleAddToCart = (e: React.MouseEvent, product: DisplayProduct) => {
+    e.preventDefault();
     e.stopPropagation();
     addItem({
       id: product.shopifyVariantId ? `sp-${product.shopifyVariantId}` : `th-${product.key}`,
@@ -360,8 +184,6 @@ export default function TravelHumidors() {
     if (sort === 'capacity-desc') return b.capacityMax - a.capacityMax;
     return 0;
   });
-
-  if (selected) return <ProductDetail product={selected} onBack={() => setSelected(null)} />;
 
   const heroImage = collectionImage
     || 'https://dunnluxuryselections.com/cdn/shop/collections/Chat-GPT-Image-Apr-15-2026-03-58-42-PM_4b5fd768-7cd5-41d5-95bf-a8e2aa58523e.png';
@@ -487,9 +309,9 @@ export default function TravelHumidors() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {sorted.map((product) => (
-                <div
+                <a
                   key={product.key}
-                  onClick={() => setSelected(product)}
+                  href={`/product/${product.handle}`}
                   className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
                 >
                   <div className="relative overflow-hidden aspect-[4/3] bg-charcoal-900">
@@ -506,7 +328,7 @@ export default function TravelHumidors() {
                       </div>
                     )}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none">
-                      <ZoomIn size={22} className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 drop-shadow-lg" />
+                      <span className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 text-xs tracking-widest uppercase font-medium drop-shadow-lg">View Product</span>
                     </div>
                     {product.badge && (
                       <span className={`absolute top-2.5 left-2.5 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded ${badgeStyles[product.badge] || ''}`}>
@@ -547,10 +369,12 @@ export default function TravelHumidors() {
                       <div className="flex items-baseline gap-2">
                         <span className="text-white font-bold text-base font-serif">{product.price}</span>
                       </div>
-                      <span className="text-gold-400 text-xs font-medium group-hover:text-gold-300 transition-colors">View →</span>
+                      <span className="text-gold-400 text-xs font-medium group-hover:text-gold-300 transition-colors">
+                        View Details →
+                      </span>
                     </div>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           )

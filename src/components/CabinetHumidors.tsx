@@ -3,17 +3,9 @@ import {
   ShoppingBag,
   Star,
   ChevronDown,
-  ArrowLeft,
   CheckCircle2,
   Filter,
-  Layers,
-  Thermometer,
-  Droplets,
   Package,
-  Lock,
-  Maximize2,
-  ZoomIn,
-  X,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
@@ -23,6 +15,7 @@ type Category = 'All' | 'Dual-Zone' | 'Classic Cabinet' | 'Smart Climate';
 
 type DisplayProduct = {
   id: string;
+  handle: string;
   shopifyId: string;
   shopifyVariantId: string;
   name: string;
@@ -50,6 +43,7 @@ type DisplayProduct = {
 const STATIC_PRODUCTS: DisplayProduct[] = [
   {
     id: 'ch-1',
+    handle: 'raching-sd800',
     shopifyId: '',
     shopifyVariantId: '',
     name: 'Raching SD800',
@@ -74,6 +68,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
   },
   {
     id: 'ch-2',
+    handle: 'raching-cs600',
     shopifyId: '',
     shopifyVariantId: '',
     name: 'Raching CS600',
@@ -98,6 +93,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
   },
   {
     id: 'ch-3',
+    handle: 'bermuda-cabinet',
     shopifyId: '',
     shopifyVariantId: '',
     name: 'Bermuda',
@@ -121,6 +117,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
   },
   {
     id: 'ch-4',
+    handle: 'spartacus-cabinet',
     shopifyId: '',
     shopifyVariantId: '',
     name: 'Spartacus',
@@ -185,6 +182,7 @@ function fromShopify(p: ShopifyProduct): DisplayProduct {
 
   return {
     id: `shopify-${p.id}`,
+    handle: p.handle,
     shopifyId: p.id,
     shopifyVariantId: variantId,
     name: p.title,
@@ -237,211 +235,10 @@ function SkeletonCard() {
   );
 }
 
-function ProductDetail({ product, onBack }: { product: DisplayProduct; onBack: () => void }) {
-  const [added, setAdded] = useState(false);
-  const [mainImg, setMainImg] = useState(product.image);
-  const [descExpanded, setDescExpanded] = useState(false);
-  const [zoomImg, setZoomImg] = useState<string | null>(null);
-  const { addItem } = useCart();
-
-  const allImages = product.images.length ? product.images : [product.image].filter(Boolean);
-
-  const handleAdd = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      subtitle: product.subtitle,
-      price: product.price,
-      priceNum: product.priceNum,
-      image: product.image,
-      category: product.category,
-      shopifyVariantId: product.shopifyVariantId || undefined,
-    });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  };
-
-  return (
-    <>
-      {zoomImg && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
-          onClick={() => setZoomImg(null)}
-        >
-          <button
-            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
-            onClick={() => setZoomImg(null)}
-            aria-label="Close zoom"
-          >
-            <X size={20} />
-          </button>
-          <img
-            src={zoomImg}
-            alt={product.name}
-            className="max-w-full max-h-full object-contain rounded-lg select-none"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
-    <div className="min-h-screen bg-charcoal-950 pt-8 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-cream-200/40 hover:text-gold-400 text-sm mb-8 transition-colors group"
-        >
-          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-          Back to Cabinet Humidors
-        </button>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Images */}
-          <div className="relative">
-            <button
-              className="w-full rounded-lg overflow-hidden aspect-[4/5] block relative group/img focus:outline-none"
-              onClick={() => setZoomImg(mainImg || product.image)}
-              aria-label="View full image"
-            >
-              <img src={mainImg || product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" />
-              <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
-              </div>
-            </button>
-            {product.badge && (
-              <span className={`absolute top-4 left-4 text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded pointer-events-none ${badgeStyles[product.badge] || 'bg-charcoal-700 text-white'}`}>
-                {product.badge}
-              </span>
-            )}
-            {allImages.length > 1 && (
-              <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
-                {allImages.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setMainImg(img)}
-                    className={`flex-shrink-0 w-16 h-16 rounded overflow-hidden border-2 transition-colors ${mainImg === img ? 'border-gold-500' : 'border-charcoal-700/50 hover:border-gold-600/40'}`}
-                    aria-label={`View image ${i + 1}`}
-                  >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            )}
-            <div className="absolute -top-3 -left-3 w-16 h-16 border-l-2 border-t-2 border-gold-600/20 pointer-events-none" />
-            <div className="absolute -bottom-3 -right-3 w-16 h-16 border-r-2 border-b-2 border-gold-600/20 pointer-events-none" />
-          </div>
-
-          {/* Info */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <span className={`text-[10px] tracking-[0.3em] uppercase font-semibold border px-2.5 py-1 rounded-full ${
-                product.category === 'Dual-Zone'
-                  ? 'text-emerald-400 border-emerald-600/30 bg-emerald-700/10'
-                  : product.category === 'Smart Climate'
-                  ? 'text-sky-400 border-sky-600/30 bg-sky-700/10'
-                  : 'text-amber-400 border-amber-600/30 bg-amber-700/10'
-              }`}>
-                {product.category}
-              </span>
-            </div>
-
-            <h1 className="font-serif text-3xl md:text-4xl text-white font-bold leading-tight mb-1">
-              {product.name}
-            </h1>
-            <p className="text-cream-200/50 italic text-lg mb-4">{product.subtitle}</p>
-
-            {product.rating && (
-              <div className="flex items-center gap-2 mb-5">
-                <StarRating rating={product.rating} />
-                <span className="text-white text-sm font-medium">{product.rating}</span>
-                <span className="text-cream-200/40 text-sm">({product.reviews} reviews)</span>
-              </div>
-            )}
-
-            <div className="flex items-baseline gap-3 mb-6">
-              <span className="text-3xl font-bold text-white font-serif">{product.price}</span>
-            </div>
-
-            <div className="mb-8">
-              <p className={`text-cream-200/60 leading-relaxed transition-all duration-300 ${descExpanded ? '' : 'line-clamp-3'}`}>
-                {product.description}
-              </p>
-              {product.description.length > 160 && (
-                <button
-                  onClick={() => setDescExpanded(!descExpanded)}
-                  className="mt-2 text-gold-400 text-xs font-medium hover:text-gold-300 transition-colors"
-                >
-                  {descExpanded ? 'Show less' : 'Read more'}
-                </button>
-              )}
-            </div>
-
-            {/* Specs grid */}
-            <div className="grid grid-cols-2 gap-3 mb-8">
-              {[
-                { icon: Package, label: 'Capacity', value: product.capacity },
-                { icon: Layers, label: 'Finish', value: product.finish },
-                { icon: Droplets, label: 'Humidification', value: product.humidification },
-                ...(product.dimensions ? [{ icon: Maximize2, label: 'Dimensions', value: product.dimensions }] : []),
-                { icon: Thermometer, label: 'Material', value: product.material },
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="bg-charcoal-900 border border-charcoal-800/60 rounded-lg p-3">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Icon size={13} className="text-gold-500" />
-                    <span className="text-cream-200/40 text-[10px] tracking-[0.2em] uppercase">{label}</span>
-                  </div>
-                  <p className="text-cream-100 text-xs font-medium leading-snug">{value}</p>
-                </div>
-              ))}
-            </div>
-
-            {product.storage.length > 0 && (
-              <div className="mb-6">
-                <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Storage Configuration</p>
-                <ul className="space-y-2">
-                  {product.storage.map((s) => (
-                    <li key={s} className="flex items-start gap-3 text-sm text-cream-200/65">
-                      <CheckCircle2 size={13} className="text-gold-500 flex-shrink-0 mt-0.5" />
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {product.features.length > 0 && (
-              <div className="mb-8">
-                <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Key Features</p>
-                <ul className="space-y-2">
-                  {product.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-sm text-cream-200/65">
-                      <Lock size={11} className="text-gold-500/60 flex-shrink-0 mt-0.5" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={handleAdd}
-                className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded hover:opacity-90 active:scale-95 transition-all"
-              >
-                {added ? <><CheckCircle2 size={16} /> Added to Cart!</> : <><ShoppingBag size={16} /> Add to Cart</>}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </>
-  );
-}
-
 export default function CabinetHumidors() {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
   const [sort, setSort] = useState('featured');
   const [sortOpen, setSortOpen] = useState(false);
-  const [selected, setSelected] = useState<DisplayProduct | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
 
@@ -452,6 +249,7 @@ export default function CabinetHumidors() {
     : STATIC_PRODUCTS;
 
   const handleAddToCart = (e: React.MouseEvent, product: DisplayProduct) => {
+    e.preventDefault();
     e.stopPropagation();
     addItem({
       id: product.id,
@@ -477,8 +275,6 @@ export default function CabinetHumidors() {
     if (sort === 'capacity-desc') return b.capacityNum - a.capacityNum;
     return 0;
   });
-
-  if (selected) return <ProductDetail product={selected} onBack={() => setSelected(null)} />;
 
   const heroImage = collectionImage || 'https://dunnluxuryselections.com/cdn/shop/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png';
 
@@ -592,9 +388,9 @@ export default function CabinetHumidors() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {sorted.map((product) => (
-              <div
+              <a
                 key={product.id}
-                onClick={() => setSelected(product)}
+                href={`/product/${product.handle}`}
                 className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
               >
                 {/* Image */}
@@ -612,7 +408,7 @@ export default function CabinetHumidors() {
                     </div>
                   )}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none">
-                    <ZoomIn size={22} className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 drop-shadow-lg" />
+                    <span className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 text-xs tracking-widest uppercase font-medium drop-shadow-lg">View Product</span>
                   </div>
                   {product.badge && (
                     <span className={`absolute top-2.5 left-2.5 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded ${badgeStyles[product.badge] || 'bg-charcoal-700 text-white'}`}>
@@ -663,7 +459,7 @@ export default function CabinetHumidors() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         )}

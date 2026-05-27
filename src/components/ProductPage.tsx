@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { fetchProductByHandle, type ShopifyProduct } from '../lib/shopify';
+import { getStaticProduct, type StaticProductData } from '../lib/staticProducts';
 import { getProductPrice, getDefaultVariantId, formatMoney } from '../hooks/useShopifyCollection';
 import { usePageMeta } from '../hooks/usePageMeta';
 
@@ -54,6 +55,7 @@ function TrustBadge({ icon: Icon, title, subtitle }: { icon: typeof Truck; title
 
 export default function ProductPage({ handle }: { handle: string }) {
   const [product, setProduct] = useState<ShopifyProduct | null>(null);
+  const [staticProduct, setStaticProduct] = useState<StaticProductData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -67,12 +69,16 @@ export default function ProductPage({ handle }: { handle: string }) {
   usePageMeta({
     title: product
       ? `${product.title} | Dunn's Luxury Selections`
+      : staticProduct
+      ? `${staticProduct.name} | Dunn's Luxury Selections`
       : "Dunn's Luxury Selections | Humidor Collections",
     description: product?.description
       ? product.description.slice(0, 160)
+      : staticProduct?.description
+      ? staticProduct.description.slice(0, 160)
       : 'Explore luxury humidors and cigar accessories.',
     canonicalPath: `/product/${handle}`,
-    ogImage: product?.featuredImage?.url,
+    ogImage: product?.featuredImage?.url ?? staticProduct?.image,
   });
 
   useEffect(() => {
@@ -88,14 +94,31 @@ export default function ProductPage({ handle }: { handle: string }) {
         if (!cancelled) {
           if (p) {
             setProduct(p);
+            setStaticProduct(null);
             setSelectedImage(0);
             setSelectedVariant(0);
           } else {
-            setError('Product not found');
+            // Check static products fallback
+            const sp = getStaticProduct(handle);
+            if (sp) {
+              setStaticProduct(sp);
+              setProduct(null);
+            } else {
+              setError('Product not found');
+            }
           }
         }
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load product');
+        if (!cancelled) {
+          // On API error, try static fallback
+          const sp = getStaticProduct(handle);
+          if (sp) {
+            setStaticProduct(sp);
+            setProduct(null);
+          } else {
+            setError(err instanceof Error ? err.message : 'Failed to load product');
+          }
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -119,7 +142,7 @@ export default function ProductPage({ handle }: { handle: string }) {
     );
   }
 
-  if (error || !product) {
+  if (error || (!product && !staticProduct)) {
     return (
       <div className="min-h-screen bg-charcoal-950 flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-charcoal-900 border border-red-500/30 rounded-lg p-8 text-center">
@@ -137,7 +160,12 @@ export default function ProductPage({ handle }: { handle: string }) {
     );
   }
 
-  const prod = product;
+  // Render static product if no Shopify product
+  if (staticProduct) {
+    return <StaticProductPage product={staticProduct} />;
+  }
+
+  const prod = product!;
   const { price, compareAt } = getProductPrice(prod);
   const variant = prod.variants[selectedVariant] ?? prod.variants[0];
   const variantPrice = variant
@@ -413,6 +441,187 @@ export default function ProductPage({ handle }: { handle: string }) {
           <img
             src={zoomImage}
             alt={prod.title}
+            className="max-w-full max-h-full object-contain rounded-lg select-none"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Static Product Page ────────────────────────────────────────────────────── */
+
+function StaticProductPage({ product }: { product: StaticProductData }) {
+  const [added, setAdded] = useState(false);
+  const [zoomImage, setZoomImage] = useState<string | null>(null);
+  const { addItem } = useCart();
+
+  // const allImages = product.images.length ? product.images : [product.image].filter(Boolean);
+
+  function handleAddToCart() {
+    addItem({
+      id: product.id,
+      name: product.name,
+      subtitle: product.subtitle,
+      price: product.price,
+      priceNum: product.priceNum,
+      image: product.image,
+      category: product.category,
+    });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  }
+
+  return (
+    <div className="min-h-screen bg-charcoal-950 pb-24">
+      {/* Breadcrumb */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
+        <button
+          onClick={() => window.history.back()}
+          className="inline-flex items-center gap-2 text-cream-200/40 hover:text-gold-400 text-xs tracking-widest uppercase font-medium transition-colors group"
+        >
+          <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+          Back
+        </button>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
+          {/* Images */}
+          <div className="space-y-3">
+            <div className="relative aspect-square bg-charcoal-900 rounded-xl overflow-hidden border border-charcoal-800/50 group">
+              {product.image ? (
+                <>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                  <button
+                    onClick={() => setZoomImage(product.image)}
+                    className="absolute top-4 right-4 w-10 h-10 bg-charcoal-950/80 backdrop-blur-sm border border-charcoal-700/50 rounded-full flex items-center justify-center text-cream-200/60 hover:text-gold-400 hover:border-gold-500/40 transition-all opacity-0 group-hover:opacity-100"
+                    aria-label="Zoom image"
+                  >
+                    <ZoomIn size={16} />
+                  </button>
+                </>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-cream-200/20 text-xs tracking-widest uppercase">No Image</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Info */}
+          <div className="flex flex-col">
+            <span className="text-gold-500/70 text-[10px] tracking-[0.4em] uppercase mb-2">
+              {product.category}
+            </span>
+
+            <h1 className="font-serif text-3xl md:text-4xl text-white font-bold leading-tight mb-3">
+              {product.name}
+            </h1>
+
+            <div className="flex items-center gap-2 mb-5">
+              <Stars rating={product.rating ?? 4.8} />
+              <span className="text-cream-200/40 text-xs">{product.rating ?? 4.8} · Verified Reviews</span>
+            </div>
+
+            <div className="flex items-baseline gap-3 mb-6 pb-6 border-b border-charcoal-800/50">
+              <span className="text-3xl font-bold text-white font-serif">{product.price}</span>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-cream-200/60 leading-relaxed text-sm">{product.description}</p>
+            </div>
+
+            <div className="mb-8">
+              <button
+                onClick={handleAddToCart}
+                disabled={added}
+                className="w-full flex items-center justify-center gap-3 bg-gold-gradient text-charcoal-950 font-bold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-70"
+              >
+                {added ? (
+                  <>
+                    <CheckCircle2 size={16} />
+                    Added to Cart!
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag size={16} />
+                    Add to Cart
+                  </>
+                )}
+              </button>
+              <p className="text-cream-200/25 text-[10px] text-center mt-3 tracking-wide">
+                Free shipping on selected items. Taxes calculated at checkout.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-charcoal-800/50">
+              <TrustBadge icon={Truck} title="Free Shipping" subtitle="On select orders" />
+              <TrustBadge icon={ShieldCheck} title="2-Year Warranty" subtitle="Full coverage" />
+              <TrustBadge icon={RotateCcw} title="30-Day Returns" subtitle="Hassle-free" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Details */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="border-t border-charcoal-800/50 pt-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-2">
+              <h2 className="font-serif text-2xl text-white font-bold mb-6">Product Details</h2>
+              {product.features.length > 0 && (
+                <ul className="space-y-3">
+                  {product.features.map((f) => (
+                    <li key={f} className="flex items-start gap-3 text-sm text-cream-200/65">
+                      <CheckCircle2 size={14} className="text-gold-500 flex-shrink-0 mt-0.5" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="space-y-8">
+              {product.specs && (
+                <div>
+                  <h3 className="text-white text-xs font-semibold tracking-[0.3em] uppercase mb-4">Specifications</h3>
+                  <div className="space-y-2 text-sm">
+                    {Object.entries(product.specs).map(([key, value]) => (
+                      <div key={key} className="flex justify-between">
+                        <span className="text-cream-200/40 capitalize">{key}</span>
+                        <span className="text-cream-100 text-right max-w-[60%]">{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Zoom Modal */}
+      {zoomImage && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
+          onClick={() => setZoomImage(null)}
+        >
+          <button
+            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
+            onClick={() => setZoomImage(null)}
+            aria-label="Close zoom"
+          >
+            <X size={20} />
+          </button>
+          <img
+            src={zoomImage}
+            alt={product.name}
             className="max-w-full max-h-full object-contain rounded-lg select-none"
             onClick={(e) => e.stopPropagation()}
           />
