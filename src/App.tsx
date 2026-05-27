@@ -11,6 +11,7 @@ import Newsletter from './components/Newsletter';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
 import ErrorBoundary from './components/ErrorBoundary';
+import LeadPopup from './components/LeadPopup';
 import { CartProvider, useCart } from './context/CartContext';
 import { usePageMeta } from './hooks/usePageMeta';
 
@@ -200,6 +201,7 @@ function AppInner() {
   const [page, setPage] = useState<Page>(getInitialPage);
   const [transitioning, setTransitioning] = useState(false);
   const [displayPage, setDisplayPage] = useState<Page>(getInitialPage);
+  const [showPopup, setShowPopup] = useState(false);
   const pendingPage = useRef<Page | null>(null);
   const { openCart } = useCart();
 
@@ -457,6 +459,16 @@ function AppInner() {
     return () => document.removeEventListener('click', onClick);
   }, [page]);
 
+  // Lead popup — show on first visit after 3 seconds, then hide for 30 days
+  useEffect(() => {
+    const closedAt = localStorage.getItem('leadPopupClosed');
+    const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+    if (closedAt && Date.now() - parseInt(closedAt, 10) < thirtyDays) return;
+
+    const timer = setTimeout(() => setShowPopup(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const isFullPageOverlay = displayPage === 'checkout' || displayPage === 'shopify-setup';
 
   return (
@@ -477,6 +489,8 @@ function AppInner() {
       {!isFullPageOverlay && <Footer />}
 
       <CartDrawer onCheckout={() => navigate('checkout')} />
+
+      {showPopup && <LeadPopup onClose={() => setShowPopup(false)} />}
     </div>
   );
 }
