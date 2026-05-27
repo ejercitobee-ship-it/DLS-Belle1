@@ -23,7 +23,7 @@ export default function ReturnsWarranty() {
               <RotateCcw size={20} className="text-gold-500" />
             </div>
             <h2 className="font-serif text-2xl text-white font-semibold mb-3">Returns Policy</h2>
-            <p className="text-cream-200/55 text-sm leading-relaxed mb-4">We accept returns on most items within <strong className="text-cream-100">30 days</strong> of delivery, provided they are unused and in their original packaging with all accessories and documentation included.</p>
+            <p className="text-cream-200/55 text-sm leading-relaxed mb-4">We accept returns on most items within <strong className="text-cream-100">10 days</strong> of delivery, provided they are unused and in their original packaging with all accessories and documentation included.</p>
             <p className="text-cream-200/55 text-sm leading-relaxed">Returns must be authorised by our team before sending any items back. Please contact us to initiate the process and receive a Return Merchandise Authorisation (RMA) number.</p>
           </div>
           <div className="bg-charcoal-900 border border-charcoal-800/50 rounded-lg p-8">
