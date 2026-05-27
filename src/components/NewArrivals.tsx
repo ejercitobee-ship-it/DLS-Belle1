@@ -15,6 +15,8 @@ import type { ShopifyProduct } from '../lib/shopify';
 
 type Category = 'All' | 'Grand Cabinets' | 'Desktop' | 'Travel';
 
+type ProductCategory = Category | null;
+
 type Product = {
   id: string;
   handle: string;
@@ -24,7 +26,7 @@ type Product = {
   price: string;
   priceNum: number;
   originalPrice?: string;
-  category: Category;
+  category: ProductCategory;
   capacity: string;
   capacityNum: number;
   dimensions?: string;
@@ -393,11 +395,12 @@ const sortOptions = [
   { label: 'Capacity: High to Low', value: 'capacity-desc' },
 ];
 
-function inferCategory(p: ShopifyProduct): Category {
+function inferCategory(p: ShopifyProduct): ProductCategory {
   const t = (p.title + ' ' + p.productType + ' ' + p.tags.join(' ')).toLowerCase();
   if (t.includes('travel') || t.includes('portable')) return 'Travel';
   if (t.includes('desktop') || t.includes('countertop') || t.includes('tabletop')) return 'Desktop';
-  return 'Grand Cabinets';
+  if (t.includes('cabinet') || t.includes('grand') || t.includes('estate') || t.includes('raching') || t.includes('humidor cabinet')) return 'Grand Cabinets';
+  return null;
 }
 
 function fromShopify(p: ShopifyProduct): Product {
@@ -436,7 +439,7 @@ function fromShopify(p: ShopifyProduct): Product {
   };
 }
 
-const categoryColors: Record<Category, { text: string; border: string; bg: string }> = {
+const categoryColors: Record<string, { text: string; border: string; bg: string }> = {
   All: { text: '', border: '', bg: '' },
   'Grand Cabinets': { text: 'text-amber-400', border: 'border-amber-600/30', bg: 'bg-amber-700/10' },
   Desktop: { text: 'text-sky-400', border: 'border-sky-600/30', bg: 'bg-sky-700/10' },
@@ -475,7 +478,7 @@ export default function NewArrivals() {
       price: product.price,
       priceNum: product.priceNum,
       image: product.image,
-      category: product.category,
+      category: product.category || 'New Arrivals',
       shopifyVariantId: product.shopifyVariantId,
     });
     setAddedId(product.id);
@@ -614,7 +617,7 @@ export default function NewArrivals() {
         {/* Product grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {sorted.map((product) => {
-            const cat = categoryColors[product.category];
+            const cat = product.category ? categoryColors[product.category] : null;
             return (
               <a
                 key={product.id}
@@ -637,9 +640,11 @@ export default function NewArrivals() {
                     <Sparkles size={8} /> New
                   </span>
                   {/* Category pill */}
-                  <span className={`absolute top-2.5 right-2.5 text-[9px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-charcoal-950/80 ${cat.text}`}>
-                    {product.category}
-                  </span>
+                  {product.category && cat && (
+                    <span className={`absolute top-2.5 right-2.5 text-[9px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-charcoal-950/80 ${cat.text}`}>
+                      {product.category}
+                    </span>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <button
                     onClick={(e) => handleAddToCart(e, product)}
