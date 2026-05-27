@@ -228,6 +228,7 @@ function AppInner() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMinimized, setPopupMinimized] = useState(false);
   const pendingPage = useRef<Page | null>(null);
+  const initialNavHandled = useRef(false);
   const { openCart } = useCart();
 
   // Set initial page after mount to avoid hydration issues
@@ -235,6 +236,7 @@ function AppInner() {
     const initialPage = getInitialPage();
     setPage(initialPage);
     setDisplayPage(initialPage);
+    initialNavHandled.current = true;
   }, []);
 
   // Dynamic meta tags based on current page
@@ -404,6 +406,9 @@ function AppInner() {
 
   useEffect(() => {
     const onPopState = () => {
+      // Skip if initial navigation hasn't been handled yet
+      if (!initialNavHandled.current) return;
+      
       const path = window.location.pathname.replace(/\/$/, '') || '/'; // Remove trailing slash
       const hash = window.location.hash;
 
@@ -454,7 +459,7 @@ function AppInner() {
       window.removeEventListener('navigate', onNavigate);
       window.removeEventListener('navigate-article', onNavigateArticle);
     };
-  }, [displayPage]);
+  }, []); // Remove displayPage dependency
 
   useEffect(() => {
     // Map both /path and legacy #hash hrefs to page navigation
