@@ -7,6 +7,7 @@ interface PageMeta {
   description: string;
   canonicalPath?: string;
   ogImage?: string;
+  noindex?: boolean;
 }
 
 export function usePageMeta(meta: PageMeta) {
@@ -25,6 +26,15 @@ export function usePageMeta(meta: PageMeta) {
       document.head.appendChild(canonicalLink);
     }
     canonicalLink.href = canonicalUrl;
+
+    // Update or create robots meta
+    let robotsMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+    if (!robotsMeta) {
+      robotsMeta = document.createElement('meta');
+      robotsMeta.name = 'robots';
+      document.head.appendChild(robotsMeta);
+    }
+    robotsMeta.content = meta.noindex ? 'noindex, nofollow' : 'index, follow';
 
     // Update description
     let descMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
@@ -68,5 +78,5 @@ export function usePageMeta(meta: PageMeta) {
     }
 
     // Cleanup not needed — these are global meta tags that should persist
-  }, [meta.title, meta.description, meta.canonicalPath, meta.ogImage]);
+  }, [meta.title, meta.description, meta.canonicalPath, meta.ogImage, meta.noindex]);
 }
