@@ -397,7 +397,15 @@ function AppInner() {
   };
 
   useEffect(() => {
+    let isFirstPopState = true;
+    
     const onPopState = () => {
+      // Skip the first popstate event which fires on initial page load in some browsers
+      if (isFirstPopState) {
+        isFirstPopState = false;
+        return;
+      }
+      
       const path = window.location.pathname.replace(/\/$/, '') || '/'; // Remove trailing slash
       const hash = window.location.hash;
 
