@@ -222,22 +222,14 @@ function PageContent({ page }: { page: Page }) {
 }
 
 function AppInner() {
-  const [page, setPage] = useState<Page>('home'); // Start with home, update after mount
+  // Compute initial page synchronously to avoid hydration mismatch
+  const [page, setPage] = useState<Page>(() => getInitialPage());
   const [transitioning, setTransitioning] = useState(false);
-  const [displayPage, setDisplayPage] = useState<Page>('home');
+  const [displayPage, setDisplayPage] = useState<Page>(() => getInitialPage());
   const [showPopup, setShowPopup] = useState(false);
   const [popupMinimized, setPopupMinimized] = useState(false);
   const pendingPage = useRef<Page | null>(null);
-  const initialNavHandled = useRef(false);
   const { openCart } = useCart();
-
-  // Set initial page after mount to avoid hydration issues
-  useEffect(() => {
-    const initialPage = getInitialPage();
-    setPage(initialPage);
-    setDisplayPage(initialPage);
-    initialNavHandled.current = true;
-  }, []);
 
   // Dynamic meta tags based on current page
   usePageMeta(
@@ -406,9 +398,6 @@ function AppInner() {
 
   useEffect(() => {
     const onPopState = () => {
-      // Skip if initial navigation hasn't been handled yet
-      if (!initialNavHandled.current) return;
-      
       const path = window.location.pathname.replace(/\/$/, '') || '/'; // Remove trailing slash
       const hash = window.location.hash;
 
