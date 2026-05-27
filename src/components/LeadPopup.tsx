@@ -1,198 +1,175 @@
-import { useState, useEffect } from 'react';
-import { X, Gift, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { X, ChevronUp, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 interface LeadPopupProps {
   onClose: () => void;
+  onMinimize?: () => void;
+  isMinimized?: boolean;
+  onRestore?: () => void;
 }
 
-export default function LeadPopup({ onClose }: LeadPopupProps) {
-  const [step, setStep] = useState<'form' | 'success'>('form');
+export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore }: LeadPopupProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [error, setError] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-close on Escape
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
-
-  // Lock body scroll while open
-  useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    if (!name.trim() || !email.trim() || !phone.trim()) {
-      setError('Please fill in all fields.');
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError('Please enter a valid email address.');
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('phone', phone);
-      formData.append('source', 'dunnluxuryselections.com popup');
-
-      const response = await fetch('https://formspree.io/f/xaqklawo', {
-        method: 'POST',
-        body: formData,
-        headers: { Accept: 'application/json' },
-      });
-
-      if (response.ok) {
-        setStep('success');
-        localStorage.setItem('leadPopupClosed', Date.now().toString());
-      } else {
-        const data = await response.json().catch(() => null);
-        if (data?.errors) {
-          setError(data.errors.map((e: { message: string }) => e.message).join('. '));
-        } else {
-          setError('Something went wrong. Please try again.');
-        }
-      }
-    } catch {
-      setError('Network error. Please check your connection and try again.');
-    }
-  };
-
   const handleClose = () => {
-    localStorage.setItem('leadPopupClosed', Date.now().toString());
+    if (status === 'success') {
+      onClose();
+      return;
+    }
+    // If form has data and user hasn't submitted, minimize instead of closing
+    if ((name || email || phone)) {
+      onMinimize?.();
+      return;
+    }
     onClose();
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim()) return;
+
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+        }),
+      });
+
+      const data = await response.json().catch(() => ({ error: 'Network error' }));
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message');
+      }
+
+      setStatus('success');
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    }
+  };
+
+  // Minimized floating button
+  if (isMinimized) {
+    return (
+      <button
+        onClick={onRestore}
+        className="fixed bottom-6 right-6 z-[100] bg-amber-600 hover:bg-amber-500 text-white rounded-full p-3 shadow-lg shadow-amber-900/30 transition-all duration-300 hover:scale-110 animate-bounce"
+        aria-label="Open lead form"
+      >
+        <ChevronUp className="w-5 h-5" />
+      </button>
+    );
+  }
+
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-        onClick={handleClose}
-      />
-
-      {/* Modal */}
-      <div className="relative w-full max-w-md bg-charcoal-900 border border-gold-700/30 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-        {/* Decorative top bar */}
-        <div className="h-1.5 bg-gold-gradient" />
-
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+      <div className="relative bg-charcoal-900 border border-white/10 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in slide-in-from-bottom-4 duration-300">
         {/* Close button */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-charcoal-800/80 text-cream-200/60 hover:text-white hover:bg-charcoal-700 transition-colors"
+          className="absolute top-3 right-3 text-white/50 hover:text-white transition-colors p-1"
           aria-label="Close"
         >
-          <X size={16} />
+          <X className="w-5 h-5" />
         </button>
 
-        {step === 'form' ? (
-          <div className="p-8">
-            {/* Header */}
-            <div className="text-center mb-6">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-gold-700/10 border border-gold-600/20 flex items-center justify-center">
-                <Gift size={24} className="text-gold-500" />
-              </div>
-              <h2 className="font-serif text-2xl text-white font-bold mb-2">
-                Unlock Exclusive Access
-              </h2>
-              <p className="text-cream-200/60 text-sm leading-relaxed">
-                Join the Dunn's Luxury Selections inner circle for early access to new arrivals, private sales, and curated cigar care guides.
+        {status === 'success' ? (
+          <div className="text-center py-6">
+            <CheckCircle className="w-14 h-14 text-emerald-400 mx-auto mb-4" />
+            <h3 className="text-xl font-serif text-white mb-2">Thank You!</h3>
+            <p className="text-white/70 text-sm">
+              Your information has been received. Our team will reach out to you shortly.
+            </p>
+            <button
+              onClick={onClose}
+              className="mt-6 bg-amber-600 hover:bg-amber-500 text-white px-6 py-2.5 rounded-full text-sm font-medium transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="text-center mb-5">
+              <h3 className="text-xl font-serif text-white mb-1">Unlock Exclusive Access</h3>
+              <p className="text-white/60 text-sm">
+                Join our inner circle for early access to rare collections and private events.
               </p>
             </div>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="lead-name" className="block text-cream-200/50 text-xs tracking-widest uppercase mb-1.5">
-                  Full Name
-                </label>
-                <input
-                  id="lead-name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="John Doe"
-                  className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-3 text-cream-100 text-sm placeholder:text-cream-200/20 focus:outline-none focus:border-gold-600/50 focus:ring-1 focus:ring-gold-600/20 transition-all"
-                  autoFocus
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full bg-charcoal-950/50 border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-amber-500/50 transition-colors"
+              />
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full bg-charcoal-950/50 border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-amber-500/50 transition-colors"
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number (optional)"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full bg-charcoal-950/50 border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-amber-500/50 transition-colors"
+              />
 
-              <div>
-                <label htmlFor="lead-email" className="block text-cream-200/50 text-xs tracking-widest uppercase mb-1.5">
-                  Email Address
-                </label>
-                <input
-                  id="lead-email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="john@example.com"
-                  className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-3 text-cream-100 text-sm placeholder:text-cream-200/20 focus:outline-none focus:border-gold-600/50 focus:ring-1 focus:ring-gold-600/20 transition-all"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="lead-phone" className="block text-cream-200/50 text-xs tracking-widest uppercase mb-1.5">
-                  Phone Number
-                </label>
-                <input
-                  id="lead-phone"
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+1 (555) 000-0000"
-                  className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-3 text-cream-100 text-sm placeholder:text-cream-200/20 focus:outline-none focus:border-gold-600/50 focus:ring-1 focus:ring-gold-600/20 transition-all"
-                />
-              </div>
-
-              {error && (
-                <p className="text-red-400 text-xs text-center">{error}</p>
+              {status === 'error' && (
+                <div className="flex items-center gap-2 text-red-400 text-sm bg-red-400/10 rounded-lg px-3 py-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  {errorMessage}
+                </div>
               )}
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-3.5 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all"
+                disabled={status === 'loading'}
+                className="w-full bg-amber-600 hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed text-white py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
               >
-                Get Exclusive Access <ArrowRight size={14} />
+                {status === 'loading' ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    Get Exclusive Access
+                  </>
+                )}
               </button>
-
-              <p className="text-cream-200/30 text-[10px] text-center">
-                We respect your privacy. Unsubscribe at any time.
-              </p>
             </form>
-          </div>
-        ) : (
-          /* Success state */
-          <div className="p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-emerald-700/10 border border-emerald-600/20 flex items-center justify-center">
-              <CheckCircle2 size={32} className="text-emerald-500" />
-            </div>
-            <h2 className="font-serif text-2xl text-white font-bold mb-2">
-              Welcome to the Inner Circle
-            </h2>
-            <p className="text-cream-200/60 text-sm leading-relaxed mb-6">
-              Thank you, <span className="text-gold-400 font-medium">{name}</span>! Check your inbox for a confirmation email. You'll be the first to know about new arrivals and exclusive offers.
+
+            <p className="text-white/40 text-xs text-center mt-3">
+              We respect your privacy. Unsubscribe at any time.
             </p>
-            <button
-              onClick={handleClose}
-              className="inline-flex items-center gap-2 bg-charcoal-800 border border-charcoal-700/60 text-cream-100 text-sm font-medium px-6 py-3 rounded-lg hover:bg-charcoal-700 transition-colors"
-            >
-              Continue Shopping <ArrowRight size={14} />
-            </button>
-          </div>
+          </>
         )}
       </div>
     </div>

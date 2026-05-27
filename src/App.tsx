@@ -204,6 +204,7 @@ function AppInner() {
   const [transitioning, setTransitioning] = useState(false);
   const [displayPage, setDisplayPage] = useState<Page>(getInitialPage);
   const [showPopup, setShowPopup] = useState(false);
+  const [popupMinimized, setPopupMinimized] = useState(false);
   const pendingPage = useRef<Page | null>(null);
   const { openCart } = useCart();
 
@@ -494,7 +495,10 @@ function AppInner() {
     const thirtyDays = 30 * 24 * 60 * 60 * 1000;
     if (closedAt && Date.now() - parseInt(closedAt, 10) < thirtyDays) return;
 
-    const timer = setTimeout(() => setShowPopup(true), 3000);
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+      setPopupMinimized(false);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -519,7 +523,24 @@ function AppInner() {
 
       <CartDrawer onCheckout={() => navigate('checkout')} />
 
-      {showPopup && <LeadPopup onClose={() => setShowPopup(false)} />}
+      {(showPopup || popupMinimized) && (
+        <LeadPopup
+          onClose={() => {
+            setShowPopup(false);
+            setPopupMinimized(false);
+            localStorage.setItem('leadPopupClosed', Date.now().toString());
+          }}
+          onMinimize={() => {
+            setShowPopup(false);
+            setPopupMinimized(true);
+          }}
+          isMinimized={popupMinimized}
+          onRestore={() => {
+            setShowPopup(true);
+            setPopupMinimized(false);
+          }}
+        />
+      )}
     </div>
   );
 }
