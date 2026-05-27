@@ -6,8 +6,21 @@ export const onRequestGet: PagesFunction = async (context) => {
   const url = new URL(request.url);
   const path = url.pathname;
   
-  // Fetch the original HTML
+  // Only process HTML requests (skip CSS, JS, images, etc.)
+  const isAsset = /\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|json|xml|txt)$/i.test(path);
+  if (isAsset) {
+    return context.next();
+  }
+  
+  // Fetch the original response
   const response = await context.next();
+  
+  // Only process HTML responses
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('text/html')) {
+    return response;
+  }
+  
   const html = await response.text();
   
   // Build the canonical URL
