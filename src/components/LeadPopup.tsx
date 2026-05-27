@@ -96,8 +96,9 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
         {/* Close button */}
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 text-cream-200/50 hover:text-cream-100 transition-colors p-1"
+          className="absolute top-3 right-3 z-10 text-cream-200/50 hover:text-cream-100 transition-colors p-1 rounded-md hover:bg-charcoal-800/50"
           aria-label="Close"
+          type="button"
         >
           <X className="w-5 h-5" />
         </button>
