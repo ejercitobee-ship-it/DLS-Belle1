@@ -222,13 +222,20 @@ function PageContent({ page }: { page: Page }) {
 }
 
 function AppInner() {
-  const [page, setPage] = useState<Page>(getInitialPage);
+  const [page, setPage] = useState<Page>('home'); // Start with home, update after mount
   const [transitioning, setTransitioning] = useState(false);
-  const [displayPage, setDisplayPage] = useState<Page>(getInitialPage);
+  const [displayPage, setDisplayPage] = useState<Page>('home');
   const [showPopup, setShowPopup] = useState(false);
   const [popupMinimized, setPopupMinimized] = useState(false);
   const pendingPage = useRef<Page | null>(null);
   const { openCart } = useCart();
+
+  // Set initial page after mount to avoid hydration issues
+  useEffect(() => {
+    const initialPage = getInitialPage();
+    setPage(initialPage);
+    setDisplayPage(initialPage);
+  }, []);
 
   // Dynamic meta tags based on current page
   usePageMeta(
