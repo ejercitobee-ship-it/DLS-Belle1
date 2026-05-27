@@ -46,18 +46,28 @@ export default function LeadPopup({ onClose }: LeadPopupProps) {
     setSubmitting(true);
 
     try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('phone', phone);
+      formData.append('source', 'dunnluxuryselections.com popup');
+
       const response = await fetch('https://formspree.io/f/xpwplwyl', {
         method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, phone, source: 'dunnluxuryselections.com popup' }),
+        body: formData,
+        headers: { Accept: 'application/json' },
       });
 
       if (response.ok) {
         setStep('success');
-        // Store in localStorage so we don't show again for 30 days
         localStorage.setItem('leadPopupClosed', Date.now().toString());
       } else {
-        setError('Something went wrong. Please try again.');
+        const data = await response.json().catch(() => null);
+        if (data?.errors) {
+          setError(data.errors.map((e: { message: string }) => e.message).join('. '));
+        } else {
+          setError('Something went wrong. Please try again.');
+        }
       }
     } catch {
       setError('Network error. Please check your connection and try again.');
