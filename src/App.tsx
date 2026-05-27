@@ -490,6 +490,7 @@ function AppInner() {
   }, [page]);
 
   // Lead popup — show on first visit after 3 seconds, then hide for 30 days
+  const [popupMounted, setPopupMounted] = useState(false);
   useEffect(() => {
     const closedAt = localStorage.getItem('leadPopupClosed');
     const thirtyDays = 30 * 24 * 60 * 60 * 1000;
@@ -498,6 +499,7 @@ function AppInner() {
     const timer = setTimeout(() => {
       setShowPopup(true);
       setPopupMinimized(false);
+      setPopupMounted(true);
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
@@ -523,7 +525,7 @@ function AppInner() {
 
       <CartDrawer onCheckout={() => navigate('checkout')} />
 
-      {(showPopup || popupMinimized) && (
+      {popupMounted && (showPopup || popupMinimized) && (
         <LeadPopup
           onClose={() => {
             setShowPopup(false);

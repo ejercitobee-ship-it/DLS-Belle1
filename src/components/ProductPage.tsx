@@ -174,6 +174,10 @@ export default function ProductPage({ handle }: { handle: string }) {
   const variantCompare = variant?.compareAtPrice
     ? formatMoney(variant.compareAtPrice.amount, variant.compareAtPrice.currencyCode)
     : compareAt;
+  
+  // Only show compare-at price if it's actually higher than the current price (real discount)
+  const hasRealDiscount = variant?.compareAtPrice 
+    && parseFloat(variant.compareAtPrice.amount) > parseFloat(variant.price.amount);
 
   const allImages = prod.images.length
     ? prod.images.map((i) => i.url)
@@ -282,7 +286,7 @@ export default function ProductPage({ handle }: { handle: string }) {
             {/* Price */}
             <div className="flex items-baseline gap-3 mb-6 pb-6 border-b border-charcoal-800/50">
               <span className="text-3xl font-bold text-white font-serif">{variantPrice}</span>
-              {variantCompare && (
+              {hasRealDiscount && variantCompare && (
                 <span className="text-lg text-cream-200/30 line-through">{variantCompare}</span>
               )}
             </div>
