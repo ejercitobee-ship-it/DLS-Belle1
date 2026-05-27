@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShoppingBag, Star, ArrowRight, CheckCircle2, Zap, Loader2, ZoomIn, X } from 'lucide-react';
+import { ShoppingBag, Star, ArrowRight, CheckCircle2, Zap, Loader2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney, getDefaultVariantId } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
@@ -48,6 +48,7 @@ const STATIC_PRODUCTS = [
 
 type DisplayProduct = {
   id: string;
+  handle: string;
   name: string;
   price: string;
   priceNum: number;
@@ -66,6 +67,7 @@ function fromShopify(p: ShopifyProduct): DisplayProduct {
   const image = variant?.image?.url ?? p.featuredImage?.url ?? '';
   return {
     id: `shopify-${p.id}`,
+    handle: p.handle,
     name: p.title,
     price: formatMoney(price.amount, price.currencyCode),
     priceNum: parseFloat(price.amount),
@@ -88,79 +90,6 @@ function StarRating({ rating = 5 }: { rating?: number }) {
   );
 }
 
-function ProductDetailModal({ product, onClose }: { product: DisplayProduct; onClose: () => void }) {
-  const { addItem } = useCart();
-  const [added, setAdded] = useState(false);
-  const [zoomImg, setZoomImg] = useState<string | null>(null);
-
-  const handleAdd = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      priceNum: product.priceNum,
-      image: product.image,
-      category: 'Electronic Humidors',
-      shopifyVariantId: product.shopifyVariantId,
-    });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  };
-
-  return (
-    <>
-      {zoomImg && (
-        <div className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4" onClick={() => setZoomImg(null)}>
-          <button className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white" onClick={() => setZoomImg(null)}><X size={20} /></button>
-          <img src={zoomImg} alt={product.name} className="max-w-full max-h-full object-contain rounded-lg" onClick={(e) => e.stopPropagation()} />
-        </div>
-      )}
-      <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="fixed inset-x-0 bottom-0 z-50 bg-charcoal-950 rounded-t-2xl overflow-y-auto md:inset-0 md:m-auto md:rounded-xl md:max-w-2xl md:max-h-[85vh]" style={{ maxHeight: '90dvh' }}>
-        <div className="flex justify-center pt-3 pb-1 md:hidden"><div className="w-10 h-1 bg-charcoal-700 rounded-full" /></div>
-        <button onClick={onClose} className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-charcoal-800 text-cream-200/60 hover:text-white"><X size={17} /></button>
-        <div className="px-5 pt-4 pb-8 md:px-8 md:pt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="relative rounded-xl overflow-hidden aspect-square bg-charcoal-900">
-              <button className="w-full h-full block group/img" onClick={() => setZoomImg(product.image)}>
-                <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" />
-                <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 flex items-center justify-center"><ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100" /></div>
-              </button>
-              {product.badge && (
-                <div className="absolute top-3 left-3 bg-gold-gradient text-charcoal-950 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded">{product.badge}</div>
-              )}
-            </div>
-            <div className="flex flex-col">
-              <p className="text-gold-500/70 text-[10px] tracking-[0.4em] uppercase mb-2">Electronic Humidor</p>
-              <h2 className="font-serif text-2xl text-white font-bold leading-tight mb-3">{product.name}</h2>
-              <div className="flex items-baseline gap-3 mb-4">
-                <span className="text-2xl font-bold text-white font-serif">{product.price}</span>
-              </div>
-              <StarRating rating={product.rating} />
-              {product.capacity && (
-                <p className="text-cream-200/50 text-sm mt-3 mb-4">Capacity: <span className="text-cream-100">{product.capacity}</span></p>
-              )}
-              <ul className="space-y-2 mb-6">
-                {product.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-cream-200/65">
-                    <CheckCircle2 size={13} className="text-gold-500 flex-shrink-0" />{f}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto flex flex-col gap-3">
-                <button onClick={handleAdd} className="flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all">
-                  {added ? <><CheckCircle2 size={16} /> Added!</> : <><ShoppingBag size={16} /> Add to Cart</>}
-                </button>
-                <a href="/electronic-humidors" className="text-center text-xs text-gold-400 hover:text-gold-300 transition-colors">View Full Collection →</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-
 function ProductCardSkeleton() {
   return (
     <div className="bg-charcoal-950 rounded-xl overflow-hidden border border-charcoal-800/50 animate-pulse">
@@ -179,15 +108,19 @@ function ProductCardSkeleton() {
 
 export default function ElectronicHumidorsSection() {
   const [addedId, setAddedId] = useState<string | null>(null);
-  const [selected, setSelected] = useState<DisplayProduct | null>(null);
   const { addItem } = useCart();
   const { products: shopifyProducts, loading } = useShopifyCollection('electronic-humidors', 'electronic-hunidors');
 
   const products: DisplayProduct[] = shopifyProducts.length
     ? shopifyProducts.map(fromShopify)
-    : STATIC_PRODUCTS;
+    : STATIC_PRODUCTS.map((p) => ({
+        ...p,
+        id: `static-${p.id}`,
+        handle: p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      }));
 
   const handleAddToCart = (e: React.MouseEvent, product: DisplayProduct) => {
+    e.preventDefault();
     e.stopPropagation();
     addItem({
       id: product.id,
@@ -246,9 +179,9 @@ export default function ElectronicHumidorsSection() {
               {products.slice(0, 8).map((product) => {
                 const isAdded = addedId === product.id;
                 return (
-                  <div
+                  <a
                     key={product.id}
-                    onClick={() => setSelected(product)}
+                    href={`/product/${product.handle}`}
                     className="group bg-charcoal-950 rounded-xl overflow-hidden border border-charcoal-800/50 hover:border-gold-600/50 card-hover cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-gold-900/10"
                   >
                     <div className="relative overflow-hidden aspect-square bg-charcoal-900">
@@ -266,7 +199,7 @@ export default function ElectronicHumidorsSection() {
                         </div>
                       )}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center pointer-events-none">
-                        <ZoomIn size={22} className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 drop-shadow-lg" />
+                        <span className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 text-xs tracking-widest uppercase font-medium drop-shadow-lg">View Product</span>
                       </div>
                     </div>
 
@@ -289,7 +222,7 @@ export default function ElectronicHumidorsSection() {
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 );
               })}
             </div>
@@ -303,8 +236,6 @@ export default function ElectronicHumidorsSection() {
           )}
         </div>
       </section>
-
-      {selected && <ProductDetailModal product={selected} onClose={() => setSelected(null)} />}
     </>
   );
 }

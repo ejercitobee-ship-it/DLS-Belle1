@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Star, ArrowRight, CheckCircle2, X, Loader2, ZoomIn, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ShoppingBag, Star, ArrowRight, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { fetchProductsByTag, fetchProducts, type ShopifyProduct, type ShopifyProductVariant } from '../lib/shopify';
 
@@ -25,232 +25,6 @@ function StarRating({ rating, size = 11 }: { rating: number; size?: number }) {
   );
 }
 
-function ProductDetail({ product, onBack }: { product: ShopifyProduct; onBack: () => void }) {
-  const [added, setAdded] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [descExpanded, setDescExpanded] = useState(false);
-  const [zoomImg, setZoomImg] = useState<string | null>(null);
-  const [selectedVariant, setSelectedVariant] = useState<ShopifyProductVariant | null>(
-    () => getDefaultVariant(product),
-  );
-  const { addItem } = useCart();
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Animate in
-    requestAnimationFrame(() => setVisible(true));
-    // Lock body scroll on mobile
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
-  }, []);
-
-  const handleBack = () => {
-    setVisible(false);
-    setTimeout(onBack, 280);
-  };
-
-  const variant = selectedVariant ?? getDefaultVariant(product);
-  const price = variant?.price ?? product.priceRange.minVariantPrice;
-  const rawCompareAt = variant?.compareAtPrice ?? null;
-  const image = variant?.image ?? product.featuredImage;
-  const priceNum = parseFloat(price.amount);
-  const compareNum = rawCompareAt ? parseFloat(rawCompareAt.amount) : null;
-  // Only treat as a real discount if compareAt is strictly greater than price
-  const _compareAt = compareNum && compareNum > priceNum ? rawCompareAt : null;
-  void _compareAt;
-  const _discount = compareNum && compareNum > priceNum
-    ? Math.round((1 - priceNum / compareNum) * 100)
-    : null;
-  void _discount;
-
-  const handleAdd = () => {
-    if (!variant) return;
-    addItem({
-      id: `sp-${variant.id}`,
-      name: product.title,
-      subtitle: product.productType || undefined,
-      price: formatMoney(price.amount, price.currencyCode),
-      priceNum,
-      image: image?.url ?? '',
-      category: product.productType || undefined,
-      shopifyVariantId: variant.id,
-    });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  };
-
-  return (
-    <>
-      {/* Backdrop */}
-      <div
-        className={`fixed inset-0 z-40 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
-        onClick={handleBack}
-      />
-
-      {/* Drawer — full screen on mobile, centered panel on desktop */}
-      <div
-        ref={scrollRef}
-        className={`fixed inset-x-0 bottom-0 z-50 bg-charcoal-950 rounded-t-2xl overflow-y-auto
-          md:inset-0 md:m-auto md:rounded-xl md:max-w-3xl md:max-h-[90vh] md:shadow-2xl
-          transition-all duration-300 ease-out
-          ${visible
-            ? 'translate-y-0 opacity-100 md:scale-100'
-            : 'translate-y-full opacity-0 md:scale-95'
-          }`}
-        style={{ maxHeight: '92dvh' }}
-      >
-        {/* Handle bar (mobile) */}
-        <div className="md:hidden flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 bg-charcoal-700 rounded-full" />
-        </div>
-
-        {/* Close button */}
-        <button
-          onClick={handleBack}
-          className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-charcoal-800 hover:bg-charcoal-700 text-cream-200/60 hover:text-white transition-colors"
-          aria-label="Close"
-        >
-          <X size={17} />
-        </button>
-
-        <div className="px-4 pt-2 pb-6 md:px-8 md:pt-6 md:pb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-            {/* Image */}
-            <div className="relative rounded-xl overflow-hidden aspect-square bg-charcoal-900">
-              {zoomImg && (
-                <div
-                  className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4"
-                  onClick={() => setZoomImg(null)}
-                >
-                  <button
-                    className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
-                    onClick={() => setZoomImg(null)}
-                    aria-label="Close zoom"
-                  >
-                    <X size={20} />
-                  </button>
-                  <img
-                    src={zoomImg}
-                    alt={product.title}
-                    className="max-w-full max-h-full object-contain rounded-lg select-none"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </div>
-              )}
-              {image && (
-                <button
-                  className="w-full h-full block relative group/img focus:outline-none"
-                  onClick={() => setZoomImg(image.url)}
-                  aria-label="View full image"
-                >
-                  <img
-                    src={image.url}
-                    alt={image.altText ?? product.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                    <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
-                  </div>
-                </button>
-              )}
-
-            </div>
-
-            {/* Info */}
-            <div className="flex flex-col">
-              {product.productType && (
-                <p className="text-gold-500/70 text-[10px] tracking-[0.4em] uppercase mb-2">
-                  {product.productType}
-                </p>
-              )}
-              <h2 className="font-serif text-2xl md:text-3xl text-white font-bold leading-tight mb-4">
-                {product.title}
-              </h2>
-
-              <div className="flex items-baseline gap-3 mb-4">
-                <span className="text-2xl md:text-3xl font-bold text-white font-serif">
-                  {formatMoney(price.amount, price.currencyCode)}
-                </span>
-
-              </div>
-
-              <StarRating rating={5} size={13} />
-
-              {product.description && (
-                <div className="mt-4 mb-4">
-                  <p className={`text-cream-200/60 text-sm leading-relaxed transition-all duration-300 ${descExpanded ? '' : 'line-clamp-2'}`}>
-                    {product.description}
-                  </p>
-                  {product.description.length > 120 && (
-                    <button
-                      onClick={() => setDescExpanded(!descExpanded)}
-                      className="mt-1.5 text-gold-400 text-xs font-medium hover:text-gold-300 transition-colors"
-                    >
-                      {descExpanded ? 'Show less' : 'Read more'}
-                    </button>
-                  )}
-                </div>
-              )}
-
-              {/* Variant selector */}
-              {product.variants.length > 1 && (
-                <div className="mb-5">
-                  <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Select Option</p>
-                  <div className="flex flex-wrap gap-2">
-                    {product.variants.map((v) => (
-                      <button
-                        key={v.id}
-                        onClick={() => setSelectedVariant(v)}
-                        disabled={!v.availableForSale}
-                        className={`px-4 py-2.5 text-xs rounded border transition-colors ${
-                          selectedVariant?.id === v.id
-                            ? 'border-gold-500 bg-gold-700/20 text-gold-300'
-                            : 'border-charcoal-700 text-cream-200/60 hover:border-gold-600/50 hover:text-cream-100 disabled:opacity-30 disabled:cursor-not-allowed'
-                        }`}
-                      >
-                        {v.title}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Tags */}
-              {product.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {product.tags.slice(0, 4).map((tag) => (
-                    <span key={tag} className="text-[10px] tracking-wider uppercase text-cream-200/30 border border-charcoal-700 px-2.5 py-1 rounded">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {/* CTAs — sticky at bottom on mobile */}
-              <div className="mt-auto flex flex-col sm:flex-row gap-3 pt-2">
-                <button
-                  onClick={handleAdd}
-                  disabled={!variant?.availableForSale}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {added ? (
-                    <><CheckCircle2 size={16} /> Added to Cart!</>
-                  ) : !variant?.availableForSale ? (
-                    'Out of Stock'
-                  ) : (
-                    <><ShoppingBag size={16} /> Add to Cart</>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-
 function ProductCardSkeleton() {
   return (
     <div className="bg-charcoal-950 rounded-xl overflow-hidden border border-charcoal-800/50 animate-pulse">
@@ -273,7 +47,6 @@ export default function FeaturedProducts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [addedId, setAddedId] = useState<string | null>(null);
-  const [selected, setSelected] = useState<ShopifyProduct | null>(null);
   const { addItem } = useCart();
 
   useEffect(() => {
@@ -300,6 +73,7 @@ export default function FeaturedProducts() {
   }, []);
 
   const handleAddToCart = (e: React.MouseEvent, product: ShopifyProduct) => {
+    e.preventDefault();
     e.stopPropagation();
     const variant = getDefaultVariant(product);
     if (!variant) return;
@@ -377,9 +151,9 @@ export default function FeaturedProducts() {
                 const isAdded = addedId === variantId;
 
                 return (
-                  <div
+                  <a
                     key={product.id}
-                    onClick={() => setSelected(product)}
+                    href={`/product/${product.handle}`}
                     className="group bg-charcoal-950 rounded-xl overflow-hidden border border-charcoal-800/50 hover:border-gold-600/50 card-hover cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-gold-900/10"
                   >
                     {/* Image */}
@@ -408,7 +182,7 @@ export default function FeaturedProducts() {
 
                       {inStock && (
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center pointer-events-none">
-                          <ZoomIn size={22} className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 drop-shadow-lg" />
+                          <span className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 text-xs tracking-widest uppercase font-medium drop-shadow-lg">View Product</span>
                         </div>
                       )}
                       {!inStock && (
@@ -455,18 +229,13 @@ export default function FeaturedProducts() {
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 );
               })}
             </div>
           )}
         </div>
       </section>
-
-      {/* Product detail modal */}
-      {selected && (
-        <ProductDetail product={selected} onBack={() => setSelected(null)} />
-      )}
     </>
   );
 }

@@ -3,20 +3,11 @@ import {
   ShoppingBag,
   Star,
   ChevronDown,
-  ArrowLeft,
-  CheckCircle2,
   Filter,
   Sparkles,
   Package,
-  Thermometer,
-  Droplets,
-  Maximize2,
-  Layers,
-  Lock,
   Zap,
   CheckCircle2 as Check,
-  ZoomIn,
-  X,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
@@ -26,6 +17,7 @@ type Category = 'All' | 'Grand Cabinets' | 'Desktop' | 'Travel';
 
 type Product = {
   id: string;
+  handle: string;
   shopifyVariantId?: string;
   name: string;
   subtitle: string;
@@ -53,6 +45,7 @@ type Product = {
 const STATIC_PRODUCTS: Product[] = [
   {
     id: 'na-1',
+    handle: 'raching-rr980-grand-estate-cigar-humidor',
     name: 'Raching RR980',
     subtitle: 'Grand Estate Cigar Humidor',
     price: '$8,255',
@@ -89,6 +82,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     id: 'na-2',
+    handle: 'raching-ct48a-stainless-steel-grand-humidor',
     name: 'Raching CT48A',
     subtitle: 'Stainless Steel Grand Humidor',
     price: '$6,350',
@@ -124,6 +118,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     id: 'na-3',
+    handle: 'raching-sd800-dual-zone-cigar-wine-cabinet',
     name: 'Raching SD800',
     subtitle: 'Dual-Zone Cigar & Wine Cabinet',
     price: '$7,600',
@@ -159,6 +154,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     id: 'na-4',
+    handle: 'raching-cs600-luxury-wine-cigar-humidor-cabinet',
     name: 'Raching CS600',
     subtitle: 'Luxury Wine & Cigar Humidor Cabinet',
     price: '$4,450',
@@ -193,6 +189,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     id: 'na-5',
+    handle: 'marciano-countertop-display-humidor-250-cigars',
     name: 'Marciano',
     subtitle: 'Countertop Display Humidor — 250 Cigars',
     price: '$420',
@@ -227,6 +224,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     id: 'na-6',
+    handle: 'modena-desktop-display-humidor-100-cigars',
     name: 'Modena',
     subtitle: 'Desktop Display Humidor — 100 Cigars',
     price: '$178',
@@ -260,6 +258,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     id: 'na-7',
+    handle: 'santiago-end-table-humidor-700-cigars',
     name: 'Santiago',
     subtitle: 'End Table Humidor — 700 Cigars',
     price: '$570',
@@ -294,6 +293,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     id: 'na-8',
+    handle: 'traveler-15-travel-humidor-by-humidor-supreme',
     name: 'Traveler 15',
     subtitle: 'Travel Humidor by Humidor Supreme®',
     price: '$42',
@@ -323,6 +323,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     id: 'na-9',
+    handle: 'traveler-5-travel-humidor-by-humidor-supreme',
     name: 'Traveler 5',
     subtitle: 'Travel Humidor by Humidor Supreme®',
     price: '$34',
@@ -352,6 +353,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     id: 'na-10',
+    handle: 'traveler-10-desktop-travel-humidor-by-humidor-supreme',
     name: 'Traveler 10',
     subtitle: 'Desktop Travel Humidor by Humidor Supreme®',
     price: '$39',
@@ -411,6 +413,7 @@ function fromShopify(p: ShopifyProduct): Product {
 
   return {
     id: `shopify-${p.id}`,
+    handle: p.handle,
     shopifyVariantId: variantId,
     name: p.title,
     subtitle: p.productType || 'Luxury Humidor',
@@ -450,184 +453,10 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-function ProductDetail({ product, onBack }: { product: Product; onBack: () => void }) {
-  const cat = categoryColors[product.category];
-  const [added, setAdded] = useState(false);
-  const [descExpanded, setDescExpanded] = useState(false);
-  const [zoomImg, setZoomImg] = useState<string | null>(null);
-  const { addItem } = useCart();
-
-  const handleAdd = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      subtitle: product.subtitle,
-      price: product.price,
-      priceNum: product.priceNum,
-      image: product.image,
-      category: product.category,
-      shopifyVariantId: product.shopifyVariantId,
-    });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  };
-  return (
-    <>
-      {zoomImg && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
-          onClick={() => setZoomImg(null)}
-        >
-          <button
-            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-charcoal-800/80 text-white hover:bg-charcoal-700 transition-colors"
-            onClick={() => setZoomImg(null)}
-            aria-label="Close zoom"
-          >
-            <X size={20} />
-          </button>
-          <img
-            src={zoomImg}
-            alt={product.name}
-            className="max-w-full max-h-full object-contain rounded-lg select-none"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
-    <div className="min-h-screen bg-charcoal-950 pt-8 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-cream-200/40 hover:text-gold-400 text-sm mb-8 transition-colors group"
-        >
-          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-          Back to New Arrivals
-        </button>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Image */}
-          <div className="relative">
-            <button
-              className="w-full rounded-lg overflow-hidden aspect-[4/5] block relative group/img focus:outline-none"
-              onClick={() => setZoomImg(product.image)}
-              aria-label="View full image"
-            >
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" loading="lazy" />
-              <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                <ZoomIn size={28} className="text-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
-              </div>
-            </button>
-            <span className="absolute top-4 left-4 flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded bg-gold-600 text-charcoal-950 pointer-events-none">
-              <Sparkles size={10} /> New Arrival
-            </span>
-            <div className="absolute -top-3 -left-3 w-16 h-16 border-l-2 border-t-2 border-gold-600/20 pointer-events-none" />
-            <div className="absolute -bottom-3 -right-3 w-16 h-16 border-r-2 border-b-2 border-gold-600/20 pointer-events-none" />
-          </div>
-
-          {/* Info */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <span className={`text-[10px] tracking-[0.3em] uppercase font-semibold border px-2.5 py-1 rounded-full ${cat.text} ${cat.border} ${cat.bg}`}>
-                {product.category}
-              </span>
-            </div>
-
-            <h1 className="font-serif text-3xl md:text-4xl text-white font-bold leading-tight mb-1">
-              {product.name}
-            </h1>
-            <p className="text-cream-200/50 italic text-lg mb-4">{product.subtitle}</p>
-
-            {product.rating && (
-              <div className="flex items-center gap-2 mb-5">
-                <StarRating rating={product.rating} />
-                <span className="text-white text-sm font-medium">{product.rating}</span>
-                <span className="text-cream-200/40 text-sm">({product.reviews} reviews)</span>
-              </div>
-            )}
-
-            <div className="flex items-baseline gap-3 mb-6">
-              <span className="text-3xl font-bold text-white font-serif">{product.price}</span>
-            </div>
-
-            <div className="mb-8">
-              <p className={`text-cream-200/60 leading-relaxed transition-all duration-300 ${descExpanded ? '' : 'line-clamp-3'}`}>
-                {product.description}
-              </p>
-              {product.description.length > 160 && (
-                <button
-                  onClick={() => setDescExpanded(!descExpanded)}
-                  className="mt-2 text-gold-400 text-xs font-medium hover:text-gold-300 transition-colors"
-                >
-                  {descExpanded ? 'Show less' : 'Read more'}
-                </button>
-              )}
-            </div>
-
-            {/* Specs grid */}
-            <div className="grid grid-cols-2 gap-3 mb-8">
-              {[
-                { icon: Package, label: 'Capacity', value: product.capacity },
-                { icon: Layers, label: 'Finish', value: product.finish },
-                { icon: Droplets, label: 'Humidification', value: product.humidification },
-                ...(product.dimensions ? [{ icon: Maximize2, label: 'Dimensions', value: product.dimensions }] : []),
-                { icon: Thermometer, label: 'Material', value: product.material },
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="bg-charcoal-900 border border-charcoal-800/60 rounded-lg p-3">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Icon size={13} className="text-gold-500" />
-                    <span className="text-cream-200/40 text-[10px] tracking-[0.2em] uppercase">{label}</span>
-                  </div>
-                  <p className="text-cream-100 text-xs font-medium leading-snug">{value}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Storage */}
-            <div className="mb-6">
-              <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Storage Configuration</p>
-              <ul className="space-y-2">
-                {product.storage.map((s) => (
-                  <li key={s} className="flex items-start gap-3 text-sm text-cream-200/65">
-                    <CheckCircle2 size={13} className="text-gold-500 flex-shrink-0 mt-0.5" />
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Features */}
-            <div className="mb-8">
-              <p className="text-cream-200/40 text-[10px] tracking-[0.3em] uppercase mb-3">Key Features</p>
-              <ul className="space-y-2">
-                {product.features.map((f) => (
-                  <li key={f} className="flex items-start gap-3 text-sm text-cream-200/65">
-                    <Lock size={11} className="text-gold-500/60 flex-shrink-0 mt-0.5" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={handleAdd}
-                className="flex-1 flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded hover:opacity-90 active:scale-95 transition-all"
-              >
-                {added ? <><Check size={16} /> Added!</> : <><ShoppingBag size={16} /> Add to Cart</>}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </>
-  );
-}
-
 export default function NewArrivals() {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
   const [sort, setSort] = useState('featured');
   const [sortOpen, setSortOpen] = useState(false);
-  const [selected, setSelected] = useState<Product | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
 
@@ -637,6 +466,7 @@ export default function NewArrivals() {
     : STATIC_PRODUCTS;
 
   const handleAddToCart = useCallback((e: React.MouseEvent, product: Product) => {
+    e.preventDefault();
     e.stopPropagation();
     addItem({
       id: product.id,
@@ -662,8 +492,6 @@ export default function NewArrivals() {
     if (sort === 'capacity-desc') return b.capacityNum - a.capacityNum;
     return 0;
   });
-
-  if (selected) return <ProductDetail product={selected} onBack={() => setSelected(null)} />;
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
@@ -788,9 +616,9 @@ export default function NewArrivals() {
           {sorted.map((product) => {
             const cat = categoryColors[product.category];
             return (
-              <div
+              <a
                 key={product.id}
-                onClick={() => setSelected(product)}
+                href={`/product/${product.handle}`}
                 className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
               >
                 {/* Image */}
@@ -802,7 +630,7 @@ export default function NewArrivals() {
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none">
-                    <ZoomIn size={22} className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 drop-shadow-lg" />
+                    <span className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 text-xs tracking-widest uppercase font-medium drop-shadow-lg">View Product</span>
                   </div>
                   {/* New badge */}
                   <span className="absolute top-2.5 left-2.5 flex items-center gap-1 text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded bg-gold-600 text-charcoal-950">
@@ -847,11 +675,11 @@ export default function NewArrivals() {
                       <span className="text-white font-bold text-base font-serif">{product.price}</span>
                     </div>
                     <span className="text-gold-400 text-xs font-medium group-hover:text-gold-300 transition-colors">
-                      View →
+                      View Details →
                     </span>
                   </div>
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>
