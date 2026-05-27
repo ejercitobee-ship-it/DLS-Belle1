@@ -27,7 +27,13 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
       onClose();
       return;
     }
-    onMinimize?.();
+    // If form has data entered, minimize to bubble instead of closing
+    if (name.trim() || email.trim() || phone.trim()) {
+      onMinimize?.();
+      return;
+    }
+    // Form is empty — fully close
+    onClose();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
