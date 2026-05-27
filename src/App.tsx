@@ -126,7 +126,10 @@ const HASH_TO_PAGE: Record<string, Page> = {
 };
 
 function getInitialPage(): Page {
-  const path = window.location.pathname.replace(/\/$/, '') || '/'; // Remove trailing slash
+  // DEBUG: Log the current path
+  const rawPath = window.location.pathname;
+  const path = rawPath.replace(/\/$/, '') || '/'; // Remove trailing slash
+  console.log('[Router] Raw path:', rawPath, 'Normalized:', path, 'Mapped:', PATH_TO_PAGE[path] || 'home');
   const hash = window.location.hash;
 
   // Path-based routing (preferred)
