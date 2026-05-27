@@ -404,7 +404,7 @@ function AppInner() {
 
   useEffect(() => {
     const onPopState = () => {
-      const path = window.location.pathname;
+      const path = window.location.pathname.replace(/\/$/, '') || '/'; // Remove trailing slash
       const hash = window.location.hash;
 
       if (path.startsWith('/article/')) {
