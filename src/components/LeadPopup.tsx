@@ -28,7 +28,7 @@ export default function LeadPopup({ onClose }: LeadPopupProps) {
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -42,14 +42,33 @@ export default function LeadPopup({ onClose }: LeadPopupProps) {
       return;
     }
 
-    const subject = encodeURIComponent('New Lead Capture - Dunn Luxury Selections');
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nSource: dunnluxuryselections.com popup`
-    );
-    window.location.href = `mailto:support@dunnluxuryselections.com?subject=${subject}&body=${body}`;
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('phone', phone);
+      formData.append('source', 'dunnluxuryselections.com popup');
 
-    setStep('success');
-    localStorage.setItem('leadPopupClosed', Date.now().toString());
+      const response = await fetch('https://formspree.io/f/xaqklawo', {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      });
+
+      if (response.ok) {
+        setStep('success');
+        localStorage.setItem('leadPopupClosed', Date.now().toString());
+      } else {
+        const data = await response.json().catch(() => null);
+        if (data?.errors) {
+          setError(data.errors.map((e: { message: string }) => e.message).join('. '));
+        } else {
+          setError('Something went wrong. Please try again.');
+        }
+      }
+    } catch {
+      setError('Network error. Please check your connection and try again.');
+    }
   };
 
   const handleClose = () => {
