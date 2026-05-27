@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": [],
+  "routes": [
+    {
+      "src": "/cart/c/*",
+      "dest": "https://luxury-dunn-selections.myshopify.com/cart/c/$1",
+      "status": 301
+    },
+    {
+      "src": "/cart/*",
+      "dest": "https://luxury-dunn-selections.myshopify.com/cart/$1",
+      "status": 301
+    },
+    {
+      "src": "/checkouts/*",
+      "dest": "https://luxury-dunn-selections.myshopify.com/checkouts/$1",
+      "status": 301
+    },
+    {
+      "src": "/journal",
+      "dest": "/journal/index.html"
+    },
+    {
+      "src": "/all-collections",
+      "dest": "/all-collections/index.html"
+    },
+    {
+      "src": "/collections",
+      "dest": "/collections/index.html"
+    },
+    {
+      "src": "/cabinet-humidors",
+      "dest": "/cabinet-humidors/index.html"
+    },
+    {
+      "src": "/desktop-humidors",
+      "dest": "/desktop-humidors/index.html"
+    },
+    {
+      "src": "/electronic-humidors",
+      "dest": "/electronic-humidors/index.html"
+    },
+    {
+      "src": "/travel-humidors",
+      "dest": "/travel-humidors/index.html"
+    },
+    {
+      "src": "/accessories",
+      "dest": "/accessories/index.html"
+    },
+    {
+      "src": "/walk-in-humidor",
+      "dest": "/walk-in-humidor/index.html"
+    },
+    {
+      "src": "/about",
+      "dest": "/about/index.html"
+    },
+    {
+      "src": "/privacy-policy",
+      "dest": "/privacy-policy/index.html"
+    },
+    {
+      "src": "/terms-of-service",
+      "dest": "/terms-of-service/index.html"
+    },
+    {
+      "src": "/cookie-policy",
+      "dest": "/cookie-policy/index.html"
+    },
+    {
+      "src": "/delivery-info",
+      "dest": "/delivery-info/index.html"
+    },
+    {
+      "src": "/returns-warranty",
+      "dest": "/returns-warranty/index.html"
+    },
+    {
+      "src": "/care-guides",
+      "dest": "/care-guides/index.html"
+    },
+    {
+      "src": "/checkout",
+      "dest": "/checkout/index.html"
+    },
+    {
+      "src": "/shopify-setup",
+      "dest": "/shopify-setup/index.html"
+    },
+    {
+      "src": "/new-arrivals",
+      "dest": "/new-arrivals/index.html"
+    },
+    {
+      "src": "/api/*",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/*",
+      "dest": "/index.html"
+    }
+  ]
+}
