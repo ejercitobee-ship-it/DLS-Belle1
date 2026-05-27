@@ -539,6 +539,11 @@ function AppInner() {
 
   return (
     <div className="min-h-screen bg-charcoal-950">
+      {/* DEBUG: Remove after fixing */}
+      <div style={{position: 'fixed', top: 0, left: 0, zIndex: 9999, background: 'red', color: 'white', padding: '5px', fontSize: '12px'}}>
+        Page: {displayPage} | Path: {window.location.pathname}
+      </div>
+      
       {!isFullPageOverlay && (
         <Navbar currentPage={displayPage} onCartOpen={openCart} />
       )}
