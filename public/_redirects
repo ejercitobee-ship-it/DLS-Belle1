@@ -2,5 +2,25 @@
 /cart/*  https://luxury-dunn-selections.myshopify.com/cart/:splat  301
 /checkouts/*  https://luxury-dunn-selections.myshopify.com/checkouts/:splat  301
 
-# SPA fallback - all routes serve index.html
+# Static HTML routes - served directly
+/journal  /journal/index.html  200
+/collections  /collections/index.html  200
+/cabinet-humidors  /cabinet-humidors/index.html  200
+/desktop-humidors  /desktop-humidors/index.html  200
+/electronic-humidors  /electronic-humidors/index.html  200
+/travel-humidors  /travel-humidors/index.html  200
+/accessories  /accessories/index.html  200
+/walk-in-humidor  /walk-in-humidor/index.html  200
+/about  /about/index.html  200
+/privacy-policy  /privacy-policy/index.html  200
+/terms-of-service  /terms-of-service/index.html  200
+/cookie-policy  /cookie-policy/index.html  200
+/delivery-info  /delivery-info/index.html  200
+/returns-warranty  /returns-warranty/index.html  200
+/care-guides  /care-guides/index.html  200
+/checkout  /checkout/index.html  200
+/shopify-setup  /shopify-setup/index.html  200
+/new-arrivals  /new-arrivals/index.html  200
+
+# SPA fallback for dynamic routes (product pages, etc.)
 /*  /index.html  200
