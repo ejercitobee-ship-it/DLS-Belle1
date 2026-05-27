@@ -10,7 +10,6 @@ export default function LeadPopup({ onClose }: LeadPopupProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
   // Auto-close on Escape
@@ -29,7 +28,7 @@ export default function LeadPopup({ onClose }: LeadPopupProps) {
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -43,37 +42,14 @@ export default function LeadPopup({ onClose }: LeadPopupProps) {
       return;
     }
 
-    setSubmitting(true);
+    const subject = encodeURIComponent('New Lead Capture - Dunn Luxury Selections');
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nSource: dunnluxuryselections.com popup`
+    );
+    window.location.href = `mailto:support@dunnluxuryselections.com?subject=${subject}&body=${body}`;
 
-    try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('phone', phone);
-      formData.append('source', 'dunnluxuryselections.com popup');
-
-      const response = await fetch('https://formspree.io/f/xpwplwyl', {
-        method: 'POST',
-        body: formData,
-        headers: { Accept: 'application/json' },
-      });
-
-      if (response.ok) {
-        setStep('success');
-        localStorage.setItem('leadPopupClosed', Date.now().toString());
-      } else {
-        const data = await response.json().catch(() => null);
-        if (data?.errors) {
-          setError(data.errors.map((e: { message: string }) => e.message).join('. '));
-        } else {
-          setError('Something went wrong. Please try again.');
-        }
-      }
-    } catch {
-      setError('Network error. Please check your connection and try again.');
-    } finally {
-      setSubmitting(false);
-    }
+    setStep('success');
+    localStorage.setItem('leadPopupClosed', Date.now().toString());
   };
 
   const handleClose = () => {
@@ -169,16 +145,9 @@ export default function LeadPopup({ onClose }: LeadPopupProps) {
 
               <button
                 type="submit"
-                disabled={submitting}
-                className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-3.5 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-3.5 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all"
               >
-                {submitting ? (
-                  <span className="animate-pulse">Submitting...</span>
-                ) : (
-                  <>
-                    Get Exclusive Access <ArrowRight size={14} />
-                  </>
-                )}
+                Get Exclusive Access <ArrowRight size={14} />
               </button>
 
               <p className="text-cream-200/30 text-[10px] text-center">
