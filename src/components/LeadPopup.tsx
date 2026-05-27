@@ -27,7 +27,6 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
       onClose();
       return;
     }
-    // If form has data and user hasn't submitted, minimize instead of closing
     if ((name || email || phone)) {
       onMinimize?.();
       return;
@@ -71,7 +70,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
     return (
       <button
         onClick={onRestore}
-        className="fixed bottom-6 right-6 z-[100] bg-amber-600 hover:bg-amber-500 text-white rounded-full p-3 shadow-lg shadow-amber-900/30 transition-all duration-300 hover:scale-110 animate-bounce"
+        className="fixed bottom-6 right-6 z-[100] bg-gold-600 hover:bg-gold-500 text-charcoal-950 rounded-full p-3 shadow-lg shadow-gold-900/30 transition-all duration-300 hover:scale-110 animate-bounce"
         aria-label="Open lead form"
       >
         <ChevronUp className="w-5 h-5" />
@@ -80,12 +79,12 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-      <div className="relative bg-charcoal-900 border border-white/10 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in slide-in-from-bottom-4 duration-300">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-charcoal-950/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+      <div className="relative bg-charcoal-900 border border-charcoal-700/60 rounded-2xl shadow-2xl shadow-black/50 max-w-md w-full p-6 animate-in slide-in-from-bottom-4 duration-300">
         {/* Close button */}
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 text-white/50 hover:text-white transition-colors p-1"
+          className="absolute top-3 right-3 text-cream-200/50 hover:text-cream-100 transition-colors p-1"
           aria-label="Close"
         >
           <X className="w-5 h-5" />
@@ -93,14 +92,14 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
 
         {status === 'success' ? (
           <div className="text-center py-6">
-            <CheckCircle className="w-14 h-14 text-emerald-400 mx-auto mb-4" />
+            <CheckCircle className="w-14 h-14 text-gold-400 mx-auto mb-4" />
             <h3 className="text-xl font-serif text-white mb-2">Thank You!</h3>
-            <p className="text-white/70 text-sm">
+            <p className="text-cream-200/70 text-sm">
               Your information has been received. Our team will reach out to you shortly.
             </p>
             <button
               onClick={onClose}
-              className="mt-6 bg-amber-600 hover:bg-amber-500 text-white px-6 py-2.5 rounded-full text-sm font-medium transition-colors"
+              className="mt-6 bg-gold-600 hover:bg-gold-500 text-charcoal-950 px-6 py-2.5 rounded-full text-sm font-medium transition-colors"
             >
               Close
             </button>
@@ -109,7 +108,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
           <>
             <div className="text-center mb-5">
               <h3 className="text-xl font-serif text-white mb-1">Unlock Exclusive Access</h3>
-              <p className="text-white/60 text-sm">
+              <p className="text-cream-200/60 text-sm">
                 Join our inner circle for early access to rare collections and private events.
               </p>
             </div>
@@ -122,7 +121,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full bg-charcoal-950/50 border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-amber-500/50 transition-colors"
+                className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
               />
               <input
                 type="email"
@@ -130,18 +129,18 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-charcoal-950/50 border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-amber-500/50 transition-colors"
+                className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
               />
               <input
                 type="tel"
                 placeholder="Phone Number (optional)"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full bg-charcoal-950/50 border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-amber-500/50 transition-colors"
+                className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
               />
 
               {status === 'error' && (
-                <div className="flex items-center gap-2 text-red-400 text-sm bg-red-400/10 rounded-lg px-3 py-2">
+                <div className="flex items-center gap-2 text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   {errorMessage}
                 </div>
@@ -150,7 +149,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="w-full bg-amber-600 hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed text-white py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-gold-600 hover:bg-gold-500 disabled:opacity-50 disabled:cursor-not-allowed text-charcoal-950 py-2.5 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2"
               >
                 {status === 'loading' ? (
                   <>
@@ -166,7 +165,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
               </button>
             </form>
 
-            <p className="text-white/40 text-xs text-center mt-3">
+            <p className="text-cream-200/30 text-xs text-center mt-3">
               We respect your privacy. Unsubscribe at any time.
             </p>
           </>
