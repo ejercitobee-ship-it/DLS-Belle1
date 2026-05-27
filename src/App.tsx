@@ -126,10 +126,8 @@ const HASH_TO_PAGE: Record<string, Page> = {
 };
 
 function getInitialPage(): Page {
-  // DEBUG: Log the current path
   const rawPath = window.location.pathname;
   const path = rawPath.replace(/\/$/, '') || '/'; // Remove trailing slash
-  console.log('[Router] Raw path:', rawPath, 'Normalized:', path, 'Mapped:', PATH_TO_PAGE[path] || 'home');
   const hash = window.location.hash;
 
   // Path-based routing (preferred)
@@ -539,11 +537,6 @@ function AppInner() {
 
   return (
     <div className="min-h-screen bg-charcoal-950">
-      {/* DEBUG: Remove after fixing */}
-      <div style={{position: 'fixed', top: 0, left: 0, zIndex: 9999, background: 'red', color: 'white', padding: '5px', fontSize: '12px'}}>
-        Page: {displayPage} | Path: {window.location.pathname}
-      </div>
-      
       {!isFullPageOverlay && (
         <Navbar currentPage={displayPage} onCartOpen={openCart} />
       )}
