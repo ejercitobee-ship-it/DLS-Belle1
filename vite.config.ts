@@ -5,17 +5,23 @@ const cloudflareRocketLoaderFix = (): Plugin => ({
   name: 'cloudflare-rocket-loader-fix',
   transformIndexHtml(html) {
     return html.replace(
-      /<script type="module"/g,
-      '<script data-cfasync="false" type="module"'
+      /\u003cscript type="module"/g,
+      '\u003cscript data-cfasync="false" type="module"'
     );
   },
 });
+
+// Generate a unique build timestamp for cache busting
+const buildTimestamp = Date.now().toString();
 
 export default defineConfig({
   plugins: [react(), cloudflareRocketLoaderFix()],
   build: {
     rollupOptions: {
       output: {
+        entryFileNames: `assets/[name]-${buildTimestamp}-[hash].js`,
+        chunkFileNames: `assets/[name]-${buildTimestamp}-[hash].js`,
+        assetFileNames: `assets/[name]-${buildTimestamp}-[hash][extname]`,
         manualChunks: {
           vendor: ['react', 'react-dom'],
           icons: ['lucide-react'],
