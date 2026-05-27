@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { X, ChevronUp, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { X, MessageCircle, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 interface LeadPopupProps {
   onClose: () => void;
@@ -27,11 +27,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
       onClose();
       return;
     }
-    if ((name || email || phone)) {
-      onMinimize?.();
-      return;
-    }
-    onClose();
+    onMinimize?.();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,15 +61,25 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
     }
   };
 
-  // Minimized floating button
+  // Minimized floating chat bubble
   if (isMinimized) {
     return (
       <button
         onClick={onRestore}
-        className="fixed bottom-6 right-6 z-[100] bg-gold-600 hover:bg-gold-500 text-charcoal-950 rounded-full p-3 shadow-lg shadow-gold-900/30 transition-all duration-300 hover:scale-110 animate-bounce"
+        className="fixed bottom-6 right-6 z-[100] group"
         aria-label="Open lead form"
       >
-        <ChevronUp className="w-5 h-5" />
+        {/* Tooltip */}
+        <div className="absolute bottom-full right-0 mb-2 whitespace-nowrap bg-charcoal-900 border border-gold-500/30 text-cream-100 text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg">
+          Get Exclusive Access
+          <div className="absolute top-full right-4 -mt-px border-4 border-transparent border-t-gold-500/30" />
+        </div>
+        {/* Bubble */}
+        <div className="relative bg-gold-600 hover:bg-gold-500 text-charcoal-950 rounded-full p-4 shadow-xl shadow-gold-900/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gold-900/50">
+          <MessageCircle className="w-6 h-6" />
+          {/* Notification dot */}
+          <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-red-500 border-2 border-charcoal-900 rounded-full" />
+        </div>
       </button>
     );
   }
