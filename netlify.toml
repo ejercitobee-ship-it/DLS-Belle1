@@ -17,6 +17,99 @@
   to = "https://luxury-dunn-selections.myshopify.com/checkouts/:splat"
   status = 301
 
+# Prerendered routes — serve static HTML files
+# These must come BEFORE the SPA fallback catch-all
+[[redirects]]
+  from = "/journal"
+  to = "/journal/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/all-collections"
+  to = "/all-collections/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/cabinet-humidors"
+  to = "/cabinet-humidors/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/desktop-humidors"
+  to = "/desktop-humidors/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/electronic-humidors"
+  to = "/electronic-humidors/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/travel-humidors"
+  to = "/travel-humidors/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/accessories"
+  to = "/accessories/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/walk-in-humidors"
+  to = "/walk-in-humidors/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/about/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/privacy-policy/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms-of-service"
+  to = "/terms-of-service/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/cookie-policy"
+  to = "/cookie-policy/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/delivery-info"
+  to = "/delivery-info/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/returns-warranty"
+  to = "/returns-warranty/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/care-guides"
+  to = "/care-guides/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/checkout"
+  to = "/checkout/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/shopify-setup"
+  to = "/shopify-setup/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/new-arrivals"
+  to = "/new-arrivals/index.html"
+  status = 200
+
+# SPA fallback for all other routes (product pages, articles, etc.)
 [[redirects]]
   from = "/*"
   to = "/index.html"

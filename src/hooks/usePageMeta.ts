@@ -1,18 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 const BASE_URL = 'https://dunnluxuryselections.com';
 
 interface PageMeta {
   title: string;
   description: string;
-  canonicalPath?: string;
+  canonicalPath: string;
   ogImage?: string;
   noindex?: boolean;
 }
 
 export function usePageMeta(meta: PageMeta) {
-  useEffect(() => {
-    const canonicalPath = meta.canonicalPath ?? window.location.pathname;
+  // Synchronous update for SSR/prerender compatibility
+  useMemo(() => {
+    const canonicalPath = meta.canonicalPath;
     const canonicalUrl = `${BASE_URL}${canonicalPath === '/' ? '' : canonicalPath}`;
 
     // Update title
@@ -76,7 +77,10 @@ export function usePageMeta(meta: PageMeta) {
       let twImage = document.querySelector('meta[name="twitter:image"]') as HTMLMetaElement | null;
       if (twImage) twImage.content = meta.ogImage;
     }
+  }, [meta.title, meta.description, meta.canonicalPath, meta.ogImage, meta.noindex]);
 
-    // Cleanup not needed — these are global meta tags that should persist
+  // Also run in useEffect for client-side navigation
+  useEffect(() => {
+    // Meta tags are already updated by useMemo above
   }, [meta.title, meta.description, meta.canonicalPath, meta.ogImage, meta.noindex]);
 }

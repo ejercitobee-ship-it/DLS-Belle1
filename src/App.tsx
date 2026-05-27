@@ -76,7 +76,9 @@ const PATH_TO_PAGE: Record<string, Page> = {
   '/care-guides': 'care-guides',
   '/about': 'about',
   '/all-collections': 'all-collections',
+  '/collections': 'all-collections',
   '/journal': 'journal',
+  '/checkout': 'checkout',
 };
 
 // Also support legacy hash-based URLs for backwards compatibility
@@ -212,116 +214,143 @@ function AppInner() {
           title: "Dunn's Luxury Selections | Humidor Collections",
           description:
             "Explore Dunn's Luxury Selections — bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories.",
+          canonicalPath: '/',
         }
       : displayPage === 'electronic-humidors'
       ? {
           title: 'Electronic Humidors | Dunn\'s Luxury Selections',
           description:
             'Precision climate-controlled cabinets for discerning collectors and luxury venues. Shop Raching, Reagan, and more.',
+          canonicalPath: '/electronic-humidors',
         }
       : displayPage === 'walk-in-humidor'
       ? {
           title: 'Bespoke Walk-In Humidors | Dunn\'s Luxury Selections',
           description:
             'Custom walk-in humidor design and installation for private residences, lounges, and commercial spaces.',
+          canonicalPath: '/walk-in-humidors',
         }
       : displayPage === 'desktop-humidors'
       ? {
           title: 'Desktop Humidors | Dunn\'s Luxury Selections',
           description:
             'Elegant desktop humidors crafted from Spanish cedar, leather, and carbon fiber for the discerning aficionado.',
+          canonicalPath: '/desktop-humidors',
         }
       : displayPage === 'travel-humidors'
       ? {
           title: 'Travel Humidors | Dunn\'s Luxury Selections',
           description:
             'Portable travel humidors and cigar cases designed for protection and style on the move.',
+          canonicalPath: '/travel-humidors',
         }
       : displayPage === 'accessories'
       ? {
           title: 'Cigar Accessories | Dunn\'s Luxury Selections',
           description:
             'Premium cigar cutters, lighters, ashtrays, hygrometers, and humidification accessories.',
+          canonicalPath: '/accessories',
         }
       : displayPage === 'cabinet-humidors'
       ? {
           title: 'Cabinet Humidors | Dunn\'s Luxury Selections',
           description:
             'Furniture-grade cabinet humidors combining timeless craftsmanship with precision climate control.',
+          canonicalPath: '/cabinet-humidors',
         }
       : displayPage === 'new-arrivals'
       ? {
           title: 'New Arrivals | Dunn\'s Luxury Selections',
           description:
             'Discover the latest luxury humidors and cigar accessories newly added to our collection.',
+          canonicalPath: '/new-arrivals',
         }
       : displayPage === 'all-collections'
       ? {
           title: 'All Collections | Dunn\'s Luxury Selections',
           description:
             'Browse our complete collection of luxury humidors, accessories, and bespoke cigar storage solutions.',
+          canonicalPath: '/collections',
         }
       : displayPage === 'about'
       ? {
           title: 'About Us | Dunn\'s Luxury Selections',
           description:
             'America\'s premier destination for luxury cigar humidors. Precision, prestige, and presence.',
+          canonicalPath: '/about',
         }
       : displayPage === 'journal'
       ? {
           title: 'Journal | Dunn\'s Luxury Selections',
           description:
             'Expert guides, care tips, and stories from the world of luxury cigar storage.',
+          canonicalPath: '/journal',
         }
       : displayPage === 'article'
       ? {
           title: 'Article | Dunn\'s Luxury Selections',
           description: 'Read our latest insights on luxury humidors and cigar culture.',
+          canonicalPath: '/journal',
         }
       : displayPage === 'product'
       ? {
           title: 'Product | Dunn\'s Luxury Selections',
           description: 'View product details, specifications, and pricing.',
+          canonicalPath: '/collections',
         }
       : displayPage === 'privacy-policy'
       ? {
           title: 'Privacy Policy | Dunn\'s Luxury Selections',
           description: 'Our privacy policy outlines how we protect your personal information.',
+          canonicalPath: '/privacy-policy',
         }
       : displayPage === 'terms-of-service'
       ? {
           title: 'Terms of Service | Dunn\'s Luxury Selections',
           description: 'Terms and conditions for using Dunn\'s Luxury Selections website and services.',
+          canonicalPath: '/terms-of-service',
         }
       : displayPage === 'cookie-policy'
       ? {
           title: 'Cookie Policy | Dunn\'s Luxury Selections',
           description: 'Information about how we use cookies on our website.',
+          canonicalPath: '/cookie-policy',
         }
       : displayPage === 'delivery-info'
       ? {
           title: 'Delivery Information | Dunn\'s Luxury Selections',
           description: 'Shipping, delivery times, and tracking information for your orders.',
+          canonicalPath: '/delivery-info',
         }
       : displayPage === 'returns-warranty'
       ? {
           title: 'Returns \u0026 Warranty | Dunn\'s Luxury Selections',
           description: 'Our returns policy and warranty coverage for luxury humidors and accessories.',
+          canonicalPath: '/returns-warranty',
         }
       : displayPage === 'care-guides'
       ? {
           title: 'Care Guides | Dunn\'s Luxury Selections',
           description: 'Expert guidance on maintaining and caring for your luxury humidor.',
+          canonicalPath: '/care-guides',
         }
       : displayPage === 'checkout'
       ? {
           title: 'Checkout | Dunn\'s Luxury Selections',
           description: 'Complete your purchase securely.',
+          canonicalPath: '/checkout',
+        }
+      : displayPage === 'shopify-setup'
+      ? {
+          title: 'Shopify Setup | Dunn\'s Luxury Selections',
+          description: 'Shopify store configuration and setup guide.',
+          canonicalPath: '/shopify-setup',
         }
       : {
           title: "Dunn's Luxury Selections | Humidor Collections",
           description:
             "Explore Dunn's Luxury Selections — bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories.",
+          canonicalPath: '/',
         }
   );
 
