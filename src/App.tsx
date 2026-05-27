@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+// Build v2 - Cache bust
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Collections from './components/Collections';
