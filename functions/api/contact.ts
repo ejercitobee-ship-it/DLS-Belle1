@@ -1,5 +1,6 @@
 export interface Env {
-  RESEND_API_KEY: string;
+  BREVO_API_KEY: string;
+  BREVO_LIST_ID?: string;
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -16,32 +17,31 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    const resendResponse = await fetch('https://api.resend.com/emails', {
+    // Add contact to Brevo
+    const brevoResponse = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'api-key': env.BREVO_API_KEY,
       },
       body: JSON.stringify({
-        from: 'Dunn\'s Luxury Selections <onboarding@resend.dev>',
-        to: ['support@dunnluxuryselections.com'],
-        subject: 'New Lead Form Submission',
-        html: `
-          <h2>New Lead Form Submission</h2>
-          <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-          <p><strong>Phone:</strong> ${escapeHtml(phone || 'Not provided')}</p>
-          <p><strong>Source:</strong> Website Popup Form</p>
-          <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
-        `,
-        text: `New Lead Form Submission\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone || 'Not provided'}\nSource: Website Popup Form\nDate: ${new Date().toLocaleString()}`,
+        email: email,
+        attributes: {
+          FIRSTNAME: name.split(' ')[0] || name,
+          LASTNAME: name.split(' ').slice(1).join(' ') || '',
+          PHONE: phone || '',
+          SOURCE: 'Website Popup Form',
+        },
+        listIds: env.BREVO_LIST_ID ? [parseInt(env.BREVO_LIST_ID)] : undefined,
+        updateEnabled: true, // Update contact if already exists
       }),
     });
 
-    if (!resendResponse.ok) {
-      const errorData = await resendResponse.json().catch(() => ({ message: 'Unknown error' }));
-      console.error('Resend API error:', errorData);
-      return new Response(JSON.stringify({ error: 'Failed to send email. Please try again.' }), {
+    if (!brevoResponse.ok && brevoResponse.status !== 409) { // 409 = contact already exists
+      const errorData = await brevoResponse.json().catch(() => ({ message: 'Unknown error' }));
+      console.error('Brevo API error:', errorData);
+      return new Response(JSON.stringify({ error: 'Failed to add contact. Please try again.' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -59,12 +59,3 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     });
   }
 };
-
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
