@@ -42,7 +42,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           PHONE: phone.trim() || '',
           SOURCE: 'Website Popup Form',
         },
-        listIds: env.BREVO_LIST_ID ? [parseInt(env.BREVO_LIST_ID)] : undefined,
+        listIds: env.BREVO_LIST_ID ? [parseInt(env.BREVO_LIST_ID.replace('#', ''))] : undefined,
         updateEnabled: true, // Update contact if already exists
       }),
     });
