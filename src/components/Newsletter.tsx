@@ -15,20 +15,29 @@ export default function Newsletter() {
     setLoading(true);
     setError('');
 
-    const subject = encodeURIComponent('Newsletter Subscription');
-    const body = encodeURIComponent(`New newsletter subscriber:\n\nEmail: ${email}`);
-    const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: SUPPORT_EMAIL,
+          subject: 'Newsletter Subscription',
+          text: `New newsletter subscriber:\n\nEmail: ${email}`,
+        }),
+      });
 
-    const win = window.open(mailtoUrl, '_blank');
-    if (!win) {
-      setError('Your browser blocked the email client. Please email us directly.');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to subscribe');
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setTimeout(() => { try { win.close(); } catch { /* ignore */ } }, 500);
-    setSubmitted(true);
-    setLoading(false);
   };
 
   return (
@@ -79,13 +88,10 @@ export default function Newsletter() {
           <div className="flex flex-col items-center gap-2 text-emerald-400">
             <div className="flex items-center gap-3">
               <CheckCircle size={20} />
-              <span className="font-medium">Thank you — your email client should open shortly.</span>
+              <span className="font-medium">Thank you for subscribing!</span>
             </div>
             <p className="text-cream-200/40 text-xs">
-              If it didn't open, email us directly at{' '}
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-gold-400 hover:underline">
-                {SUPPORT_EMAIL}
-              </a>
+              We'll be in touch soon with exclusive updates.
             </p>
           </div>
         ) : (
@@ -104,19 +110,14 @@ export default function Newsletter() {
                 disabled={loading}
                 className="bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-6 py-3.5 rounded hover:opacity-90 active:scale-95 transition-all whitespace-nowrap disabled:opacity-70 min-h-[52px]"
               >
-                {loading ? 'Opening email…' : 'Subscribe'}
+                {loading ? 'Subscribing...' : 'Subscribe'}
               </button>
             </form>
 
             {error && (
               <div className="mt-4 max-w-md mx-auto flex items-start gap-2 text-amber-400 text-xs">
                 <AlertCircle size={14} className="mt-0.5 shrink-0" />
-                <p>
-                  {error}{' '}
-                  <a href={`mailto:${SUPPORT_EMAIL}`} className="text-gold-400 hover:underline font-medium">
-                    Send email manually
-                  </a>
-                </p>
+                <p>{error}</p>
               </div>
             )}
           </>

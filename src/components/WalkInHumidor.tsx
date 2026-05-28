@@ -138,30 +138,38 @@ export default function WalkInHumidor() {
     setSubmitError('');
     setSubmitting(true);
 
-    const subject = encodeURIComponent('Bespoke Walk-In Humidor Enquiry');
-    const body = encodeURIComponent([
-      'New bespoke walk-in humidor enquiry:',
-      '',
-      `Name: ${formData.name.trim()}`,
-      `Email: ${formData.email}`,
-      formData.phone ? `Phone: ${formData.phone}` : '',
-      `Project Type: ${formData.projectType}`,
-      formData.spaceSize ? `Space Size: ${formData.spaceSize}` : '',
-      formData.message ? `Message:\n${formData.message}` : '',
-    ].filter(Boolean).join('\n'));
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: SUPPORT_EMAIL,
+          subject: 'Bespoke Walk-In Humidor Enquiry',
+          text: [
+            'New bespoke walk-in humidor enquiry:',
+            '',
+            `Name: ${formData.name.trim()}`,
+            `Email: ${formData.email}`,
+            formData.phone ? `Phone: ${formData.phone}` : '',
+            `Project Type: ${formData.projectType}`,
+            formData.spaceSize ? `Space Size: ${formData.spaceSize}` : '',
+            formData.message ? `Message:\n${formData.message}` : '',
+          ].filter(Boolean).join('\n'),
+        }),
+      });
 
-    const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
-    const win = window.open(mailtoUrl, '_blank');
+      const data = await response.json();
 
-    if (!win) {
-      setSubmitError('Your browser blocked the email client. Please email us directly at ' + SUPPORT_EMAIL);
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send enquiry');
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } finally {
       setSubmitting(false);
-      return;
     }
-
-    setTimeout(() => { try { win.close(); } catch { /* ignore */ } }, 500);
-    setSubmitted(true);
-    setSubmitting(false);
   };
 
   const field = (key: keyof typeof formData) => ({
