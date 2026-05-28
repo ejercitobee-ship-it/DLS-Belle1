@@ -2,6 +2,19 @@
 /cart/*  https://luxury-dunn-selections.myshopify.com/cart/:splat  301
 /checkouts/*  https://luxury-dunn-selections.myshopify.com/checkouts/:splat  301
 
+# Assets - serve directly without SPA fallback
+/assets/*  /assets/:splat  200
+*.css  /:splat  200
+*.js  /:splat  200
+*.png  /:splat  200
+*.jpg  /:splat  200
+*.jpeg  /:splat  200
+*.svg  /:splat  200
+*.ico  /:splat  200
+*.woff  /:splat  200
+*.woff2  /:splat  200
+*.ttf  /:splat  200
+
 # Static HTML routes - served directly
 /journal  /journal/index.html  200
 /collections  /collections/index.html  200
