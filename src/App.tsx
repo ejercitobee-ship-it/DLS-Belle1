@@ -24,6 +24,7 @@ const AccessoriesPage = lazy(() => import('./components/Accessories'));
 const CabinetHumidors = lazy(() => import('./components/CabinetHumidors'));
 const NewArrivals = lazy(() => import('./components/NewArrivals'));
 const Checkout = lazy(() => import('./components/Checkout'));
+const OrderConfirmation = lazy(() => import('./components/OrderConfirmation'));
 const ShopifySetup = lazy(() => import('./components/ShopifySetup'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./components/TermsOfService'));
@@ -47,6 +48,7 @@ type Page =
   | 'cabinet-humidors'
   | 'new-arrivals'
   | 'checkout'
+  | 'order-confirmation'
   | 'shopify-setup'
   | 'privacy-policy'
   | 'terms-of-service'
@@ -99,6 +101,8 @@ const PATH_TO_PAGE: Record<string, Page> = {
   '/journal/': 'journal',
   '/checkout': 'checkout',
   '/checkout/': 'checkout',
+  '/order-confirmation': 'order-confirmation',
+  '/order-confirmation/': 'order-confirmation',
 };
 
 // Also support legacy hash-based URLs for backwards compatibility
@@ -167,7 +171,7 @@ function getProductHandle(): string {
 }
 
 function PageContent({ page }: { page: Page }) {
-  const isFullPageOverlay = page === 'checkout' || page === 'shopify-setup';
+  const isFullPageOverlay = page === 'checkout' || page === 'shopify-setup' || page === 'order-confirmation';
   const { openCart } = useCart();
 
   const navigate = (next: Page) => {
@@ -176,6 +180,7 @@ function PageContent({ page }: { page: Page }) {
 
   if (isFullPageOverlay) {
     if (page === 'checkout') return <Suspense fallback={null}><Checkout onBack={() => navigate('home')} /></Suspense>;
+    if (page === 'order-confirmation') return <Suspense fallback={null}><OrderConfirmation /></Suspense>;
     return <Suspense fallback={null}><ShopifySetup onBack={() => navigate('home')} /></Suspense>;
   }
 

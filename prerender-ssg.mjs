@@ -26,6 +26,7 @@ const routes = [
   { path: '/returns-warranty', file: 'returns-warranty/index.html', title: "Returns & Warranty | Dunn's Luxury Selections", description: "Our returns policy and warranty coverage for luxury humidors and accessories.", canonical: 'https://dunnluxuryselections.com/returns-warranty' },
   { path: '/care-guides', file: 'care-guides/index.html', title: "Care Guides | Dunn's Luxury Selections", description: "Expert guidance on maintaining and caring for your luxury humidor.", canonical: 'https://dunnluxuryselections.com/care-guides' },
   { path: '/checkout', file: 'checkout/index.html', title: "Checkout | Dunn's Luxury Selections", description: "Complete your purchase securely.", canonical: 'https://dunnluxuryselections.com/checkout' },
+  { path: '/order-confirmation', file: 'order-confirmation/index.html', title: "Order Confirmed | Dunn's Luxury Selections", description: "Thank you for your purchase. Your order has been confirmed.", canonical: 'https://dunnluxuryselections.com/order-confirmation' },
   { path: '/shopify-setup', file: 'shopify-setup/index.html', title: "Shopify Setup | Dunn's Luxury Selections", description: "Shopify store configuration and setup guide.", canonical: 'https://dunnluxuryselections.com/shopify-setup' },
 ];
 
