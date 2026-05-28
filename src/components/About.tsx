@@ -123,7 +123,7 @@ export default function About() {
               <div className="h-px w-8 bg-gold-500" />
             </div>
             <h2 className="font-serif text-4xl text-white font-bold">
-              A Decade of <span className="text-gradient-gold italic">Excellence</span>
+              A Legacy of <span className="text-gradient-gold italic">Excellence</span>
             </h2>
           </div>
 
