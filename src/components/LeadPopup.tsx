@@ -9,7 +9,8 @@ interface LeadPopupProps {
 }
 
 export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore }: LeadPopupProps) {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -28,7 +29,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
       return;
     }
     // If form has data entered, minimize to bubble instead of closing
-    if (name.trim() || email.trim() || phone.trim()) {
+    if (firstName.trim() || lastName.trim() || email.trim() || phone.trim()) {
       onMinimize?.();
       return;
     }
@@ -38,7 +39,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim()) return;
+    if ((!firstName.trim() && !lastName.trim()) || !email.trim()) return;
 
     setStatus('loading');
     setErrorMessage('');
@@ -48,7 +49,8 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: name.trim(),
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
           email: email.trim(),
           phone: phone.trim(),
         }),
@@ -127,15 +129,25 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3">
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
-              />
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                  className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
+                />
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                  className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
+                />
+              </div>
               <input
                 type="email"
                 placeholder="Email Address"

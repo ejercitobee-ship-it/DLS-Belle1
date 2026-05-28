@@ -6,13 +6,22 @@ export interface Env {
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const { request, env } = context;
-    const body = await request.json<{ name: string; email: string; phone: string }>();
+    const body = await request.json<{ firstName: string; lastName: string; email: string; phone: string }>();
 
-    const { name, email, phone } = body;
+    const { firstName, lastName, email, phone } = body;
 
-    if (!name || !email) {
-      return new Response(JSON.stringify({ error: 'Name and email are required' }), {
+    if (!email.trim()) {
+      return new Response(JSON.stringify({ error: 'Email is required' }), {
         status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Check if BREVO_API_KEY is set
+    if (!env.BREVO_API_KEY) {
+      console.error('BREVO_API_KEY environment variable is not set');
+      return new Response(JSON.stringify({ error: 'Server configuration error. Please contact support.' }), {
+        status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
     }
@@ -26,11 +35,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         'api-key': env.BREVO_API_KEY,
       },
       body: JSON.stringify({
-        email: email,
+        email: email.trim(),
         attributes: {
-          FIRSTNAME: name.split(' ')[0] || name,
-          LASTNAME: name.split(' ').slice(1).join(' ') || '',
-          PHONE: phone || '',
+          FIRSTNAME: firstName.trim() || '',
+          LASTNAME: lastName.trim() || '',
+          PHONE: phone.trim() || '',
           SOURCE: 'Website Popup Form',
         },
         listIds: env.BREVO_LIST_ID ? [parseInt(env.BREVO_LIST_ID)] : undefined,
@@ -38,9 +47,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       }),
     });
 
-    if (!brevoResponse.ok && brevoResponse.status !== 409) { // 409 = contact already exists
+    if (!brevoResponse.ok) {
       const errorData = await brevoResponse.json().catch(() => ({ message: 'Unknown error' }));
       console.error('Brevo API error:', errorData);
+      
+      // If contact already exists (409), that's fine
+      if (brevoResponse.status === 409) {
+        return new Response(JSON.stringify({ success: true, message: 'Contact already exists' }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      
       return new Response(JSON.stringify({ error: 'Failed to add contact. Please try again.' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
