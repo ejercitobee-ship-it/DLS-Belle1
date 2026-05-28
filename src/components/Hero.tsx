@@ -55,7 +55,7 @@ export default function Hero() {
               <ArrowRight size={16} />
             </a>
             <a
-              href="https://dunnluxuryselections.com/#walk-in-humidor"
+              href="https://dunnluxuryselections.com/walk-in-humidor/"
               className="flex items-center justify-center gap-2 border border-gold-500/50 text-gold-400 font-medium text-sm tracking-widest uppercase px-7 py-4 rounded hover:bg-gold-700/10 active:bg-gold-700/20 transition-colors"
             >
               Bespoke Solutions

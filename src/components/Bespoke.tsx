@@ -70,7 +70,7 @@ export default function Bespoke() {
 
             <div className="flex flex-wrap gap-4">
               <a
-                href="https://dunnluxuryselections.com/#walk-in-humidor"
+                href="https://dunnluxuryselections.com/walk-in-humidor/"
                 className="inline-flex items-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase px-7 py-4 rounded hover:opacity-90 transition-opacity"
               >
                 Request Consultation
