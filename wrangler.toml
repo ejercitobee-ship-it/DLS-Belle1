@@ -1,0 +1,10 @@
+name = "dunnluxuryselections"
+compatibility_date = "2024-01-01"
+
+[build]
+command = "npm run build"
+
+[site]
+bucket = "./dist"
+
+# No functions configuration needed for now
