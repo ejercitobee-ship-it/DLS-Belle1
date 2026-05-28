@@ -9,10 +9,11 @@ export default function OrderConfirmation() {
   } | null>(null);
 
   useEffect(() => {
-    // Check if user came from Shopify checkout
+    // Get order details from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const checkoutId = urlParams.get('checkout_id');
     const orderId = urlParams.get('order_id');
+    const orderTotal = urlParams.get('total') || '0';
     
     // If no checkout/order ID, redirect to home (prevent direct access)
     if (!checkoutId && !orderId) {
@@ -20,26 +21,26 @@ export default function OrderConfirmation() {
       return;
     }
 
-    // Get order details from URL or session storage
+    // Get order details from session storage or use URL params
     const storedOrder = sessionStorage.getItem('lastOrder');
     if (storedOrder) {
       setOrderDetails(JSON.parse(storedOrder));
     } else {
-      // Fallback order details
+      // Fallback order details from URL
       setOrderDetails({
         orderNumber: orderId || 'DLS-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
         email: 'customer@example.com',
-        total: '$0.00',
+        total: '$' + orderTotal,
       });
     }
 
     // Google Ads Conversion Tracking
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'conversion', {
-        send_to: 'AW-CONVERSION_ID/CONVERSION_LABEL',
-        value: orderDetails?.total ? parseFloat(orderDetails.total.replace('$', '')) : 0,
-        currency: 'USD',
-        transaction_id: orderId || checkoutId,
+        'send_to': 'AW-17833894840/7XldCNj1krUcELjH7rdC',
+        'value': parseFloat(orderTotal) || 0,
+        'currency': 'USD',
+        'transaction_id': orderId || checkoutId,
       });
     }
   }, []);
