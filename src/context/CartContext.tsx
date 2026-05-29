@@ -192,6 +192,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return [...prev, { ...newItem, quantity: 1 }];
     });
     setIsOpen(true);
+
+    // Google Analytics 4 - Add to Cart Event
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'add_to_cart', {
+        currency: 'USD',
+        value: newItem.priceNum,
+        items: [{
+          item_id: newItem.id,
+          item_name: newItem.name,
+          price: newItem.priceNum,
+          quantity: 1,
+        }],
+      });
+    }
   };
 
   const removeItem = (id: string) => setItems((prev) => prev.filter((i) => i.id !== id));
