@@ -43,6 +43,16 @@ export default function OrderConfirmation() {
         'transaction_id': orderId || checkoutId,
       });
     }
+
+    // Google Analytics 4 - Purchase Event
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'purchase', {
+        transaction_id: orderId || checkoutId,
+        value: parseFloat(orderTotal) || 0,
+        currency: 'USD',
+        items: [], // Items can be populated if available in URL params
+      });
+    }
   }, []);
 
   if (!orderDetails) {
