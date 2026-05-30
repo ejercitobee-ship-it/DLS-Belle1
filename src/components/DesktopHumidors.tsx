@@ -196,7 +196,7 @@ export default function DesktopHumidors() {
     <div className="min-h-screen bg-charcoal-950 pb-24">
       {/* Hero banner */}
       <div className="relative h-56 md:h-72 overflow-hidden">
-        <img src={heroImage} alt="Desktop Humidors" className="w-full h-full object-cover object-center" />
+        <img src={heroImage} alt="Desktop Humidors" className="w-full h-full object-cover object-center" loading="lazy" />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/90 via-charcoal-950/60 to-charcoal-950/30" />
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">

@@ -17,6 +17,8 @@ const buildTimestamp = Date.now().toString();
 export default defineConfig({
   plugins: [react(), cloudflareRocketLoaderFix()],
   build: {
+    // Optimize chunk size
+    chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
         entryFileNames: `assets/[name]-${buildTimestamp}-[hash].js`,
@@ -25,8 +27,21 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom'],
           icons: ['lucide-react'],
+          shopify: ['./src/lib/shopify.ts'],
         },
       },
     },
+    // Minification
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+  // Optimize deps for faster dev and build
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'lucide-react'],
   },
 });
