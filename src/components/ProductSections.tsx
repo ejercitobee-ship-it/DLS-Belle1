@@ -142,8 +142,8 @@ export function ProductFAQ() {
       answer: "White-glove delivery typically takes 5-10 business days for cabinet humidors. Our team will contact you to schedule a convenient delivery time and handle all setup, including placement and initial configuration."
     },
     {
-      question: "What does the 2-year warranty cover?",
-      answer: "Our comprehensive warranty covers all parts and labor for the climate control system, compressor, electrical components, and any manufacturing defects. We also provide lifetime technical support."
+      question: "Manufacturing Warranty Covers",
+      answer: "Our comprehensive manufacturing warranty covers all parts and labor for the climate control system, compressor, electrical components, and any manufacturing defects. We also provide lifetime technical support."
     },
     {
       question: "Can I return the product if I'm not satisfied?",
