@@ -325,6 +325,31 @@ export async function fetchCollectionByHandle(
   };
 }
 
+// Fetch products from a collection by collection ID (for recommendations)
+export async function fetchCollectionProducts(
+  collectionId: string,
+  first = 8,
+): Promise<ShopifyProduct[]> {
+  const data = await storefrontFetch<{
+    collection: { products: { edges: { node: Record<string, unknown> }[] } } | null;
+  }>(
+    `
+    ${PRODUCT_FRAGMENT}
+    query CollectionProducts($collectionId: ID!, $first: Int!) {
+      collection(id: $collectionId) {
+        products(first: $first) {
+          edges { node { ...ProductFields } }
+        }
+      }
+    }
+  `,
+    { collectionId, first },
+  );
+  if (!data.collection) return [];
+  const prodEdges = data.collection.products.edges;
+  return prodEdges.map((pe) => mapProduct(pe.node));
+}
+
 // ─── Cart types ───────────────────────────────────────────────────────────────
 
 export type ShopifyCartLine = {
