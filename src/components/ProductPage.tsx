@@ -10,12 +10,16 @@ import {
   Truck,
   ShieldCheck,
   RotateCcw,
+  Phone,
+  Shield,
+  Award,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { fetchProductByHandle, type ShopifyProduct } from '../lib/shopify';
 import { getStaticProduct, type StaticProductData } from '../lib/staticProducts';
 import { getProductPrice, getDefaultVariantId, formatMoney } from '../hooks/useShopifyCollection';
 import { usePageMeta } from '../hooks/usePageMeta';
+import { PaymentMethods, PHONE_NUMBER, PHONE_HREF } from './ConversionElements';
 
 /* ─── Sub-components ─────────────────────────────────────────────────────────── */
 
@@ -605,6 +609,52 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Payment Methods */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <PaymentMethods />
+      </div>
+
+      {/* Why Buy From Us */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="bg-charcoal-900/30 border border-charcoal-800/50 rounded-lg p-8">
+          <h2 className="font-serif text-2xl text-white font-bold text-center mb-8">
+            Why Buy From Dunn's
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="w-14 h-14 rounded-full bg-gold-600/10 border border-gold-500/30 flex items-center justify-center mx-auto mb-4">
+                <Shield size={24} className="text-gold-500" />
+              </div>
+              <h3 className="text-white font-semibold mb-2">2-Year Warranty</h3>
+              <p className="text-cream-200/60 text-sm">Full coverage on all cabinet humidors</p>
+            </div>
+            <div className="text-center">
+              <div className="w-14 h-14 rounded-full bg-gold-600/10 border border-gold-500/30 flex items-center justify-center mx-auto mb-4">
+                <Truck size={24} className="text-gold-500" />
+              </div>
+              <h3 className="text-white font-semibold mb-2">White-Glove Delivery</h3>
+              <p className="text-cream-200/60 text-sm">Professional setup included</p>
+            </div>
+            <div className="text-center">
+              <div className="w-14 h-14 rounded-full bg-gold-600/10 border border-gold-500/30 flex items-center justify-center mx-auto mb-4">
+                <Award size={24} className="text-gold-500" />
+              </div>
+              <h3 className="text-white font-semibold mb-2">Expert Support</h3>
+              <p className="text-cream-200/60 text-sm">Specialist guidance available</p>
+            </div>
+            <div className="text-center">
+              <div className="w-14 h-14 rounded-full bg-gold-600/10 border border-gold-500/30 flex items-center justify-center mx-auto mb-4">
+                <Phone size={24} className="text-gold-500" />
+              </div>
+              <h3 className="text-white font-semibold mb-2">Call Us</h3>
+              <a href={PHONE_HREF} className="text-cream-200/60 text-sm hover:text-gold-400 transition-colors">
+                {PHONE_NUMBER}
+              </a>
             </div>
           </div>
         </div>
