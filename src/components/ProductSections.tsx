@@ -1,43 +1,55 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronDown, Star, ShoppingBag } from 'lucide-react';
+import { getStaticProduct } from '../lib/staticProducts';
 
 // Product Recommendations Section
-export function ProductRecommendations({ currentProductId }: { currentProductId?: string }) {
-  // Sample recommended products - in production, this would come from Shopify API
-  const recommendations = [
-    {
-      id: 'rec-1',
-      name: 'Raching H880 Cigar Humidor',
-      price: '$4,752.00',
-      image: '/generated-1777557213922-8v5be.png',
-      rating: 4.9,
-      handle: 'raching-h880-cigar-humidor',
-    },
-    {
-      id: 'rec-2',
-      name: 'Reagan 1600 Cigar Humidor',
-      price: '$6,387.00',
-      image: '/generated-1777557213922-8v5be.png',
-      rating: 4.8,
-      handle: 'reagan-1600-cigar-humidor',
-    },
-    {
-      id: 'rec-3',
-      name: 'Raching SD800 Dual Zone',
-      price: '$1,824.00',
-      image: '/generated-1777557213922-8v5be.png',
-      rating: 4.9,
-      handle: 'raching-sd800-dual-zone',
-    },
-    {
-      id: 'rec-4',
-      name: 'CS600 Cigar & Wine Cabinet',
-      price: '$6,147.00',
-      image: '/generated-1777557213922-8v5be.png',
-      rating: 4.7,
-      handle: 'cs600-cigar-wine-cabinet',
-    },
-  ].filter(p => p.id !== currentProductId).slice(0, 4);
+export function ProductRecommendations({ currentProductId, currentHandle }: { currentProductId?: string; currentHandle?: string }) {
+  const [recommendations, setRecommendations] = useState<Array<{
+    id: string;
+    name: string;
+    price: string;
+    image: string;
+    rating: number;
+    handle: string;
+  }>>([]);
+
+  useEffect(() => {
+    // Get products from static products that are different from current
+    const handles = [
+      'raching-sd800',
+      'raching-cs600', 
+      'reagan-1600',
+      'raching-h880',
+    ].filter(h => h !== currentHandle);
+
+    const products = handles.map(handle => {
+      const product = getStaticProduct(handle);
+      if (product) {
+        return {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image || '/generated-1777557213922-8v5be.png',
+          rating: product.rating || 4.8,
+          handle: product.handle,
+        };
+      }
+      return null;
+    }).filter(Boolean) as Array<{
+      id: string;
+      name: string;
+      price: string;
+      image: string;
+      rating: number;
+      handle: string;
+    }>;
+
+    setRecommendations(products.slice(0, 4));
+  }, [currentHandle]);
+
+  if (recommendations.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-16 bg-charcoal-950">

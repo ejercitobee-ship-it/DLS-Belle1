@@ -484,7 +484,7 @@ export default function ProductPage({ handle }: { handle: string }) {
       </div>
 
       {/* Product Recommendations */}
-      <ProductRecommendations currentProductId={prod.id} />
+      <ProductRecommendations currentProductId={prod.id} currentHandle={handle} />
 
       {/* Product FAQ */}
       <ProductFAQ />
@@ -717,7 +717,7 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
       </div>
 
       {/* Product Recommendations */}
-      <ProductRecommendations currentProductId={product.id} />
+      <ProductRecommendations currentProductId={product.id} currentHandle={product.handle} />
 
       {/* Product FAQ */}
       <ProductFAQ />
