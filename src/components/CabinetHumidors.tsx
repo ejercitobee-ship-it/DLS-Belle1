@@ -6,10 +6,24 @@ import {
   CheckCircle2,
   Filter,
   Package,
+  Shield,
+  Truck,
+  Award,
+  Phone,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
+import { 
+  CustomerReviews, 
+  WhyBuyFromUs, 
+  FAQSection, 
+  PaymentMethods,
+  FreeShippingBanner,
+  LowStockBadge,
+  PHONE_NUMBER,
+  PHONE_HREF 
+} from './ConversionElements';
 
 type Category = 'All' | 'Dual-Zone' | 'Classic Cabinet' | 'Smart Climate';
 
@@ -280,12 +294,16 @@ export default function CabinetHumidors() {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
+      {/* Free Shipping Banner */}
+      <FreeShippingBanner />
+
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
         <img
           src={heroImage}
           alt="Cabinet Humidors"
           className="w-full h-full object-cover object-center"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/70 to-charcoal-950/30" />
         <div className="absolute inset-0 flex items-center">
@@ -300,6 +318,12 @@ export default function CabinetHumidors() {
             <p className="text-cream-200/60 mt-2 max-w-xl">
               Floor-standing masterpieces from 600 to 4,000+ cigars — classic cedar cabinets, dual-zone wine &amp; cigar pairings, and precision smart-climate systems.
             </p>
+            <div className="mt-4 flex items-center gap-4">
+              <a href={PHONE_HREF} className="inline-flex items-center gap-2 text-gold-400 hover:text-gold-300 transition-colors">
+                <Phone size={16} />
+                <span className="text-sm font-medium">{PHONE_NUMBER}</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -488,6 +512,18 @@ export default function CabinetHumidors() {
           </div>
         </div>
       </div>
+
+      {/* Customer Reviews */}
+      <CustomerReviews productName="Cabinet Humidors" />
+
+      {/* Why Buy From Us */}
+      <WhyBuyFromUs />
+
+      {/* FAQ Section */}
+      <FAQSection />
+
+      {/* Payment Methods */}
+      <PaymentMethods />
     </div>
   );
 }
