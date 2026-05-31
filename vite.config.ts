@@ -31,14 +31,7 @@ export default defineConfig({
         },
       },
     },
-    // Minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+    // Minification removed - using default esbuild minifier
   },
   // Optimize deps for faster dev and build
   optimizeDeps: {
