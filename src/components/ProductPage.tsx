@@ -13,6 +13,7 @@ import {
   Phone,
   Shield,
   Award,
+  ChevronDown,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { fetchProductByHandle, type ShopifyProduct } from '../lib/shopify';
