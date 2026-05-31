@@ -20,6 +20,7 @@ import { getStaticProduct, type StaticProductData } from '../lib/staticProducts'
 import { getProductPrice, getDefaultVariantId, formatMoney } from '../hooks/useShopifyCollection';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { PaymentMethods, PHONE_NUMBER, PHONE_HREF } from './ConversionElements';
+import { ProductRecommendations, ProductFAQ } from './ProductSections';
 
 /* ─── Sub-components ─────────────────────────────────────────────────────────── */
 
@@ -684,6 +685,12 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
           </div>
         </div>
       </div>
+
+      {/* Product Recommendations */}
+      <ProductRecommendations currentProductId={product.id} />
+
+      {/* Product FAQ */}
+      <ProductFAQ />
 
       {/* Zoom Modal */}
       {zoomImage && (
