@@ -91,6 +91,25 @@ export default function ProductPage({ handle }: { handle: string }) {
       setLoading(false);
       return;
     }
+
+    // GA4 - View Item Event
+    const viewItemEvent = () => {
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        const itemData = product || staticProduct;
+        if (itemData) {
+          (window as any).gtag('event', 'view_item', {
+            currency: 'USD',
+            value: itemData.price ? parseFloat(itemData.price.replace(/[^0-9.]/g, '')) : 0,
+            items: [{
+              item_id: itemData.id || handle,
+              item_name: itemData.name || itemData.title,
+              price: itemData.price ? parseFloat(itemData.price.replace(/[^0-9.]/g, '')) : 0,
+            }],
+          });
+        }
+      }
+    };
+
     let cancelled = false;
     async function load() {
       try {
@@ -101,12 +120,16 @@ export default function ProductPage({ handle }: { handle: string }) {
             setStaticProduct(null);
             setSelectedImage(0);
             setSelectedVariant(0);
+            // Fire view_item after product loads
+            setTimeout(viewItemEvent, 500);
           } else {
             // Check static products fallback
             const sp = getStaticProduct(handle);
             if (sp) {
               setStaticProduct(sp);
               setProduct(null);
+              // Fire view_item for static product
+              setTimeout(viewItemEvent, 500);
             } else {
               setError('Product not found');
             }
@@ -119,6 +142,8 @@ export default function ProductPage({ handle }: { handle: string }) {
           if (sp) {
             setStaticProduct(sp);
             setProduct(null);
+            // Fire view_item for static product
+            setTimeout(viewItemEvent, 500);
           } else {
             setError(err instanceof Error ? err.message : 'Failed to load product');
           }

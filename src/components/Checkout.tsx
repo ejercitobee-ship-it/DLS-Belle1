@@ -18,6 +18,21 @@ export default function Checkout({ onBack }: Props) {
 
   async function handleCheckout() {
     setError('');
+    
+    // GA4 - Begin Checkout Event
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'begin_checkout', {
+        currency: 'USD',
+        value: total / 100,
+        items: items.map(item => ({
+          item_id: item.id,
+          item_name: item.name,
+          price: item.priceNum,
+          quantity: item.quantity,
+        })),
+      });
+    }
+    
     // Use pre-synced URL if available
     if (checkoutUrl) {
       window.location.href = checkoutUrl;
