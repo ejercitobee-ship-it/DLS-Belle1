@@ -459,6 +459,12 @@ export default function ProductPage({ handle }: { handle: string }) {
         </div>
       </div>
 
+      {/* Product Recommendations */}
+      <ProductRecommendations currentProductId={prod.id} />
+
+      {/* Product FAQ */}
+      <ProductFAQ />
+
       {/* ── Zoom Modal ── */}
       {zoomImage && (
         <div
