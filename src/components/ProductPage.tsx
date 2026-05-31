@@ -469,6 +469,11 @@ export default function ProductPage({ handle }: { handle: string }) {
       {/* Product Recommendations */}
       <ProductRecommendations currentProductId={prod.id} currentHandle={handle} />
 
+      {/* Payment Methods */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <PaymentMethods />
+      </div>
+
       {/* Product FAQ */}
       <ProductFAQ />
 
