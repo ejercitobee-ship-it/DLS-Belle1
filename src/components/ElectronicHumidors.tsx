@@ -1,8 +1,17 @@
 import { useState } from 'react';
-import { ShoppingBag, Star, ChevronDown, Zap, Box, CheckCircle2, Loader2 } from 'lucide-react';
+import { ShoppingBag, Star, ChevronDown, Zap, Box, CheckCircle2, Loader2, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
+import { 
+  CustomerReviews, 
+  WhyBuyFromUs, 
+  FAQSection, 
+  PaymentMethods,
+  FreeShippingBanner,
+  PHONE_NUMBER,
+  PHONE_HREF 
+} from './ConversionElements';
 
 // ─── Static fallback data ─────────────────────────────────────────────────────
 
@@ -315,6 +324,9 @@ export default function ElectronicHumidors() {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
+      {/* Free Shipping Banner */}
+      <FreeShippingBanner />
+
       {/* Hero banner */}
       <div className="relative h-56 md:h-72 overflow-hidden">
         <img src={heroImage} alt="Electronic Humidors" className="w-full h-full object-cover object-center" loading="lazy" />
@@ -331,6 +343,12 @@ export default function ElectronicHumidors() {
             <p className="text-cream-200/60 mt-2 max-w-lg">
               Precision climate-controlled cabinets for discerning collectors and luxury venues.
             </p>
+            <div className="mt-4 flex items-center gap-4">
+              <a href={PHONE_HREF} className="inline-flex items-center gap-2 text-gold-400 hover:text-gold-300 transition-colors">
+                <Phone size={16} />
+                <span className="text-sm font-medium">{PHONE_NUMBER}</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -475,6 +493,18 @@ export default function ElectronicHumidors() {
           </div>
         </div>
       </div>
+
+      {/* Customer Reviews */}
+      <CustomerReviews productName="Electronic Humidors" />
+
+      {/* Why Buy From Us */}
+      <WhyBuyFromUs />
+
+      {/* FAQ Section */}
+      <FAQSection />
+
+      {/* Payment Methods */}
+      <PaymentMethods />
     </div>
   );
 }

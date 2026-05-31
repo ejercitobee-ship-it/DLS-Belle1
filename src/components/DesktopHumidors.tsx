@@ -1,8 +1,17 @@
 import { useState } from 'react';
-import { ShoppingBag, Star, ChevronDown, Box, CheckCircle2, Loader2, SlidersHorizontal } from 'lucide-react';
+import { ShoppingBag, Star, ChevronDown, Box, CheckCircle2, Loader2, SlidersHorizontal, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
+import { 
+  CustomerReviews, 
+  WhyBuyFromUs, 
+  FAQSection, 
+  PaymentMethods,
+  FreeShippingBanner,
+  PHONE_NUMBER,
+  PHONE_HREF 
+} from './ConversionElements';
 
 // ─── Static fallback data ─────────────────────────────────────────────────────
 
@@ -194,6 +203,9 @@ export default function DesktopHumidors() {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
+      {/* Free Shipping Banner */}
+      <FreeShippingBanner />
+
       {/* Hero banner */}
       <div className="relative h-56 md:h-72 overflow-hidden">
         <img src={heroImage} alt="Desktop Humidors" className="w-full h-full object-cover object-center" loading="lazy" />
@@ -210,6 +222,12 @@ export default function DesktopHumidors() {
             <p className="text-cream-200/60 mt-2 max-w-lg">
               Handcrafted cedar-lined boxes for personal collections — from slim 20-cigar cases to grand 250-cigar displays.
             </p>
+            <div className="mt-4 flex items-center gap-4">
+              <a href={PHONE_HREF} className="inline-flex items-center gap-2 text-gold-400 hover:text-gold-300 transition-colors">
+                <Phone size={16} />
+                <span className="text-sm font-medium">{PHONE_NUMBER}</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -377,6 +395,18 @@ export default function DesktopHumidors() {
           </div>
         </div>
       </div>
+
+      {/* Customer Reviews */}
+      <CustomerReviews productName="Desktop Humidors" />
+
+      {/* Why Buy From Us */}
+      <WhyBuyFromUs />
+
+      {/* FAQ Section */}
+      <FAQSection />
+
+      {/* Payment Methods */}
+      <PaymentMethods />
     </div>
   );
 }
