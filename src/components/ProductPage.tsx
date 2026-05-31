@@ -324,23 +324,6 @@ export default function ProductPage({ handle }: { handle: string }) {
               )}
             </div>
 
-            {/* Short Description */}
-            {shortDesc && (
-              <div className="mb-6">
-                <p className={`text-cream-200/60 leading-relaxed text-sm ${showFullDesc ? '' : 'line-clamp-3'}`}>
-                  {showFullDesc ? fullDesc : shortDesc}
-                </p>
-                {fullDesc.length > shortDesc.length && (
-                  <button
-                    onClick={() => setShowFullDesc(!showFullDesc)}
-                    className="mt-2 text-gold-400 text-xs font-medium hover:text-gold-300 transition-colors"
-                  >
-                    {showFullDesc ? 'Show less' : 'Read more'}
-                  </button>
-                )}
-              </div>
-            )}
-
             {/* Variants */}
             {prod.variants.length > 1 && (
               <div className="mb-6">

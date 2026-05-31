@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronDown, Star } from 'lucide-react';
-import { fetchCollectionProducts, type ShopifyProduct } from '../lib/shopify';
+import { fetchProducts, type ShopifyProduct } from '../lib/shopify';
 
 // Product Recommendations Section - Fetches from Shopify
 export function ProductRecommendations({ 
@@ -18,8 +18,8 @@ export function ProductRecommendations({
   useEffect(() => {
     async function loadRecommendations() {
       try {
-        // Fetch from Cabinet Humidors collection (gid://shopify/Collection/449028997401)
-        const products = await fetchCollectionProducts('449028997401', 8);
+        // Fetch products from Shopify (first 20, then filter)
+        const { products } = await fetchProducts(20);
         
         // Filter out current product and limit to 4
         const filtered = products
