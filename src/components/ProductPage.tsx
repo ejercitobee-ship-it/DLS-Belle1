@@ -209,9 +209,11 @@ export default function ProductPage({ handle }: { handle: string }) {
   const hasRealDiscount = variant?.compareAtPrice 
     && parseFloat(variant.compareAtPrice.amount) > parseFloat(variant.price.amount);
 
-  const allImages = prod.images.length
+  const allImages = prod.images?.length
     ? prod.images.map((i) => i.url)
-    : [prod.featuredImage?.url].filter(Boolean) as string[];
+    : prod.featuredImage?.url 
+    ? [prod.featuredImage.url]
+    : ['/generated-1777557213922-8v5be.png']; // Fallback image
 
   const shortDesc = prod.description ? prod.description.split('\n')[0] : '';
   const fullDesc = prod.description || '';
@@ -405,10 +407,31 @@ export default function ProductPage({ handle }: { handle: string }) {
             <div className="lg:col-span-2">
               <h2 className="font-serif text-2xl text-white font-bold mb-6">Product Details</h2>
               {prod.descriptionHtml ? (
-                <div className="prose-article" dangerouslySetInnerHTML={{ __html: prod.descriptionHtml }} />
+                <div>
+                  <div 
+                    className={`prose-article overflow-hidden transition-all duration-300 ${showFullDesc ? '' : 'max-h-48'}`}
+                    dangerouslySetInnerHTML={{ __html: prod.descriptionHtml }} 
+                  />
+                  <button
+                    onClick={() => setShowFullDesc(!showFullDesc)}
+                    className="mt-4 text-gold-400 hover:text-gold-300 text-sm font-medium flex items-center gap-1"
+                  >
+                    {showFullDesc ? 'Show less' : 'Read more'}
+                    <ChevronDown size={16} className={`transform transition-transform ${showFullDesc ? 'rotate-180' : ''}`} />
+                  </button>
+                </div>
               ) : prod.description ? (
-                <div className="text-cream-200/60 leading-relaxed text-sm whitespace-pre-line">
-                  {prod.description}
+                <div>
+                  <div className={`text-cream-200/60 leading-relaxed text-sm whitespace-pre-line overflow-hidden transition-all duration-300 ${showFullDesc ? '' : 'max-h-48'}`}>
+                    {prod.description}
+                  </div>
+                  <button
+                    onClick={() => setShowFullDesc(!showFullDesc)}
+                    className="mt-4 text-gold-400 hover:text-gold-300 text-sm font-medium flex items-center gap-1"
+                  >
+                    {showFullDesc ? 'Show less' : 'Read more'}
+                    <ChevronDown size={16} className={`transform transition-transform ${showFullDesc ? 'rotate-180' : ''}`} />
+                  </button>
                 </div>
               ) : (
                 <p className="text-cream-200/40 text-sm">No description available.</p>
