@@ -8,7 +8,6 @@ import {
   WhyBuyFromUs, 
   FAQSection, 
   PaymentMethods,
-  FreeShippingBanner,
   PHONE_NUMBER,
   PHONE_HREF 
 } from './ConversionElements';
@@ -203,9 +202,6 @@ export default function DesktopHumidors() {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
-      {/* Free Shipping Banner */}
-      <FreeShippingBanner />
-
       {/* Hero banner */}
       <div className="relative h-56 md:h-72 overflow-hidden">
         <img src={heroImage} alt="Desktop Humidors" className="w-full h-full object-cover object-center" loading="lazy" />

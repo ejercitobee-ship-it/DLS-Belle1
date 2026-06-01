@@ -19,7 +19,6 @@ import {
   WhyBuyFromUs, 
   FAQSection, 
   PaymentMethods,
-  FreeShippingBanner,
   LowStockBadge,
   PHONE_NUMBER,
   PHONE_HREF 
@@ -294,9 +293,6 @@ export default function CabinetHumidors() {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
-      {/* Free Shipping Banner */}
-      <FreeShippingBanner />
-
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
         <img
