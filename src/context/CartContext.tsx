@@ -225,6 +225,63 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const totalItems = items.reduce((s, i) => s + i.quantity, 0);
   const subtotal = items.reduce((s, i) => s + i.priceNum * i.quantity, 0);
 
+  // Track if cart abandonment has been triggered for current session
+  const cartAbandonmentTriggered = useRef(false);
+
+  // Trigger cart abandonment email
+  const triggerCartAbandonmentEmail = async (email: string, firstName?: string) => {
+    if (cartAbandonmentTriggered.current) return;
+    if (items.length === 0) return;
+
+    try {
+      const cartData = {
+        email,
+        firstName,
+        cartTotal: subtotal,
+        items: items.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.priceNum,
+          quantity: item.quantity,
+        })),
+        cartId: getSavedCartId() || undefined,
+        cartUrl: checkoutUrl || 'https://dunnluxuryselections.com/cart',
+      };
+
+      const response = await fetch('/api/cart-abandonment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cartData),
+      });
+
+      if (response.ok) {
+        cartAbandonmentTriggered.current = true;
+        console.log('[Cart] Abandonment email triggered');
+      }
+    } catch (err) {
+      console.error('[Cart] Failed to trigger abandonment email:', err);
+    }
+  };
+
+  // Hook into beforeunload for cart abandonment
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      // Only trigger if there are items in cart and user hasn't completed checkout
+      if (items.length > 0 && !cartAbandonmentTriggered.current) {
+        // Try to get email from sessionStorage (if user entered it in popup)
+        const popupEmail = sessionStorage.getItem('leadPopupEmail');
+        const popupFirstName = sessionStorage.getItem('leadPopupFirstName');
+        
+        if (popupEmail) {
+          triggerCartAbandonmentEmail(popupEmail, popupFirstName || undefined);
+        }
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [items, subtotal, checkoutUrl]);
+
   const shopifyCheckout = async (): Promise<{ url: string | null; fallback: boolean }> => {
     if (!getShopifyConfigured()) return { url: null, fallback: true };
     const lines = items

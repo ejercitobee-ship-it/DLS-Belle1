@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { X, MessageCircle, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { X, MessageCircle, Send, CheckCircle, AlertCircle, Loader2, ChevronRight } from 'lucide-react';
 
 interface LeadPopupProps {
   onClose: () => void;
@@ -8,20 +8,75 @@ interface LeadPopupProps {
   onRestore?: () => void;
 }
 
+// Storage keys for session tracking
+const STORAGE_KEYS = {
+  seen: 'leadPopupSeen',
+  skipped: 'leadPopupSkipped',
+  converted: 'leadPopupConverted',
+};
+
 export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore }: LeadPopupProps) {
+  const [step, setStep] = useState<1 | 2>(1);
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [shouldShow, setShouldShow] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const mouseYRef = useRef<number>(0);
+
+  // Check session storage on mount
+  useEffect(() => {
+    const hasSeen = sessionStorage.getItem(STORAGE_KEYS.seen);
+    const hasSkipped = sessionStorage.getItem(STORAGE_KEYS.skipped);
+    const hasConverted = sessionStorage.getItem(STORAGE_KEYS.converted);
+    
+    // Don't show if already interacted with
+    if (hasSeen || hasSkipped || hasConverted) {
+      return;
+    }
+
+    // 45 second delay timer
+    const delayTimer = setTimeout(() => {
+      setShouldShow(true);
+      sessionStorage.setItem(STORAGE_KEYS.seen, 'true');
+    }, 45000);
+
+    // Exit intent detection (mouse leaving viewport from top)
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseYRef.current = e.clientY;
+    };
+
+    const handleMouseLeave = (e: MouseEvent) => {
+      // Only trigger if mouse leaves from the top of the viewport
+      if (e.clientY < 10 && mouseYRef.current < 100) {
+        clearTimeout(delayTimer);
+        setShouldShow(true);
+        sessionStorage.setItem(STORAGE_KEYS.seen, 'true');
+      }
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      clearTimeout(delayTimer);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (shouldShow && inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
+  }, [shouldShow, step]);
+
+  const handleSkip = () => {
+    sessionStorage.setItem(STORAGE_KEYS.skipped, 'true');
+    onClose();
+  };
 
   const handleClose = () => {
     if (status === 'success') {
@@ -29,7 +84,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
       return;
     }
     // If form has data entered, minimize to bubble instead of closing
-    if (firstName.trim() || lastName.trim() || email.trim() || phone.trim()) {
+    if (firstName.trim() || email.trim() || phone.trim()) {
       onMinimize?.();
       return;
     }
@@ -37,9 +92,18 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
     onClose();
   };
 
+  const handleNextStep = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!firstName.trim() || !email.trim()) return;
+    // Store email for cart abandonment
+    sessionStorage.setItem('leadPopupEmail', email.trim());
+    sessionStorage.setItem('leadPopupFirstName', firstName.trim());
+    setStep(2);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if ((!firstName.trim() && !lastName.trim()) || !email.trim() || !phone.trim()) return;
+    if (!firstName.trim() || !email.trim()) return;
 
     setStatus('loading');
     setErrorMessage('');
@@ -50,9 +114,9 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           firstName: firstName.trim(),
-          lastName: lastName.trim(),
+          lastName: '', // No longer collecting last name
           email: email.trim(),
-          phone: phone.trim(),
+          phone: phone.trim() || '', // Phone is optional
         }),
       });
 
@@ -62,12 +126,18 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
         throw new Error(data.error || 'Failed to send message');
       }
 
+      sessionStorage.setItem(STORAGE_KEYS.converted, 'true');
       setStatus('success');
     } catch (err) {
       setStatus('error');
       setErrorMessage(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     }
   };
+
+  // Don't render if shouldn't show yet
+  if (!shouldShow) {
+    return null;
+  }
 
   // Minimized floating chat bubble
   if (isMinimized) {
@@ -128,8 +198,9 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+            {step === 1 ? (
+              // Step 1: First Name + Email
+              <form onSubmit={handleNextStep} className="space-y-3">
                 <input
                   ref={inputRef}
                   type="text"
@@ -140,56 +211,100 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
                   className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
                 />
                 <input
-                  type="text"
-                  placeholder="Last Name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
                 />
-              </div>
-              <input
-                type="email"
-                placeholder="Email Address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
-              />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
-              />
 
-              {status === 'error' && (
-                <div className="flex items-center gap-2 text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  {errorMessage}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                className="w-full bg-gold-600 hover:bg-gold-500 disabled:opacity-50 disabled:cursor-not-allowed text-charcoal-950 py-2.5 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2"
-              >
-                {status === 'loading' ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    Get Exclusive Access
-                  </>
+                {status === 'error' && (
+                  <div className="flex items-center gap-2 text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    {errorMessage}
+                  </div>
                 )}
-              </button>
-            </form>
+
+                <button
+                  type="submit"
+                  className="w-full bg-gold-600 hover:bg-gold-500 text-charcoal-950 py-2.5 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                  Continue
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSkip}
+                  className="w-full text-cream-200/50 hover:text-cream-200 text-sm py-2 transition-colors"
+                >
+                  Skip for now
+                </button>
+              </form>
+            ) : (
+              // Step 2: Phone (optional) + Submit
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <div className="bg-charcoal-800/50 rounded-lg px-4 py-3 text-sm">
+                  <p className="text-cream-200/60">
+                    <span className="text-cream-100 font-medium">{firstName}</span> · {email}
+                  </p>
+                </div>
+                
+                <input
+                  type="tel"
+                  placeholder="Phone Number (optional)"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
+                />
+                <p className="text-cream-200/40 text-xs px-1">
+                  Add your phone for exclusive SMS offers (optional)
+                </p>
+
+                {status === 'error' && (
+                  <div className="flex items-center gap-2 text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    {errorMessage}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="w-full bg-gold-600 hover:bg-gold-500 disabled:opacity-50 disabled:cursor-not-allowed text-charcoal-950 py-2.5 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                  {status === 'loading' ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Get Exclusive Access
+                    </>
+                  )}
+                </button>
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    className="flex-1 text-cream-200/50 hover:text-cream-200 text-sm py-2 transition-colors"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSkip}
+                    className="flex-1 text-cream-200/50 hover:text-cream-200 text-sm py-2 transition-colors"
+                  >
+                    Skip for now
+                  </button>
+                </div>
+              </form>
+            )}
 
             <p className="text-cream-200/30 text-xs text-center mt-3">
               We respect your privacy. Unsubscribe at any time.

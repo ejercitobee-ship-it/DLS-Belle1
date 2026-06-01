@@ -14,6 +14,7 @@ import {
   Shield,
   Award,
   ChevronDown,
+  MessageCircle,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { fetchProductByHandle, type ShopifyProduct } from '../lib/shopify';
@@ -348,8 +349,28 @@ export default function ProductPage({ handle }: { handle: string }) {
               </div>
             )}
 
+            {/* Trust Signals - Above Add to Cart */}
+            <div className="mb-4 space-y-2">
+              <div className="flex items-center gap-2 text-cream-200/60 text-xs">
+                <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
+                <span>Ships within 2-3 business days</span>
+              </div>
+              <div className="flex items-center gap-2 text-cream-200/60 text-xs">
+                <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
+                <span>1-year warranty included</span>
+              </div>
+              <div className="flex items-center gap-2 text-cream-200/60 text-xs">
+                <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
+                <span>30-day money back guarantee</span>
+              </div>
+              <div className="flex items-center gap-2 text-cream-200/60 text-xs">
+                <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
+                <span>White glove delivery included</span>
+              </div>
+            </div>
+
             {/* Add to Cart */}
-            <div className="mb-8">
+            <div className="mb-6">
               <button
                 onClick={handleAddToCart}
                 disabled={added}
@@ -370,6 +391,22 @@ export default function ProductPage({ handle }: { handle: string }) {
               <p className="text-cream-200/25 text-[10px] text-center mt-3 tracking-wide">
                 Free shipping on selected items. Taxes calculated at checkout.
               </p>
+            </div>
+
+            {/* Chat with Specialist Button */}
+            <div className="mb-6">
+              <button
+                onClick={() => {
+                  // Open Tawk.to live chat
+                  if (typeof window !== 'undefined' && (window as any).Tawk_API) {
+                    (window as any).Tawk_API.maximize();
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2 bg-charcoal-800 hover:bg-charcoal-700 text-cream-200 text-sm py-3 rounded-lg transition-colors border border-charcoal-700/50"
+              >
+                <MessageCircle size={16} />
+                Chat with a specialist
+              </button>
             </div>
 
             {/* Trust Badges */}
