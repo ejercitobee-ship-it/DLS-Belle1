@@ -39,7 +39,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if ((!firstName.trim() && !lastName.trim()) || !email.trim()) return;
+    if ((!firstName.trim() && !lastName.trim()) || !email.trim() || !phone.trim()) return;
 
     setStatus('loading');
     setErrorMessage('');
@@ -158,9 +158,10 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
               />
               <input
                 type="tel"
-                placeholder="Phone Number (optional)"
+                placeholder="Phone Number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                required
                 className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
               />
 
