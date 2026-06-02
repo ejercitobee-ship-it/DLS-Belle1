@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { X, ShoppingBag, Minus, Plus, Trash2, Package, ExternalLink, AlertCircle } from 'lucide-react';
+import { X, ShoppingBag, Minus, Plus, Trash2, Package, Lock, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 type Props = {
@@ -165,10 +165,25 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               onClick={async () => {
                 setCheckoutError(false);
                 setCheckoutLoading(true);
+                // GA4 begin_checkout
+                if (typeof window !== 'undefined' && (window as any).gtag) {
+                  (window as any).gtag('event', 'begin_checkout', {
+                    currency: 'USD',
+                    value: subtotal,
+                    items: items.map(item => ({
+                      item_id: item.id,
+                      item_name: item.name,
+                      price: item.priceNum,
+                      quantity: item.quantity,
+                    })),
+                  });
+                }
                 try {
                   const { url } = await shopifyCheckout();
                   if (url) {
-                    window.location.href = url;
+                    const returnUrl = `${window.location.origin}/order-confirmation`;
+                    const separator = url.includes('?') ? '&' : '?';
+                    window.location.href = `${url}${separator}return_url=${encodeURIComponent(returnUrl)}`;
                     return;
                   }
                   setCheckoutError(true);
@@ -184,7 +199,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               {checkoutLoading ? (
                 <><div className="w-4 h-4 border-2 border-charcoal-950/30 border-t-charcoal-950 rounded-full animate-spin" /> Preparing Checkout...</>
               ) : (
-                <>Checkout <ExternalLink size={14} /></>
+                <><Lock size={13} /> Secure Checkout</>
               )}
             </button>
 
@@ -202,6 +217,37 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 </a>
               </div>
             )}
+
+            {/* Trust signals */}
+            <div className="space-y-3 pt-2">
+              {/* Payment methods */}
+              <div className="flex items-center justify-center gap-2 flex-wrap">
+                {['Visa', 'Mastercard', 'Amex', 'PayPal'].map((m) => (
+                  <span key={m} className="text-[10px] text-cream-200/40 bg-charcoal-800/60 border border-charcoal-700/30 px-2 py-1 rounded font-medium">
+                    {m}
+                  </span>
+                ))}
+              </div>
+              
+              {/* Trust badges */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-center gap-1.5 text-[10px] text-cream-200/50">
+                  <Lock size={10} className="text-emerald-500" />
+                  <span>SSL Secured by Shopify</span>
+                </div>                <div className="flex items-center justify-center gap-1.5 text-[10px] text-cream-200/50">
+                  <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>30-day money-back guarantee</span>
+                </div>
+                <div className="flex items-center justify-center gap-1.5 text-[10px] text-cream-200/50">
+                  <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>White-glove delivery included</span>
+                </div>
+              </div>
+            </div>
 
             <button
               onClick={closeCart}

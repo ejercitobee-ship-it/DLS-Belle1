@@ -10,13 +10,15 @@ export default function OrderConfirmation() {
 
   useEffect(() => {
     // Get order details from URL parameters
+    // Shopify returns: ?checkout=TOKEN, ?order_id=ID, or legacy ?checkout_id=ID
     const urlParams = new URLSearchParams(window.location.search);
-    const checkoutId = urlParams.get('checkout_id');
+    const checkoutToken = urlParams.get('checkout') || urlParams.get('checkout_id');
     const orderId = urlParams.get('order_id');
     const orderTotal = urlParams.get('total') || '0';
-    
+    const checkoutId = checkoutToken || orderId;
+
     // If no checkout/order ID, redirect to home (prevent direct access)
-    if (!checkoutId && !orderId) {
+    if (!checkoutToken && !orderId) {
       window.location.href = '/';
       return;
     }
@@ -46,12 +48,30 @@ export default function OrderConfirmation() {
 
     // Google Analytics 4 - Purchase Event
     if (typeof window !== 'undefined' && (window as any).gtag) {
+      let purchaseItems: object[] = [];
+      try {
+        const cartJson = localStorage.getItem('dunns_cart');
+        if (cartJson) {
+          const cartItems = JSON.parse(cartJson);
+          purchaseItems = cartItems.map((item: { id: string; name: string; priceNum: number; quantity: number }) => ({
+            item_id: item.id,
+            item_name: item.name,
+            price: item.priceNum,
+            quantity: item.quantity,
+          }));
+        }
+      } catch { /* ignore parse errors */ }
+
       (window as any).gtag('event', 'purchase', {
         transaction_id: orderId || checkoutId,
         value: parseFloat(orderTotal) || 0,
         currency: 'USD',
-        items: [], // Items can be populated if available in URL params
+        items: purchaseItems,
       });
+
+      // Clear cart after confirmed purchase
+      localStorage.removeItem('dunns_cart');
+      localStorage.removeItem('dunns_shopify_cart_id');
     }
   }, []);
 

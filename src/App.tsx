@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
 import ErrorBoundary from './components/ErrorBoundary';
 import LeadPopup from './components/LeadPopup';
+import StickyCartBar from './components/StickyCartBar';
 import { CartProvider, useCart } from './context/CartContext';
 import { usePageMeta } from './hooks/usePageMeta';
 
@@ -565,6 +566,9 @@ function AppInner() {
       )}
 
       <CartDrawer onCheckout={() => navigate('checkout')} />
+
+      {/* Sticky mobile checkout bar — shows when cart has items and drawer is closed */}
+      {!isFullPageOverlay && <StickyCartBar onOpen={openCart} />}
 
       {popupMounted && (showPopup || popupMinimized) && (
         <LeadPopup

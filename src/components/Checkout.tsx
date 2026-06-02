@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Lock, ShieldCheck, Truck, ExternalLink, ShoppingBag, AlertCircle, Minus, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Lock, ShieldCheck, Truck, ExternalLink, ShoppingBag, AlertCircle, Minus, Plus, Trash2, MessageCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 type Props = { onBack: () => void };
@@ -33,16 +33,15 @@ export default function Checkout({ onBack }: Props) {
       });
     }
     
-    // Use pre-synced URL if available
-    if (checkoutUrl) {
-      window.location.href = checkoutUrl;
-      return;
-    }
     setLoading(true);
     try {
+      // Always create a fresh cart to avoid stale/expired checkout URLs
       const { url } = await shopifyCheckout();
-      if (url) {
-        window.location.href = url;
+      const baseUrl = url || checkoutUrl;
+      if (baseUrl) {
+        const returnUrl = `${window.location.origin}/order-confirmation`;
+        const separator = baseUrl.includes('?') ? '&' : '?';
+        window.location.href = `${baseUrl}${separator}return_url=${encodeURIComponent(returnUrl)}`;
         return;
       }
       setError('Could not create a Shopify checkout session. Please try again.');
@@ -106,6 +105,28 @@ export default function Checkout({ onBack }: Props) {
                     <ExternalLink size={13} />
                   </>
                 )}
+              </button>
+
+              {/* Payment method icons */}
+              <div className="flex items-center justify-center gap-2 mt-3 flex-wrap">
+                {['Visa', 'MC', 'Amex', 'PayPal', 'Apple Pay', 'Google Pay'].map((m) => (
+                  <span key={m} className="text-[10px] text-cream-200/30 bg-charcoal-800/60 border border-charcoal-700/30 px-2 py-1 rounded font-medium">
+                    {m}
+                  </span>
+                ))}
+              </div>
+
+              {/* Chat with specialist */}
+              <button
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).Tawk_API) {
+                    (window as any).Tawk_API.maximize();
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2 mt-3 text-xs text-cream-200/40 hover:text-gold-400 transition-colors py-2"
+              >
+                <MessageCircle size={13} />
+                Questions? Chat with a specialist
               </button>
 
               {error && (
