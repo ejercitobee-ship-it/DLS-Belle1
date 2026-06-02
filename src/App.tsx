@@ -544,19 +544,25 @@ function AppInner() {
   return (
     <div className="min-h-screen bg-charcoal-950">
       {!isFullPageOverlay && (
-        <Navbar currentPage={displayPage} onCartOpen={openCart} />
+        <header>
+          <Navbar currentPage={displayPage} onCartOpen={openCart} />
+        </header>
       )}
 
-      <div
+      <main
         className="transition-opacity duration-220"
         style={{ opacity: transitioning ? 0 : 1, transitionDuration: '220ms' }}
       >
         <Suspense fallback={<div className="min-h-screen bg-charcoal-950" />}>
           <PageContent page={displayPage} />
         </Suspense>
-      </div>
+      </main>
 
-      {!isFullPageOverlay && <Footer />}
+      {!isFullPageOverlay && (
+        <footer>
+          <Footer />
+        </footer>
+      )}
 
       <CartDrawer onCheckout={() => navigate('checkout')} />
 
