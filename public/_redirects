@@ -36,5 +36,8 @@
 /shopify-setup  /shopify-setup/index.html  200
 /new-arrivals  /new-arrivals/index.html  200
 
+# Images - serve directly without SPA fallback
+/images/*  /images/:splat  200
+
 # SPA fallback for dynamic routes (product pages, etc.)
 /*  /index.html  200
