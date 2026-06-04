@@ -51,7 +51,7 @@ export default function Newsletter() {
       {/* Background texture */}
       <div className="absolute inset-0 opacity-5">
         <img
-          src="/generated-1777557213922-8v5be.png"
+          src="/images/hero-bg.png"
           alt=""
           className="w-full h-full object-cover"
           loading="lazy"

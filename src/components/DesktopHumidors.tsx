@@ -198,7 +198,7 @@ export default function DesktopHumidors() {
   });
 
   const heroImage = collectionImage
-    || '/generated-1777865999599-45xy3.png';
+    || '/images/collections/collections-travel-humidors.png';
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">

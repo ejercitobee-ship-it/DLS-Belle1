@@ -215,7 +215,7 @@ export default function ProductPage({ handle }: { handle: string }) {
     ? prod.images.map((i) => i.url)
     : prod.featuredImage?.url 
     ? [prod.featuredImage.url]
-    : ['/generated-1777557213922-8v5be.png']; // Fallback image
+    : ['/images/hero-bg.png']; // Fallback image
 
   const shortDesc = prod.description ? prod.description.split('\n')[0] : '';
   const fullDesc = prod.description || '';

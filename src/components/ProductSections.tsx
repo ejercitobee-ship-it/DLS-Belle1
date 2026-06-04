@@ -83,7 +83,7 @@ export function ProductRecommendations({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {recommendations.map((product) => {
-            const imageUrl = product.featuredImage?.url || product.images?.[0]?.url || '/generated-1777557213922-8v5be.png';
+            const imageUrl = product.featuredImage?.url || product.images?.[0]?.url || '/images/hero-bg.png';
             const price = product.priceRange?.minVariantPrice?.amount 
               ? `$${parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)}`
               : product.variants?.[0]?.price?.amount

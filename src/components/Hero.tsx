@@ -12,7 +12,7 @@ export default function Hero() {
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src="/generated-1777557213922-8v5be.png"
+          src="/images/hero-bg.png"
           alt="Luxury humidor"
           className="w-full h-full object-cover object-center"
         />

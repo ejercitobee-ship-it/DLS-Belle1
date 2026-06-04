@@ -39,7 +39,7 @@ export default function About() {
       <section className="relative py-32 overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/generated-1777557213922-8v5be.png"
+            src="/images/hero-bg.png"
             alt="Luxury cigars"
             className="w-full h-full object-cover object-center"
             loading="lazy"

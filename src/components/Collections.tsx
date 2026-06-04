@@ -17,7 +17,7 @@ const STATIC_COLLECTIONS = [
     handle: 'desktop-humidors',
     name: 'Desktop Humidors',
     description: 'Elegant stationary humidors for the discerning home collector.',
-    image: '/generated-1777865999599-45xy3.png',
+    image: '/images/collections/collections-travel-humidors.png',
     count: '22 Products',
     featured: false,
   },
