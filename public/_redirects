@@ -2,6 +2,9 @@
 /cart/*  https://luxury-dunn-selections.myshopify.com/cart/:splat  301
 /checkouts/*  https://luxury-dunn-selections.myshopify.com/checkouts/:splat  301
 
+# Images - serve directly without SPA fallback (must be BEFORE asset rules)
+/images/*  /images/:splat  200
+
 # Assets - serve directly without SPA fallback
 /assets/*  /assets/:splat  200
 *.css  /:splat  200
@@ -35,9 +38,6 @@
 /order-confirmation  /order-confirmation/index.html  200
 /shopify-setup  /shopify-setup/index.html  200
 /new-arrivals  /new-arrivals/index.html  200
-
-# Images - serve directly without SPA fallback
-/images/*  /images/:splat  200
 
 # SPA fallback for dynamic routes (product pages, etc.)
 /*  /index.html  200
