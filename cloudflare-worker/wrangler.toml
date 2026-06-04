@@ -1,0 +1,17 @@
+name = "shopify-route-redirector"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Environment variables (optional - can also be hardcoded)
+[vars]
+SHOPIFY_DOMAIN = "luxury-dunn-selections.myshopify.com"
+SHOP_ID = "95073927538"
+
+# Routes - deploy only on dunnluxuryselections.com
+[[routes]]
+pattern = "dunnluxuryselections.com/*"
+custom_domain = true
+
+[[routes]]
+pattern = "www.dunnluxuryselections.com/*"
+custom_domain = true

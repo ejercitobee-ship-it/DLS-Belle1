@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "store": "Dunn's Luxury Selections",
+    "generated_at": "2026-06-02",
+    "total_questions": 40
+  },
+  "categories": [
+    {
+      "id": "buying-guide",
+      "label": "Buying Guide",
+      "faqs": [
+        {
+          "id": "bg-1",
+          "question": "What's the best humidor for a beginner?",
+          "answer": "For a first humidor, the **Chalet (Cherry) at $36** is a great entry point for 25–50 cigars. If you want countertop display quality, the **Modena at $138** holds up to 100 cigars with a beautiful angled glass lid. Both include a hygrometer and humidifier. The key question is how many cigars you plan to store."
+        },
+        {
+          "id": "bg-2",
+          "question": "What humidor should I get for 1,000+ cigars?",
+          "answer": "For large collections:\n- **Spartacus ($1,145)** — classic cabinet, ~1,000 cigars, glass door, brass lock\n- **Bermuda ($3,800)** — maximum capacity at 4,000 cigars, 12 trays, 24 humidifiers\n- **Raching MON800A ($1,824)** — electronic climate control for 500–600 cigars\n- **Reagan Electronic Cabinet ($6,147)** — up to 4,000 cigars with dual-zone LCD control\n\nFor the most serious collections, we recommend calling us at (888) 431-9214."
+        },
+        {
+          "id": "bg-3",
+          "question": "What is a dual-zone humidor?",
+          "answer": "A dual-zone humidor has two independently controlled compartments — one for cigars (16–22°C, 60–75% RH) and one for wine (5–22°C). This lets you store both in the same cabinet without compromising either. Our dual-zone models are the **Raching SD800** and **Raching CS600**, available in both cabinet and electronic versions."
+        },
+        {
+          "id": "bg-4",
+          "question": "What's the difference between the Raching SD800 and CS600?",
+          "answer": "Both are dual-zone cigar + wine cabinets. The key differences:\n\n| | SD800 | CS600 |\n|---|---|---|\n| Cabinet price | $7,600 | $4,450 |\n| Electronic price | $5,972 | $3,360 |\n| Cigar capacity | ~1,600 | 1,200–1,400 |\n| Wine capacity | ~130 bottles | 100–110 bottles |\n| Height | 1920 mm | 1760 mm |\n\nThe SD800 is the flagship — larger, more shelf layers, and slightly higher precision."
+        },
+        {
+          "id": "bg-5",
+          "question": "What's the difference between a cabinet humidor and an electronic humidor?",
+          "answer": "**Cabinet humidors** use passive humidification — built-in humidifier pads, trays, and Spanish cedar interior to regulate humidity. You check and refill manually.\n\n**Electronic humidors** use active climate control — a compressor or water-cooling system automatically maintains precise temperature (16–22°C ±1°C) and humidity (60–75% RH ±1%) with no manual intervention. Electronic models are recommended for large collections and commercial use."
+        },
+        {
+          "id": "bg-6",
+          "question": "What humidor is best for travel?",
+          "answer": "Our most popular travel options:\n- **Manhattan Travel Humidor ($50)** — 4–8 cigars, 180° flat opening, includes cutter + torch lighter. Available in Brown or Black.\n- **Novelist ($452)** — premium leather book-style, 5–10 cigars, perfect gift\n- **Traveler 20 Slim ($25)** — best value, 8–24 cigars, 2¼\" slim profile\n\nFor carry-on travel, the **Traveler 5 ($26)** has an acrylic window so you can check cigars without opening it."
+        },
+        {
+          "id": "bg-7",
+          "question": "What humidor makes the best gift?",
+          "answer": "Our top gift recommendations:\n- **Novelist Travel Humidor ($452)** — stunning book-style leather, includes cutter. Perfect luxury gift.\n- **Manhattan Travel Humidor ($50)** — practical and elegant, cutter + torch included\n- **Modena Desktop Humidor ($138)** — 100-cigar glass-top display piece with gold hardware\n- **Admiral's Voyage Ship Decanter Set ($127)** — beautiful hand-blown ship decanter with 4 glasses\n\nFor corporate gifting, we offer custom logo engraving on the Classic Square Whiskey Decanter Set."
+        },
+        {
+          "id": "bg-8",
+          "question": "I want to store cigars and wine together. What do you recommend?",
+          "answer": "Our dual-zone cabinets are purpose-built for exactly this:\n\n**Budget-conscious:** Raching CS600 Electronic ($3,360) — 1,200–1,400 cigars + 100–110 wine bottles\n**Premium:** Raching SD800 Electronic ($5,972) — 1,500–1,600 cigars + 120–130 wine bottles\n**Ultimate:** Raching SD800 Cabinet ($7,600) — flagship model\n\nBoth have fully independent climate zones so wine and cigars never compromise each other."
+        }
+      ]
+    },
+    {
+      "id": "products",
+      "label": "Product Details",
+      "faqs": [
+        {
+          "id": "pd-1",
+          "question": "What is the Raching RR980?",
+          "answer": "The **Raching RR980 ($6,387)** is our flagship electronic humidor vault. It holds 3,000–4,000 cigars and features a TFT touchscreen, fingerprint + password lock, mobile app remote unlock, ammonia removal, customizable LED lighting, and integrated cigar diagnostics. Dimensions: 690 × 700 × 1865 mm. Rated 5.0 stars."
+        },
+        {
+          "id": "pd-2",
+          "question": "What is the Bermuda cabinet humidor?",
+          "answer": "The **Bermuda ($3,800)** is our highest-capacity traditional cabinet — 4,000 cigars across 12 oversized removable trays, 4 pull-out drawers housing 24 built-in humidifiers, and dual full-length glass doors. Dark cherry finish with optional touch-activated LED and rear wiring port for future electronic upgrades. Spanish cedar throughout."
+        },
+        {
+          "id": "pd-3",
+          "question": "What is the Marciano humidor?",
+          "answer": "The **Marciano ($324)** is our bestselling desktop humidor — 250 cigars, four glass sides for a full 360° view, deep dark mahogany, 3 removable Spanish cedar trays, magnetic airtight doors, calibrated external hygrometer, 2 large humidifiers, and lock & key. Dimensions: 26\" W × 11.5\" D × 20\" H."
+        },
+        {
+          "id": "pd-4",
+          "question": "What does the Novelist travel humidor look like?",
+          "answer": "The **Novelist ($452)** is designed to look exactly like a hardcover book — rich brown leather exterior. It holds 5–10 cigars with a removable tray, silver hygrometer, humidifier, magnetic lid closure, and a guillotine cutter. It can sit on a bookshelf, fit in luggage, or be presented as a premium gift."
+        },
+        {
+          "id": "pd-5",
+          "question": "Does the Cigar Oasis Plus Electronic Humidifier work with my existing humidor?",
+          "answer": "Yes — the **Cigar Oasis Plus ($198)** is designed to retrofit into any existing humidor up to approximately 10 cubic feet. It actively regulates humidity with a precision sensor and quiet built-in fan, and includes optional Wi-Fi monitoring. The large water cartridge can last months between refills. Works with desktop, cabinet, and walk-in humidors."
+        },
+        {
+          "id": "pd-6",
+          "question": "What's the difference between the Raching CT48A and RR980?",
+          "answer": "Both are large-capacity electronic humidors:\n\n| | RR980 | CT48A |\n|---|---|---|\n| Price | $6,387 | $4,752 |\n| Capacity | 3,000–4,000 cigars | 2,500–3,000 cigars |\n| Exterior | Standard finish | Anti-fingerprint stainless steel |\n| Shelves | 6 cedar + 4 drawers | 8 cedar (3 slide-rail) |\n| Smart features | App, fingerprint, diagnostics | Quick dehumidification drawer |\n\nThe RR980 is the flagship with smart tech. The CT48A is built for industrial reliability with a striking steel exterior."
+        }
+      ]
+    },
+    {
+      "id": "care-maintenance",
+      "label": "Care & Maintenance",
+      "faqs": [
+        {
+          "id": "cm-1",
+          "question": "What is the ideal temperature and humidity for storing cigars?",
+          "answer": "The ideal conditions for cigar storage are:\n- **Temperature:** 65–72°F (18–22°C)\n- **Humidity:** 65–72% relative humidity\n\nOur Raching electronic cabinets maintain these conditions automatically at 16–22°C ±1°C and 60–75% RH ±1% — no manual adjustment needed."
+        },
+        {
+          "id": "cm-2",
+          "question": "What water should I use in my humidor?",
+          "answer": "Always use **distilled water only**. Tap water contains minerals that cause buildup in humidifier devices and can damage the humidification system over time. Never use tap water, filtered water, or bottled spring water in your humidor."
+        },
+        {
+          "id": "cm-3",
+          "question": "How do I season a new humidor?",
+          "answer": "Before storing cigars, season your new humidor:\n1. Wipe the interior cedar with a cloth lightly dampened with distilled water (don't soak)\n2. Place a small bowl of distilled water inside and close the lid\n3. Leave for 24–72 hours until the hygrometer reads 65–70% RH\n4. Remove the bowl and add cigars gradually\n\nNote: Raching and Reagan electronic cabinets come pre-calibrated and do not require manual seasoning."
+        },
+        {
+          "id": "cm-4",
+          "question": "How often do I need to refill the humidifier?",
+          "answer": "It depends on the model and environment:\n- **Passive humidifiers** (built-in pads): check monthly, refill every 4–6 weeks\n- **Humidity beads**: check monthly, recharge with distilled water as needed (they expand when hydrated)\n- **Cigar Oasis Plus**: the large water cartridge can last several months\n- **Electronic cabinets (Raching/Reagan)**: reservoir-based, check every 4–8 weeks depending on climate\n\nYour hygrometer will alert you if humidity drops below the target range."
+        },
+        {
+          "id": "cm-5",
+          "question": "Why does my humidor smell like cedar?",
+          "answer": "That's exactly what you want. Spanish cedar naturally emits aromatic oils that enhance cigar aging, repel tobacco beetles, and regulate moisture absorption. The cedar smell is a sign of a properly conditioned humidor. It will mellow over time as the wood reaches equilibrium."
+        }
+      ]
+    },
+    {
+      "id": "shipping-delivery",
+      "label": "Shipping & Delivery",
+      "faqs": [
+        {
+          "id": "sd-1",
+          "question": "How much does shipping cost?",
+          "answer": "- **Free shipping** on orders over **$5,000**\n- **$49 flat rate** on orders under $5,000\n\nAll orders include white-glove delivery — professional handling and care throughout transit."
+        },
+        {
+          "id": "sd-2",
+          "question": "How long does delivery take?",
+          "answer": "White-glove delivery typically takes **5–10 business days**. Our delivery team will contact you to schedule a convenient delivery window. For large cabinet and electronic humidors, professional setup and placement is included."
+        },
+        {
+          "id": "sd-3",
+          "question": "What is white-glove delivery?",
+          "answer": "White-glove delivery means our team handles your order with the highest level of care from warehouse to your door. For cabinet and electronic humidors, this includes:\n- Careful packaging and transit handling\n- Scheduled delivery appointment\n- Professional placement in your home or venue\n- Basic setup assistance\n\nThis is included at no extra charge on all humidor orders."
+        },
+        {
+          "id": "sd-4",
+          "question": "Do you ship internationally?",
+          "answer": "Please contact us at (888) 431-9214 or visit dunnluxuryselections.com for international shipping inquiries. Availability and rates vary by destination."
+        }
+      ]
+    },
+    {
+      "id": "returns-warranty",
+      "label": "Returns & Warranty",
+      "faqs": [
+        {
+          "id": "rw-1",
+          "question": "What is your return policy?",
+          "answer": "We offer a **10-day hassle-free return window** on all products. To initiate a return, call us at **(888) 431-9214**. Items must be in original condition. Refunds are processed within 5–7 business days after we receive the return."
+        },
+        {
+          "id": "rw-2",
+          "question": "What warranty do your products come with?",
+          "answer": "- **All products:** 1-year warranty covering defects in materials and workmanship\n- **Cabinet and electronic humidors (Raching, Reagan):** 2-year warranty covering parts and labor\n\nThe warranty covers the climate control system, compressor, and electrical components, including replacement of defective parts."
+        },
+        {
+          "id": "rw-3",
+          "question": "What does the 2-year warranty cover?",
+          "answer": "Our 2-year warranty on cabinet humidors covers:\n- Climate control system (compressor, fans, sensors)\n- Electrical components and wiring\n- Humidification and dehumidification mechanisms\n- Defective parts — free replacement\n\nIt does not cover cosmetic damage from normal use, damage from improper use, or damage caused by using tap water in the humidification system."
+        }
+      ]
+    },
+    {
+      "id": "payment-financing",
+      "label": "Payment & Financing",
+      "faqs": [
+        {
+          "id": "pf-1",
+          "question": "What payment methods do you accept?",
+          "answer": "We accept: **Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay, Affirm, and Shop Pay**.\n\nAll payments are processed securely through Shopify Payments. We never see your card details."
+        },
+        {
+          "id": "pf-2",
+          "question": "Do you offer financing?",
+          "answer": "Yes — **Affirm** and **Shop Pay** installment plans are available at checkout. These allow you to split your purchase into monthly payments. Ideal for premium humidors in the $1,000–$8,000 range. No hard credit check required for some plans. Select your preferred option at checkout."
+        },
+        {
+          "id": "pf-3",
+          "question": "Is your checkout secure?",
+          "answer": "Yes — all transactions are processed by **Shopify Payments** with 256-bit SSL encryption. We never store your card details. The checkout is hosted on Shopify's secure infrastructure (luxury-dunn-selections.myshopify.com)."
+        }
+      ]
+    },
+    {
+      "id": "walk-in-bespoke",
+      "label": "Walk-In & Bespoke",
+      "faqs": [
+        {
+          "id": "wi-1",
+          "question": "Do you build custom walk-in humidors?",
+          "answer": "Yes — we design and install bespoke walk-in humidors for private residences, cigar lounges, restaurants, and commercial venues. Every project is custom. **Pricing is by consultation only.** Call us at **(888) 431-9214** to discuss your vision."
+        },
+        {
+          "id": "wi-2",
+          "question": "What's included in a walk-in humidor installation?",
+          "answer": "Our bespoke walk-in humidor service includes:\n- Custom design consultation\n- Climate control system specification and installation\n- Spanish cedar lining and shelving\n- Lighting design\n- White-glove installation\n- Post-installation calibration and support\n\nCall **(888) 431-9214** to start the process."
+        }
+      ]
+    }
+  ]
+}

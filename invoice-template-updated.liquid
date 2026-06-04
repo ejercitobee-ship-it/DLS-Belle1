@@ -1,0 +1,689 @@
+{% capture email_title %}
+  {% if payment_terms %}
+    Review and confirm to complete your order
+  {% else %}
+    Complete your purchase
+  {% endif %}
+{% endcapture %}
+
+{% capture email_body %}
+  {% if item_count > 1 %}
+    These items will be reserved for you until {{ reserve_inventory_until | date: format: 'date_at_time' }}.
+  {% else %}
+    This item will be reserved for you until {{ reserve_inventory_until | date: format: 'date_at_time' }}.
+  {% endif %}
+{% endcapture %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>{{ email_title }}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="/assets/notifications/styles.css">
+  <style>
+    /* DUNN'S LUXURY SELECTIONS - Refined Elegance Theme */
+    
+    :root {
+      --gold-primary: #C9A227;
+      --gold-deep: #B8941F;
+      --gold-light: #D4AF37;
+      --charcoal: #0D0D0D;
+      --rich-black: #1A1A1A;
+      --off-white: #FAFAFA;
+      --warm-gray: #2C2C2C;
+      --light-gray: #E8E8E8;
+    }
+    
+    /* Base */
+    body { 
+      background-color: #F5F5F5 !important; 
+      margin: 0;
+      padding: 0;
+      font-family: 'Georgia', 'Times New Roman', serif;
+    }
+    
+    /* Header - Sophisticated Dark */
+    .header__cell { 
+      background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%) !important; 
+      border-bottom: 3px solid #C9A227 !important; 
+      padding: 30px 0 !important;
+    }
+    
+    /* Shop Name - Elegant Gold */
+    .shop-name__text { 
+      color: #C9A227 !important; 
+      font-size: 32px !important; 
+      letter-spacing: 4px !important;
+      font-weight: 400 !important;
+      text-transform: uppercase !important;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .shop-name__text a { 
+      color: #C9A227 !important; 
+      text-decoration: none !important;
+    }
+    
+    /* Invoice Number */
+    .order-number__text { 
+      color: #E8E8E8 !important; 
+      font-weight: 400 !important;
+      font-size: 14px !important;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .order-number__text strong {
+      color: #C9A227 !important;
+      font-weight: 600 !important;
+    }
+    .po-number__text {
+      color: #999 !important;
+      font-weight: 400 !important;
+      font-size: 12px !important;
+    }
+    
+    /* Content Area */
+    .content__cell {
+      background: #FFFFFF !important;
+      padding: 40px 30px !important;
+    }
+    
+    h2 {
+      color: #0D0D0D !important;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-weight: 400 !important;
+      font-size: 24px !important;
+      letter-spacing: 2px !important;
+      text-transform: uppercase !important;
+      margin-bottom: 20px !important;
+    }
+    
+    /* Section Headers */
+    h3 { 
+      color: #0D0D0D !important; 
+      border-bottom: 2px solid #C9A227 !important; 
+      padding-bottom: 12px !important;
+      font-size: 16px !important;
+      font-weight: 400 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 3px !important;
+      font-family: 'Georgia', 'Times New Roman', serif;
+    }
+    
+    /* PRIMARY CTA BUTTON - Deep Gold */
+    .button__cell { 
+      background: #C9A227 !important; 
+      border-radius: 2px !important;
+      padding: 18px 40px !important;
+      border: none !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+    }
+    .button__cell:hover {
+      background: #B8941F !important;
+    }
+    .button__text { 
+      color: #FFFFFF !important; 
+      font-weight: 500 !important;
+      font-size: 14px !important;
+      text-decoration: none !important;
+      letter-spacing: 2px !important;
+      text-transform: uppercase !important;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      display: inline-block;
+    }
+    .button__text:hover {
+      color: #FFFFFF !important;
+    }
+    
+    /* Secondary Links */
+    .link__cell { 
+      color: #666 !important;
+      font-size: 13px !important;
+    }
+    .link__cell a { 
+      color: #C9A227 !important; 
+      font-weight: 500 !important;
+      text-decoration: underline !important;
+    }
+    .link__cell a:hover {
+      color: #B8941F !important;
+    }
+    
+    /* Product Titles */
+    .order-list__item-title { 
+      color: #0D0D0D !important; 
+      font-weight: 500 !important;
+      font-size: 14px !important;
+      letter-spacing: 0.5px;
+      font-family: 'Georgia', 'Times New Roman', serif;
+    }
+    
+    /* Product Prices - Sophisticated Gold */
+    .order-list__item-price { 
+      color: #B8941F !important; 
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Original Price (crossed out) */
+    .order-list__item-original-price {
+      color: #999 !important;
+      font-size: 12px !important;
+    }
+    
+    /* Subtotal Lines */
+    .subtotal-line__value { 
+      color: #0D0D0D !important; 
+      font-weight: 500 !important;
+    }
+    .subtotal-line__title { 
+      color: #666 !important;
+      font-weight: 400 !important;
+      font-size: 13px !important;
+    }
+    
+    /* TOTAL - Prominent */
+    .subtotal-table--total {
+      border-top: 2px solid #C9A227 !important;
+      padding-top: 20px !important;
+      margin-top: 20px !important;
+    }
+    .subtotal-table--total .subtotal-line__value { 
+      color: #C9A227 !important; 
+      font-size: 22px !important;
+      font-weight: 600 !important;
+      letter-spacing: 1px;
+    }
+    .subtotal-table--total .subtotal-line__title {
+      color: #0D0D0D !important;
+      font-weight: 500 !important;
+      font-size: 14px !important;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    /* Customer Info */
+    .customer-info__item h4 { 
+      color: #C9A227 !important; 
+      border-bottom: 1px solid #E8E8E8 !important; 
+      padding-bottom: 10px !important;
+      font-weight: 400 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 2px !important;
+      font-size: 12px !important;
+      font-family: 'Georgia', 'Times New Roman', serif;
+    }
+    .customer-info__item {
+      color: #2C2C2C !important;
+      font-size: 13px !important;
+      line-height: 1.6 !important;
+    }
+    
+    /* Footer - Elegant */
+    .footer__cell { 
+      background: #0D0D0D !important;
+      border-top: 3px solid #C9A227 !important; 
+      padding: 30px 20px !important;
+    }
+    .disclaimer__subtext { 
+      color: #E8E8E8 !important; 
+      font-size: 13px !important;
+      line-height: 1.8 !important;
+    }
+    .disclaimer__subtext strong { 
+      color: #C9A227 !important;
+      font-weight: 500 !important;
+    }
+    .disclaimer__subtext a { 
+      color: #C9A227 !important;
+      text-decoration: none !important;
+    }
+    .footer-secondary {
+      color: #666 !important;
+      font-size: 11px !important;
+      margin-top: 20px !important;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Discount Text */
+    .total-discount {
+      color: #666 !important;
+      font-size: 13px !important;
+      font-style: italic;
+    }
+    .total-discount--amount {
+      color: #C9A227 !important;
+      font-weight: 600 !important;
+    }
+    
+    /* Discount Tags */
+    .subtotal-line__discount {
+      color: #888 !important;
+      font-size: 12px !important;
+    }
+    .subtotal-line__discount-title {
+      color: #666 !important;
+    }
+    
+    /* Variant Text */
+    .order-list__item-variant {
+      color: #888 !important;
+      font-size: 12px !important;
+      font-style: italic;
+    }
+    
+    /* Refunded Text */
+    .order-list__item-refunded {
+      color: #C9A227 !important;
+      font-weight: 500 !important;
+      font-size: 11px !important;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* Payment Terms */
+    .payment-terms {
+      border-top: 1px solid #E8E8E8 !important;
+      padding-top: 15px !important;
+      margin-top: 15px !important;
+    }
+    
+    /* Body Text */
+    p {
+      color: #2C2C2C !important;
+      font-size: 14px !important;
+      line-height: 1.7 !important;
+    }
+    
+    /* Section Container */
+    .section__cell {
+      background: #FFFFFF !important;
+      padding: 30px !important;
+    }
+    
+    /* Order List Styling */
+    .order-list__item {
+      border-bottom: 1px solid #F0F0F0 !important;
+      padding: 20px 0 !important;
+    }
+    
+    /* Responsive */
+    @media screen and (max-width: 600px) {
+      .shop-name__text {
+        font-size: 24px !important;
+        letter-spacing: 2px !important;
+      }
+      .button__cell {
+        padding: 16px 30px !important;
+      }
+      .content__cell {
+        padding: 30px 20px !important;
+      }
+    }
+  </style>
+</head>
+
+  <body>
+    <table class="body" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td align="center">
+          
+          <!-- Header -->
+          <table class="header row" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td class="header__cell" align="center">
+                <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px;">
+                  <tr>
+                    <td>
+                      <table class="row" width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td class="shop-name__cell" align="left">
+                            {%- if shop.email_logo_url %}
+                              <img src="{{shop.email_logo_url}}" alt="{{ shop.name }}" width="{{ shop.email_logo_width }}">
+                            {%- else %}
+                              <h1 class="shop-name__text">
+                                <a href="{{shop.url}}">DUNN'S LUXURY SELECTIONS</a>
+                              </h1>
+                            {%- endif %}
+                          </td>
+                          <td align="right">
+                            <table class="order-po-number__container">
+                              <tr>
+                                <td class="order-number__cell">
+                                  <span class="order-number__text">
+                                    Invoice <strong>{{ name }}</strong>
+                                  </span>
+                                </td>
+                              </tr>
+                              {%- if po_number %}
+                              <tr>
+                                <td class="po-number__cell">
+                                  <span class="po-number__text">
+                                    PO #{{ po_number }}
+                                  </span>
+                                </td>
+                              </tr>
+                              {%- endif %}
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Main Content -->
+          <table class="row content" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td class="content__cell" align="center">
+                <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px;">
+                  <tr>
+                    <td>
+                      <h2>{{ email_title }}</h2>
+                      {% if custom_message != blank %}
+                        <p>{{ custom_message }}</p>
+                      {% elsif reserve_inventory_until %}
+                        <p>{{ email_body }}</p>
+                      {% endif %}
+                      
+                      <!-- CTA BUTTON SECTION - Fixed URL -->
+                      <table class="row actions" width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td class="empty-line" height="20">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td class="actions__cell" align="center">
+                            <table cellpadding="0" cellspacing="0" border="0" align="center">
+                              <tr>
+                                <td valign="middle">
+                                  <table class="button main-action-cell" cellpadding="0" cellspacing="0" border="0">
+                                    <tr>
+                                      <td class="button__cell" align="center">
+                                        <a href="{{ invoice_url | replace: shop.url, shop.domain }}" class="button__text">{% if payment_terms %}Confirm Order{% else %}Complete Your Purchase{% endif %}</a>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td height="15">&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td align="center">
+                                  {% if shop.url %}
+                                  <table class="link secondary-action-cell" cellpadding="0" cellspacing="0" border="0">
+                                    <tr>
+                                      <td class="link__cell">or <a href="{{ shop.url }}">Visit Our Store</a></td>
+                                    </tr>
+                                  </table>
+                                  {% endif %}
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Order Summary -->
+          <table class="row section" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td class="section__cell" align="center">
+                <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px;">
+                  <tr>
+                    <td>
+                      <h3>Order Summary</h3>
+                    </td>
+                  </tr>
+                </table>
+                <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px;">
+                  <tr>
+                    <td>
+                      <table class="row" width="100%">
+                        {% for line in subtotal_line_items %}
+                        {% unless line.nested_line_child? %}
+                        {% assign is_parent = false %}
+                        {% assign is_nested_line_parent = line.nested_line_parent? %}
+                        {% if line.bundle_parent? or line.nested_line_parent? %}
+                          {% assign is_parent = true %}
+                        {% endif %}
+                        
+                        <tr class="order-list__item">
+                          <td class="order-list__item__cell">
+                            <table width="100%">
+                              <tr>
+                                <td class="order-list__image-cell" width="70">
+                                  {% if line.image %}
+                                    <img src="{{ line | img_url: 'compact_cropped' }}" align="left" width="60" height="60" class="order-list__product-image" style="border-radius: 2px;"/>
+                                  {% else %}
+                                    <div class="order-list__no-image-cell" style="width: 60px; height: 60px; background: #F5F5F5; border-radius: 2px;">
+                                      <img src="{{ 'notifications/no-image.png' | shopify_asset_url }}" align="left" width="60" height="60" class="order-list__no-product-image"/>
+                                    </div>
+                                  {% endif %}
+                                </td>
+                                <td class="order-list__product-description-cell">
+                                  {% if line.presentment_title %}
+                                    {% assign line_title = line.presentment_title %}
+                                  {% elsif line.title %}
+                                    {% assign line_title = line.title %}
+                                  {% else %}
+                                    {% assign line_title = line.product.title %}
+                                  {% endif %}
+                                  
+                                  <span class="order-list__item-title">{{ line_title }}</span><br/>
+                                  
+                                  {% if line.variant.title != 'Default Title' %}
+                                    <span class="order-list__item-variant">{{ line.variant.title }}</span><br/>
+                                  {% endif %}
+                                  
+                                  {% if line.selling_plan_allocation %}
+                                    <span class="order-list__item-variant">{{ line.selling_plan_allocation.selling_plan.name }}</span><br/>
+                                  {% endif %}
+                                  
+                                  {% if line.refunded_quantity > 0 %}
+                                    <span class="order-list__item-refunded">Refunded</span>
+                                  {% endif %}
+                                  
+                                  <span style="color: #888; font-size: 12px;">Qty: {{ line.quantity }}</span>
+                                </td>
+                                <td class="order-list__price-cell" align="right" width="100">
+                                  {% if line.original_line_price != line.final_line_price %}
+                                    <del class="order-list__item-original-price">{{ line.original_line_price | money }}</del><br/>
+                                  {% endif %}
+                                  <span class="order-list__item-price">
+                                    {% if line.final_line_price > 0 %}
+                                      {{ line.final_line_price | money }}
+                                    {% else %}
+                                      Free
+                                    {% endif %}
+                                  </span>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        {% endunless %}
+                        {% endfor %}
+                      </table>
+
+                      <!-- Subtotals -->
+                      <table class="row subtotal-lines" width="100%">
+                        <tr>
+                          <td class="subtotal-spacer" width="50%">&nbsp;</td>
+                          <td width="50%">
+                            <table class="row subtotal-table" width="100%">
+                              <tr class="subtotal-line">
+                                <td class="subtotal-line__title">
+                                  <p><span>Subtotal</span></p>
+                                </td>
+                                <td class="subtotal-line__value" align="right">
+                                  <strong>{{ subtotal_price | money }}</strong>
+                                </td>
+                              </tr>
+                              
+                              {% if discount_applications %}
+                                {% for discount_application in discount_applications %}
+                                  {% if discount_application.target_selection == 'all' and discount_application.target_type == 'line_item' %}
+                                  <tr class="subtotal-line">
+                                    <td class="subtotal-line__title">
+                                      <p><span class="subtotal-line__discount">{{ discount_application.title }}</span></p>
+                                    </td>
+                                    <td class="subtotal-line__value" align="right">
+                                      <strong>-{{ discount_application.total_allocated_amount | money }}</strong>
+                                    </td>
+                                  </tr>
+                                  {% endif %}
+                                {% endfor %}
+                              {% endif %}
+                              
+                              {% if delivery_method == 'pick-up' %}
+                              <tr class="subtotal-line">
+                                <td class="subtotal-line__title"><p><span>Pickup</span></p></td>
+                                <td class="subtotal-line__value" align="right"><strong>{{ shipping_price | money }}</strong></td>
+                              </tr>
+                              {% else %}
+                              <tr class="subtotal-line">
+                                <td class="subtotal-line__title"><p><span>Shipping</span></p></td>
+                                <td class="subtotal-line__value" align="right"><strong>{{ shipping_price | money }}</strong></td>
+                              </tr>
+                              {% endif %}
+                              
+                              {% if total_duties %}
+                              <tr class="subtotal-line">
+                                <td class="subtotal-line__title"><p><span>Duties</span></p></td>
+                                <td class="subtotal-line__value" align="right"><strong>{{ total_duties | money }}</strong></td>
+                              </tr>
+                              {% endif %}
+                              
+                              <tr class="subtotal-line">
+                                <td class="subtotal-line__title"><p><span>Estimated Taxes</span></p></td>
+                                <td class="subtotal-line__value" align="right"><strong>{{ tax_price | money }}</strong></td>
+                              </tr>
+                              
+                              {% if total_tip and total_tip > 0 %}
+                              <tr class="subtotal-line">
+                                <td class="subtotal-line__title"><p><span>Tip</span></p></td>
+                                <td class="subtotal-line__value" align="right"><strong>{{ total_tip | money }}</strong></td>
+                              </tr>
+                              {% endif %}
+                            </table>
+
+                            <table class="row subtotal-table subtotal-table--total" width="100%">
+                              {% if payment_terms %}
+                              <tr class="subtotal-line">
+                                <td class="subtotal-line__title"><p><span>Total Due Today</span></p></td>
+                                <td class="subtotal-line__value" align="right"><strong>{{ amount_due_now | money_with_currency }}</strong></td>
+                              </tr>
+                              {% else %}
+                              <tr class="subtotal-line">
+                                <td class="subtotal-line__title"><p><span>Total</span></p></td>
+                                <td class="subtotal-line__value" align="right"><strong>{{ total_price | money_with_currency }}</strong></td>
+                              </tr>
+                              {% endif %}
+                            </table>
+
+                            {% if total_discounts > 0 %}
+                            <p class="total-discount" align="right">
+                              You saved <span class="total-discount--amount">{{ total_discounts | money }}</span>
+                            </p>
+                            {% endif %}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Customer Information -->
+          {% if shipping_address or billing_address or shipping_method %}
+          <table class="row section" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td class="section__cell" align="center">
+                <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px;">
+                  <tr>
+                    <td>
+                      <h3>Customer Information</h3>
+                    </td>
+                  </tr>
+                </table>
+                <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px;">
+                  <tr>
+                    <td>
+                      <table class="row" width="100%">
+                        <tr>
+                          {% if shipping_address %}
+                          <td class="customer-info__item" width="50%" valign="top">
+                            <h4>Shipping Address</h4>
+                            <p>{{ shipping_address | format_address }}</p>
+                          </td>
+                          {% endif %}
+                          
+                          {% if billing_address %}
+                          <td class="customer-info__item" width="50%" valign="top">
+                            <h4>Billing Address</h4>
+                            <p>{{ billing_address | format_address }}</p>
+                          </td>
+                          {% endif %}
+                        </tr>
+                      </table>
+                      
+                      {% if shipping_method %}
+                      <table class="row" width="100%">
+                        <tr>
+                          <td class="customer-info__item" width="50%" valign="top">
+                            <h4>Shipping Method</h4>
+                            <p>{{ shipping_method.title }}<br/>{{ shipping_method.price | money }}</p>
+                          </td>
+                          <td width="50%">&nbsp;</td>
+                        </tr>
+                      </table>
+                      {% endif %}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          {% endif %}
+
+          <!-- Footer -->
+          <table class="row footer" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td class="footer__cell" align="center">
+                <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px;">
+                  <tr>
+                    <td align="center">
+                      <p class="disclaimer__subtext">
+                        Questions? Contact us at <strong>+1 (888) 431-9214</strong><br/>
+                        or <a href="mailto:support@dunnnluxuryselections.com">support@dunnnluxuryselections.com</a>
+                      </p>
+                      <p class="footer-secondary">
+                        Dunn's Luxury Selections | Chicago, Illinois<br/>
+                        All items authenticated and guaranteed authentic
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <img src="{{ 'notifications/spacer.png' | shopify_asset_url }}" class="spacer" height="1" />
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
