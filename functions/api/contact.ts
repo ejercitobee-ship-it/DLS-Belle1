@@ -41,12 +41,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    if (!phone.trim()) {
-      return new Response(JSON.stringify({ error: 'Phone number is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+    // Phone is optional
+    const formattedPhone = phone.trim() ? formatPhoneNumber(phone.trim()) : undefined;
 
     // Check if KLAVIYO_API_KEY is set
     if (!env.KLAVIYO_API_KEY) {
@@ -56,10 +52,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         headers: { 'Content-Type': 'application/json' },
       });
     }
-
-    // Format phone number to E.164
-    const formattedPhone = formatPhoneNumber(phone.trim());
-
     // Create profile in Klaviyo
     const profileData = {
       data: {
@@ -68,7 +60,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           email: email.trim(),
           first_name: firstName.trim() || undefined,
           last_name: lastName.trim() || undefined,
-          phone_number: formattedPhone,
+          ...(formattedPhone && { phone_number: formattedPhone }),
           properties: {
             source: 'Website Popup Form',
           },
@@ -111,8 +103,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const searchData = await searchResponse.json();
         profileId = searchData.data?.[0]?.id;
         
-        // Update the existing profile with new phone number
-        if (profileId) {
+        // Update the existing profile with new phone number if provided
+        if (profileId && formattedPhone) {
           const updateResponse = await fetch(
             `https://a.klaviyo.com/api/profiles/${profileId}/`,
             {
@@ -128,7 +120,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                   type: 'profile',
                   id: profileId,
                   attributes: {
-                    phone_number: formattedPhone,
+                  ...(formattedPhone && { phone_number: formattedPhone }),
                     first_name: firstName.trim() || undefined,
                     last_name: lastName.trim() || undefined,
                   },
@@ -199,7 +191,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 email: email.trim(),
                 first_name: firstName.trim() || undefined,
                 last_name: lastName.trim() || undefined,
-                phone_number: formattedPhone,
+                ...(formattedPhone && { phone_number: formattedPhone }),
               },
             },
           },
