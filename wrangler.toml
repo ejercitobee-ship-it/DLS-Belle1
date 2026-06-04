@@ -3,5 +3,4 @@ pages_build_output_dir = "./dist"
 compatibility_date = "2026-05-05"
 
 [vars]
-KLAVIYO_API_KEY = "pk_Wp37xM_af7d9aab422c968448fada8b7be1caa26a"
 KLAVIYO_LIST_ID = "W3FA6q"

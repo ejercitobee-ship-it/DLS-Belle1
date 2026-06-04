@@ -19,10 +19,9 @@ import {
   WhyBuyFromUs, 
   FAQSection, 
   PaymentMethods,
-  LowStockBadge,
-  PHONE_NUMBER,
-  PHONE_HREF 
+  LowStockBadge
 } from './ConversionElements';
+import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 
 type Category = 'All' | 'Dual-Zone' | 'Classic Cabinet' | 'Smart Climate';
 

@@ -21,7 +21,8 @@ import { fetchProductByHandle, type ShopifyProduct } from '../lib/shopify';
 import { getStaticProduct, type StaticProductData } from '../lib/staticProducts';
 import { getProductPrice, getDefaultVariantId, formatMoney } from '../hooks/useShopifyCollection';
 import { usePageMeta } from '../hooks/usePageMeta';
-import { PaymentMethods, PHONE_NUMBER, PHONE_HREF } from './ConversionElements';
+import { PaymentMethods } from './ConversionElements';
+import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 import { ProductRecommendations, ProductFAQ } from './ProductSections';
 
 /* ─── Sub-components ─────────────────────────────────────────────────────────── */
@@ -216,9 +217,6 @@ export default function ProductPage({ handle }: { handle: string }) {
     : prod.featuredImage?.url 
     ? [prod.featuredImage.url]
     : ['/images/hero-bg.png']; // Fallback image
-
-  const shortDesc = prod.description ? prod.description.split('\n')[0] : '';
-  const fullDesc = prod.description || '';
 
   function handleAddToCart() {
     const variantId = getDefaultVariantId(prod);

@@ -1,7 +1,5 @@
 import { Star, Quote, CheckCircle2, Shield, Truck, Award, Phone, CreditCard } from 'lucide-react';
-
-const PHONE_NUMBER = '(888) 431-9214';
-const PHONE_HREF = 'tel:+18884319214';
+import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 
 // Customer Reviews Section
 export function CustomerReviews({ productName }: { productName: string }) {
@@ -274,5 +272,3 @@ export function LowStockBadge({ stock }: { stock: number }) {
     </div>
   );
 }
-
-export { PHONE_NUMBER, PHONE_HREF };

@@ -38,38 +38,44 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    // Track "Left Checkout" event in Klaviyo
+    // Track "Left Checkout" event in Klaviyo v2 Events API
     const eventData = {
-      token: env.KLAVIYO_API_KEY,
-      event: 'Left Checkout',
-      customer_properties: {
-        $email: email.trim(),
-        $first_name: firstName?.trim() || '',
+      data: {
+        type: 'event',
+        attributes: {
+          metric: {
+            name: 'Left Checkout',
+          },
+          profile: {
+            $email: email.trim(),
+            ...(firstName?.trim() && { $first_name: firstName.trim() }),
+          },
+          value: cartTotal,
+          unique_id: cartId || `cart_${Date.now()}`,
+          properties: {
+            ItemCount: items?.length || 0,
+            CartURL: cartUrl || 'https://dunnluxuryselections.com/cart',
+            Items: items?.map(item => ({
+              ProductName: item.name,
+              ProductPrice: item.price,
+              Quantity: item.quantity,
+            })) || [],
+          },
+          timestamp: new Date().toISOString(),
+        },
       },
-      properties: {
-        $event_id: cartId || `cart_${Date.now()}`,
-        $value: cartTotal,
-        ItemCount: items?.length || 0,
-        CartURL: cartUrl || 'https://dunnluxuryselections.com/cart',
-        Items: items?.map(item => ({
-          ProductName: item.name,
-          ProductPrice: item.price,
-          Quantity: item.quantity,
-        })) || [],
-      },
-      time: new Date().toISOString(),
     };
 
-    // Send to Klaviyo track API
-    const klaviyoResponse = await fetch('https://a.klaviyo.com/api/track', {
+    // Send to Klaviyo v2 Events API
+    const klaviyoResponse = await fetch('https://a.klaviyo.com/api/events/', {
       method: 'POST',
       headers: {
-        'Accept': 'text/plain',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Klaviyo-API-Key ${env.KLAVIYO_API_KEY}`,
+        'revision': '2023-10-15',
       },
-      body: new URLSearchParams({
-        data: btoa(JSON.stringify(eventData)),
-      }),
+      body: JSON.stringify(eventData),
     });
 
     if (!klaviyoResponse.ok) {
@@ -81,8 +87,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    return new Response(JSON.stringify({ 
-      success: true, 
+    return new Response(JSON.stringify({
+      success: true,
       message: 'Cart abandonment email queued',
       tracked: true,
     }), {

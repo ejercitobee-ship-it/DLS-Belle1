@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 // Build v2 - Cache bust
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -383,7 +383,7 @@ function AppInner() {
         }
   );
 
-  const navigate = (next: Page, articlePath?: string) => {
+  const navigate = useCallback((next: Page, articlePath?: string) => {
     if (next === displayPage && next !== 'article') return;
     pendingPage.current = next;
     setTransitioning(true);
@@ -399,7 +399,7 @@ function AppInner() {
       window.scrollTo({ top: 0, behavior: 'instant' });
       setTransitioning(false);
     }, 220);
-  };
+  }, [displayPage]);
 
   useEffect(() => {
     let isFirstPopState = true;
@@ -461,7 +461,7 @@ function AppInner() {
       window.removeEventListener('navigate', onNavigate);
       window.removeEventListener('navigate-article', onNavigateArticle);
     };
-  }, []); // Remove displayPage dependency
+  }, [navigate]);
 
   useEffect(() => {
     // Map both /path and legacy #hash hrefs to page navigation
@@ -523,7 +523,7 @@ function AppInner() {
 
     document.addEventListener('click', onClick);
     return () => document.removeEventListener('click', onClick);
-  }, [page]);
+  }, [page, navigate]);
 
   // Lead popup — show on first visit after 3 seconds, then hide for 30 days
   const [popupMounted, setPopupMounted] = useState(false);
@@ -540,7 +540,7 @@ function AppInner() {
     return () => clearTimeout(timer);
   }, []);
 
-  const isFullPageOverlay = displayPage === 'checkout' || displayPage === 'shopify-setup';
+  const isFullPageOverlay = displayPage === 'checkout' || displayPage === 'shopify-setup' || displayPage === 'order-confirmation';
 
   return (
     <div className="min-h-screen bg-charcoal-950">

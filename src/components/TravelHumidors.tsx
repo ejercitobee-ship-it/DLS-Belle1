@@ -7,10 +7,9 @@ import {
   CustomerReviews, 
   WhyBuyFromUs, 
   FAQSection, 
-  PaymentMethods,
-  PHONE_NUMBER,
-  PHONE_HREF 
+  PaymentMethods
 } from './ConversionElements';
+import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 
 // ─── Static fallback data ─────────────────────────────────────────────────────
 

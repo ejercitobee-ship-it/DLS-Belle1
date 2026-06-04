@@ -31,7 +31,7 @@ export default function OrderConfirmation() {
       // Fallback order details from URL
       setOrderDetails({
         orderNumber: orderId || 'DLS-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
-        email: 'customer@example.com',
+        email: '',
         total: '$' + orderTotal,
       });
     }
@@ -42,7 +42,7 @@ export default function OrderConfirmation() {
         'send_to': 'AW-17833894840/7XldCNj1krUcELjH7rdC',
         'value': parseFloat(orderTotal) || 0,
         'currency': 'USD',
-        'transaction_id': orderId || checkoutId,
+        'transaction_id': checkoutId,
       });
     }
 
@@ -121,7 +121,7 @@ export default function OrderConfirmation() {
             <div className="border-t border-charcoal-800/50 pt-6">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-cream-200/60">Confirmation sent to:</span>
-                <span className="text-cream-100">{orderDetails.email}</span>
+                <span className="text-cream-100">{orderDetails.email || 'Check your inbox for your confirmation email'}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-cream-200/60">Order Total:</span>

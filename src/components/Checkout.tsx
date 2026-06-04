@@ -23,7 +23,7 @@ export default function Checkout({ onBack }: Props) {
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'begin_checkout', {
         currency: 'USD',
-        value: total / 100,
+        value: total,
         items: items.map(item => ({
           item_id: item.id,
           item_name: item.name,
