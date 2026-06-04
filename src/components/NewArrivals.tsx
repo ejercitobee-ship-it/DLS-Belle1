@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+﻿import { useState, useCallback } from 'react';
 import {
   ShoppingBag,
   Star,
@@ -76,7 +76,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The RR980 is the definitive grand estate humidor — a monumental cabinet engineered for collectors who demand the absolute apex of environmental precision. TFT diagnostics, draw resistance detection, and mobile app remote unlock place it in a category of its own. Spanish cedar throughout, ammonia removal, and customizable lighting make this the centerpiece of any serious private lounge or tasting room.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg',
     badge: 'New',
     rating: 5.0,
     reviews: 3,
@@ -112,7 +112,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The CT48A is the Pro-User model that marries industrial-grade durability with refined luxury. An anti-fingerprint stainless steel exterior handles the demands of high-traffic environments, while warm Spanish cedar shelves inside ensure flawless cigar preservation. Built for serious collectors, upscale lounges, and boutique cigar retailers who refuse to compromise.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/CT48A-silver.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg',
     badge: 'New',
     rating: 4.9,
     reviews: 1,
@@ -148,7 +148,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The SD800 combines precision cigar and wine storage in a single statement cabinet with two fully independent climate zones. Spanish cedar cigar shelves and beech wood wine shelves sit behind a large glass door framed in refined wooden accents — a natural centerpiece for collectors who entertain at the highest level.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-sd800-dual-zone-cigar-wine-cabinet.jpg',
     badge: 'New',
     rating: 4.8,
     reviews: 5,
@@ -183,7 +183,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The CS600 fuses precision dual-zone climate control with sophisticated design — a double-door cabinet that makes wine and cigar preservation equally effortless. Ideal for private lounges, luxury homes, upscale hotels, and premium retail environments that demand both form and function.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg',
     badge: 'New',
     rating: 4.8,
     reviews: 8,
@@ -218,7 +218,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The Marciano is a countertop showpiece — four glass sides deliver a complete 360° view of your collection while magnetic airtight doors and two large humidifiers maintain perfect conditions. Gold-plated support pins and deep dark mahogany finish make it equally at home in home bars, offices, luxury lounges, and boutique shops.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Marciano_250-cigar_countertop_display_humidor_with_Spanish_cedar_trays.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Marciano_250-cigar_countertop_display_humidor_with_Spanish_cedar_trays.jpg',
     badge: 'New',
     rating: 4.8,
     reviews: 4,
@@ -252,7 +252,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The Modena elevates cigar storage into an architectural experience. An angled glass top, gold hardware, and dark cherry finish combine precision engineering with refined visual character. Perfectly sized for desktop, credenza, or shelf placement — for both the new collector and the seasoned aficionado refining a curated stash.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Modena_cherry_finish_humidor_21.5x10x7_inches_perfect_for_countertop_display.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Modena_cherry_finish_humidor_21.5x10x7_inches_perfect_for_countertop_display.jpg',
     badge: 'New',
     rating: 4.7,
     reviews: 6,
@@ -287,7 +287,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The Santiago fuses timeless craftsmanship with modern practicality — a 700-cigar humidor that doubles as a living room end table. A beveled glass top puts your silver digital hygrometer in plain sight while embossed panels and polished silver hardware ensure it belongs in the finest interiors. For collectors who live with their collection.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Santiago_700_cigar_end_table_humidor_with_walnut_finish_and_beveled_glass_top.jpg',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Santiago_700_cigar_end_table_humidor_with_walnut_finish_and_beveled_glass_top.jpg',
     badge: 'New',
     rating: 4.8,
     reviews: 7,
@@ -317,7 +317,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The Traveler 15 is the sleek, travel-ready companion engineered for portability without compromising flavor. Compact enough for luggage or a backpack, it ships ready to use with pre-installed Boveda® humidity packs. Three classic finish options ensure it matches any traveler\'s style.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Portable_cigar_humidor_with_built_in_humidifier_and_XIKAR_Boveda_60G_RH_packs.png',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Portable_cigar_humidor_with_built_in_humidifier_and_XIKAR_Boveda_60G_RH_packs.png',
     badge: 'New',
     rating: 4.6,
     reviews: 9,
@@ -347,7 +347,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The Traveler 5 is the ultimate compact travel companion — a clear acrylic window lets you check your inventory at a glance without ever breaking the seal. Embedded hygrometer, built-in humidification, and included Boveda® packs mean it\'s ready to protect your cigars from the moment it arrives.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Humidor_Supreme_Traveler_5_travel_cigar_humidor_holding_8_12_cigars.png',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Humidor_Supreme_Traveler_5_travel_cigar_humidor_holding_8_12_cigars.png',
     badge: 'New',
     rating: 4.6,
     reviews: 11,
@@ -378,7 +378,7 @@ const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The Traveler 10 bridges the gap between desktop display and travel companion. Spanish cedar lining, a precision hygrometer, and included Boveda® packs keep up to 30 cigars in perfect condition — whether on your desk, in a carry-on, or gifted to the aficionado in your life.',
-    image: 'https://dunnluxuryselections.com/cdn/shop/files/Traveler_10_cigar_humidor_with_Spanish_cedar_interior_and_Boveda_60G_RH_seasoning_packs.png',
+    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/files/Traveler_10_cigar_humidor_with_Spanish_cedar_interior_and_Boveda_60G_RH_seasoning_packs.png',
     badge: 'New',
     rating: 4.7,
     reviews: 8,
@@ -501,7 +501,7 @@ export default function NewArrivals() {
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
         <img
-          src="https://dunnluxuryselections.com/cdn/shop/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg"
+          src="https://cdn.shopify.com/s/files/1/0950/7392/7538/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg"
           alt="New Arrivals"
           className="w-full h-full object-cover object-center"
         />
