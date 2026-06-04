@@ -27,7 +27,7 @@ export default function Footer() {
           <div>
             <div className="mb-5">
               <img
-                src="/Untitled_design__5_-removebg-preview.png"
+                src="/images/logo.png"
                 alt="Dunn's Luxury Selections"
                 className="h-28 w-auto object-contain"
               />

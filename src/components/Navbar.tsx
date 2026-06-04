@@ -72,7 +72,7 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
               onClick={closeMenu}
             >
               <img
-                src="/Untitled_design__5_-removebg-preview.png"
+                src="/images/logo.png"
                 alt="Dunn's Luxury Selections"
                 className="h-12 md:h-20 w-auto object-contain"
               />
