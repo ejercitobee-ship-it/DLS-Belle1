@@ -243,7 +243,17 @@ export default function ProductPage({ handle }: { handle: string }) {
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
         <button
-          onClick={() => window.history.back()}
+          onClick={() => {
+            const prevPath = document.referrer;
+            const currentHost = window.location.host;
+            if (prevPath && prevPath.includes(currentHost)) {
+              const url = new URL(prevPath);
+              const path = url.pathname.replace(/^\//, '') || 'home';
+              window.dispatchEvent(new CustomEvent('navigate', { detail: path }));
+            } else {
+              window.dispatchEvent(new CustomEvent('navigate', { detail: 'collections' }));
+            }
+          }}
           className="inline-flex items-center gap-2 text-cream-200/40 hover:text-gold-400 text-xs tracking-widest uppercase font-medium transition-colors group"
         >
           <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
@@ -567,7 +577,17 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
         <button
-          onClick={() => window.history.back()}
+          onClick={() => {
+            const prevPath = document.referrer;
+            const currentHost = window.location.host;
+            if (prevPath && prevPath.includes(currentHost)) {
+              const url = new URL(prevPath);
+              const path = url.pathname.replace(/^\//, '') || 'home';
+              window.dispatchEvent(new CustomEvent('navigate', { detail: path }));
+            } else {
+              window.dispatchEvent(new CustomEvent('navigate', { detail: 'collections' }));
+            }
+          }}
           className="inline-flex items-center gap-2 text-cream-200/40 hover:text-gold-400 text-xs tracking-widest uppercase font-medium transition-colors group"
         >
           <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
