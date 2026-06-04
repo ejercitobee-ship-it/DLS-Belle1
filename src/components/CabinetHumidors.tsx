@@ -73,7 +73,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
     humidification: 'Integrated water-cooling · High-performance compressor',
     features: ['Dual zones 16–22°C ±1°C, 60–75% RH ±1%', 'Wine zone: 5–22°C ±1°C', 'Advanced airflow & quiet operation', '2-year warranty'],
     description: 'The SD800 is the pinnacle of dual-zone preservation — independently controlled cigar and wine compartments in a single showroom-worthy cabinet.',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    image: '/images/collections/cabinet-humidors-hero.png',
     images: [],
     badge: 'Flagship',
     rating: 4.9,
@@ -98,7 +98,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
     humidification: 'Dual-zone precision climate control',
     features: ['Wine zone: 5–22°C ±1°C', 'Cigar zone: 16–22°C, 60–75% RH', 'Whisper-quiet, energy-efficient', '2-year warranty'],
     description: 'The CS600 combines wine and cigar storage in an elegant double-door cabinet with independent climate controls.',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    image: '/images/collections/cabinet-humidors-hero.png',
     images: [],
     badge: 'Popular',
     rating: 4.8,
@@ -122,7 +122,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
     humidification: '24 built-in humidifiers + external hygrometer',
     features: ['Optional touch-activated dimmable LED', 'Rear wiring port for electric upgrades', 'Spanish cedar interior throughout'],
     description: 'The Bermuda is built for serious collectors who refuse to compromise on scale. 4,000 cigars, 12 oversized trays, 24 integrated humidifiers.',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    image: '/images/collections/cabinet-humidors-hero.png',
     images: [],
     badge: 'Best Capacity',
     rating: 4.8,
@@ -146,7 +146,7 @@ const STATIC_PRODUCTS: DisplayProduct[] = [
     humidification: '6 built-in humidifiers + dedicated hygrometer',
     features: ['Full-length framed glass door', 'Brass lock and key', 'Rear wiring port for optional electric upgrade'],
     description: 'Three oversized trays with 8 adjustable dividers each, a dedicated pull-out humidifier drawer, and a full-length glass door.',
-    image: 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png',
+    image: '/images/collections/cabinet-humidors-hero.png',
     images: [],
     rating: 4.7,
     reviews: 13,
@@ -289,7 +289,7 @@ export default function CabinetHumidors() {
     return 0;
   });
 
-  const heroImage = collectionImage || 'https://cdn.shopify.com/s/files/1/0950/7392/7538/collections/ChatGPT_20Image_20Apr_2016_202026_2005_27_27_20PM_5590c39d-3612-44eb-9dc9-00a747f7a593.png';
+  const heroImage = collectionImage || '/images/collections/cabinet-humidors-hero.png';
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">

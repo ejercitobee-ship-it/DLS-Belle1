@@ -69,7 +69,7 @@ export default function WhyUs() {
           <div className="relative grid grid-cols-2 gap-3 h-[500px] overflow-hidden lg:overflow-visible">
             <div className="relative rounded-lg overflow-hidden row-span-2">
               <img
-                src="https://cdn.shopify.com/s/files/1/0950/7392/7538/files/raching-cs600-luxury-cigar-humidor-cabinet.jpg"
+                src="/images/products/raching-cs600-luxury-cigar-humidor-cabinet.jpg"
                 alt="Raching CS600 luxury cabinet humidor"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -77,7 +77,7 @@ export default function WhyUs() {
             </div>
             <div className="relative rounded-lg overflow-hidden">
               <img
-                src="https://cdn.shopify.com/s/files/1/0950/7392/7538/files/c28eff7e15a7f40ecba3853c6731fb2c.jpg"
+                src="/images/products/c28eff7e15a7f40ecba3853c6731fb2c.jpg"
                 alt="Raching RR980 flagship cabinet humidor"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -85,7 +85,7 @@ export default function WhyUs() {
             </div>
             <div className="relative rounded-lg overflow-hidden">
               <img
-                src="https://cdn.shopify.com/s/files/1/0950/7392/7538/files/CT48A-silver.jpg"
+                src="/images/products/CT48A-silver.jpg"
                 alt="CT48A electronic humidor"
                 className="w-full h-full object-cover"
                 loading="lazy"
