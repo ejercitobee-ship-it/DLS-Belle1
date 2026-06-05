@@ -65,38 +65,8 @@ export default function WhyUs() {
             </div>
           </div>
 
-          {/* Image collage */}
-          <div className="relative grid grid-cols-2 gap-3 h-[500px] overflow-hidden lg:overflow-visible">
-            <div className="relative rounded-lg overflow-hidden row-span-2">
-              <img
-                src="/images/products/raching-cs600-luxury-cigar-humidor-cabinet.jpg"
-                alt="Raching CS600 luxury cabinet humidor"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="relative rounded-lg overflow-hidden">
-              <img
-                src="/images/products/c28eff7e15a7f40ecba3853c6731fb2c.jpg"
-                alt="Raching RR980 flagship cabinet humidor"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="relative rounded-lg overflow-hidden">
-              <img
-                src="/images/products/CT48A-silver.jpg"
-                alt="CT48A electronic humidor"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            {/* Stats overlay */}
-            <div className="absolute bottom-2 left-2 bg-charcoal-950 border border-gold-700/30 rounded-lg p-4 shadow-xl">
-              <div className="text-2xl font-serif font-bold text-gradient-gold">$30 – $7,750</div>
-              <div className="text-cream-200/50 text-xs mt-0.5">Curated price range</div>
-            </div>
-          </div>
+          {/* Image collage removed - images were broken */}
+          <div className="hidden lg:block" />
         </div>
       </div>
     </section>
