@@ -64,6 +64,9 @@ type Page =
   | 'product';
 
 const PATH_TO_PAGE: Record<string, Page> = {
+  '/': 'home',
+  '/home': 'home',
+  '/home/': 'home',
   '/electronic-humidors': 'electronic-humidors',
   '/electronic-humidors/': 'electronic-humidors',
   '/walk-in-humidor': 'walk-in-humidor',
@@ -236,6 +239,14 @@ function AppInner() {
   const pendingPage = useRef<Page | null>(null);
   const { openCart } = useCart();
 
+  // Seed the initial history state so back button works from first navigation
+  useEffect(() => {
+    const initialPage = getInitialPage();
+    if (!window.history.state || !window.history.state.page) {
+      window.history.replaceState({ page: initialPage }, '', window.location.href);
+    }
+  }, []);
+
   // Dynamic meta tags based on current page
   usePageMeta(
     displayPage === 'home'
@@ -392,9 +403,10 @@ function AppInner() {
       setPage(target);
       setDisplayPage(target);
       if (target === 'article' && articlePath) {
-        window.history.pushState(null, '', `/article/${articlePath}`);
+        window.history.pushState({ page: target, articlePath }, '', `/article/${articlePath}`);
       } else {
-        window.history.pushState(null, '', target === 'home' ? '/' : `/${target}`);
+        const url = target === 'home' ? '/' : `/${target}`;
+        window.history.pushState({ page: target }, '', url);
       }
       window.scrollTo({ top: 0, behavior: 'instant' });
       setTransitioning(false);
@@ -439,8 +451,17 @@ function AppInner() {
       }
 
       const dest = PATH_TO_PAGE[path] ?? HASH_TO_PAGE[hash];
-      if (dest) navigate(dest);
-      else navigate('home');
+      if (dest) {
+        // Only navigate if we're actually changing pages
+        if (dest !== displayPage || dest === 'article') {
+          navigate(dest);
+        }
+      } else {
+        // Unknown path — go home if not already there
+        if (displayPage !== 'home') {
+          navigate('home');
+        }
+      }
     };
 
     const onNavigate = (e: Event) => {
