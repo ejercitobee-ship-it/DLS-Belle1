@@ -499,12 +499,7 @@ export default function NewArrivals() {
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
       {/* Hero */}
-      <div className="relative h-64 md:h-80 overflow-hidden">
-        <img
-          src="/images/products/c28eff7e15a7f40ecba3853c6731fb2c.jpg"
-          alt="New Arrivals"
-          className="w-full h-full object-cover object-center"
-        />
+      <div className="relative h-64 md:h-80 overflow-hidden bg-charcoal-900">
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/70 to-charcoal-950/20" />
 
         {/* Animated sparkle accent */}
