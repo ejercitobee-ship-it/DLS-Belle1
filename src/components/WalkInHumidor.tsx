@@ -212,7 +212,12 @@ export default function WalkInHumidor() {
             </p>
             <div className="flex flex-wrap gap-4">
               <a
-                href="/about"
+                href="#enquire"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById('enquire');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="inline-flex items-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase px-7 py-4 rounded hover:opacity-90 active:scale-95 transition-all"
               >
                 Start Your Project
