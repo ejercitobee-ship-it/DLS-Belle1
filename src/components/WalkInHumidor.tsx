@@ -106,9 +106,6 @@ export default function WalkInHumidor() {
     name: '',
     email: '',
     phone: '',
-    projectType: '',
-    spaceSize: '',
-    message: '',
   });
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -123,7 +120,7 @@ export default function WalkInHumidor() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       errs.email = 'Please enter a valid email address.';
     }
-    if (!formData.projectType) errs.projectType = 'Please select a project type.';
+    if (!formData.phone.trim()) errs.phone = 'Phone number is required.';
     return errs;
   };
 
@@ -150,11 +147,8 @@ export default function WalkInHumidor() {
             '',
             `Name: ${formData.name.trim()}`,
             `Email: ${formData.email}`,
-            formData.phone ? `Phone: ${formData.phone}` : '',
-            `Project Type: ${formData.projectType}`,
-            formData.spaceSize ? `Space Size: ${formData.spaceSize}` : '',
-            formData.message ? `Message:\n${formData.message}` : '',
-          ].filter(Boolean).join('\n'),
+            `Phone: ${formData.phone}`,
+          ].join('\n'),
         }),
       });
 
@@ -486,121 +480,72 @@ export default function WalkInHumidor() {
               </blockquote>
             </div>
 
-            {/* Right — enquiry form */}
+            {/* Right — Consultation Form */}
             <div className="bg-charcoal-900 border border-charcoal-800/50 rounded-lg p-8">
+              <h3 className="font-serif text-2xl text-white font-semibold mb-4">
+                Request a Consultation
+              </h3>
+              <p className="text-cream-200/55 leading-relaxed text-sm mb-8">
+                Ready to transform your space? Schedule a private consultation with our design team and receive a comprehensive quote for your custom walk-in humidor.
+              </p>
+
               {submitted ? (
-                <div className="h-full flex flex-col items-center justify-center text-center py-12">
-                  <div className="w-16 h-16 rounded-full border-2 border-gold-500/50 flex items-center justify-center mb-6">
-                    <CheckCircle2 size={28} className="text-gold-500" />
-                  </div>
-                  <h3 className="font-serif text-2xl text-white font-bold mb-3">Enquiry Received</h3>
-                  <p className="text-cream-200/55 leading-relaxed max-w-xs">
-                    Thank you for reaching out. Our executive sales team will be in touch within one business day.
+                <div className="text-center py-12">
+                  <CheckCircle2 size={48} className="text-gold-400 mx-auto mb-4" />
+                  <h4 className="text-white font-semibold mb-2">Thank You!</h4>
+                  <p className="text-cream-200/60 text-sm">
+                    We've received your inquiry and will be in touch within one business day.
                   </p>
                 </div>
               ) : (
-                <>
-                  <h3 className="font-serif text-xl text-white font-semibold mb-6">
-                    Request a Consultation
-                  </h3>
-                  <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Full Name *</label>
-                        <input
-                          type="text"
-                          {...field('name')}
-                          className={`w-full bg-charcoal-950 border ${errors.name ? 'border-red-500/70' : 'border-charcoal-700'} focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors`}
-                          placeholder="John Smith"
-                        />
-                        {errors.name && <p className="text-red-400 text-[10px] mt-1">{errors.name}</p>}
-                      </div>
-                      <div>
-                        <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Email Address *</label>
-                        <input
-                          type="email"
-                          {...field('email')}
-                          className={`w-full bg-charcoal-950 border ${errors.email ? 'border-red-500/70' : 'border-charcoal-700'} focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors`}
-                          placeholder="john@example.com"
-                        />
-                        {errors.email && <p className="text-red-400 text-[10px] mt-1">{errors.email}</p>}
-                      </div>
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    value={formData.name}
+                    {...field('name')}
+                    className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-3 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
+                  />
+                  {errors.name && <p className="text-red-400 text-xs px-1">{errors.name}</p>}
+
+                  <input
+                    type="email"
+                    placeholder="Email Address"
+                    value={formData.email}
+                    {...field('email')}
+                    className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-3 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
+                  />
+                  {errors.email && <p className="text-red-400 text-xs px-1">{errors.email}</p>}
+
+                  <input
+                    type="tel"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    {...field('phone')}
+                    className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-3 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
+                  />
+                  {errors.phone && <p className="text-red-400 text-xs px-1">{errors.phone}</p>}
+
+                  {submitError && (
+                    <div className="flex items-center gap-2 text-red-400 text-xs bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
+                      <AlertCircle size={14} className="flex-shrink-0" />
+                      {submitError}
                     </div>
+                  )}
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Phone Number</label>
-                        <input
-                          type="tel"
-                          {...field('phone')}
-                          className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors"
-                          placeholder="(555) 000-0000"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Project Type *</label>
-                        <select
-                          {...field('projectType')}
-                          className={`w-full bg-charcoal-950 border ${errors.projectType ? 'border-red-500/70' : 'border-charcoal-700'} focus:border-gold-500 text-cream-100 text-sm px-4 py-3 rounded outline-none transition-colors appearance-none`}
-                        >
-                          <option value="" disabled className="text-cream-200/30">Select type</option>
-                          <option value="Residential Cigar Room">Residential Cigar Room</option>
-                          <option value="Retail / Hospitality">Retail / Hospitality</option>
-                          <option value="Electronic Monitoring Only">Electronic Monitoring Only</option>
-                          <option value="Other">Other</option>
-                        </select>
-                        {errors.projectType && <p className="text-red-400 text-[10px] mt-1">{errors.projectType}</p>}
-                      </div>
-                    </div>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase px-8 py-3 rounded hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                  >
+                    {submitting ? 'Sending...' : 'Start Your Project'}
+                    {!submitting && <ArrowRight size={15} />}
+                  </button>
 
-                    <div>
-                      <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Approximate Space Size</label>
-                      <input
-                        type="text"
-                        {...field('spaceSize')}
-                        className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors"
-                        placeholder="e.g. 10 × 12 ft, large closet, full room…"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-cream-200/40 text-[10px] tracking-[0.25em] uppercase block mb-1.5">Tell Us About Your Vision</label>
-                      <textarea
-                        rows={4}
-                        {...field('message')}
-                        className="w-full bg-charcoal-950 border border-charcoal-700 focus:border-gold-500 text-cream-100 placeholder-cream-200/20 text-sm px-4 py-3 rounded outline-none transition-colors resize-none"
-                        placeholder="Describe your project, collection size, preferred materials, timeline…"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="w-full bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase py-4 rounded hover:opacity-90 active:scale-95 transition-all disabled:opacity-70"
-                    >
-                      {submitting ? 'Submitting…' : 'Submit Enquiry'}
-                    </button>
-
-                    {submitError && (
-                      <div className="flex items-start gap-2 text-red-400 text-xs">
-                        <AlertCircle size={14} className="mt-0.5 shrink-0" />
-                        <p>
-                          {submitError}{' '}
-                          <a
-                            href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('Bespoke Walk-In Humidor Enquiry')}`}
-                            className="text-gold-400 hover:underline font-medium"
-                          >
-                            Send email manually
-                          </a>
-                        </p>
-                      </div>
-                    )}
-
-                    <p className="text-cream-200/25 text-xs text-center">
-                      We respond within one business day. All enquiries are strictly confidential.
-                    </p>
-                  </form>
-                </>
+                  <p className="text-cream-200/25 text-xs text-center">
+                    We respond within one business day. All enquiries are strictly confidential.
+                  </p>
+                </form>
               )}
             </div>
           </div>
