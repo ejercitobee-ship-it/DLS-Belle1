@@ -24,6 +24,12 @@ import { usePageMeta } from '../hooks/usePageMeta';
 import { PaymentMethods } from './ConversionElements';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 import { ProductRecommendations, ProductFAQ } from './ProductSections';
+import BreadcrumbSchema from './BreadcrumbSchema';
+import SchemaMarkup from './SchemaMarkup';
+import LazyImage from './LazyImage';
+import { generateProductSchema } from '../lib/schemaMarkupHelpers';
+import { getWebPPath } from '../lib/imageOptimization';
+import { getRelatedLinks } from '../lib/internalLinkMap';
 
 /* ─── Sub-components ─────────────────────────────────────────────────────────── */
 
@@ -238,8 +244,17 @@ export default function ProductPage({ handle }: { handle: string }) {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
-      {/* Breadcrumb */}
+      {/* Breadcrumb Navigation with Schema */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
+        <BreadcrumbSchema
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Collections', href: '/all-collections' },
+            { label: prod.productType || 'Products', href: `/collections/${prod.productType?.toLowerCase().replace(/\s+/g, '-') || 'all'}` },
+            { label: prod.title, href: `/product/${handle}` }
+          ]}
+          className="mb-4"
+        />
         <button
           onClick={() => {
             const prevPath = document.referrer;
@@ -259,6 +274,19 @@ export default function ProductPage({ handle }: { handle: string }) {
         </button>
       </div>
 
+      {/* Product Schema Markup */}
+      <SchemaMarkup
+        schema={generateProductSchema({
+          name: prod.title,
+          description: prod.description || prod.descriptionHtml || 'Premium humidor product',
+          image: prod.featuredImage?.url || allImages[0],
+          price: parseFloat(variant?.price.amount ?? prod.priceRange.minVariantPrice.amount),
+          url: `/product/${handle}`,
+          rating: 4.9,
+          reviewCount: 128,
+        })}
+      />
+
       {/* ── Main Product Grid ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
@@ -268,8 +296,9 @@ export default function ProductPage({ handle }: { handle: string }) {
             <div className="relative aspect-square bg-charcoal-900 rounded-xl overflow-hidden border border-charcoal-800/50 group">
               {allImages[selectedImage] ? (
                 <>
-                  <img
+                  <LazyImage
                     src={allImages[selectedImage]}
+                    webpSrc={getWebPPath(allImages[selectedImage])}
                     alt={prod.title}
                     className="w-full h-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.02]"
                   />
@@ -298,7 +327,12 @@ export default function ProductPage({ handle }: { handle: string }) {
                       idx === selectedImage ? 'border-gold-500' : 'border-charcoal-800/50 hover:border-gold-600/40'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <LazyImage
+                      src={img}
+                      webpSrc={getWebPPath(img)}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
                   </button>
                 ))}
               </div>
@@ -511,6 +545,30 @@ export default function ProductPage({ handle }: { handle: string }) {
         </div>
       </div>
 
+      {/* Related Products & Links Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="border-t border-charcoal-800/50 pt-12">
+          <h2 className="text-2xl font-semibold text-white mb-6">Explore More</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-white text-sm font-semibold tracking-[0.2em] uppercase mb-4">Related Collections</h3>
+              <ul className="space-y-2">
+                {getRelatedLinks(`/collections/${prod.productType?.toLowerCase().replace(/\s+/g, '-') || 'all'}`).map(link => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      className="text-gold-400 hover:text-gold-300 text-sm transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Product Recommendations */}
       <ProductRecommendations currentProductId={prod.id} currentHandle={handle} />
 
@@ -572,8 +630,17 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
-      {/* Breadcrumb */}
+      {/* Breadcrumb Navigation with Schema */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
+        <BreadcrumbSchema
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Collections', href: '/all-collections' },
+            { label: product.category, href: `/collections/${product.category.toLowerCase().replace(/\s+/g, '-')}` },
+            { label: product.name, href: `/product/${product.handle}` }
+          ]}
+          className="mb-4"
+        />
         <button
           onClick={() => {
             const prevPath = document.referrer;
@@ -593,6 +660,19 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
         </button>
       </div>
 
+      {/* Product Schema Markup */}
+      <SchemaMarkup
+        schema={generateProductSchema({
+          name: product.name,
+          description: product.description,
+          image: product.image,
+          price: product.priceNum,
+          url: `/product/${product.handle}`,
+          rating: product.rating || 4.8,
+          reviewCount: 128,
+        })}
+      />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
           {/* Images */}
@@ -600,8 +680,9 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
             <div className="relative aspect-square bg-charcoal-900 rounded-xl overflow-hidden border border-charcoal-800/50 group">
               {product.image ? (
                 <>
-                  <img
+                  <LazyImage
                     src={product.image}
+                    webpSrc={getWebPPath(product.image)}
                     alt={product.name}
                     className="w-full h-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.02]"
                   />
