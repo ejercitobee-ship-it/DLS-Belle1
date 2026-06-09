@@ -1,6 +1,10 @@
 ﻿import { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { fetchCollections, type ShopifyCollection } from '../lib/shopify';
+import BreadcrumbSchema from './BreadcrumbSchema';
+import SchemaMarkup from './SchemaMarkup';
+import { generateOrganizationSchema } from '../lib/schemaMarkupHelpers';
+import { getRelatedLinks } from '../lib/internalLinkMap';
 
 const STATIC_COLLECTIONS = [
   {
@@ -123,6 +127,16 @@ export default function Collections() {
   return (
     <section id="collections" className="py-24 bg-charcoal-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BreadcrumbSchema
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Collections', href: '/all-collections' }
+          ]}
+          className="mb-8"
+        />
+
+        <SchemaMarkup schema={generateOrganizationSchema()} />
+
         {/* Header */}
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
@@ -132,16 +146,17 @@ export default function Collections() {
             </span>
             <div className="h-px w-10 bg-gold-500" />
           </div>
-          <h2 className="font-serif text-4xl md:text-5xl text-white font-bold mb-4">
-            Curated for <span className="text-gradient-gold italic">Connoisseurs</span>
-          </h2>
+          <h1 className="font-serif text-5xl md:text-6xl text-white font-bold mb-4">
+            Humidor Collections
+          </h1>
           <p className="text-cream-200/60 text-lg max-w-xl mx-auto">
             Each collection is handpicked for quality, craftsmanship, and the
             signature of true luxury.
           </p>
         </div>
 
-        {/* Grid */}
+        {/* Collections Grid */}
+        <h2 className="font-serif text-3xl text-white font-bold mb-8">Featured Collections</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {collections.map((col, i) => (
             <a
@@ -172,6 +187,11 @@ export default function Collections() {
                     <h3 className="font-serif text-xl md:text-2xl text-white font-semibold mb-1">
                       {col.name}
                     </h3>
+                    {col.description && (
+                      <p className="text-cream-200/70 text-sm mb-2 line-clamp-2">
+                        {col.description}
+                      </p>
+                    )}
                   </div>
                   <div className="w-9 h-9 rounded-full border border-gold-500/50 flex items-center justify-center text-gold-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0 ml-3">
                     <ArrowRight size={15} />
@@ -181,6 +201,20 @@ export default function Collections() {
             </a>
           ))}
         </div>
+
+        {/* Explore More Links */}
+        <section className="mt-16 pt-12 border-t border-gold-500/20">
+          <h2 className="font-serif text-2xl text-white font-bold mb-8">Explore More</h2>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {getRelatedLinks('/all-collections').map(link => (
+              <li key={link.href}>
+                <a href={link.href} className="text-gold-400 hover:text-gold-300 transition-colors flex items-center gap-2">
+                  {link.label} →
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </section>
   );
