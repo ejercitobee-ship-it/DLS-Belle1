@@ -56,20 +56,41 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 20px 60px rgba(212, 175, 55, 0.15);
-      min-height: 800px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative;
+      width: 100%;
     }
 
-    iframe {
+    /* Aspect ratio container for responsive iframe */
+    .iframe-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 125%; /* Adjust aspect ratio */
+      height: 0;
+      overflow: hidden;
+    }
+
+    .iframe-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      min-height: 800px;
       border: none;
       display: block;
     }
 
+    /* Desktop styles */
+    @media (min-width: 769px) {
+      .form-wrapper {
+        min-height: 800px;
+      }
+
+      .iframe-container {
+        padding-bottom: 100%;
+      }
+    }
+
+    /* Tablet styles */
     @media (max-width: 768px) {
       .header h1 {
         font-size: 2rem;
@@ -80,15 +101,16 @@
       }
 
       .form-wrapper {
-        min-height: 600px;
+        min-height: auto;
       }
 
-      iframe {
-        min-height: 600px;
+      .iframe-container {
+        padding-bottom: 150%;
       }
     }
 
-    @media (max-width: 480px) {
+    /* Mobile styles */
+    @media (max-width: 600px) {
       body {
         padding: 10px;
       }
@@ -108,6 +130,65 @@
       .header p {
         font-size: 0.95rem;
       }
+
+      .iframe-container {
+        padding-bottom: 175%;
+      }
+    }
+
+    /* Extra small phones */
+    @media (max-width: 480px) {
+      body {
+        padding: 8px;
+      }
+
+      .container {
+        margin-top: 15px;
+      }
+
+      .header {
+        margin-bottom: 15px;
+      }
+
+      .header h1 {
+        font-size: 1.3rem;
+      }
+
+      .header p {
+        font-size: 0.9rem;
+      }
+
+      .iframe-container {
+        padding-bottom: 200%;
+      }
+    }
+
+    .fallback-link {
+      text-align: center;
+      padding: 20px;
+      display: none;
+    }
+
+    .fallback-link a {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #d4af37 0%, #f0d9b5 100%);
+      color: #0a0a0a;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: transform 0.2s;
+    }
+
+    .fallback-link a:hover {
+      transform: scale(1.05);
+    }
+
+    /* Show fallback on very small screens if needed */
+    @media (max-width: 360px) {
+      .fallback-link {
+        display: block;
+      }
     }
   </style>
 </head>
@@ -119,7 +200,13 @@
     </div>
 
     <div class="form-wrapper">
-      <iframe src="https://dunnluxuryselections.notion.site/ebd//22cd6dee67d342339463c4533465833a" allowfullscreen></iframe>
+      <div class="iframe-container">
+        <iframe src="https://dunnluxuryselections.notion.site/ebd//22cd6dee67d342339463c4533465833a" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="fallback-link">
+        <p style="margin-bottom: 15px; color: #666;">Having trouble with the form?</p>
+        <a href="https://dunnluxuryselections.notion.site/ebd//22cd6dee67d342339463c4533465833a" target="_blank">Open Form in New Window</a>
+      </div>
     </div>
   </div>
 </body>
