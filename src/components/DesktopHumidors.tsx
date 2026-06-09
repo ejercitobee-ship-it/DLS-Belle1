@@ -3,10 +3,14 @@ import { ShoppingBag, Star, ChevronDown, Box, CheckCircle2, Loader2, SlidersHori
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
-import { 
-  CustomerReviews, 
-  WhyBuyFromUs, 
-  FAQSection, 
+import BreadcrumbSchema from './BreadcrumbSchema';
+import SchemaMarkup from './SchemaMarkup';
+import { generateOrganizationSchema, generateProductSchema } from '../lib/schemaMarkupHelpers';
+import { getRelatedLinks } from '../lib/internalLinkMap';
+import {
+  CustomerReviews,
+  WhyBuyFromUs,
+  FAQSection,
   PaymentMethods
 } from './ConversionElements';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
@@ -201,6 +205,18 @@ export default function DesktopHumidors() {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BreadcrumbSchema
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Collections', href: '/all-collections' },
+            { label: 'Desktop Humidors', href: '/collections/desktop-humidors' }
+          ]}
+          className="mb-8 pt-4"
+        />
+        <SchemaMarkup schema={generateOrganizationSchema()} />
+      </div>
+
       {/* Hero banner */}
       <div className="relative h-56 md:h-72 overflow-hidden">
         <img src={heroImage} alt="Desktop Humidors" className="w-full h-full object-cover object-center" loading="lazy" />
@@ -211,7 +227,7 @@ export default function DesktopHumidors() {
               <div className="h-px w-8 bg-gold-500" />
               <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Collection</span>
             </div>
-            <h1 className="font-serif text-4xl md:text-5xl text-white font-bold">
+            <h1 className="font-serif text-5xl md:text-6xl text-white font-bold">
               Desktop <span className="text-gradient-gold italic">Humidors</span>
             </h1>
             <p className="text-cream-200/60 mt-2 max-w-lg">
@@ -228,6 +244,8 @@ export default function DesktopHumidors() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+        <h2 className="font-serif text-3xl text-white font-bold mb-8">Available Models</h2>
+
         {/* Toolbar */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-charcoal-800/50">
           <div className="flex items-center gap-3">
@@ -347,6 +365,19 @@ export default function DesktopHumidors() {
                     <h3 className="text-cream-100 text-sm font-semibold leading-snug mb-1.5 group-hover:text-white transition-colors">
                       {product.name}
                     </h3>
+                    {product.rating && product.priceNum && (
+                      <SchemaMarkup
+                        schema={generateProductSchema({
+                          name: product.name,
+                          description: product.description,
+                          image: product.image,
+                          price: product.priceNum,
+                          url: `/product/${product.handle}`,
+                          rating: product.rating,
+                          reviewCount: product.reviews
+                        })}
+                      />
+                    )}
                     <div className="flex items-center gap-1.5 mb-2">
                       <span className="text-[10px] text-cream-200/40 bg-charcoal-950/60 px-2 py-0.5 rounded-full flex items-center gap-1">
                         <Box size={9} /> {product.capacity}
@@ -372,23 +403,20 @@ export default function DesktopHumidors() {
         )}
 
         {/* Related collections */}
-        <div className="mt-20 pt-12 border-t border-charcoal-800/40">
-          <p className="text-cream-200/30 text-[10px] tracking-[0.4em] uppercase mb-6 text-center">
-            Explore Other Collections
-          </p>
+        <section className="mt-20 pt-12 border-t border-charcoal-800/40">
+          <h2 className="font-serif text-2xl text-white font-bold mb-8">Explore More Collections</h2>
           <div className="flex flex-wrap justify-center gap-3">
-            {[
-              { label: 'Electronic Humidors', href: '#electronic' },
-              { label: 'Travel Humidors', href: '#travel' },
-              { label: 'Accessories', href: '#accessories' },
-              { label: 'Walk-In Humidors', href: '#bespoke-walkins' },
-            ].map(({ label, href }) => (
-              <a key={label} href={href} className="text-xs text-cream-200/40 hover:text-gold-400 border border-charcoal-800/60 hover:border-gold-600/30 px-4 py-2 rounded-full transition-colors">
-                {label}
+            {getRelatedLinks('/collections/desktop-humidors').map(link => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-xs text-cream-200/40 hover:text-gold-400 border border-charcoal-800/60 hover:border-gold-600/30 px-4 py-2 rounded-full transition-colors"
+              >
+                {link.label}
               </a>
             ))}
           </div>
-        </div>
+        </section>
       </div>
 
       {/* Customer Reviews */}
