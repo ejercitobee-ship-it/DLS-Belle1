@@ -14,6 +14,10 @@ import {
   ChevronDown,
   AlertCircle,
 } from 'lucide-react';
+import BreadcrumbSchema from './BreadcrumbSchema';
+import SchemaMarkup from './SchemaMarkup';
+import { generateOrganizationSchema } from '../lib/schemaMarkupHelpers';
+import { getRelatedLinks } from '../lib/internalLinkMap';
 
 const SUPPORT_EMAIL = 'support@dunnluxuryselections.com';
 
@@ -174,6 +178,17 @@ export default function WalkInHumidor() {
 
   return (
     <div className="min-h-screen bg-charcoal-950">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BreadcrumbSchema
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Collections', href: '/all-collections' },
+            { label: 'Walk-In Humidors', href: '/walk-in-humidor' }
+          ]}
+          className="mb-8 pt-4"
+        />
+        <SchemaMarkup schema={generateOrganizationSchema()} />
+      </div>
 
       {/* ── Hero ── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
@@ -407,6 +422,44 @@ export default function WalkInHumidor() {
                   <p className="px-6 pb-5 text-cream-200/55 text-sm leading-relaxed">{faq.a}</p>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Related Products ── */}
+      <section className="py-24 bg-charcoal-950 border-t border-charcoal-800/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="font-serif text-4xl md:text-5xl text-white font-bold mb-4">
+              Explore More Collections
+            </h2>
+            <p className="text-cream-200/50 max-w-xl mx-auto">
+              Complement your walk-in humidor with our complete range of desktop, cabinet, and electronic humidors.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {getRelatedLinks('/walk-in-humidor').map(link => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg p-8 transition-colors duration-300"
+              >
+                <div className="flex items-start justify-between mb-6">
+                  <h3 className="font-serif text-xl text-white font-semibold group-hover:text-gold-300 transition-colors">
+                    {link.label}
+                  </h3>
+                  <ArrowRight size={16} className="text-gold-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <p className="text-cream-200/50 text-sm">
+                  {link.category === 'collections'
+                    ? 'Explore our curated collection of humidors'
+                    : link.category === 'services'
+                    ? 'Discover our specialized services'
+                    : 'Learn more about proper cigar care'}
+                </p>
+              </a>
             ))}
           </div>
         </div>
