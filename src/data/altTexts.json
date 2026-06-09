@@ -1,0 +1,38 @@
+{
+  "products": {
+    "desktop_humidors": {
+      "main": "Premium desktop humidors with electronic climate control",
+      "featured": "Desktop humidor collection showcasing various finishes and styles"
+    },
+    "cabinet_humidors": {
+      "main": "Elegant cabinet humidors with tempered glass doors",
+      "featured": "Cabinet humidor with mahogany finish and LED lighting"
+    },
+    "travel_humidors": {
+      "main": "Portable travel humidors for cigar aficionados on the go",
+      "featured": "Compact travel humidor with leather exterior"
+    },
+    "electronic_humidors": {
+      "main": "Advanced electronic humidors with digital climate control",
+      "featured": "Electronic humidor with touch screen controls and Wi-Fi connectivity"
+    },
+    "accessories": {
+      "humidifier": "Replacement humidifier cartridge",
+      "hygrometer": "Digital hygrometer for precise humidity monitoring",
+      "cedar": "Spanish cedar sheets for humidor lining"
+    },
+    "walk_in_humidors": {
+      "main": "Bespoke walk-in humidor showcase with Spanish cedar lining",
+      "featured": "Custom walk-in humidor installation with commercial-grade climate control"
+    }
+  },
+  "heroes": {
+    "home": "Dunn's Luxury Selections - premium cigar humidor collections",
+    "collections": "Curated humidor collections for every collector",
+    "bespoke": "Bespoke walk-in humidor design and installation services"
+  },
+  "testimonials": {
+    "collector": "Satisfied customer with their custom humidor installation",
+    "commercial": "Business owner enjoying commercial-grade humidor solution"
+  }
+}
