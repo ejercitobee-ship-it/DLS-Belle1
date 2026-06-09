@@ -1,4 +1,16 @@
-// src/lib/schemaMarkupHelpers.ts
+/**
+ * Schema markup utilities for generating structured data.
+ *
+ * These utilities generate valid JSON-LD schemas. However, consumers are
+ * responsible for ensuring input data matches schema.org requirements:
+ * - URLs should be valid absolute or relative paths
+ * - Ratings should be 1-5
+ * - Currency should be valid ISO 4217 code
+ * - Availability should be a schema.org availability URL
+ *
+ * Invalid data will throw an error during generation.
+ */
+
 const BASE_URL = 'https://dunnluxuryselections.com';
 
 // Helper function for safe URL construction
@@ -6,8 +18,12 @@ const buildURL = (path: string): string => {
   try {
     return new URL(path, BASE_URL).href;
   } catch {
-    console.warn(`Invalid URL path: ${path}, using path as-is`);
-    return path;
+    // If path looks like a relative URL (starts with / or .), return it
+    // Otherwise it's malformed - throw the error
+    if (path && (path.startsWith('/') || path.startsWith('.'))) {
+      return path;
+    }
+    throw new Error(`Invalid URL: "${path}" is not a valid absolute or relative URL`);
   }
 };
 
@@ -31,12 +47,12 @@ export interface ProductSchema {
 export type BreadcrumbSchema = ReturnType<typeof generateBreadcrumbSchema>;
 
 export const generateBreadcrumbSchema = (items: BreadcrumbItem[]): BreadcrumbSchema => {
-  if (!items || items.length === 0) {
-    throw new Error('Breadcrumb items array cannot be empty');
+  if (!Array.isArray(items) || items.length === 0) {
+    throw new Error('Breadcrumb items must be a non-empty array');
   }
 
-  if (!items.every(item => item.name && item.url)) {
-    throw new Error('All breadcrumb items must have name and url properties');
+  if (!items.every(item => item.name?.trim() && item.url?.trim())) {
+    throw new Error('All breadcrumb items must have non-empty name and url');
   }
 
   return {
