@@ -15,6 +15,10 @@ import {
 } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import { getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
+import BreadcrumbSchema from './BreadcrumbSchema';
+import SchemaMarkup from './SchemaMarkup';
+import { generateOrganizationSchema } from '../lib/schemaMarkupHelpers';
+import { getCollectionLinks } from '../lib/internalLinkMap';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -298,6 +302,17 @@ export default function AllCollections() {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BreadcrumbSchema
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Collections', href: '/all-collections' }
+          ]}
+          className="mb-8 pt-4"
+        />
+        <SchemaMarkup schema={generateOrganizationSchema()} />
+      </div>
+
       {/* ── Hero ── */}
       <div className="relative overflow-hidden bg-charcoal-950 border-b border-charcoal-800/60">
         <div className="absolute inset-0 bg-gradient-to-br from-gold-900/10 via-transparent to-transparent pointer-events-none" />
@@ -319,7 +334,7 @@ export default function AllCollections() {
             </span>
           </div>
 
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6 max-w-2xl">
+          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-[1.1] mb-6 max-w-2xl">
             The Complete{' '}
             <span className="text-gradient-gold italic">Dunn's Selection</span>
           </h1>
@@ -329,6 +344,27 @@ export default function AllCollections() {
           </p>
         </div>
       </div>
+
+      {/* ── Quick Collection Links ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 className="font-serif text-2xl text-white font-bold mb-8">Browse Collections</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {getCollectionLinks().map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg p-6 transition-colors duration-300"
+            >
+              <h3 className="font-serif text-lg text-white font-semibold group-hover:text-gold-300 transition-colors mb-2">
+                {link.label}
+              </h3>
+              <p className="text-cream-200/50 text-sm">
+                Explore this collection
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
 
       {/* ── Filter bar + count ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-2">
