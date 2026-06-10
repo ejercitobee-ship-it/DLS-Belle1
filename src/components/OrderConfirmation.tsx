@@ -54,7 +54,7 @@ export default function OrderConfirmation() {
       // Google Ads Conversion Tracking (AW-17833894840)
       try {
         gtag('event', 'conversion', {
-          'send_to': 'AW-17833894840/7XldCNj1krUcELjH7rdC',
+          'send_to': 'AW-17833894840/LxbdCPIH-7QcELjH7rdC',
           'value': parseFloat(orderTotal) || 0,
           'currency': 'USD',
           'transaction_id': checkoutId,
