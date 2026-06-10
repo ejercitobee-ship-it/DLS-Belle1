@@ -36,43 +36,68 @@ export default function OrderConfirmation() {
       });
     }
 
-    // Google Ads Conversion Tracking
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'conversion', {
-        'send_to': 'AW-17833894840/7XldCNj1krUcELjH7rdC',
-        'value': parseFloat(orderTotal) || 0,
-        'currency': 'USD',
-        'transaction_id': checkoutId,
-      });
-    }
+    // Wait for gtag to be available (async script loading)
+    const waitForGtag = (retries = 10, delay = 100) => {
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        fireConversionEvents();
+      } else if (retries > 0) {
+        setTimeout(() => waitForGtag(retries - 1, delay), delay);
+      } else {
+        console.warn('Google Tag Manager (gtag) not available after retries');
+      }
+    };
 
-    // Google Analytics 4 - Purchase Event
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      let purchaseItems: object[] = [];
+    const fireConversionEvents = () => {
+      const gtag = (window as any).gtag;
+      console.log('🔥 Firing conversion events for order:', { orderId, checkoutId, total: orderTotal });
+
+      // Google Ads Conversion Tracking (AW-17833894840)
       try {
-        const cartJson = localStorage.getItem('dunns_cart');
-        if (cartJson) {
-          const cartItems = JSON.parse(cartJson);
-          purchaseItems = cartItems.map((item: { id: string; name: string; priceNum: number; quantity: number }) => ({
-            item_id: item.id,
-            item_name: item.name,
-            price: item.priceNum,
-            quantity: item.quantity,
-          }));
-        }
-      } catch { /* ignore parse errors */ }
+        gtag('event', 'conversion', {
+          'send_to': 'AW-17833894840/7XldCNj1krUcELjH7rdC',
+          'value': parseFloat(orderTotal) || 0,
+          'currency': 'USD',
+          'transaction_id': checkoutId,
+        });
+        console.log('✅ Google Ads conversion event fired successfully');
+      } catch (error) {
+        console.error('❌ Error firing Google Ads conversion:', error);
+      }
 
-      (window as any).gtag('event', 'purchase', {
-        transaction_id: orderId || checkoutId,
-        value: parseFloat(orderTotal) || 0,
-        currency: 'USD',
-        items: purchaseItems,
-      });
+      // Google Analytics 4 - Purchase Event
+      try {
+        let purchaseItems: object[] = [];
+        try {
+          const cartJson = localStorage.getItem('dunns_cart');
+          if (cartJson) {
+            const cartItems = JSON.parse(cartJson);
+            purchaseItems = cartItems.map((item: { id: string; name: string; priceNum: number; quantity: number }) => ({
+              item_id: item.id,
+              item_name: item.name,
+              price: item.priceNum,
+              quantity: item.quantity,
+            }));
+          }
+        } catch { /* ignore parse errors */ }
 
-      // Clear cart after confirmed purchase
-      localStorage.removeItem('dunns_cart');
-      localStorage.removeItem('dunns_shopify_cart_id');
-    }
+        gtag('event', 'purchase', {
+          transaction_id: orderId || checkoutId,
+          value: parseFloat(orderTotal) || 0,
+          currency: 'USD',
+          items: purchaseItems,
+        });
+        console.log('✅ GA4 purchase event fired successfully');
+
+        // Clear cart after confirmed purchase
+        localStorage.removeItem('dunns_cart');
+        localStorage.removeItem('dunns_shopify_cart_id');
+      } catch (error) {
+        console.error('❌ Error firing GA4 purchase event:', error);
+      }
+    };
+
+    // Start waiting for gtag
+    waitForGtag();
   }, []);
 
   if (!orderDetails) {
