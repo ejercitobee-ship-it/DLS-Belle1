@@ -28,53 +28,70 @@ Shopify's own Thank You page, where the customer actually lands.
 const AW_ID = 'AW-17833894840';
 const AW_LABEL = 'LxbdCPIH-7QcELjH7rdC';
 const GA4_ID = 'G-BG9K5QSYQQ';
+const GOOGLE_TAG_ID = 'GT-55VCHDDF';
 
-const script = document.createElement('script');
-script.async = true;
-script.src = 'https://www.googletagmanager.com/gtag/js?id=' + AW_ID;
-document.head.appendChild(script);
-
+// Define gtag INSIDE the sandbox. Never reference the main page's
+// window.gtag here — the pixel sandbox is an isolated JS context and
+// cannot see it. Events pushed before gtag.js loads are queued in
+// dataLayer and sent automatically once the script arrives.
 window.dataLayer = window.dataLayer || [];
-function gtag() { dataLayer.push(arguments); }
+function gtag() { window.dataLayer.push(arguments); }
+
 gtag('js', new Date());
 gtag('config', AW_ID, { allow_enhanced_conversions: true });
-gtag('config', GA4_ID);
+gtag('config', GA4_ID, { send_page_view: false });
+
+// Load gtag.js inside the sandbox (GT- id loads all linked destinations)
+const script = document.createElement('script');
+script.async = true;
+script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GOOGLE_TAG_ID;
+script.onload = function () {
+  console.log('✅ DLS pixel: gtag.js loaded in sandbox');
+};
+script.onerror = function () {
+  console.error('❌ DLS pixel: gtag.js FAILED to load (check CSP/network)');
+};
+document.head.appendChild(script);
 
 analytics.subscribe('checkout_completed', (event) => {
-  const checkout = event.data.checkout;
-  const orderId = checkout.order?.id || checkout.token;
-  const value = parseFloat(checkout.totalPrice?.amount) || 0;
-  const currency = checkout.currencyCode || 'USD';
+  try {
+    const checkout = event.data.checkout;
+    const orderId = (checkout.order && checkout.order.id) || checkout.token;
+    const value = parseFloat(checkout.totalPrice && checkout.totalPrice.amount) || 0;
+    const currency = checkout.currencyCode || 'USD';
 
-  // Enhanced conversions: lets Google attribute the conversion to the ad
-  // click by email match, which survives the cross-domain hop.
-  if (checkout.email) {
-    gtag('set', 'user_data', { email: checkout.email });
+    console.log('🔥 DLS pixel: checkout_completed received', { orderId, value, currency });
+
+    // Enhanced conversions: lets Google attribute the conversion to the ad
+    // click by email match, which survives the cross-domain hop.
+    if (checkout.email) {
+      gtag('set', 'user_data', { email: checkout.email });
+    }
+
+    gtag('event', 'conversion', {
+      send_to: AW_ID + '/' + AW_LABEL,
+      value: value,
+      currency: currency,
+      transaction_id: orderId,
+    });
+    console.log('✅ DLS pixel: Google Ads conversion sent', AW_ID + '/' + AW_LABEL);
+
+    gtag('event', 'purchase', {
+      send_to: GA4_ID,
+      transaction_id: orderId,
+      value: value,
+      currency: currency,
+      items: (checkout.lineItems || []).map((li) => ({
+        item_id: (li.variant && li.variant.product && li.variant.product.id) || li.id,
+        item_name: li.title,
+        price: parseFloat(li.variant && li.variant.price && li.variant.price.amount) || 0,
+        quantity: li.quantity,
+      })),
+    });
+    console.log('✅ DLS pixel: GA4 purchase sent');
+  } catch (e) {
+    console.error('❌ DLS pixel error:', e);
   }
-
-  console.log('🔥 DLS pixel: firing conversion', { orderId, value, currency });
-
-  gtag('event', 'conversion', {
-    send_to: AW_ID + '/' + AW_LABEL,
-    value: value,
-    currency: currency,
-    transaction_id: orderId,
-  });
-  console.log('✅ DLS pixel: Google Ads conversion sent');
-
-  gtag('event', 'purchase', {
-    send_to: GA4_ID,
-    transaction_id: orderId,
-    value: value,
-    currency: currency,
-    items: (checkout.lineItems || []).map((li) => ({
-      item_id: li.variant?.product?.id || li.id,
-      item_name: li.title,
-      price: parseFloat(li.variant?.price?.amount) || 0,
-      quantity: li.quantity,
-    })),
-  });
-  console.log('✅ DLS pixel: GA4 purchase sent');
 });
 ```
 
