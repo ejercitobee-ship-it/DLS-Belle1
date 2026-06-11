@@ -30,6 +30,7 @@ import BreadcrumbSchema from './BreadcrumbSchema';
 import SchemaMarkup from './SchemaMarkup';
 import LazyImage from './LazyImage';
 import { generateProductSchema } from '../lib/schemaMarkupHelpers';
+import { qualifiesForFinancing } from '../lib/financing';
 import { getWebPPath } from '../lib/imageOptimization';
 import { getRelatedLinks } from '../lib/internalLinkMap';
 
@@ -68,17 +69,21 @@ export default function ProductPage({ handle }: { handle: string }) {
   const { addItem } = useCart();
 
   // Dynamic meta tags — must be called before any early returns
+  const productName = product?.title || staticProduct?.name || 'Humidor';
+  const productPrice = parseFloat(product?.priceRange?.minVariantPrice?.amount ?? staticProduct?.price ?? '0');
+  const hasFinancing = qualifiesForFinancing(productPrice);
+  const baseDesc = product?.description ?? staticProduct?.description ?? 'Explore luxury humidors and cigar accessories.';
+  const metaDesc = hasFinancing
+    ? `${productName} - Premium humidor. Pay in 4 interest-free installments with Shop Pay. Free white-glove delivery.`
+    : baseDesc.slice(0, 160);
+
   usePageMeta({
     title: product
       ? `${product.title} | Dunn's Luxury Selections`
       : staticProduct
       ? `${staticProduct.name} | Dunn's Luxury Selections`
       : "Dunn's Luxury Selections | Humidor Collections",
-    description: product?.description
-      ? product.description.slice(0, 160)
-      : staticProduct?.description
-      ? staticProduct.description.slice(0, 160)
-      : 'Explore luxury humidors and cigar accessories.',
+    description: metaDesc.slice(0, 160),
     canonicalPath: `/product/${handle}`,
     ogImage: product?.featuredImage?.url ?? staticProduct?.image,
   });
@@ -274,6 +279,7 @@ export default function ProductPage({ handle }: { handle: string }) {
           url: `/product/${handle}`,
           rating: 4.9,
           reviewCount: 128,
+          qualifiesForFinancing: qualifiesForFinancing(parseFloat(variant?.price.amount ?? prod.priceRange.minVariantPrice.amount)),
         })}
       />
 

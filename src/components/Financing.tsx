@@ -1,6 +1,9 @@
 import { BadgeCheck, CalendarClock, CreditCard, ShieldCheck, Phone, ArrowRight } from 'lucide-react';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 import { FINANCING_MIN, FINANCING_TERM_MONTHS, formatMonthlyPayment } from '../lib/financing';
+import { usePageMeta } from '../hooks/usePageMeta';
+import { generateFAQPageSchema } from '../lib/schemaMarkupHelpers';
+import SchemaMarkup from './SchemaMarkup';
 
 const SUPPORT_EMAIL = 'support@dunnluxuryselections.com';
 
@@ -29,9 +32,44 @@ const steps = [
   },
 ];
 
+const faqItems = [
+  {
+    question: 'What payment methods do you accept?',
+    answer: 'We accept all major credit cards, debit cards, and Shop Pay. With Shop Pay, you can pay in 4 interest-free installments on purchases over $' + FINANCING_MIN.toLocaleString() + '.',
+  },
+  {
+    question: 'How does Shop Pay installment payment work?',
+    answer: 'Shop Pay allows you to split your purchase into 4 equal, interest-free payments made every 2 weeks. No hidden fees, no interest. Qualified buyers are approved instantly at checkout.',
+  },
+  {
+    question: 'Do I need a Shop Pay account?',
+    answer: 'No account needed. Shop Pay is available at checkout for eligible purchases. You can pay with any major credit or debit card.',
+  },
+  {
+    question: 'Is there interest or hidden fees?',
+    answer: 'No. Shop Pay installments are 100% interest-free with no hidden fees. What you see at checkout is exactly what you pay.',
+  },
+  {
+    question: 'Is Shop Pay financing available on all products?',
+    answer: 'Shop Pay installments are available on most products $' + FINANCING_MIN.toLocaleString() + ' and above. Check your product page or at checkout to see if your item qualifies.',
+  },
+  {
+    question: 'Can I pay early with no penalty?',
+    answer: 'Yes. You can pay off your installments early at any time without penalty or additional fees.',
+  },
+];
+
 export default function Financing() {
+  usePageMeta({
+    title: "Shop Pay Installments | Dunn's Luxury Selections",
+    description: 'Pay for your luxury humidor in 4 interest-free installments with Shop Pay. No hidden fees. Flexible payment plans on purchases $1,500+.',
+    canonicalPath: '/financing',
+  });
+
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
+      {/* FAQ Schema Markup */}
+      <SchemaMarkup schema={generateFAQPageSchema(faqItems)} />
       {/* Hero */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
         <div className="flex items-center justify-center gap-2 mb-4">

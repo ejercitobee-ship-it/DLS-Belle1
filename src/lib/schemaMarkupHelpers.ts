@@ -42,6 +42,7 @@ export interface ProductSchema {
   rating?: number;
   reviewCount?: number;
   url: string;
+  qualifiesForFinancing?: boolean;
 }
 
 export type BreadcrumbSchema = ReturnType<typeof generateBreadcrumbSchema>;
@@ -87,7 +88,24 @@ export const generateProductSchema = (product: ProductSchema) => {
         "priceCurrency": product.currency || "USD",
         "price": product.price,
         "availability": product.availability || "https://schema.org/InStock",
-        "url": buildURL(product.url)
+        "url": buildURL(product.url),
+        ...(product.qualifiesForFinancing && {
+          "paymentMethod": [
+            {
+              "@type": "PaymentMethod",
+              "name": "Credit Card"
+            },
+            {
+              "@type": "PaymentMethod",
+              "name": "Debit Card"
+            },
+            {
+              "@type": "PaymentMethod",
+              "name": "Shop Pay",
+              "description": "Pay in 4 interest-free installments with Shop Pay — $" + Math.round(product.price / 4) + " every 2 weeks"
+            }
+          ]
+        })
       }
     }),
     ...(product.rating && {
@@ -116,3 +134,33 @@ export const generateOrganizationSchema = () => ({
     "email": "support@dunnluxuryselections.com"
   }
 });
+
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export type FAQPageSchemaType = ReturnType<typeof generateFAQPageSchema>;
+
+export const generateFAQPageSchema = (items: FAQItem[]) => {
+  if (!Array.isArray(items) || items.length === 0) {
+    throw new Error('FAQ items must be a non-empty array');
+  }
+
+  if (!items.every(item => item.question?.trim() && item.answer?.trim())) {
+    throw new Error('All FAQ items must have non-empty question and answer');
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": items.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  };
+};
