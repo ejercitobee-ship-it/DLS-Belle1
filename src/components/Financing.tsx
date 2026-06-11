@@ -71,61 +71,64 @@ export default function Financing() {
       {/* FAQ Schema Markup */}
       <SchemaMarkup schema={generateFAQPageSchema(faqItems)} />
       {/* Hero */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="h-px w-8 bg-gold-500" />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-16 pb-12 sm:pb-14 text-center">
+        <div className="flex items-center justify-center gap-2 mb-5 sm:mb-6">
+          <div className="h-px w-6 sm:w-8 bg-gold-500" />
           <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
             Flexible Financing
           </span>
-          <div className="h-px w-8 bg-gold-500" />
+          <div className="h-px w-6 sm:w-8 bg-gold-500" />
         </div>
-        <h1 className="font-serif text-4xl md:text-5xl text-white font-bold leading-tight mb-5">
+        <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-bold leading-tight mb-5 sm:mb-6">
           Own It Now. <span className="text-gradient-gold italic">Pay Over Time.</span>
         </h1>
-        <p className="text-cream-200/60 text-base leading-relaxed max-w-2xl mx-auto">
-          Finance any qualifying purchase over ${FINANCING_MIN.toLocaleString()} with Shop Pay —
-          qualified buyers pay 0% interest, split into {FINANCING_TERM_MONTHS} monthly payments.
-          Choose "Shop Pay · Pay in installments" at checkout; approval takes less than a minute.
+        <p className="text-cream-200/60 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+          Finance any qualifying purchase over ${FINANCING_MIN.toLocaleString()} with Shop Pay Installments.
+          Qualified buyers pay 0% interest — split into {FINANCING_TERM_MONTHS} equal payments, every 2 weeks.
+          Approval takes less than a minute at checkout.
         </p>
       </div>
 
       {/* How it works */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 sm:mb-18 md:mb-20">
+        <h2 className="font-serif text-2xl sm:text-3xl text-white font-bold text-center mb-8 sm:mb-10">
+          How It Works
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {steps.map((step, idx) => (
-            <div key={idx} className="bg-charcoal-900 border border-charcoal-800/50 rounded-lg p-6">
-              <div className="w-12 h-12 rounded-full bg-gold-600/10 border border-gold-500/30 flex items-center justify-center mb-4">
+            <div key={idx} className="bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/30 rounded-lg p-6 sm:p-7 transition-colors">
+              <div className="w-12 h-12 rounded-full bg-gold-600/10 border border-gold-500/30 flex items-center justify-center mb-4 sm:mb-5">
                 <step.icon size={20} className="text-gold-500" />
               </div>
-              <p className="text-gold-500/60 text-[10px] tracking-[0.3em] uppercase mb-2">
+              <p className="text-gold-500/60 text-[10px] tracking-[0.3em] uppercase mb-2 sm:mb-2.5">
                 Step {idx + 1}
               </p>
-              <h2 className="text-white font-semibold mb-2">{step.title}</h2>
-              <p className="text-cream-200/55 text-sm leading-relaxed">{step.desc}</p>
+              <h3 className="text-white font-semibold mb-2 sm:mb-3 text-sm sm:text-base">{step.title}</h3>
+              <p className="text-cream-200/55 text-xs sm:text-sm leading-relaxed">{step.desc}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Payment examples */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <div className="bg-charcoal-900/40 border border-gold-700/20 rounded-xl p-8">
-          <h2 className="font-serif text-2xl text-white font-bold text-center mb-8">
-            What Your Payments Could Look Like
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 sm:mb-18 md:mb-20">
+        <div className="bg-charcoal-900/40 border border-gold-700/20 rounded-xl p-6 sm:p-8 md:p-10">
+          <h2 className="font-serif text-2xl sm:text-3xl text-white font-bold text-center mb-8 sm:mb-10">
+            Payment Examples
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
             {EXAMPLE_PRICES.map((price) => (
               <div
                 key={price}
-                className="bg-charcoal-950 border border-charcoal-800/50 rounded-lg p-5 text-center"
+                className="bg-charcoal-950 border border-charcoal-800/50 hover:border-gold-500/30 rounded-lg p-5 sm:p-6 text-center transition-colors"
               >
-                <p className="text-cream-200/40 text-xs mb-1">Purchase price</p>
-                <p className="text-white font-serif font-bold text-xl mb-3">
+                <p className="text-cream-200/50 text-xs font-medium tracking-wide mb-2 sm:mb-3">Purchase price</p>
+                <p className="text-white font-serif font-bold text-lg sm:text-xl mb-3 sm:mb-4">
                   ${price.toLocaleString()}
                 </p>
-                <p className="text-gold-300 font-serif font-bold text-2xl">
+                <p className="text-gold-300 font-serif font-bold text-xl sm:text-2xl">
                   {formatMonthlyPayment(price)}
-                  <span className="text-sm font-sans font-normal text-cream-200/50">/month</span>
+                  <span className="text-xs sm:text-sm font-sans font-normal text-cream-200/50 ml-1">every 2 weeks</span>
                 </p>
                 <p className="text-cream-200/40 text-xs mt-1">
                   × {FINANCING_TERM_MONTHS} payments · 0% interest
