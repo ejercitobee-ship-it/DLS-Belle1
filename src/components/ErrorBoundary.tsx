@@ -21,6 +21,21 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('[ErrorBoundary]', error, errorInfo);
+
+    // Stale-deploy chunk errors: the old build's hashed chunks are gone after
+    // a redeploy. Reload once to fetch the new build instead of erroring out.
+    const isChunkError =
+      /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(
+        error.message,
+      );
+    if (isChunkError) {
+      const key = 'chunk-reload-at';
+      const last = Number(sessionStorage.getItem(key) || 0);
+      if (Date.now() - last > 10_000) {
+        sessionStorage.setItem(key, String(Date.now()));
+        window.location.reload();
+      }
+    }
   }
 
   render() {

@@ -19,7 +19,7 @@ export default function FinancingCallout({ priceNum }: { priceNum: number }) {
               <span className="text-gold-300 font-bold font-serif text-base sm:text-lg">
                 {formatMonthlyPayment(priceNum)}
               </span>
-              <span className="text-cream-200/70 text-xs sm:text-sm font-normal"> every 2 weeks</span>
+              <span className="text-cream-200/70 text-xs sm:text-sm font-normal">/month</span>
             </p>
             <p className="text-cream-200/60 text-xs mt-1">
               0% interest, {FINANCING_TERM_MONTHS} payments • No hidden fees

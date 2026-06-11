@@ -39,7 +39,7 @@ const faqItems = [
   },
   {
     question: 'How does Shop Pay installment payment work?',
-    answer: 'Shop Pay allows you to split your purchase into 4 equal, interest-free payments made every 2 weeks. No hidden fees, no interest. Qualified buyers are approved instantly at checkout.',
+    answer: 'Shop Pay Installments lets you split your purchase into 4 equal monthly payments. Qualified buyers pay 0% interest with no hidden fees, and approval takes less than a minute at checkout.',
   },
   {
     question: 'Do I need a Shop Pay account?',
@@ -84,7 +84,7 @@ export default function Financing() {
         </h1>
         <p className="text-cream-200/60 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
           Finance any qualifying purchase over ${FINANCING_MIN.toLocaleString()} with Shop Pay Installments.
-          Qualified buyers pay 0% interest — split into {FINANCING_TERM_MONTHS} equal payments, every 2 weeks.
+          Qualified buyers pay 0% interest — split into {FINANCING_TERM_MONTHS} equal monthly payments.
           Approval takes less than a minute at checkout.
         </p>
       </div>
@@ -128,7 +128,7 @@ export default function Financing() {
                 </p>
                 <p className="text-gold-300 font-serif font-bold text-xl sm:text-2xl">
                   {formatMonthlyPayment(price)}
-                  <span className="text-xs sm:text-sm font-sans font-normal text-cream-200/50 ml-1">every 2 weeks</span>
+                  <span className="text-xs sm:text-sm font-sans font-normal text-cream-200/50 ml-1">/month</span>
                 </p>
                 <p className="text-cream-200/40 text-xs mt-1">
                   × {FINANCING_TERM_MONTHS} payments · 0% interest
@@ -139,7 +139,7 @@ export default function Financing() {
           <p className="text-cream-200/30 text-[11px] text-center leading-relaxed mt-6">
             Payment options through Shop Pay Installments are subject to an eligibility check
             and approval, and are provided by Affirm's lending partners.
-            Estimated monthly payments shown are illustrative; your exact terms are confirmed
+            Estimated payments shown are illustrative; your exact terms are confirmed
             at checkout before you commit. Longer-term plans may also be available for larger
             purchases.
           </p>

@@ -20,7 +20,7 @@ export default function FinancingBanner({ className = '', variant = 'full' }: Fi
             </div>
             <div className="min-w-0">
               <p className="font-semibold text-white text-sm">Shop Pay Installments Available</p>
-              <p className="text-cream-200/50 text-xs leading-relaxed">Pay in 4 interest-free payments every 2 weeks</p>
+              <p className="text-cream-200/50 text-xs leading-relaxed">Pay in 4 interest-free monthly payments on qualifying purchases</p>
             </div>
           </div>
           <a
@@ -57,7 +57,7 @@ export default function FinancingBanner({ className = '', variant = 'full' }: Fi
 
             <p className="text-cream-200/70 text-base sm:text-lg leading-relaxed mb-6 sm:mb-7 max-w-sm">
               Finance any qualifying purchase over $1,500 with Shop Pay Installments.
-              Pay in 4 equal, interest-free payments every 2 weeks — no hidden fees, no surprises.
+              Pay in 4 equal, interest-free monthly payments — no hidden fees, no surprises.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -85,17 +85,17 @@ export default function FinancingBanner({ className = '', variant = 'full' }: Fi
             <div className="space-y-3.5">
               <div className="flex justify-between items-baseline gap-4">
                 <span className="text-cream-200/60 text-sm flex-shrink-0">$1,500</span>
-                <span className="font-serif text-gold-300 font-bold text-lg text-right"><span className="text-base">$375</span> <span className="text-xs font-sans text-cream-200/50">every 2 weeks</span></span>
+                <span className="font-serif text-gold-300 font-bold text-lg text-right"><span className="text-base">$375</span> <span className="text-xs font-sans text-cream-200/50">/month</span></span>
               </div>
               <div className="h-px bg-charcoal-800/50" />
               <div className="flex justify-between items-baseline gap-4">
                 <span className="text-cream-200/60 text-sm flex-shrink-0">$4,000</span>
-                <span className="font-serif text-gold-300 font-bold text-lg text-right"><span className="text-base">$1,000</span> <span className="text-xs font-sans text-cream-200/50">every 2 weeks</span></span>
+                <span className="font-serif text-gold-300 font-bold text-lg text-right"><span className="text-base">$1,000</span> <span className="text-xs font-sans text-cream-200/50">/month</span></span>
               </div>
               <div className="h-px bg-charcoal-800/50" />
               <div className="flex justify-between items-baseline gap-4">
                 <span className="text-cream-200/60 text-sm flex-shrink-0">$6,000</span>
-                <span className="font-serif text-gold-300 font-bold text-lg text-right"><span className="text-base">$1,500</span> <span className="text-xs font-sans text-cream-200/50">every 2 weeks</span></span>
+                <span className="font-serif text-gold-300 font-bold text-lg text-right"><span className="text-base">$1,500</span> <span className="text-xs font-sans text-cream-200/50">/month</span></span>
               </div>
             </div>
             <div className="flex flex-wrap gap-2 text-cream-200/50 text-[11px] mt-5 pt-4 border-t border-charcoal-800/50">

@@ -102,7 +102,7 @@ export const generateProductSchema = (product: ProductSchema) => {
             {
               "@type": "PaymentMethod",
               "name": "Shop Pay",
-              "description": "Pay in 4 interest-free installments with Shop Pay — $" + Math.round(product.price / 4) + " every 2 weeks"
+              "description": "Pay in 4 interest-free monthly installments with Shop Pay — as low as $" + Math.round(product.price / 4) + "/month for qualified buyers"
             }
           ]
         })

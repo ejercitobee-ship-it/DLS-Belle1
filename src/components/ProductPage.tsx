@@ -70,7 +70,9 @@ export default function ProductPage({ handle }: { handle: string }) {
 
   // Dynamic meta tags — must be called before any early returns
   const productName = product?.title || staticProduct?.name || 'Humidor';
-  const productPrice = parseFloat(product?.priceRange?.minVariantPrice?.amount ?? staticProduct?.price ?? '0');
+  const productPrice = product
+    ? parseFloat(product.priceRange.minVariantPrice.amount)
+    : staticProduct?.priceNum ?? 0;
   const hasFinancing = qualifiesForFinancing(productPrice);
   const baseDesc = product?.description ?? staticProduct?.description ?? 'Explore luxury humidors and cigar accessories.';
   const metaDesc = hasFinancing
