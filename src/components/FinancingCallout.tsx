@@ -13,11 +13,11 @@ export default function FinancingCallout({ priceNum }: { priceNum: number }) {
       <div className="flex items-center justify-center gap-2 flex-wrap">
         <BadgeCheck size={16} className="text-gold-400 flex-shrink-0" />
         <p className="text-cream-100 text-sm">
-          Finance this for just{' '}
+          Finance this for as low as{' '}
           <span className="text-gold-300 font-bold font-serif text-base">
             {formatMonthlyPayment(priceNum)}/month
           </span>{' '}
-          with Affirm — 0% interest for {FINANCING_TERM_MONTHS} months
+          with Affirm — 0% interest for {FINANCING_TERM_MONTHS} months for qualified buyers
         </p>
       </div>
       <a

@@ -46,8 +46,8 @@ export default function Financing() {
         </h1>
         <p className="text-cream-200/60 text-base leading-relaxed max-w-2xl mx-auto">
           Finance any qualifying purchase over ${FINANCING_MIN.toLocaleString()} with Affirm —
-          0% interest, split into {FINANCING_TERM_MONTHS} monthly payments. Select Affirm at
-          checkout; approval takes less than a minute.
+          qualified buyers pay 0% interest, split into {FINANCING_TERM_MONTHS} monthly payments.
+          Choose "Shop Pay · Pay in installments" at checkout; approval takes less than a minute.
         </p>
       </div>
 

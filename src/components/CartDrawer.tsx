@@ -167,11 +167,11 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-cream-100">
                   <BadgeCheck size={13} className="text-gold-400 flex-shrink-0" />
                   <span>
-                    Your order qualifies for financing:{' '}
+                    Your order qualifies for financing: as low as{' '}
                     <span className="text-gold-300 font-bold">
-                      {formatMonthlyPayment(subtotal)} × {FINANCING_TERM_MONTHS} months
+                      {formatMonthlyPayment(subtotal)}/month × {FINANCING_TERM_MONTHS}
                     </span>{' '}
-                    with Affirm, 0% interest
+                    with Affirm — 0% interest for qualified buyers
                   </span>
                 </div>
                 <a

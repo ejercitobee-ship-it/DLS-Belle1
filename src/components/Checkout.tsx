@@ -95,14 +95,14 @@ export default function Checkout({ onBack }: Props) {
                   <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-cream-100">
                     <BadgeCheck size={13} className="text-gold-400 flex-shrink-0" />
                     <span>
-                      Your order qualifies for financing:{' '}
+                      Your order qualifies for financing: as low as{' '}
                       <span className="text-gold-300 font-bold">
-                        {formatMonthlyPayment(total)} × {FINANCING_TERM_MONTHS} months
+                        {formatMonthlyPayment(total)}/month × {FINANCING_TERM_MONTHS}
                       </span>
                     </span>
                   </div>
                   <p className="text-cream-200/50 text-[11px] mt-1">
-                    0% interest with Affirm — choose "Shop Pay · Pay in installments" at checkout (financing powered by Affirm).{' '}
+                    0% interest for qualified buyers — choose "Shop Pay · Pay in installments" at checkout (financing powered by Affirm).{' '}
                     <a
                       href="/financing"
                       className="text-gold-400 hover:text-gold-300 underline underline-offset-2 transition-colors"
