@@ -3,14 +3,12 @@ import { ChevronDown, Star } from 'lucide-react';
 import { fetchProducts, type ShopifyProduct } from '../lib/shopify';
 
 // Product Recommendations Section - Fetches from Shopify
-export function ProductRecommendations({ 
-  currentProductId, 
-  currentHandle,
-  category 
-}: { 
-  currentProductId?: string; 
+export function ProductRecommendations({
+  currentProductId,
+  currentHandle
+}: {
+  currentProductId?: string;
   currentHandle?: string;
-  category?: string;
 }) {
   const [recommendations, setRecommendations] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -107,7 +105,7 @@ export function ProductRecommendations({
                 <div className="p-4">
                   <div className="flex items-center gap-1 mb-2">
                     <Star size={12} className="text-gold-500 fill-gold-500" />
-                    <span className="text-cream-200/60 text-xs">{product.rating || 4.8}</span>
+                    <span className="text-cream-200/60 text-xs">{(product as ShopifyProduct & { rating?: number }).rating || 4.8}</span>
                   </div>
                   <h3 className="text-white font-medium text-sm mb-2 line-clamp-2 group-hover:text-gold-400 transition-colors">
                     {product.title}

@@ -6,9 +6,6 @@ import {
   CheckCircle2,
   Filter,
   Package,
-  Shield,
-  Truck,
-  Award,
   Phone,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -22,8 +19,7 @@ import {
   CustomerReviews,
   WhyBuyFromUs,
   FAQSection,
-  PaymentMethods,
-  LowStockBadge
+  PaymentMethods
 } from './ConversionElements';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 

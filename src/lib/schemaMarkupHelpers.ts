@@ -46,7 +46,7 @@ export interface ProductSchema {
 
 export type BreadcrumbSchema = ReturnType<typeof generateBreadcrumbSchema>;
 
-export const generateBreadcrumbSchema = (items: BreadcrumbItem[]): BreadcrumbSchema => {
+export const generateBreadcrumbSchema = (items: BreadcrumbItem[]) => {
   if (!Array.isArray(items) || items.length === 0) {
     throw new Error('Breadcrumb items must be a non-empty array');
   }
@@ -69,7 +69,7 @@ export const generateBreadcrumbSchema = (items: BreadcrumbItem[]): BreadcrumbSch
 
 export type ProductSchemaType = ReturnType<typeof generateProductSchema>;
 
-export const generateProductSchema = (product: ProductSchema): ProductSchemaType => {
+export const generateProductSchema = (product: ProductSchema) => {
   if (!product.name || !product.description || !product.image || !product.url) {
     throw new Error('Product schema requires name, description, image, and url');
   }
@@ -102,7 +102,7 @@ export const generateProductSchema = (product: ProductSchema): ProductSchemaType
 
 export type OrganizationSchemaType = ReturnType<typeof generateOrganizationSchema>;
 
-export const generateOrganizationSchema = (): OrganizationSchemaType => ({
+export const generateOrganizationSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Dunn's Luxury Selections",

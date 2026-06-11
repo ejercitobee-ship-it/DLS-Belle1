@@ -95,13 +95,15 @@ export default function ProductPage({ handle }: { handle: string }) {
       if (typeof window !== 'undefined' && (window as any).gtag) {
         const itemData = product || staticProduct;
         if (itemData) {
+          const priceStr = 'price' in itemData ? itemData.price : undefined;
+          const priceNum = priceStr ? parseFloat(priceStr.replace(/[^0-9.]/g, '')) : 0;
           (window as any).gtag('event', 'view_item', {
             currency: 'USD',
-            value: itemData.price ? parseFloat(itemData.price.replace(/[^0-9.]/g, '')) : 0,
+            value: priceNum,
             items: [{
               item_id: itemData.id || handle,
-              item_name: itemData.name || itemData.title,
-              price: itemData.price ? parseFloat(itemData.price.replace(/[^0-9.]/g, '')) : 0,
+              item_name: 'name' in itemData ? itemData.name : itemData.title,
+              price: priceNum,
             }],
           });
         }
