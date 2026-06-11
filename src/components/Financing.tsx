@@ -10,7 +10,7 @@ const steps = [
   {
     icon: CreditCard,
     title: 'Add to Cart & Check Out',
-    desc: 'Shop as usual. When you reach our secure Shopify checkout, select Affirm as your payment method.',
+    desc: 'Shop as usual. At our secure Shopify checkout, choose "Shop Pay · Pay in installments" — financing is powered by Affirm.',
   },
   {
     icon: BadgeCheck,

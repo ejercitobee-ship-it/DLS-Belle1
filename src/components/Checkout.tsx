@@ -102,7 +102,7 @@ export default function Checkout({ onBack }: Props) {
                     </span>
                   </div>
                   <p className="text-cream-200/50 text-[11px] mt-1">
-                    0% interest with Affirm — select Affirm as your payment method at checkout.{' '}
+                    0% interest with Affirm — choose "Shop Pay · Pay in installments" at checkout (financing powered by Affirm).{' '}
                     <a
                       href="/financing"
                       className="text-gold-400 hover:text-gold-300 underline underline-offset-2 transition-colors"
