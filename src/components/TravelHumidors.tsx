@@ -7,6 +7,7 @@ import BreadcrumbSchema from './BreadcrumbSchema';
 import SchemaMarkup from './SchemaMarkup';
 import { generateOrganizationSchema, generateProductSchema } from '../lib/schemaMarkupHelpers';
 import { getRelatedLinks } from '../lib/internalLinkMap';
+import FinancingBanner from './FinancingBanner';
 import {
   CustomerReviews,
   WhyBuyFromUs,
@@ -238,6 +239,9 @@ export default function TravelHumidors() {
           </div>
         </div>
       </div>
+
+      {/* Financing Banner */}
+      <FinancingBanner variant="compact" className="my-12" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
 

@@ -14,6 +14,7 @@ import CartDrawer from './components/CartDrawer';
 import ErrorBoundary from './components/ErrorBoundary';
 import LeadPopup from './components/LeadPopup';
 import StickyCartBar from './components/StickyCartBar';
+import FinancingBanner from './components/FinancingBanner';
 import { CartProvider, useCart } from './context/CartContext';
 import { usePageMeta } from './hooks/usePageMeta';
 
@@ -223,6 +224,7 @@ function PageContent({ page }: { page: Page }) {
   return (
     <>
       <Hero />
+      <FinancingBanner />
       <Collections />
       <ElectronicHumidorsSection />
       <Bespoke />

@@ -12,6 +12,7 @@ import {
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
+import FinancingBanner from './FinancingBanner';
 
 type Category = 'All' | 'Grand Cabinets' | 'Desktop' | 'Travel';
 
@@ -531,6 +532,9 @@ export default function NewArrivals() {
           </div>
         </div>
       </div>
+
+      {/* Financing Banner */}
+      <FinancingBanner variant="compact" className="my-12" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
 

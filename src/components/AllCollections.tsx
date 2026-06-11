@@ -18,6 +18,7 @@ import { getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollect
 import BreadcrumbSchema from './BreadcrumbSchema';
 import SchemaMarkup from './SchemaMarkup';
 import { generateOrganizationSchema } from '../lib/schemaMarkupHelpers';
+import FinancingBanner from './FinancingBanner';
 import { getCollectionLinks } from '../lib/internalLinkMap';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -365,6 +366,9 @@ export default function AllCollections() {
           ))}
         </div>
       </section>
+
+      {/* Financing Banner */}
+      <FinancingBanner variant="compact" className="my-12" />
 
       {/* ── Filter bar + count ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-2">
