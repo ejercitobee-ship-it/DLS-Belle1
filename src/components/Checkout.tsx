@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { ArrowLeft, Lock, ShieldCheck, Truck, ExternalLink, ShoppingBag, AlertCircle, Minus, Plus, Trash2, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Lock, ShieldCheck, Truck, ExternalLink, ShoppingBag, AlertCircle, Minus, Plus, Trash2, MessageCircle, BadgeCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { qualifiesForFinancing, formatMonthlyPayment, FINANCING_TERM_MONTHS } from '../lib/financing';
 
 type Props = { onBack: () => void };
 
@@ -84,9 +85,33 @@ export default function Checkout({ onBack }: Props) {
                 <ShieldCheck size={16} className="text-gold-500" />
                 <span className="text-white text-sm font-semibold">Secure Shopify Checkout</span>
               </div>
-              <p className="text-cream-200/50 text-xs leading-relaxed mb-5">
-                You'll be taken to the official Dunn's Luxury Selections Shopify store to complete your purchase securely — credit card, PayPal, Apple Pay, and more accepted.
+              <p className="text-cream-200/50 text-xs leading-relaxed mb-4">
+                You'll be taken to the official Dunn's Luxury Selections Shopify store to complete your purchase securely — Affirm financing, credit card, PayPal, Apple Pay, and more accepted.
               </p>
+
+              {/* Financing qualification */}
+              {qualifiesForFinancing(total) && (
+                <div className="bg-gold-600/15 border border-gold-500/40 rounded-lg px-3.5 py-3 mb-4 text-center">
+                  <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-cream-100">
+                    <BadgeCheck size={13} className="text-gold-400 flex-shrink-0" />
+                    <span>
+                      Your order qualifies for financing:{' '}
+                      <span className="text-gold-300 font-bold">
+                        {formatMonthlyPayment(total)} × {FINANCING_TERM_MONTHS} months
+                      </span>
+                    </span>
+                  </div>
+                  <p className="text-cream-200/50 text-[11px] mt-1">
+                    0% interest with Affirm — select Affirm as your payment method at checkout.{' '}
+                    <a
+                      href="/financing"
+                      className="text-gold-400 hover:text-gold-300 underline underline-offset-2 transition-colors"
+                    >
+                      Learn more
+                    </a>
+                  </p>
+                </div>
+              )}
 
               <button
                 onClick={handleCheckout}
@@ -109,7 +134,7 @@ export default function Checkout({ onBack }: Props) {
 
               {/* Payment method icons */}
               <div className="flex items-center justify-center gap-2 mt-3 flex-wrap">
-                {['Visa', 'MC', 'Amex', 'PayPal', 'Apple Pay', 'Google Pay'].map((m) => (
+                {['Affirm', 'Visa', 'MC', 'Amex', 'PayPal', 'Apple Pay', 'Google Pay'].map((m) => (
                   <span key={m} className="text-[10px] text-cream-200/30 bg-charcoal-800/60 border border-charcoal-700/30 px-2 py-1 rounded font-medium">
                     {m}
                   </span>

@@ -229,6 +229,8 @@ export function PaymentMethods() {
         <span>Secure Payment:</span>
       </div>
       <div className="flex items-center gap-3">
+        {/* Affirm */}
+        <div className="h-6 px-2 bg-white rounded flex items-center justify-center text-indigo-900 font-bold text-[9px]">affirm</div>
         {/* Visa */}
         <div className="w-10 h-6 bg-white rounded flex items-center justify-center text-blue-900 font-bold text-xs">VISA</div>
         {/* Mastercard */}

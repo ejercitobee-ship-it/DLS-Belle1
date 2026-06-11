@@ -14,6 +14,7 @@ const infoLinks = [
   { label: 'Bespoke Walk-In Humidors', href: '#walk-in-humidor' },
   { label: 'Delivery Information', href: '#delivery-info' },
   { label: 'Returns & Warranty', href: '#returns-warranty' },
+  { label: 'Financing', href: '/financing' },
   { label: 'Care Guides', href: '#care-guides' },
   { label: 'Contact Us', href: '#contact' },
 ];

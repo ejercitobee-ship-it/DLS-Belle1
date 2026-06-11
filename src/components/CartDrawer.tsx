@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { X, ShoppingBag, Minus, Plus, Trash2, Package, Lock, AlertCircle } from 'lucide-react';
+import { X, ShoppingBag, Minus, Plus, Trash2, Package, Lock, AlertCircle, BadgeCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { qualifiesForFinancing, formatMonthlyPayment, FINANCING_TERM_MONTHS } from '../lib/financing';
 
 type Props = {
   onCheckout: () => void;
@@ -160,6 +161,29 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               </div>
             </div>
 
+            {/* Financing reminder */}
+            {qualifiesForFinancing(subtotal) && (
+              <div className="bg-gold-600/15 border border-gold-500/40 rounded-lg px-3 py-2.5 text-center">
+                <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-cream-100">
+                  <BadgeCheck size={13} className="text-gold-400 flex-shrink-0" />
+                  <span>
+                    Your order qualifies for financing:{' '}
+                    <span className="text-gold-300 font-bold">
+                      {formatMonthlyPayment(subtotal)} × {FINANCING_TERM_MONTHS} months
+                    </span>{' '}
+                    with Affirm, 0% interest
+                  </span>
+                </div>
+                <a
+                  href="/financing"
+                  onClick={closeCart}
+                  className="inline-block mt-1 text-gold-400 hover:text-gold-300 text-[11px] underline underline-offset-2 transition-colors"
+                >
+                  Learn more
+                </a>
+              </div>
+            )}
+
             {/* Checkout CTA */}
             <button
               onClick={async () => {
@@ -222,7 +246,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             <div className="space-y-3 pt-2">
               {/* Payment methods */}
               <div className="flex items-center justify-center gap-2 flex-wrap">
-                {['Visa', 'Mastercard', 'Amex', 'PayPal'].map((m) => (
+                {['Affirm', 'Visa', 'Mastercard', 'Amex', 'PayPal'].map((m) => (
                   <span key={m} className="text-[10px] text-cream-200/40 bg-charcoal-800/60 border border-charcoal-700/30 px-2 py-1 rounded font-medium">
                     {m}
                   </span>
@@ -238,7 +262,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                   <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span>30-day money-back guarantee</span>
+                  <span>10-day hassle-free returns</span>
                 </div>
                 <div className="flex items-center justify-center gap-1.5 text-[10px] text-cream-200/50">
                   <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
