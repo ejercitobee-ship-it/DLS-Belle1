@@ -8,8 +8,6 @@ import {
   ZoomIn,
   X,
   Truck,
-  ShieldCheck,
-  RotateCcw,
   Phone,
   Shield,
   Award,
@@ -24,6 +22,10 @@ import { usePageMeta } from '../hooks/usePageMeta';
 import { PaymentMethods } from './ConversionElements';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 import { ProductRecommendations, ProductFAQ } from './ProductSections';
+import FinancingCallout from './FinancingCallout';
+import ProductSpecifications from './ProductSpecifications';
+import { ShopWithConfidence, ReviewCallout } from './TrustBadges';
+import { getProductSpecs } from '../lib/productSpecs';
 import BreadcrumbSchema from './BreadcrumbSchema';
 import SchemaMarkup from './SchemaMarkup';
 import LazyImage from './LazyImage';
@@ -47,20 +49,6 @@ function Stars({ rating }: { rating: number }) {
           }
         />
       ))}
-    </div>
-  );
-}
-
-function TrustBadge({ icon: Icon, title, subtitle }: { icon: typeof Truck; title: string; subtitle: string }) {
-  return (
-    <div className="flex items-start gap-3">
-      <div className="w-9 h-9 rounded-full bg-charcoal-900 border border-charcoal-700/50 flex items-center justify-center flex-shrink-0">
-        <Icon size={15} className="text-gold-500" />
-      </div>
-      <div>
-        <p className="text-cream-100 text-xs font-semibold">{title}</p>
-        <p className="text-cream-200/40 text-[11px]">{subtitle}</p>
-      </div>
     </div>
   );
 }
@@ -107,13 +95,15 @@ export default function ProductPage({ handle }: { handle: string }) {
       if (typeof window !== 'undefined' && (window as any).gtag) {
         const itemData = product || staticProduct;
         if (itemData) {
+          const priceStr = 'price' in itemData ? itemData.price : undefined;
+          const priceNum = priceStr ? parseFloat(priceStr.replace(/[^0-9.]/g, '')) : 0;
           (window as any).gtag('event', 'view_item', {
             currency: 'USD',
-            value: itemData.price ? parseFloat(itemData.price.replace(/[^0-9.]/g, '')) : 0,
+            value: priceNum,
             items: [{
               item_id: itemData.id || handle,
-              item_name: itemData.name || itemData.title,
-              price: itemData.price ? parseFloat(itemData.price.replace(/[^0-9.]/g, '')) : 0,
+              item_name: 'name' in itemData ? itemData.name : itemData.title,
+              price: priceNum,
             }],
           });
         }
@@ -367,6 +357,11 @@ export default function ProductPage({ handle }: { handle: string }) {
               )}
             </div>
 
+            {/* Financing */}
+            <FinancingCallout
+              priceNum={parseFloat(variant?.price.amount ?? prod.priceRange.minVariantPrice.amount)}
+            />
+
             {/* Variants */}
             {prod.variants.length > 1 && (
               <div className="mb-6">
@@ -399,17 +394,20 @@ export default function ProductPage({ handle }: { handle: string }) {
               </div>
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
-                <span>1-year warranty included</span>
+                <span>Manufacturer warranty included</span>
               </div>
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
-                <span>30-day money back guarantee</span>
+                <span>10-day hassle-free returns</span>
               </div>
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
                 <span>White glove delivery included</span>
               </div>
             </div>
+
+            {/* Specifications */}
+            <ProductSpecifications specs={getProductSpecs(handle, prod.productType)} />
 
             {/* Add to Cart */}
             <div className="mb-6">
@@ -451,12 +449,8 @@ export default function ProductPage({ handle }: { handle: string }) {
               </button>
             </div>
 
-            {/* Trust Badges */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-charcoal-800/50">
-              <TrustBadge icon={Truck} title="Free Shipping" subtitle="On select orders" />
-              <TrustBadge icon={ShieldCheck} title="Manufacturing Warranty" subtitle="Full coverage" />
-              <TrustBadge icon={RotateCcw} title="10-Day Returns" subtitle="Hassle-free" />
-            </div>
+            {/* Shop with Confidence */}
+            <ShopWithConfidence />
           </div>
         </div>
       </div>
@@ -576,6 +570,9 @@ export default function ProductPage({ handle }: { handle: string }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         <PaymentMethods />
       </div>
+
+      {/* Review Callout */}
+      <ReviewCallout productName={prod.title} />
 
       {/* Product FAQ */}
       <ProductFAQ />
@@ -721,9 +718,17 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
               <span className="text-3xl font-bold text-white font-serif">{product.price}</span>
             </div>
 
+            {/* Financing */}
+            <FinancingCallout priceNum={product.priceNum} />
+
             <div className="mb-6">
               <p className="text-cream-200/60 leading-relaxed text-sm">{product.description}</p>
             </div>
+
+            {/* Specifications */}
+            <ProductSpecifications
+              specs={product.specs ?? getProductSpecs(product.handle, product.category)}
+            />
 
             <div className="mb-8">
               <button
@@ -748,11 +753,8 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-charcoal-800/50">
-              <TrustBadge icon={Truck} title="Free Shipping" subtitle="On select orders" />
-              <TrustBadge icon={ShieldCheck} title="Manufacturing Warranty" subtitle="Full coverage" />
-              <TrustBadge icon={RotateCcw} title="10-Day Returns" subtitle="Hassle-free" />
-            </div>
+            {/* Shop with Confidence */}
+            <ShopWithConfidence />
           </div>
         </div>
       </div>
@@ -760,37 +762,17 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
       {/* Details */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
         <div className="border-t border-charcoal-800/50 pt-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2">
-              <h2 className="font-serif text-2xl text-white font-bold mb-6">Product Details</h2>
-              {product.features.length > 0 && (
-                <ul className="space-y-3">
-                  {product.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-sm text-cream-200/65">
-                      <CheckCircle2 size={14} className="text-gold-500 flex-shrink-0 mt-0.5" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <div className="space-y-8">
-              {product.specs && (
-                <div>
-                  <h3 className="text-white text-xs font-semibold tracking-[0.3em] uppercase mb-4">Specifications</h3>
-                  <div className="space-y-2 text-sm">
-                    {Object.entries(product.specs).map(([key, value]) => (
-                      <div key={key} className="flex justify-between">
-                        <span className="text-cream-200/40 capitalize">{key}</span>
-                        <span className="text-cream-100 text-right max-w-[60%]">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          <h2 className="font-serif text-2xl text-white font-bold mb-6">Product Details</h2>
+          {product.features.length > 0 && (
+            <ul className="space-y-3 max-w-3xl">
+              {product.features.map((f) => (
+                <li key={f} className="flex items-start gap-3 text-sm text-cream-200/65">
+                  <CheckCircle2 size={14} className="text-gold-500 flex-shrink-0 mt-0.5" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 
@@ -842,6 +824,9 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
 
       {/* Product Recommendations */}
       <ProductRecommendations currentProductId={product.id} currentHandle={product.handle} />
+
+      {/* Review Callout */}
+      <ReviewCallout productName={product.name} />
 
       {/* Product FAQ */}
       <ProductFAQ />

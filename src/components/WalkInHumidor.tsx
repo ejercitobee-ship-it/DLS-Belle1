@@ -555,7 +555,6 @@ export default function WalkInHumidor() {
                   <input
                     type="text"
                     placeholder="Full Name"
-                    value={formData.name}
                     {...field('name')}
                     className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-3 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
                   />
@@ -564,7 +563,6 @@ export default function WalkInHumidor() {
                   <input
                     type="email"
                     placeholder="Email Address"
-                    value={formData.email}
                     {...field('email')}
                     className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-3 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
                   />
@@ -573,7 +571,6 @@ export default function WalkInHumidor() {
                   <input
                     type="tel"
                     placeholder="Phone Number"
-                    value={formData.phone}
                     {...field('phone')}
                     className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-3 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
                   />

@@ -265,7 +265,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Hook into beforeunload for cart abandonment
   useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    const handleBeforeUnload = (_e: BeforeUnloadEvent) => {
       // Only trigger if there are items in cart and user hasn't completed checkout
       if (items.length > 0 && !cartAbandonmentTriggered.current) {
         // Try to get email from sessionStorage (if user entered it in popup)

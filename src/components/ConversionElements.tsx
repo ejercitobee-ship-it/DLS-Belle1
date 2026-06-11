@@ -187,7 +187,7 @@ export function FAQSection() {
     },
     {
       question: "Do you offer financing options?",
-      answer: "Yes, we offer flexible financing through Affirm and Shop Pay. Contact us at " + PHONE_NUMBER + " for more details."
+      answer: "Yes, we offer flexible financing through Shop Pay Installments — choose \"Shop Pay · Pay in installments\" at checkout. Contact us at " + PHONE_NUMBER + " for more details."
     },
   ];
 
@@ -229,6 +229,8 @@ export function PaymentMethods() {
         <span>Secure Payment:</span>
       </div>
       <div className="flex items-center gap-3">
+        {/* Shop Pay */}
+        <div className="h-6 px-2 bg-white rounded flex items-center justify-center text-indigo-700 font-bold text-[8px]">Shop&nbsp;Pay</div>
         {/* Visa */}
         <div className="w-10 h-6 bg-white rounded flex items-center justify-center text-blue-900 font-bold text-xs">VISA</div>
         {/* Mastercard */}

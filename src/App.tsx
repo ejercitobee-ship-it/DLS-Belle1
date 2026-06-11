@@ -38,6 +38,7 @@ const AllCollections = lazy(() => import('./components/AllCollections'));
 const Journal = lazy(() => import('./components/Journal'));
 const ArticlePage = lazy(() => import('./components/ArticlePage'));
 const ProductPage = lazy(() => import('./components/ProductPage'));
+const Financing = lazy(() => import('./components/Financing'));
 
 type Page =
   | 'home'
@@ -61,7 +62,8 @@ type Page =
   | 'all-collections'
   | 'journal'
   | 'article'
-  | 'product';
+  | 'product'
+  | 'financing';
 
 const PATH_TO_PAGE: Record<string, Page> = {
   '/': 'home',
@@ -103,6 +105,8 @@ const PATH_TO_PAGE: Record<string, Page> = {
   '/collections/': 'all-collections',
   '/journal': 'journal',
   '/journal/': 'journal',
+  '/financing': 'financing',
+  '/financing/': 'financing',
   '/checkout': 'checkout',
   '/checkout/': 'checkout',
   '/order-confirmation': 'order-confirmation',
@@ -204,6 +208,7 @@ function PageContent({ page }: { page: Page }) {
   if (page === 'about') return <About />;
   if (page === 'all-collections') return <AllCollections />;
   if (page === 'journal') return <Journal />;
+  if (page === 'financing') return <Financing />;
   if (page === 'article') {
     const { blogHandle, articleHandle } = getArticleHandles();
     return <ArticlePage blogHandle={blogHandle} articleHandle={articleHandle} />;
@@ -325,6 +330,13 @@ function AppInner() {
           description:
             'Expert guides, care tips, and stories from the world of luxury cigar storage.',
           canonicalPath: '/journal',
+        }
+      : displayPage === 'financing'
+      ? {
+          title: 'Financing | Dunn\'s Luxury Selections',
+          description:
+            'Finance your luxury humidor with Shop Pay Installments — 0% interest for qualified buyers, 4 monthly payments on qualifying purchases over $1,500.',
+          canonicalPath: '/financing',
         }
       : displayPage === 'article'
       ? {
