@@ -306,32 +306,30 @@ export default function CabinetHumidors() {
       </div>
 
       {/* Hero */}
-      <div className="relative h-64 md:h-80 overflow-hidden">
+      <div className="relative min-h-[16rem] md:min-h-[20rem] overflow-hidden flex items-center">
         <img
           src={heroImage}
           alt="Cabinet Humidors"
-          className="w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/70 to-charcoal-950/30" />
-        <div className="absolute inset-0 flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="h-px w-8 bg-gold-500" />
-              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Collection</span>
-            </div>
-            <h1 className="font-serif text-5xl md:text-6xl text-white font-bold">
-              Cabinet <span className="text-gradient-gold italic">Humidors</span>
-            </h1>
-            <p className="text-cream-200/60 mt-2 max-w-xl">
-              Floor-standing masterpieces from 600 to 4,000+ cigars — classic cedar cabinets, dual-zone wine &amp; cigar pairings, and precision smart-climate systems.
-            </p>
-            <div className="mt-4 flex items-center gap-4">
-              <a href={PHONE_HREF} className="inline-flex items-center gap-2 text-gold-400 hover:text-gold-300 transition-colors">
-                <Phone size={16} />
-                <span className="text-sm font-medium">{PHONE_NUMBER}</span>
-              </a>
-            </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 md:py-12">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="h-px w-8 bg-gold-500" />
+            <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Collection</span>
+          </div>
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-white font-bold drop-shadow-md">
+            Cabinet <span className="text-gradient-gold italic">Humidors</span>
+          </h1>
+          <p className="text-cream-200/60 mt-2 max-w-xl drop-shadow-sm">
+            Floor-standing masterpieces from 600 to 4,000+ cigars — classic cedar cabinets, dual-zone wine &amp; cigar pairings, and precision smart-climate systems.
+          </p>
+          <div className="mt-4 flex items-center gap-4">
+            <a href={PHONE_HREF} className="inline-flex items-center gap-2 py-1 text-gold-400 hover:text-gold-300 transition-colors drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+              <Phone size={16} />
+              <span className="text-sm font-medium">{PHONE_NUMBER}</span>
+            </a>
           </div>
         </div>
       </div>

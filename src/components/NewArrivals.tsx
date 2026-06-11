@@ -500,7 +500,7 @@ export default function NewArrivals() {
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
       {/* Hero */}
-      <div className="relative h-64 md:h-80 overflow-hidden bg-charcoal-900">
+      <div className="relative min-h-[16rem] md:min-h-[20rem] overflow-hidden bg-charcoal-900 flex items-center">
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/70 to-charcoal-950/20" />
 
         {/* Animated sparkle accent */}
@@ -516,20 +516,18 @@ export default function NewArrivals() {
           </div>
         </div>
 
-        <div className="absolute inset-0 flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="h-px w-8 bg-gold-500" />
-              <Sparkles size={12} className="text-gold-400" />
-              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Just In</span>
-            </div>
-            <h1 className="font-serif text-4xl md:text-5xl text-white font-bold">
-              New <span className="text-gradient-gold italic">Arrivals</span>
-            </h1>
-            <p className="text-cream-200/60 mt-2 max-w-xl">
-              The latest additions to our collection — grand estate cabinets, precision desktop humidors, and travel companions, all arriving fresh to the catalogue.
-            </p>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 md:py-12">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="h-px w-8 bg-gold-500" />
+            <Sparkles size={12} className="text-gold-400" />
+            <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Just In</span>
           </div>
+          <h1 className="font-serif text-4xl md:text-5xl text-white font-bold drop-shadow-md">
+            New <span className="text-gradient-gold italic">Arrivals</span>
+          </h1>
+          <p className="text-cream-200/60 mt-2 max-w-xl drop-shadow-sm">
+            The latest additions to our collection — grand estate cabinets, precision desktop humidors, and travel companions, all arriving fresh to the catalogue.
+          </p>
         </div>
       </div>
 
