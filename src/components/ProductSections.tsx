@@ -149,7 +149,7 @@ export function ProductFAQ() {
     },
     {
       question: "Do you offer financing options?",
-      answer: "Yes, we offer flexible financing through Affirm and Shop Pay for qualified buyers. You can select these options at checkout or contact us at (888) 431-9214 for more details."
+      answer: "Yes, we offer flexible financing through Shop Pay Installments for qualified buyers. Choose \"Shop Pay · Pay in installments\" at checkout, or contact us at (888) 431-9214 for more details."
     },
     {
       question: "How do I maintain my humidor?",

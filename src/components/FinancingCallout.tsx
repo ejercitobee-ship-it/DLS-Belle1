@@ -17,7 +17,7 @@ export default function FinancingCallout({ priceNum }: { priceNum: number }) {
           <span className="text-gold-300 font-bold font-serif text-base">
             {formatMonthlyPayment(priceNum)}/month
           </span>{' '}
-          with Affirm — 0% interest for {FINANCING_TERM_MONTHS} months for qualified buyers
+          with Shop Pay — 0% interest for {FINANCING_TERM_MONTHS} months for qualified buyers
         </p>
       </div>
       <a

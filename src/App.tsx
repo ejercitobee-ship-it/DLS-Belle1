@@ -335,7 +335,7 @@ function AppInner() {
       ? {
           title: 'Financing | Dunn\'s Luxury Selections',
           description:
-            'Finance your luxury humidor with Affirm — 0% interest, 4 monthly payments on qualifying purchases over $1,500.',
+            'Finance your luxury humidor with Shop Pay Installments — 0% interest for qualified buyers, 4 monthly payments on qualifying purchases over $1,500.',
           canonicalPath: '/financing',
         }
       : displayPage === 'article'

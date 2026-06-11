@@ -10,7 +10,7 @@ const steps = [
   {
     icon: CreditCard,
     title: 'Add to Cart & Check Out',
-    desc: 'Shop as usual. At our secure Shopify checkout, choose "Shop Pay · Pay in installments" — financing is powered by Affirm.',
+    desc: 'Shop as usual. At our secure Shopify checkout, choose "Shop Pay · Pay in installments" as your payment method.',
   },
   {
     icon: BadgeCheck,
@@ -45,7 +45,7 @@ export default function Financing() {
           Own It Now. <span className="text-gradient-gold italic">Pay Over Time.</span>
         </h1>
         <p className="text-cream-200/60 text-base leading-relaxed max-w-2xl mx-auto">
-          Finance any qualifying purchase over ${FINANCING_MIN.toLocaleString()} with Affirm —
+          Finance any qualifying purchase over ${FINANCING_MIN.toLocaleString()} with Shop Pay —
           qualified buyers pay 0% interest, split into {FINANCING_TERM_MONTHS} monthly payments.
           Choose "Shop Pay · Pay in installments" at checkout; approval takes less than a minute.
         </p>
@@ -96,7 +96,8 @@ export default function Financing() {
             ))}
           </div>
           <p className="text-cream-200/30 text-[11px] text-center leading-relaxed mt-6">
-            Payment options through Affirm are subject to an eligibility check and approval.
+            Payment options through Shop Pay Installments are subject to an eligibility check
+            and approval, and are provided by Affirm's lending partners.
             Estimated monthly payments shown are illustrative; your exact terms are confirmed
             at checkout before you commit. Longer-term plans may also be available for larger
             purchases.

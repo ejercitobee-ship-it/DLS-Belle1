@@ -171,7 +171,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                     <span className="text-gold-300 font-bold">
                       {formatMonthlyPayment(subtotal)}/month × {FINANCING_TERM_MONTHS}
                     </span>{' '}
-                    with Affirm — 0% interest for qualified buyers
+                    with Shop Pay — 0% interest for qualified buyers
                   </span>
                 </div>
                 <a
@@ -246,7 +246,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             <div className="space-y-3 pt-2">
               {/* Payment methods */}
               <div className="flex items-center justify-center gap-2 flex-wrap">
-                {['Affirm', 'Visa', 'Mastercard', 'Amex', 'PayPal'].map((m) => (
+                {['Shop Pay', 'Visa', 'Mastercard', 'Amex', 'PayPal'].map((m) => (
                   <span key={m} className="text-[10px] text-cream-200/40 bg-charcoal-800/60 border border-charcoal-700/30 px-2 py-1 rounded font-medium">
                     {m}
                   </span>

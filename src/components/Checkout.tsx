@@ -86,7 +86,7 @@ export default function Checkout({ onBack }: Props) {
                 <span className="text-white text-sm font-semibold">Secure Shopify Checkout</span>
               </div>
               <p className="text-cream-200/50 text-xs leading-relaxed mb-4">
-                You'll be taken to the official Dunn's Luxury Selections Shopify store to complete your purchase securely — Affirm financing, credit card, PayPal, Apple Pay, and more accepted.
+                You'll be taken to the official Dunn's Luxury Selections Shopify store to complete your purchase securely — Shop Pay installments, credit card, PayPal, Apple Pay, and more accepted.
               </p>
 
               {/* Financing qualification */}
@@ -102,7 +102,7 @@ export default function Checkout({ onBack }: Props) {
                     </span>
                   </div>
                   <p className="text-cream-200/50 text-[11px] mt-1">
-                    0% interest for qualified buyers — choose "Shop Pay · Pay in installments" at checkout (financing powered by Affirm).{' '}
+                    0% interest for qualified buyers — choose "Shop Pay · Pay in installments" at checkout.{' '}
                     <a
                       href="/financing"
                       className="text-gold-400 hover:text-gold-300 underline underline-offset-2 transition-colors"
@@ -134,7 +134,7 @@ export default function Checkout({ onBack }: Props) {
 
               {/* Payment method icons */}
               <div className="flex items-center justify-center gap-2 mt-3 flex-wrap">
-                {['Affirm', 'Visa', 'MC', 'Amex', 'PayPal', 'Apple Pay', 'Google Pay'].map((m) => (
+                {['Shop Pay', 'Visa', 'MC', 'Amex', 'PayPal', 'Apple Pay', 'Google Pay'].map((m) => (
                   <span key={m} className="text-[10px] text-cream-200/30 bg-charcoal-800/60 border border-charcoal-700/30 px-2 py-1 rounded font-medium">
                     {m}
                   </span>
