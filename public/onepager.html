@@ -144,6 +144,58 @@
     .step h3 { font-size: 14px; color: #fff; font-weight: 600; margin: 2px 0 4px; }
     .step p { font-size: 13px; color: rgba(248, 240, 224, 0.55); }
 
+    /* ── Forms ── */
+    .form-card {
+      margin-top: 44px; padding: 32px 26px;
+      background: rgba(61, 54, 52, 0.35); border: 1px solid rgba(125, 80, 14, 0.3);
+      border-radius: 12px;
+    }
+    .form-card h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(20px, 3vw, 26px); color: #fff; font-weight: 700; margin-bottom: 6px;
+    }
+    .form-card > p { font-size: 13.5px; color: rgba(248, 240, 224, 0.55); margin-bottom: 24px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .form-grid .third { grid-column: span 1; }
+    @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } .form-grid .third { grid-column: 1 / -1; } }
+    .fld label {
+      display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(248, 240, 224, 0.55); margin-bottom: 6px;
+    }
+    .fld label b { color: var(--gold-400); font-weight: 500; }
+    .fld input, .fld select, .fld textarea {
+      width: 100%; padding: 12px 14px; border-radius: 6px;
+      background: var(--charcoal-950); border: 1px solid rgba(83, 72, 68, 0.8);
+      color: var(--cream-100); font-family: 'Inter', sans-serif; font-size: 14px;
+      transition: border-color .2s; outline: none;
+    }
+    .fld input:focus, .fld select:focus, .fld textarea:focus { border-color: var(--gold-500); }
+    .fld select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c98a10' fill='none' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+    .fld textarea { min-height: 96px; resize: vertical; }
+    .checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px 14px; }
+    .checks label {
+      display: flex; align-items: center; gap: 8px; font-size: 13px;
+      color: rgba(248, 240, 224, 0.7); text-transform: none; letter-spacing: 0; cursor: pointer;
+    }
+    .checks input { width: auto; accent-color: var(--gold-500); }
+    .form-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
+    .form-foot button {
+      border: none; cursor: pointer; padding: 15px 32px; border-radius: 6px;
+      background: linear-gradient(110deg, var(--gold-300), var(--gold-400) 55%, var(--gold-500));
+      color: var(--charcoal-950); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; transition: opacity .2s, transform .1s;
+    }
+    .form-foot button:hover { opacity: 0.9; }
+    .form-foot button:disabled { opacity: 0.5; cursor: wait; }
+    .form-msg { font-size: 13px; }
+    .form-msg.err { color: #e08585; }
+    .form-success { text-align: center; padding: 28px 10px; }
+    .form-success .tick { font-size: 30px; color: var(--gold-300); }
+    .form-success h4 { font-family: 'Playfair Display', serif; color: #fff; font-size: 20px; margin: 8px 0 6px; }
+    .form-success p { color: rgba(248, 240, 224, 0.6); font-size: 14px; }
+    .hp { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden; }
+
     /* ── CTA ── */
     .cta {
       text-align: center; margin: 64px auto 0; padding: 52px 24px;
@@ -241,6 +293,34 @@
         <div class="step"><span class="num">03</span><h3>Workshop Crafting</h3><p>Every component manufactured to measure from premium materials.</p></div>
         <div class="step"><span class="num">04</span><h3>Install &amp; Commission</h3><p>Delivery, installation, sealing, calibration, and final handover.</p></div>
       </div>
+
+      <div class="form-card">
+        <h3>Start Your Custom Walk-In Humidor Project</h3>
+        <p>Tell us about your space — we'll prepare a design concept and a tailored quotation.</p>
+        <form class="inquiry-form form-grid" data-form-type="walkin" novalidate>
+          <div class="fld"><label>First name <b>*</b></label><input name="firstName" required autocomplete="given-name"></div>
+          <div class="fld"><label>Last name</label><input name="lastName" autocomplete="family-name"></div>
+          <div class="fld"><label>Email <b>*</b></label><input name="email" type="email" required autocomplete="email"></div>
+          <div class="fld"><label>Phone</label><input name="phone" type="tel" autocomplete="tel"></div>
+          <div class="fld"><label>Company (optional)</label><input name="company" autocomplete="organization"></div>
+          <div class="fld"><label>City &amp; State</label><input name="location" placeholder="e.g. Chicago, IL"></div>
+          <div class="fld"><label>Space type</label>
+            <select name="spaceType">
+              <option value="">Select…</option>
+              <option>Private residence</option>
+              <option>Cigar lounge</option>
+              <option>Retail / tobacconist</option>
+              <option>Hotel / restaurant</option>
+              <option>Members' club</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fld"><label>Approx. dimensions</label><input name="dimensions" placeholder='e.g. 8 × 10 ft'></div>
+          <div class="fld full"><label>Project details</label><textarea name="details" placeholder="Tell us about your space, collection size, and vision."></textarea></div>
+          <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot full"><button type="submit">Request My Design Concept</button><span class="form-msg" role="status"></span></div>
+        </form>
+      </div>
     </section>
 
     <!-- ── CABINET HUMIDORS ── -->
@@ -273,6 +353,65 @@
         <div class="spec"><b>Any RAL</b><span>Custom finish color</span></div>
         <div class="spec"><b>White-Glove</b><span>Delivery included</span></div>
       </div>
+
+      <div class="form-card">
+        <h3>Start Your Custom Cabinet Project</h3>
+        <p>Tell us what you need to store and where it will live — we'll recommend the right format.</p>
+        <form class="inquiry-form form-grid" data-form-type="cabinets" novalidate>
+          <div class="fld"><label>First name <b>*</b></label><input name="firstName" required autocomplete="given-name"></div>
+          <div class="fld"><label>Last name</label><input name="lastName" autocomplete="family-name"></div>
+          <div class="fld"><label>Email <b>*</b></label><input name="email" type="email" required autocomplete="email"></div>
+          <div class="fld"><label>Phone</label><input name="phone" type="tel" autocomplete="tel"></div>
+          <div class="fld"><label>Type of cabinet</label>
+            <select name="cabinetType">
+              <option value="">Select…</option>
+              <option>Large cabinet humidor</option>
+              <option>Medium cabinet humidor</option>
+              <option>Small cabinet humidor</option>
+              <option>Not sure — advise me</option>
+            </select>
+          </div>
+          <div class="fld"><label>Preferred function</label>
+            <select name="preferredFunction">
+              <option value="">Select…</option>
+              <option>Storage-focused</option>
+              <option>Presentation-focused</option>
+              <option>Mixed purpose</option>
+            </select>
+          </div>
+          <div class="fld"><label>Capacity needed</label>
+            <select name="capacity">
+              <option value="">Select…</option>
+              <option>Up to 20 boxes</option>
+              <option>20–50 boxes</option>
+              <option>50–80 boxes</option>
+              <option>80+ boxes</option>
+            </select>
+          </div>
+          <div class="fld"><label>Exterior finish</label>
+            <select name="exteriorFinish">
+              <option value="">Select…</option>
+              <option>Natural hardwood (walnut, oak, wengé…)</option>
+              <option>Lacquered — any RAL color</option>
+              <option>Custom / not sure yet</option>
+            </select>
+          </div>
+          <div class="fld full"><label>Options</label>
+            <div class="checks">
+              <label><input type="checkbox" name="options" value="Glass doors"> Glass doors</label>
+              <label><input type="checkbox" name="options" value="Full-wood doors"> Full-wood doors</label>
+              <label><input type="checkbox" name="options" value="LED lighting"> LED lighting</label>
+              <label><input type="checkbox" name="options" value="Lock"> Lock</label>
+              <label><input type="checkbox" name="options" value="Adjustable shelves"> Adjustable shelves</label>
+              <label><input type="checkbox" name="options" value="Extra drawers"> Extra drawers</label>
+              <label><input type="checkbox" name="options" value="Wheels"> Wheels</label>
+            </div>
+          </div>
+          <div class="fld full"><label>Project details</label><textarea name="details" placeholder="Room, style, collection — anything that helps us advise you."></textarea></div>
+          <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot full"><button type="submit">Request My Quotation</button><span class="form-msg" role="status"></span></div>
+        </form>
+      </div>
     </section>
 
     <!-- ── CIGAR SHOWCASES ── -->
@@ -302,6 +441,58 @@
         <div class="spec"><b>LED</b><span>Cigar-safe lighting</span></div>
         <div class="spec"><b>Biometric</b><span>Lock options</span></div>
         <div class="spec"><b>Modular</b><span>Grow with your collection</span></div>
+      </div>
+
+      <div class="form-card">
+        <h3>Start Your Custom Showcase Project</h3>
+        <p>Describe the display you have in mind — we'll design it to measure.</p>
+        <form class="inquiry-form form-grid" data-form-type="showcases" novalidate>
+          <div class="fld"><label>First name <b>*</b></label><input name="firstName" required autocomplete="given-name"></div>
+          <div class="fld"><label>Last name</label><input name="lastName" autocomplete="family-name"></div>
+          <div class="fld"><label>Email <b>*</b></label><input name="email" type="email" required autocomplete="email"></div>
+          <div class="fld"><label>Phone</label><input name="phone" type="tel" autocomplete="tel"></div>
+          <div class="fld full"><label>Type of furniture</label>
+            <select name="furnitureType">
+              <option value="">Select…</option>
+              <option>Custom cigar cabinet (large storage)</option>
+              <option>Display vitrine (tall glass-front showcase)</option>
+              <option>Freestanding display humidor</option>
+              <option>Cigar display case (tabletop / wall)</option>
+              <option>Modular shelving system</option>
+              <option>Wall-mounted shelving</option>
+              <option>Mixed / custom configuration</option>
+            </select>
+          </div>
+          <div class="fld third"><label>Width</label><input name="width" placeholder='e.g. 48"'></div>
+          <div class="fld third"><label>Height</label><input name="height" placeholder='e.g. 84"'></div>
+          <div class="fld third"><label>Depth</label><input name="depth" placeholder='e.g. 20"'></div>
+          <div class="fld full"><label>Interior layout</label>
+            <div class="checks">
+              <label><input type="checkbox" name="interiorLayout" value="Slotted shelves (for boxes)"> Slotted shelves (boxes)</label>
+              <label><input type="checkbox" name="interiorLayout" value="Angled display shelves"> Angled display shelves</label>
+              <label><input type="checkbox" name="interiorLayout" value="Sliding trays"> Sliding trays</label>
+              <label><input type="checkbox" name="interiorLayout" value="Drawers"> Drawers</label>
+              <label><input type="checkbox" name="interiorLayout" value="Adjustable shelves"> Adjustable shelves</label>
+              <label><input type="checkbox" name="interiorLayout" value="LED interior lighting"> LED interior lighting</label>
+            </div>
+          </div>
+          <div class="fld"><label>Exterior finish</label>
+            <select name="exteriorFinish">
+              <option value="">Select…</option>
+              <option>Walnut</option>
+              <option>Oak</option>
+              <option>Cherry</option>
+              <option>Wengé</option>
+              <option>Lacquered — any RAL color</option>
+              <option>Glass doors</option>
+              <option>Other / not sure</option>
+            </select>
+          </div>
+          <div class="fld"><label>Capacity</label><input name="capacity" placeholder="e.g. 500 cigars / 30 boxes"></div>
+          <div class="fld full"><label>Project details</label><textarea name="details" placeholder="Tell us about your space, your collection, or attach references when we reply."></textarea></div>
+          <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot full"><button type="submit">Request My Design</button><span class="form-msg" role="status"></span></div>
+        </form>
       </div>
     </section>
 
@@ -356,6 +547,56 @@
       });
       var initial = location.hash.replace('#', '');
       if (['walkin', 'cabinets', 'showcases'].indexOf(initial) !== -1) activate(initial, false);
+
+      // ── Project inquiry forms ──
+      document.querySelectorAll('.inquiry-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var msg = form.querySelector('.form-msg');
+          var btn = form.querySelector('button[type="submit"]');
+          msg.textContent = '';
+          msg.classList.remove('err');
+
+          // collect fields; checkboxes with the same name join into one value
+          var data = { formType: form.dataset.formType };
+          var fd = new FormData(form);
+          fd.forEach(function (value, key) {
+            value = String(value).trim();
+            if (!value) return;
+            data[key] = data[key] ? data[key] + ', ' + value : value;
+          });
+
+          if (!data.firstName || !data.email) {
+            msg.textContent = 'Please fill in your name and email.';
+            msg.classList.add('err');
+            return;
+          }
+
+          btn.disabled = true;
+          var label = btn.textContent;
+          btn.textContent = 'Sending…';
+
+          fetch('/api/project-inquiry', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          })
+            .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+            .then(function (res) {
+              if (!res.ok) throw new Error(res.j.error || 'Something went wrong.');
+              form.parentElement.innerHTML =
+                '<div class="form-success"><div class="tick">✓</div>' +
+                '<h4>Thank you — request received.</h4>' +
+                '<p>A specialist will contact you within one business day to discuss your project.</p></div>';
+            })
+            .catch(function (err) {
+              msg.textContent = err.message + ' You can also call (888) 431-9214.';
+              msg.classList.add('err');
+              btn.disabled = false;
+              btn.textContent = label;
+            });
+        });
+      });
     })();
   </script>
 </body>

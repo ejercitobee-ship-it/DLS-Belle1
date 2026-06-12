@@ -21,6 +21,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
+    // Only allow sending to our own inboxes — without this, the endpoint is
+    // an open relay anyone could use to send mail from our domain.
+    const ALLOWED_RECIPIENTS = [
+      'support@dunnluxuryselections.com',
+      'online@dunnluxuryselections.com',
+    ];
+    if (!ALLOWED_RECIPIENTS.includes(to.toLowerCase().trim())) {
+      return new Response(JSON.stringify({ error: 'Recipient not allowed' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
     // Check if RESEND_API_KEY is set
     if (!env.RESEND_API_KEY) {
       console.error('RESEND_API_KEY environment variable is not set');
