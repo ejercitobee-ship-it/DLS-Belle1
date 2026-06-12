@@ -15,9 +15,8 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import BreadcrumbSchema from './BreadcrumbSchema';
-import SchemaMarkup from './SchemaMarkup';
-import { generateOrganizationSchema } from '../lib/schemaMarkupHelpers';
 import { getRelatedLinks } from '../lib/internalLinkMap';
+import siteFaqs from '../data/siteFaqs.json';
 
 const SUPPORT_EMAIL = 'support@dunnluxuryselections.com';
 
@@ -81,28 +80,9 @@ const capabilities = [
   },
 ];
 
-const faqs = [
-  {
-    q: 'How long does a bespoke walk-in humidor installation take?',
-    a: 'Project timelines vary based on scope and complexity. Residential installations typically take 4–8 weeks from design sign-off to completion. Commercial builds may range from 8–16 weeks. Our team provides a detailed schedule during the consultation phase.',
-  },
-  {
-    q: 'What size room do I need for a walk-in humidor?',
-    a: 'Walk-in humidors can be built in spaces as small as a large closet (approximately 4×6 ft) or as grand as a full dedicated room. We assess your available space and design accordingly to maximise storage capacity and climate efficiency.',
-  },
-  {
-    q: 'Do you handle the full installation or just consultation?',
-    a: 'We offer end-to-end project management — from initial design and material procurement through to full installation and commissioning. You receive a single point of contact throughout the entire process.',
-  },
-  {
-    q: 'What are the ongoing maintenance requirements?',
-    a: 'Properly designed walk-in humidors require minimal maintenance. We provide a handover guide covering humidity system upkeep, cedar care, and seasonal calibration checks. Optional remote monitoring packages are available for hands-off management.',
-  },
-  {
-    q: 'Can you work with an existing room or space?',
-    a: 'Absolutely. The majority of our projects involve converting existing rooms, closets, or custom-built additions. Our design team evaluates insulation, existing HVAC, and structural factors before recommending the optimal approach.',
-  },
-];
+// FAQ content lives in src/data/siteFaqs.json — the prerender script bakes the
+// matching FAQPage + Service schema into the static HTML for this route.
+const faqs = siteFaqs.walkIn;
 
 export default function WalkInHumidor() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -187,7 +167,6 @@ export default function WalkInHumidor() {
           ]}
           className="mb-8 pt-4"
         />
-        <SchemaMarkup schema={generateOrganizationSchema()} />
       </div>
 
       {/* ── Hero ── */}

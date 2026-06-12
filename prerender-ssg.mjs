@@ -5,12 +5,55 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.resolve(__dirname, 'dist');
+const BASE_URL = 'https://dunnluxuryselections.com';
+
+// FAQ content shared with the React components (visible accordions).
+// Editing src/data/siteFaqs.json updates both the page and this schema.
+const siteFaqs = JSON.parse(
+  fs.readFileSync(path.join(__dirname, 'src/data/siteFaqs.json'), 'utf-8'),
+);
+
+const faqPageSchema = (faqs) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+});
+
+// Service schema for custom walk-in installations. Intentionally Service +
+// nationwide areaServed, not LocalBusiness — pure e-commerce, no storefront.
+const walkInServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Custom Walk-In Humidor Design & Installation',
+  serviceType: 'Custom humidor design and installation',
+  description:
+    'End-to-end design, build, and installation of bespoke walk-in humidors for private residences, cigar lounges, restaurants, and retail spaces. Includes consultation, design, Spanish cedar construction, precision climate control integration, and full project management. Residential installations typically complete in 4–8 weeks; commercial builds in 8–16 weeks.',
+  provider: { '@id': `${BASE_URL}/#organization` },
+  areaServed: { '@type': 'Country', name: 'United States' },
+  url: `${BASE_URL}/walk-in-humidor`,
+  availableChannel: {
+    '@type': 'ServiceChannel',
+    serviceUrl: `${BASE_URL}/walk-in-humidor`,
+    servicePhone: { '@type': 'ContactPoint', telephone: '+1-888-431-9214', contactType: 'Sales' },
+  },
+  hoursAvailable: 'By appointment',
+  offers: {
+    '@type': 'Offer',
+    priceCurrency: 'USD',
+    description:
+      'Custom-quoted per project after complimentary consultation. Financing available through Shop Pay Installments for qualified buyers.',
+  },
+};
 
 // Route metadata for static generation
 const routes = [
   { path: '/', file: 'index.html', title: "Dunn's Luxury Selections | Humidor Collections", description: "Explore Dunn's Luxury Selections — bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories.", canonical: 'https://dunnluxuryselections.com/' },
   { path: '/electronic-humidors', file: 'electronic-humidors/index.html', title: "Electronic Humidors | Dunn's Luxury Selections", description: "Precision climate-controlled cabinets for discerning collectors and luxury venues. Shop Raching, Reagan, and more.", canonical: 'https://dunnluxuryselections.com/electronic-humidors' },
-  { path: '/walk-in-humidor', file: 'walk-in-humidor/index.html', title: "Bespoke Walk-In Humidors | Dunn's Luxury Selections", description: "Custom walk-in humidor design and installation for private residences, lounges, and commercial spaces.", canonical: 'https://dunnluxuryselections.com/walk-in-humidor' },
+  { path: '/walk-in-humidor', file: 'walk-in-humidor/index.html', title: "Bespoke Walk-In Humidors | Dunn's Luxury Selections", description: "Custom walk-in humidor design and installation for private residences, lounges, and commercial spaces.", canonical: 'https://dunnluxuryselections.com/walk-in-humidor', schemas: [walkInServiceSchema, faqPageSchema(siteFaqs.walkIn)] },
   { path: '/desktop-humidors', file: 'desktop-humidors/index.html', title: "Desktop Humidors | Dunn's Luxury Selections", description: "Elegant desktop humidors crafted from Spanish cedar, leather, and carbon fiber for the discerning aficionado.", canonical: 'https://dunnluxuryselections.com/desktop-humidors' },
   { path: '/travel-humidors', file: 'travel-humidors/index.html', title: "Travel Humidors | Dunn's Luxury Selections", description: "Portable travel humidors and cigar cases designed for protection and style on the move.", canonical: 'https://dunnluxuryselections.com/travel-humidors' },
   { path: '/accessories', file: 'accessories/index.html', title: "Cigar Accessories | Dunn's Luxury Selections", description: "Premium cigar cutters, lighters, ashtrays, hygrometers, and humidification accessories.", canonical: 'https://dunnluxuryselections.com/accessories' },
@@ -25,7 +68,7 @@ const routes = [
   { path: '/delivery-info', file: 'delivery-info/index.html', title: "Delivery Information | Dunn's Luxury Selections", description: "Shipping, delivery times, and tracking information for your orders.", canonical: 'https://dunnluxuryselections.com/delivery-info' },
   { path: '/returns-warranty', file: 'returns-warranty/index.html', title: "Returns & Warranty | Dunn's Luxury Selections", description: "Our returns policy and warranty coverage for luxury humidors and accessories.", canonical: 'https://dunnluxuryselections.com/returns-warranty' },
   { path: '/care-guides', file: 'care-guides/index.html', title: "Care Guides | Dunn's Luxury Selections", description: "Expert guidance on maintaining and caring for your luxury humidor.", canonical: 'https://dunnluxuryselections.com/care-guides' },
-  { path: '/financing', file: 'financing/index.html', title: "Financing | Dunn's Luxury Selections", description: "Finance your luxury humidor with Shop Pay Installments — 0% interest for qualified buyers, 4 monthly payments on qualifying purchases over $1,500.", canonical: 'https://dunnluxuryselections.com/financing' },
+  { path: '/financing', file: 'financing/index.html', title: "Financing | Dunn's Luxury Selections", description: "Finance your luxury humidor with Shop Pay Installments — 0% interest for qualified buyers, 4 monthly payments on qualifying purchases over $1,500.", canonical: 'https://dunnluxuryselections.com/financing', schemas: [faqPageSchema(siteFaqs.financing)] },
   { path: '/checkout', file: 'checkout/index.html', title: "Checkout | Dunn's Luxury Selections", description: "Complete your purchase securely.", canonical: 'https://dunnluxuryselections.com/checkout' },
   { path: '/order-confirmation', file: 'order-confirmation/index.html', title: "Order Confirmed | Dunn's Luxury Selections", description: "Thank you for your purchase. Your order has been confirmed.", canonical: 'https://dunnluxuryselections.com/order-confirmation' },
   { path: '/shopify-setup', file: 'shopify-setup/index.html', title: "Shopify Setup | Dunn's Luxury Selections", description: "Shopify store configuration and setup guide.", canonical: 'https://dunnluxuryselections.com/shopify-setup' },
@@ -47,6 +90,15 @@ for (const route of routes) {
     .replace(/\u003cmeta property="og:description" content="[^"]*"\s*\/?\u003e/, `\u003cmeta property="og:description" content="${route.description}" /\u003e`)
     .replace(/\u003cmeta name="twitter:title" content="[^"]*"\s*\/?\u003e/, `\u003cmeta name="twitter:title" content="${route.title}" /\u003e`)
     .replace(/\u003cmeta name="twitter:description" content="[^"]*"\s*\/?\u003e/, `\u003cmeta name="twitter:description" content="${route.description}" /\u003e`);
+
+  // Inject page-specific JSON-LD schemas into the static HTML so crawlers
+  // that don't execute JavaScript (GPTBot, ClaudeBot, etc.) still see them.
+  if (route.schemas?.length) {
+    const schemaTags = route.schemas
+      .map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`)
+      .join('\n    ');
+    html = html.replace('</head>', `    ${schemaTags}\n  </head>`);
+  }
 
   // Create directory if needed
   const outputPath = path.join(DIST_DIR, route.file);

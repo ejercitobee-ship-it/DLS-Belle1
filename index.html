@@ -36,10 +36,47 @@
     [
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
+        "@type": "OnlineStore",
+        "@id": "https://dunnluxuryselections.com/#organization",
         "name": "Dunn's Luxury Selections",
         "url": "https://dunnluxuryselections.com",
-        "description": "Dunn's Luxury Selections offers bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories for collectors, lounges, and connoisseurs who settle for nothing but the best."
+        "logo": "https://dunnluxuryselections.com/images/logo.png",
+        "description": "Online-only retailer of premium luxury humidors — cabinet, electronic, desktop, and travel humidors — plus custom walk-in humidor design and installation. Ships nationwide across the United States. Financing available through Shop Pay Installments for qualified buyers.",
+        "email": "support@dunnluxuryselections.com",
+        "telephone": "+1-888-431-9214",
+        "foundingLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Chicago",
+            "addressRegion": "IL",
+            "addressCountry": "US"
+          }
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "United States"
+        },
+        "paymentAccepted": "Credit Card, Debit Card, Shop Pay Installments, PayPal, Apple Pay, Google Pay",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "Customer Service",
+          "telephone": "+1-888-431-9214",
+          "email": "support@dunnluxuryselections.com",
+          "availableLanguage": "English"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Humidor Collections",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom Walk-In Humidor Design & Installation" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Cabinet Humidors" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Electronic Humidors" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Desktop Humidors" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Travel Humidors" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Cigar Accessories" } }
+          ]
+        }
       },
       {
         "@context": "https://schema.org",
@@ -47,11 +84,7 @@
         "name": "Dunn's Luxury Selections",
         "url": "https://dunnluxuryselections.com",
         "description": "The World's Finest Humidor Collections — shop curated collections of bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories.",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://dunnluxuryselections.com/search?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
+        "publisher": { "@id": "https://dunnluxuryselections.com/#organization" }
       },
       {
         "@context": "https://schema.org",
@@ -59,11 +92,7 @@
         "name": "The World's Finest Humidor Collections",
         "url": "https://dunnluxuryselections.com",
         "description": "Explore Dunn's Luxury Selections — bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories. Complimentary Shipping on Orders Over $150.",
-        "publisher": {
-          "@type": "Organization",
-          "name": "Dunn's Luxury Selections",
-          "url": "https://dunnluxuryselections.com"
-        }
+        "publisher": { "@id": "https://dunnluxuryselections.com/#organization" }
       }
     ]
     </script>

@@ -2,8 +2,6 @@
 import { ArrowRight } from 'lucide-react';
 import { fetchCollections, type ShopifyCollection } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
-import SchemaMarkup from './SchemaMarkup';
-import { generateOrganizationSchema } from '../lib/schemaMarkupHelpers';
 import { getRelatedLinks } from '../lib/internalLinkMap';
 
 const STATIC_COLLECTIONS = [
@@ -135,7 +133,6 @@ export default function Collections() {
           className="mb-8"
         />
 
-        <SchemaMarkup schema={generateOrganizationSchema()} />
 
         {/* Header */}
         <div className="text-center mb-16">

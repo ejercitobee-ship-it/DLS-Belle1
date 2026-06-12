@@ -1,9 +1,9 @@
-import { BadgeCheck, CalendarClock, CreditCard, ShieldCheck, Phone, ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+import { BadgeCheck, CalendarClock, CreditCard, ShieldCheck, Phone, ArrowRight, ChevronDown } from 'lucide-react';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 import { FINANCING_MIN, FINANCING_TERM_MONTHS, formatMonthlyPayment } from '../lib/financing';
 import { usePageMeta } from '../hooks/usePageMeta';
-import { generateFAQPageSchema } from '../lib/schemaMarkupHelpers';
-import SchemaMarkup from './SchemaMarkup';
+import siteFaqs from '../data/siteFaqs.json';
 
 const SUPPORT_EMAIL = 'support@dunnluxuryselections.com';
 
@@ -32,34 +32,13 @@ const steps = [
   },
 ];
 
-const faqItems = [
-  {
-    question: 'What payment methods do you accept?',
-    answer: 'We accept all major credit cards, debit cards, and Shop Pay. With Shop Pay, you can pay in 4 interest-free installments on purchases over $' + FINANCING_MIN.toLocaleString() + '.',
-  },
-  {
-    question: 'How does Shop Pay installment payment work?',
-    answer: 'Shop Pay Installments lets you split your purchase into 4 equal monthly payments. Qualified buyers pay 0% interest with no hidden fees, and approval takes less than a minute at checkout.',
-  },
-  {
-    question: 'Do I need a Shop Pay account?',
-    answer: 'No account needed. Shop Pay is available at checkout for eligible purchases. You can pay with any major credit or debit card.',
-  },
-  {
-    question: 'Is there interest or hidden fees?',
-    answer: 'No. Shop Pay installments are 100% interest-free with no hidden fees. What you see at checkout is exactly what you pay.',
-  },
-  {
-    question: 'Is Shop Pay financing available on all products?',
-    answer: 'Shop Pay installments are available on most products $' + FINANCING_MIN.toLocaleString() + ' and above. Check your product page or at checkout to see if your item qualifies.',
-  },
-  {
-    question: 'Can I pay early with no penalty?',
-    answer: 'Yes. You can pay off your installments early at any time without penalty or additional fees.',
-  },
-];
+// FAQ content lives in src/data/siteFaqs.json — the prerender script bakes the
+// matching FAQPage schema into the static HTML for this route.
+const faqs = siteFaqs.financing;
 
 export default function Financing() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
   usePageMeta({
     title: "Shop Pay Installments | Dunn's Luxury Selections",
     description: 'Pay for your luxury humidor in 4 interest-free installments with Shop Pay. No hidden fees. Flexible payment plans on purchases $1,500+.',
@@ -68,8 +47,6 @@ export default function Financing() {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
-      {/* FAQ Schema Markup */}
-      <SchemaMarkup schema={generateFAQPageSchema(faqItems)} />
       {/* Hero */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-16 pb-12 sm:pb-14 text-center">
         <div className="flex items-center justify-center gap-2 mb-5 sm:mb-6">
@@ -143,6 +120,33 @@ export default function Financing() {
             at checkout before you commit. Longer-term plans may also be available for larger
             purchases.
           </p>
+        </div>
+      </div>
+
+      {/* FAQ */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 sm:mb-18 md:mb-20">
+        <h2 className="font-serif text-2xl sm:text-3xl text-white font-bold text-center mb-8 sm:mb-10">
+          Financing FAQ
+        </h2>
+        <div className="space-y-3">
+          {faqs.map((faq, i) => (
+            <div key={faq.q} className="bg-charcoal-900 border border-charcoal-800/50 rounded-lg overflow-hidden">
+              <button
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                aria-expanded={openFaq === i}
+                className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-charcoal-800/30 transition-colors"
+              >
+                <span className="text-cream-100 text-sm font-medium">{faq.q}</span>
+                <ChevronDown
+                  size={16}
+                  className={`text-gold-500 flex-shrink-0 transition-transform ${openFaq === i ? 'rotate-180' : ''}`}
+                />
+              </button>
+              {openFaq === i && (
+                <p className="px-5 pb-4 text-cream-200/55 text-sm leading-relaxed">{faq.a}</p>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 

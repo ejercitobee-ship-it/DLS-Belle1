@@ -5,7 +5,7 @@ import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection
 import type { ShopifyProduct } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
 import SchemaMarkup from './SchemaMarkup';
-import { generateOrganizationSchema, generateProductSchema } from '../lib/schemaMarkupHelpers';
+import { generateProductSchema } from '../lib/schemaMarkupHelpers';
 import { getRelatedLinks } from '../lib/internalLinkMap';
 import FinancingBanner from './FinancingBanner';
 import {
@@ -215,7 +215,6 @@ export default function DesktopHumidors() {
           ]}
           className="mb-8 pt-4"
         />
-        <SchemaMarkup schema={generateOrganizationSchema()} />
       </div>
 
       {/* Hero banner */}

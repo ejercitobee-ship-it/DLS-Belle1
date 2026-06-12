@@ -16,8 +16,6 @@ import {
 import { useCart } from '../context/CartContext';
 import { getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
 import BreadcrumbSchema from './BreadcrumbSchema';
-import SchemaMarkup from './SchemaMarkup';
-import { generateOrganizationSchema } from '../lib/schemaMarkupHelpers';
 import FinancingBanner from './FinancingBanner';
 import { getCollectionLinks } from '../lib/internalLinkMap';
 
@@ -311,7 +309,6 @@ export default function AllCollections() {
           ]}
           className="mb-8 pt-4"
         />
-        <SchemaMarkup schema={generateOrganizationSchema()} />
       </div>
 
       {/* ── Hero ── */}
