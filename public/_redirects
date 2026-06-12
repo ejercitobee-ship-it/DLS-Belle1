@@ -18,6 +18,12 @@
 *.woff2  /:splat  200
 *.ttf  /:splat  200
 
+# Portfolio one-pager: legacy .html link + tab deep links serve the same page
+/onepager.html  /onepager  301
+/onepager/walkin  /onepager/  200
+/onepager/cabinets  /onepager/  200
+/onepager/showcases  /onepager/  200
+
 # Static HTML routes - served directly
 /journal  /journal/index.html  200
 /collections  /collections/index.html  200
