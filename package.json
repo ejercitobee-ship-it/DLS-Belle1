@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run typecheck && vite build && node prerender-ssg.mjs",
+    "build": "npm run typecheck && vite build && node prerender-ssg.mjs && node scripts/generate-sitemap.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"

@@ -17,4 +17,4 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-Sitemap: https://www.dunnluxuryselections.com/sitemap.xml
+Sitemap: https://dunnluxuryselections.com/sitemap.xml
