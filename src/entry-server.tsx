@@ -16,7 +16,7 @@ const routeMetadata: Record<string, { title: string; description: string; canoni
   },
   '/walk-in-humidor': {
     title: "Bespoke Walk-In Humidors | Dunn's Luxury Selections",
-    description: "Custom walk-in humidor design and installation for private residences, lounges, and commercial spaces.",
+    description: "Custom walk-in humidor design with nationwide component shipping for private residences, lounges, and commercial spaces — complete installation guidance included.",
     canonicalPath: '/walk-in-humidors',
   },
   '/desktop-humidors': {

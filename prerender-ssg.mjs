@@ -23,15 +23,17 @@ const faqPageSchema = (faqs) => ({
   })),
 });
 
-// Service schema for custom walk-in installations. Intentionally Service +
+// Service schema for the custom walk-in offering. Intentionally Service +
 // nationwide areaServed, not LocalBusiness — pure e-commerce, no storefront.
+// Service model: we design, manufacture, and ship components; installation is
+// carried out by the client's team with our guidance.
 const walkInServiceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Custom Walk-In Humidor Design & Installation',
-  serviceType: 'Custom humidor design and installation',
+  name: 'Custom Walk-In Humidor Design & Supply',
+  serviceType: 'Custom humidor design and component supply',
   description:
-    'End-to-end design, build, and installation of bespoke walk-in humidors for private residences, cigar lounges, restaurants, and retail spaces. Includes consultation, design, Spanish cedar construction, precision climate control integration, and full project management. Residential installations typically complete in 4–8 weeks; commercial builds in 8–16 weeks.',
+    'End-to-end design, engineering, and manufacturing of bespoke walk-in humidors for private residences, cigar lounges, restaurants, and retail spaces. Every component — Spanish cedar lining, shelving, and precision climate-control equipment — is crafted to measure and shipped nationwide as a complete kit, with detailed installation instructions and remote guidance for your build team. Residential projects typically complete in 4–8 weeks; commercial builds in 8–16 weeks.',
   provider: { '@id': `${BASE_URL}/#organization` },
   areaServed: { '@type': 'Country', name: 'United States' },
   url: `${BASE_URL}/walk-in-humidor`,
@@ -53,7 +55,7 @@ const walkInServiceSchema = {
 const routes = [
   { path: '/', file: 'index.html', title: "Dunn's Luxury Selections | Humidor Collections", description: "Explore Dunn's Luxury Selections — bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories.", canonical: 'https://dunnluxuryselections.com/' },
   { path: '/electronic-humidors', file: 'electronic-humidors/index.html', title: "Electronic Humidors | Dunn's Luxury Selections", description: "Precision climate-controlled cabinets for discerning collectors and luxury venues. Shop Raching, Reagan, and more.", canonical: 'https://dunnluxuryselections.com/electronic-humidors' },
-  { path: '/walk-in-humidor', file: 'walk-in-humidor/index.html', title: "Bespoke Walk-In Humidors | Dunn's Luxury Selections", description: "Custom walk-in humidor design and installation for private residences, lounges, and commercial spaces.", canonical: 'https://dunnluxuryselections.com/walk-in-humidor', schemas: [walkInServiceSchema, faqPageSchema(siteFaqs.walkIn)] },
+  { path: '/walk-in-humidor', file: 'walk-in-humidor/index.html', title: "Bespoke Walk-In Humidors | Dunn's Luxury Selections", description: "Custom walk-in humidor design with nationwide component shipping for private residences, lounges, and commercial spaces — complete installation guidance included.", canonical: 'https://dunnluxuryselections.com/walk-in-humidor', schemas: [walkInServiceSchema, faqPageSchema(siteFaqs.walkIn)] },
   { path: '/desktop-humidors', file: 'desktop-humidors/index.html', title: "Desktop Humidors | Dunn's Luxury Selections", description: "Elegant desktop humidors crafted from Spanish cedar, leather, and carbon fiber for the discerning aficionado.", canonical: 'https://dunnluxuryselections.com/desktop-humidors' },
   { path: '/travel-humidors', file: 'travel-humidors/index.html', title: "Travel Humidors | Dunn's Luxury Selections", description: "Portable travel humidors and cigar cases designed for protection and style on the move.", canonical: 'https://dunnluxuryselections.com/travel-humidors' },
   { path: '/accessories', file: 'accessories/index.html', title: "Cigar Accessories | Dunn's Luxury Selections", description: "Premium cigar cutters, lighters, ashtrays, hygrometers, and humidification accessories.", canonical: 'https://dunnluxuryselections.com/accessories' },

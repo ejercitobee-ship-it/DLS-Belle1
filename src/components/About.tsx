@@ -3,8 +3,8 @@ import { Gem, Globe, Shield, Star } from 'lucide-react';
 const milestones = [
   { year: '2015', title: 'Founded', desc: 'Dunn\'s Luxury Selections is established with a singular vision: to bring world-class cigar storage to the American market.' },
   { year: '2017', title: 'First Raching Partnership', desc: 'We become an authorised dealer for Raching, introducing precision electronic humidors to our curated collection.' },
-  { year: '2019', title: 'Bespoke Division Launched', desc: 'Our bespoke walk-in humidor design and installation service opens, serving private collectors and hospitality venues.' },
-  { year: '2022', title: 'National Expansion', desc: 'We expand our white-glove delivery and installation service to all 50 states, cementing our position as America\'s premier humidor destination.' },
+  { year: '2019', title: 'Bespoke Division Launched', desc: 'Our bespoke walk-in humidor design service opens — custom-engineered components shipped with full installation guidance, serving private collectors and hospitality venues.' },
+  { year: '2022', title: 'National Expansion', desc: 'We expand our white-glove delivery service to all 50 states, cementing our position as America\'s premier humidor destination.' },
   { year: '2024', title: 'Digital Flagship', desc: 'Our newly designed online flagship store launches, offering the full collection with seamless checkout and expert consultation booking.' },
 ];
 

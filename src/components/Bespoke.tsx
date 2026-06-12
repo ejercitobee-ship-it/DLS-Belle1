@@ -6,7 +6,7 @@ const features = [
   'Integrated lighting and display',
   'Commercial-grade humidity control',
   'Private consultation and design',
-  'Installation and commissioning',
+  'Installation guidance and support',
 ];
 
 export default function Bespoke() {
@@ -29,7 +29,7 @@ export default function Bespoke() {
             {/* Floating stat card */}
             <div className="absolute bottom-4 right-4 bg-charcoal-900 border border-gold-700/30 rounded-lg p-5 shadow-xl shadow-black/50 max-w-[200px]">
               <div className="text-3xl font-serif font-bold text-gradient-gold mb-1">50+</div>
-              <div className="text-cream-200/60 text-sm leading-snug">Bespoke installations worldwide</div>
+              <div className="text-cream-200/60 text-sm leading-snug">Bespoke projects worldwide</div>
             </div>
 
             {/* Decorative frame lines */}
@@ -53,7 +53,7 @@ export default function Bespoke() {
             </h2>
 
             <p className="text-cream-200/60 text-lg leading-relaxed mb-8">
-              From intimate private collections to grand commercial installations,
+              From intimate private collections to grand commercial builds,
               our bespoke walk-in humidors are designed to transform any space into
               a sanctuary for the world's finest cigars. Each commission begins
               with a personal consultation.

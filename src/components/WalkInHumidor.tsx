@@ -340,8 +340,8 @@ export default function WalkInHumidor() {
               { step: '01', title: 'Initial Consultation', desc: 'Our executive sales team discusses your vision, reviews your space, and outlines the technical and aesthetic possibilities for your project.' },
               { step: '02', title: 'Design & Specification', desc: 'We produce detailed design drawings, material specifications, and a comprehensive quote covering all aspects of the build.' },
               { step: '03', title: 'Material Procurement', desc: 'Sustainably sourced Spanish Cedar, premium hardware, and climate systems are procured to exacting standards before construction begins.' },
-              { step: '04', title: 'Build & Installation', desc: 'Our specialist installation team manages the full build process — cedar lining, shelving, climate integration, and lighting — on your timeline.' },
-              { step: '05', title: 'Commissioning & Handover', desc: 'We calibrate and test all systems to target conditions, provide a full care guide, and hand over your completed sanctuary.' },
+              { step: '04', title: 'Crafting & Shipping', desc: 'Every component — cedar lining, shelving, climate systems, and lighting — is crafted to your specifications and shipped to your site as a complete, ready-to-install kit.' },
+              { step: '05', title: 'Guided Installation & Handover', desc: 'Your contractor or in-house team installs with our detailed drawings, step-by-step instructions, and remote support — through to calibrating systems to target conditions, with a full care guide.' },
             ].map(({ step, title, desc }, i) => (
               <div
                 key={step}
