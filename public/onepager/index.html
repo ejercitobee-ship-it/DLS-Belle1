@@ -39,8 +39,14 @@
     .serif { font-family: 'Playfair Display', Georgia, serif; }
     .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
+    /* ── Logo ── */
+    .logo-top { text-align: center; padding: 28px 20px 20px; }
+    .logo-top img { height: auto; width: auto; max-width: 140px; max-height: 60px; display: inline-block; }
+    @media (max-width: 768px) { .logo-top img { max-width: 110px; max-height: 50px; } }
+    @media (max-width: 480px) { .logo-top { padding: 20px 20px 16px; } .logo-top img { max-width: 90px; max-height: 40px; } }
+
     /* ── Header ── */
-    header { text-align: center; padding: 64px 20px 40px; }
+    header { text-align: center; padding: 48px 20px 40px; }
     .eyebrow {
       display: inline-flex; align-items: center; gap: 12px;
       color: var(--gold-400); font-size: 11px; font-weight: 500;
@@ -238,6 +244,10 @@
   </style>
 </head>
 <body>
+
+  <div class="logo-top">
+    <img src="/images/logo.png" alt="Dunn's Luxury Selections Logo" />
+  </div>
 
   <header>
     <span class="eyebrow">Dunn's Luxury Selections</span>
