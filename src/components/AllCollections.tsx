@@ -401,9 +401,6 @@ export default function AllCollections() {
       {/* ── Filter bar + count ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-2">
         <FilterBar
-          collections={collections}
-          selectedCollection={selectedCollection}
-          onCollectionChange={setSelectedCollection}
           sort={sort}
           onSortChange={setSort}
           minPrice={minPrice}
