@@ -328,7 +328,7 @@ export default function AllCollections() {
   // Reset visible count when filter/sort changes
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [selectedCollection, sort, minPrice, maxPrice]);
+  }, [sort, minPrice, maxPrice]);
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
