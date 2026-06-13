@@ -159,9 +159,6 @@ function ProductCard({ product }: { product: ShopifyProduct }) {
 // ─── Filter / Sort Bar ────────────────────────────────────────────────────────
 
 function FilterBar({
-  collections,
-  selectedCollection,
-  onCollectionChange,
   sort,
   onSortChange,
   minPrice,
@@ -169,9 +166,6 @@ function FilterBar({
   maxPrice,
   onMaxPriceChange,
 }: {
-  collections: ShopifyCollection[];
-  selectedCollection: string;
-  onCollectionChange: (v: string) => void;
   sort: SortKey;
   onSortChange: (v: SortKey) => void;
   minPrice: number;
