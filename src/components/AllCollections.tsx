@@ -256,7 +256,6 @@ export default function AllCollections() {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [endCursor, setEndCursor] = useState<string | null>(null);
 
-  const [selectedCollection, setSelectedCollection] = useState('');
   const [sort, setSort] = useState<SortKey>('price-desc');
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
