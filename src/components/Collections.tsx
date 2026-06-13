@@ -199,19 +199,6 @@ export default function Collections() {
           ))}
         </div>
 
-        {/* Explore More Links */}
-        <section className="mt-16 pt-12 border-t border-gold-500/20">
-          <h2 className="font-serif text-2xl text-white font-bold mb-8">Explore More</h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {getRelatedLinks('/all-collections').map(link => (
-              <li key={link.href}>
-                <a href={link.href} className="text-gold-400 hover:text-gold-300 transition-colors flex items-center gap-2">
-                  {link.label} →
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
       </div>
     </section>
   );

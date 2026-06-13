@@ -77,7 +77,7 @@ export default function Bespoke() {
                 <ArrowRight size={15} />
               </a>
               <a
-                href="/all-collections"
+                href="/onepager"
                 className="inline-flex items-center gap-2 border border-gold-500/40 text-gold-400 font-medium text-sm tracking-widest uppercase px-7 py-4 rounded hover:bg-gold-700/10 transition-colors"
               >
                 View Portfolio
