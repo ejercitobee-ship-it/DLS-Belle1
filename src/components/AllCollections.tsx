@@ -164,51 +164,83 @@ function FilterBar({
   onCollectionChange,
   sort,
   onSortChange,
+  minPrice,
+  onMinPriceChange,
+  maxPrice,
+  onMaxPriceChange,
 }: {
   collections: ShopifyCollection[];
   selectedCollection: string;
   onCollectionChange: (v: string) => void;
   sort: SortKey;
   onSortChange: (v: SortKey) => void;
+  minPrice: number;
+  onMinPriceChange: (v: number) => void;
+  maxPrice: number;
+  onMaxPriceChange: (v: number) => void;
 }) {
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-      <div className="flex items-center gap-2 text-cream-200/30 text-xs tracking-widest uppercase flex-shrink-0">
-        <SlidersHorizontal size={13} />
-        Filter
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-2 text-cream-200/30 text-xs tracking-widest uppercase flex-shrink-0">
+          <SlidersHorizontal size={13} />
+          Filter
+        </div>
+
+        {/* Collection dropdown */}
+        <div className="relative">
+          <select
+            value={selectedCollection}
+            onChange={(e) => onCollectionChange(e.target.value)}
+            className="appearance-none bg-charcoal-900 border border-charcoal-700/60 hover:border-gold-500/40 focus:border-gold-500/60 text-cream-200/70 text-xs font-medium tracking-wide rounded px-4 py-2.5 pr-8 outline-none transition-colors cursor-pointer"
+          >
+            <option value="">All Collections</option>
+            {collections.map((c) => (
+              <option key={c.id} value={c.handle}>
+                {c.title}
+              </option>
+            ))}
+          </select>
+          <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-cream-200/30" />
+        </div>
+
+        {/* Sort dropdown */}
+        <div className="relative sm:ml-auto">
+          <select
+            value={sort}
+            onChange={(e) => onSortChange(e.target.value as SortKey)}
+            className="appearance-none bg-charcoal-900 border border-charcoal-700/60 hover:border-gold-500/40 focus:border-gold-500/60 text-cream-200/70 text-xs font-medium tracking-wide rounded px-4 py-2.5 pr-8 outline-none transition-colors cursor-pointer"
+          >
+            {SORT_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>
+                Sort: {o.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-cream-200/30" />
+        </div>
       </div>
 
-      {/* Collection dropdown */}
-      <div className="relative">
-        <select
-          value={selectedCollection}
-          onChange={(e) => onCollectionChange(e.target.value)}
-          className="appearance-none bg-charcoal-900 border border-charcoal-700/60 hover:border-gold-500/40 focus:border-gold-500/60 text-cream-200/70 text-xs font-medium tracking-wide rounded px-4 py-2.5 pr-8 outline-none transition-colors cursor-pointer"
-        >
-          <option value="">All Collections</option>
-          {collections.map((c) => (
-            <option key={c.id} value={c.handle}>
-              {c.title}
-            </option>
-          ))}
-        </select>
-        <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-cream-200/30" />
-      </div>
-
-      {/* Sort dropdown */}
-      <div className="relative sm:ml-auto">
-        <select
-          value={sort}
-          onChange={(e) => onSortChange(e.target.value as SortKey)}
-          className="appearance-none bg-charcoal-900 border border-charcoal-700/60 hover:border-gold-500/40 focus:border-gold-500/60 text-cream-200/70 text-xs font-medium tracking-wide rounded px-4 py-2.5 pr-8 outline-none transition-colors cursor-pointer"
-        >
-          {SORT_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value}>
-              Sort: {o.label}
-            </option>
-          ))}
-        </select>
-        <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-cream-200/30" />
+      {/* Price Range Filter */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <span className="text-cream-200/30 text-xs tracking-widest uppercase flex-shrink-0">Price Range</span>
+        <div className="flex gap-2 items-center">
+          <input
+            type="number"
+            placeholder="Min"
+            value={minPrice || ''}
+            onChange={(e) => onMinPriceChange(e.target.value ? parseFloat(e.target.value) : 0)}
+            className="bg-charcoal-900 border border-charcoal-700/60 hover:border-gold-500/40 focus:border-gold-500/60 text-cream-200/70 text-xs font-medium rounded px-3 py-2.5 outline-none transition-colors w-24"
+          />
+          <span className="text-cream-200/30">—</span>
+          <input
+            type="number"
+            placeholder="Max"
+            value={maxPrice || ''}
+            onChange={(e) => onMaxPriceChange(e.target.value ? parseFloat(e.target.value) : 0)}
+            className="bg-charcoal-900 border border-charcoal-700/60 hover:border-gold-500/40 focus:border-gold-500/60 text-cream-200/70 text-xs font-medium rounded px-3 py-2.5 outline-none transition-colors w-24"
+          />
+        </div>
       </div>
     </div>
   );
@@ -225,7 +257,9 @@ export default function AllCollections() {
   const [endCursor, setEndCursor] = useState<string | null>(null);
 
   const [selectedCollection, setSelectedCollection] = useState('');
-  const [sort, setSort] = useState<SortKey>('featured');
+  const [sort, setSort] = useState<SortKey>('price-desc');
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Fetch initial products & collections in parallel
@@ -282,7 +316,15 @@ export default function AllCollections() {
       })
     : allProducts;
 
-  const sorted = sortProducts(collectionFiltered, sort);
+  // Filter by price range
+  const priceFiltered = collectionFiltered.filter((p) => {
+    const price = priceNum(p);
+    const minCheck = minPrice === 0 || price >= minPrice;
+    const maxCheck = maxPrice === 0 || price <= maxPrice;
+    return minCheck && maxCheck;
+  });
+
+  const sorted = sortProducts(priceFiltered, sort);
   const displayed = sorted.slice(0, visibleCount);
   const canLoadMore = visibleCount < sorted.length || hasNextPage;
 
@@ -297,7 +339,7 @@ export default function AllCollections() {
   // Reset visible count when filter/sort changes
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [selectedCollection, sort]);
+  }, [selectedCollection, sort, minPrice, maxPrice]);
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
@@ -375,6 +417,10 @@ export default function AllCollections() {
           onCollectionChange={setSelectedCollection}
           sort={sort}
           onSortChange={setSort}
+          minPrice={minPrice}
+          onMinPriceChange={setMinPrice}
+          maxPrice={maxPrice}
+          onMaxPriceChange={setMaxPrice}
         />
       </div>
 
