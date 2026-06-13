@@ -2,7 +2,6 @@
 import { ArrowRight } from 'lucide-react';
 import { fetchCollections, type ShopifyCollection } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
-import { getRelatedLinks } from '../lib/internalLinkMap';
 
 const STATIC_COLLECTIONS = [
   {
