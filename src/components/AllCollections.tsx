@@ -302,18 +302,8 @@ export default function AllCollections() {
     }
   }, [hasNextPage, loadingMore, endCursor]);
 
-  // Filter by collection (client-side via tags / productType matching collection title)
-  const collectionFiltered = selectedCollection
-    ? allProducts.filter((p) => {
-        const col = collections.find((c) => c.handle === selectedCollection);
-        if (!col) return true;
-        // match by productType or tag containing collection title words
-        const titleWords = col.title.toLowerCase().split(' ').filter((w) => w.length > 3);
-        const pType = p.productType.toLowerCase();
-        const pTags = p.tags.map((t) => t.toLowerCase()).join(' ');
-        return titleWords.some((w) => pType.includes(w) || pTags.includes(w));
-      })
-    : allProducts;
+  // No collection filtering — show all products
+  const collectionFiltered = allProducts;
 
   // Filter by price range
   const priceFiltered = collectionFiltered.filter((p) => {
