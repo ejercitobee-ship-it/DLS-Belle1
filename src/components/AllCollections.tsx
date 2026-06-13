@@ -181,23 +181,6 @@ function FilterBar({
           Filter
         </div>
 
-        {/* Collection dropdown */}
-        <div className="relative">
-          <select
-            value={selectedCollection}
-            onChange={(e) => onCollectionChange(e.target.value)}
-            className="appearance-none bg-charcoal-900 border border-charcoal-700/60 hover:border-gold-500/40 focus:border-gold-500/60 text-cream-200/70 text-xs font-medium tracking-wide rounded px-4 py-2.5 pr-8 outline-none transition-colors cursor-pointer"
-          >
-            <option value="">All Collections</option>
-            {collections.map((c) => (
-              <option key={c.id} value={c.handle}>
-                {c.title}
-              </option>
-            ))}
-          </select>
-          <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-cream-200/30" />
-        </div>
-
         {/* Sort dropdown */}
         <div className="relative sm:ml-auto">
           <select
