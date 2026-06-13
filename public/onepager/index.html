@@ -82,9 +82,9 @@
       .tabs { justify-content: flex-start; gap: 2px; }
       .tab { padding: 14px 16px 11px; font-size: 11px; letter-spacing: 0.12em; }
     }
-    @media (max-width: 480px) {
-      .tabs { gap: 1px; }
-      .tab { padding: 12px 12px 9px; font-size: 10px; letter-spacing: 0.08em; }
+    @media (max-width: 600px) {
+      .tabs { flex-wrap: wrap; justify-content: center; gap: 3px; overflow-x: visible; }
+      .tab { flex: 1 1 calc(33.333% - 2px); padding: 12px 8px 9px; font-size: 10px; letter-spacing: 0.06em; text-align: center; }
     }
 
     /* ── Panels ── */
