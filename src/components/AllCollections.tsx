@@ -30,7 +30,7 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'newest', label: 'Newest' },
 ];
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 16;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
