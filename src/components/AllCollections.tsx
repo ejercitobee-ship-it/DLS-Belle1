@@ -9,9 +9,7 @@ import {
 } from 'lucide-react';
 import {
   fetchProducts,
-  fetchCollections,
   type ShopifyProduct,
-  type ShopifyCollection,
 } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import { getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
@@ -227,7 +225,6 @@ function FilterBar({
 
 export default function AllCollections() {
   const [allProducts, setAllProducts] = useState<ShopifyProduct[]>([]);
-  const [collections, setCollections] = useState<ShopifyCollection[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(false);
@@ -243,15 +240,11 @@ export default function AllCollections() {
     let cancelled = false;
     async function load() {
       try {
-        const [productsResult, collectionsResult] = await Promise.all([
-          fetchProducts(50),
-          fetchCollections(20),
-        ]);
+        const productsResult = await fetchProducts(50);
         if (!cancelled) {
           setAllProducts(productsResult.products);
           setHasNextPage(productsResult.hasNextPage);
           setEndCursor(productsResult.endCursor);
-          setCollections(collectionsResult);
         }
       } catch {
         // empty state shown
