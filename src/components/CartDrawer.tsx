@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { X, ShoppingBag, Minus, Plus, Trash2, Package, Lock, AlertCircle, BadgeCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { qualifiesForFinancing, formatMonthlyPayment, FINANCING_TERM_MONTHS } from '../lib/financing';
+import ShippingCalculator from './ShippingCalculator';
 
 type Props = {
   onCheckout: () => void;
@@ -151,10 +152,10 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 <span className="text-cream-200/50">Subtotal</span>
                 <span className="text-cream-100 font-medium">{fmt(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-cream-200/50">Shipping</span>
-                <span className="text-emerald-400 text-xs font-medium">Calculated at checkout</span>
-              </div>
+
+              {/* Shipping Calculator */}
+              <ShippingCalculator productPrice={subtotal} />
+
               <div className="flex justify-between text-base font-bold border-t border-charcoal-800/50 pt-2 mt-2">
                 <span className="text-white">Total</span>
                 <span className="text-white font-serif">{fmt(subtotal)}</span>

@@ -4,11 +4,11 @@ import { trackShippingCalculatorUsed } from '../lib/analytics';
 import { Truck, AlertCircle, ChevronDown } from 'lucide-react';
 
 interface ShippingCalculatorProps {
-  productHandle: string;
+  productHandle?: string;
   productPrice: number;
 }
 
-export default function ShippingCalculator({ productHandle, productPrice }: ShippingCalculatorProps) {
+export default function ShippingCalculator({ productHandle = 'cart', productPrice }: ShippingCalculatorProps) {
   const [expanded, setExpanded] = useState(false);
   const { shippingRate, loading, error, calculateShipping } = useShippingRates(productHandle);
 
