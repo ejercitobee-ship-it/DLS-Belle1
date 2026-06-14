@@ -6,9 +6,10 @@ import { Truck, AlertCircle, ChevronDown } from 'lucide-react';
 interface ShippingCalculatorProps {
   productHandle?: string;
   productPrice: number;
+  compact?: boolean;
 }
 
-export default function ShippingCalculator({ productHandle = 'cart', productPrice }: ShippingCalculatorProps) {
+export default function ShippingCalculator({ productHandle = 'cart', productPrice, compact = false }: ShippingCalculatorProps) {
   const [expanded, setExpanded] = useState(false);
   const { shippingRate, loading, error, calculateShipping } = useShippingRates(productHandle);
 
@@ -25,6 +26,23 @@ export default function ShippingCalculator({ productHandle = 'cart', productPric
     }
   }, [shippingRate, productPrice]);
 
+  // Compact view for cart — one-liner
+  if (compact) {
+    return (
+      <div className="flex justify-between text-sm">
+        <span className="text-cream-200/50">Shipping & Insurance</span>
+        {loading ? (
+          <span className="text-cream-200/40 text-xs">Calculating...</span>
+        ) : shippingRate ? (
+          <span className="text-gold-400 font-medium">${shippingRate.cost}</span>
+        ) : (
+          <span className="text-cream-200/40 text-xs">—</span>
+        )}
+      </div>
+    );
+  }
+
+  // Full expandable view for product pages
   return (
     <div className="mb-6 bg-charcoal-900/60 border border-charcoal-800/50 rounded-lg overflow-hidden">
       <button
@@ -64,15 +82,15 @@ export default function ShippingCalculator({ productHandle = 'cart', productPric
                 <span className="text-gold-400 font-bold text-sm">${shippingRate.cost}</span>
               </div>
               <div className="flex justify-between items-start">
-                <span className="text-charcoal-400 text-xs uppercase tracking-wide">Ship Date</span>
-                <span className="text-cream-100 text-sm">1-2 business days</span>
+                <span className="text-charcoal-400 text-xs uppercase tracking-wide">Ships In</span>
+                <span className="text-cream-100 text-sm">1–2 business days</span>
               </div>
               <div className="flex justify-between items-start">
                 <span className="text-charcoal-400 text-xs uppercase tracking-wide">Carrier</span>
-                <span className="text-cream-100 text-sm">We will notify once it is being picked up</span>
+                <span className="text-cream-100 text-sm">FedEx premium delivery</span>
               </div>
               <div className="pt-2 border-t border-charcoal-700/50 text-charcoal-500 text-xs">
-                ✓ Insured during transit
+                ✓ Full insurance coverage included
               </div>
             </div>
           )}

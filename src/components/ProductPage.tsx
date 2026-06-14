@@ -402,19 +402,19 @@ export default function ProductPage({ handle }: { handle: string }) {
             <div className="mb-4 space-y-2">
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
-                <span>Ships within 2-3 business days</span>
+                <span>Ships within 1–3 business days</span>
               </div>
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
-                <span>Manufacturer warranty included</span>
+                <span>Full manufacturer warranty</span>
               </div>
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
-                <span>10-day hassle-free returns</span>
+                <span>30-day return guarantee</span>
               </div>
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
-                <span>White glove delivery included</span>
+                <span>White-glove delivery & setup included</span>
               </div>
             </div>
 
@@ -448,7 +448,7 @@ export default function ProductPage({ handle }: { handle: string }) {
               </button>
             </div>
 
-            {/* Chat with Specialist Button */}
+            {/* Expert Consultation Button */}
             <div className="mb-6">
               <button
                 onClick={() => {
@@ -461,7 +461,7 @@ export default function ProductPage({ handle }: { handle: string }) {
                 className="w-full flex items-center justify-center gap-2 bg-charcoal-800 hover:bg-charcoal-700 text-cream-200 text-sm py-3 rounded-lg transition-colors border border-charcoal-700/50"
               >
                 <MessageCircle size={16} />
-                Chat with a specialist
+                Expert Consultation
               </button>
             </div>
 
