@@ -3,6 +3,7 @@ import { X, ShoppingBag, Minus, Plus, Trash2, Package, Lock, AlertCircle, BadgeC
 import { useCart } from '../context/CartContext';
 import { qualifiesForFinancing, formatMonthlyPayment, FINANCING_TERM_MONTHS } from '../lib/financing';
 import ShippingCalculator from './ShippingCalculator';
+import { useShippingRates } from '../hooks/useShippingRates';
 
 type Props = {
   onCheckout: () => void;
@@ -13,6 +14,17 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
   const { items, isOpen, closeCart, removeItem, updateQty, totalItems, subtotal, shopifyCheckout } = useCart();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState(false);
+  const { shippingRate, calculateShipping } = useShippingRates('cart');
+
+  // Calculate shipping based on subtotal
+  useEffect(() => {
+    if (subtotal > 0) {
+      calculateShipping(subtotal);
+    }
+  }, [subtotal, calculateShipping]);
+
+  const shippingCost = shippingRate ? parseFloat(shippingRate.cost) : 0;
+  const totalWithShipping = subtotal + shippingCost;
 
   // Lock body scroll when open
   useEffect(() => {
@@ -156,9 +168,23 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               {/* Shipping Calculator */}
               <ShippingCalculator productPrice={subtotal} />
 
-              <div className="flex justify-between text-base font-bold border-t border-charcoal-800/50 pt-2 mt-2">
-                <span className="text-white">Total</span>
-                <span className="text-white font-serif">{fmt(subtotal)}</span>
+              <div className="space-y-2 border-t border-charcoal-800/50 pt-3 mt-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-cream-200/50">Subtotal</span>
+                  <span className="text-cream-100">{fmt(subtotal)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-cream-200/50">Shipping & Insurance</span>
+                  <span className="text-gold-400 font-medium">{fmt(shippingCost)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-cream-200/50">Taxes</span>
+                  <span className="text-cream-200/40 text-xs">Calculated at checkout</span>
+                </div>
+                <div className="flex justify-between text-base font-bold border-t border-charcoal-800/30 pt-2">
+                  <span className="text-white">Estimated Total</span>
+                  <span className="text-gold-400 font-serif text-lg">{fmt(totalWithShipping)}</span>
+                </div>
               </div>
             </div>
 
