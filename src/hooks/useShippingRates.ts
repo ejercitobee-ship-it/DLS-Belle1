@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { getShippingRates } from '../lib/shopify';
 
 interface ShippingRate {
@@ -8,14 +8,13 @@ interface ShippingRate {
 }
 
 export function useShippingRates(productHandle: string) {
-  const [zipCode, setZipCode] = useState('');
   const [shippingRate, setShippingRate] = useState<ShippingRate | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const calculateShipping = async (zip: string) => {
-    if (!zip || zip.length !== 5) {
-      setError('Enter a valid 5-digit ZIP code');
+  const calculateShipping = useCallback(async (orderValue: number) => {
+    if (orderValue <= 0) {
+      setError('Invalid order value');
       return;
     }
 
@@ -23,7 +22,7 @@ export function useShippingRates(productHandle: string) {
     setError(null);
 
     try {
-      const data = await getShippingRates(zip, productHandle);
+      const data = await getShippingRates(orderValue, productHandle);
       setShippingRate({
         cost: data.cost,
         deliveryDate: data.deliveryDate,
@@ -35,11 +34,9 @@ export function useShippingRates(productHandle: string) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [productHandle]);
 
   return {
-    zipCode,
-    setZipCode,
     shippingRate,
     loading,
     error,

@@ -606,24 +606,23 @@ export async function fetchArticleByHandle(
 
 // ─── Shipping Rates ───────────────────────────────────────────────────────────
 
-export async function getShippingRates(zipCode: string, _productHandle: string) {
-  // Mock implementation — replace with real Shopify API call
-  // For now, return fixed rates based on ZIP code region
-  // _productHandle parameter reserved for future Shopify API integration
+export async function getShippingRates(orderValue: number, _productHandle: string) {
+  // Rates based on order value from Shopify shipping zones
+  let cost: string;
 
-  const costByRegion: { [key: string]: string } = {
-    // CA (90000-96999)
-    '9': '45.00',
-    // TX (75000-79999)
-    '7': '55.00',
-    // NY (10000-14999)
-    '1': '50.00',
-    // Default for other regions
-    'default': '65.00',
-  };
-
-  const firstDigit = zipCode[0];
-  const cost = costByRegion[firstDigit] || costByRegion['default'];
+  if (orderValue >= 2000) {
+    cost = '360.00';
+  } else if (orderValue >= 1000) {
+    cost = '300.00';
+  } else if (orderValue >= 800) {
+    cost = '280.00';
+  } else if (orderValue >= 500) {
+    cost = '150.00';
+  } else if (orderValue >= 100) {
+    cost = '45.00';
+  } else {
+    cost = '15.00';
+  }
 
   // Calculate delivery date (5 business days from now)
   const deliveryDate = new Date();

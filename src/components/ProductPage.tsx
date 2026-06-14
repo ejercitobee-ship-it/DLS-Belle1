@@ -422,7 +422,10 @@ export default function ProductPage({ handle }: { handle: string }) {
             <ProductSpecifications specs={getProductSpecs(handle, prod.productType)} />
 
             {/* Shipping Calculator */}
-            <ShippingCalculator productHandle={handle} />
+            <ShippingCalculator
+              productHandle={handle}
+              productPrice={parseFloat(variant?.price.amount ?? prod.priceRange.minVariantPrice.amount)}
+            />
 
             {/* Add to Cart */}
             <div className="mb-6">
