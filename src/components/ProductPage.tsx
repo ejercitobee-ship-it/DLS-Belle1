@@ -446,9 +446,6 @@ export default function ProductPage({ handle }: { handle: string }) {
                   </>
                 )}
               </button>
-              <p className="text-cream-200/25 text-[10px] text-center mt-3 tracking-wide">
-                Free shipping on selected items. Taxes calculated at checkout.
-              </p>
             </div>
 
             {/* Chat with Specialist Button */}
@@ -788,9 +785,6 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
                   </>
                 )}
               </button>
-              <p className="text-cream-200/25 text-[10px] text-center mt-3 tracking-wide">
-                Free shipping on selected items. Taxes calculated at checkout.
-              </p>
             </div>
 
             {/* Shop with Confidence */}

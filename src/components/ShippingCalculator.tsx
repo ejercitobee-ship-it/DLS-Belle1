@@ -35,11 +35,8 @@ export default function ShippingCalculator({ productHandle, productPrice }: Ship
         <span className="flex items-center gap-2.5">
           <Truck size={16} className="text-gold-500" />
           <span className="text-white text-xs font-semibold tracking-[0.25em] uppercase">
-            Shipping
+            Shipping and Insurance
           </span>
-          {shippingRate && (
-            <span className="text-gold-400 font-bold text-sm">${shippingRate.cost}</span>
-          )}
         </span>
         <ChevronDown
           size={16}
