@@ -604,6 +604,42 @@ export async function fetchArticleByHandle(
   return mapArticle(data.blog.articleByHandle);
 }
 
+// ─── Shipping Rates ───────────────────────────────────────────────────────────
+
+export async function getShippingRates(zipCode: string, _productHandle: string) {
+  // Mock implementation — replace with real Shopify API call
+  // For now, return fixed rates based on ZIP code region
+  // _productHandle parameter reserved for future Shopify API integration
+
+  const costByRegion: { [key: string]: string } = {
+    // CA (90000-96999)
+    '9': '45.00',
+    // TX (75000-79999)
+    '7': '55.00',
+    // NY (10000-14999)
+    '1': '50.00',
+    // Default for other regions
+    'default': '65.00',
+  };
+
+  const firstDigit = zipCode[0];
+  const cost = costByRegion[firstDigit] || costByRegion['default'];
+
+  // Calculate delivery date (5 business days from now)
+  const deliveryDate = new Date();
+  deliveryDate.setDate(deliveryDate.getDate() + 7);
+  const formattedDate = deliveryDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+  });
+
+  return {
+    cost,
+    deliveryDate: formattedDate,
+    carrier: 'FedEx',
+  };
+}
+
 // ─── Legacy helper kept for Checkout component compatibility ──────────────────
 
 export async function createShopifyCheckout(
