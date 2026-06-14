@@ -170,14 +170,6 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
               <div className="space-y-2 border-t border-charcoal-800/50 pt-3 mt-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-cream-200/50">Subtotal</span>
-                  <span className="text-cream-100">{fmt(subtotal)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-cream-200/50">Shipping & Insurance</span>
-                  <span className="text-gold-400 font-medium">{fmt(shippingCost)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
                   <span className="text-cream-200/50">Taxes</span>
                   <span className="text-cream-200/40 text-xs">Calculated at checkout</span>
                 </div>
@@ -189,14 +181,14 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             </div>
 
             {/* Financing reminder */}
-            {qualifiesForFinancing(subtotal) && (
+            {qualifiesForFinancing(totalWithShipping) && (
               <div className="bg-gold-600/15 border border-gold-500/40 rounded-lg px-3 py-2.5 text-center">
                 <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-cream-100">
                   <BadgeCheck size={13} className="text-gold-400 flex-shrink-0" />
                   <span>
                     Your order qualifies for financing: as low as{' '}
                     <span className="text-gold-300 font-bold">
-                      {formatMonthlyPayment(subtotal)}/month × {FINANCING_TERM_MONTHS}
+                      {formatMonthlyPayment(totalWithShipping)}/month × {FINANCING_TERM_MONTHS}
                     </span>{' '}
                     with Shop Pay — 0% interest for qualified buyers
                   </span>
