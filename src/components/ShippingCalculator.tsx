@@ -50,12 +50,12 @@ export default function ShippingCalculator({ productHandle, productPrice }: Ship
               <span className="text-gold-400 font-bold text-lg">${shippingRate.cost}</span>
             </div>
             <div className="flex justify-between items-start">
-              <span className="text-charcoal-400 text-xs uppercase tracking-wide">Delivery by</span>
-              <span className="text-cream-100 text-sm">{shippingRate.deliveryDate}</span>
+              <span className="text-charcoal-400 text-xs uppercase tracking-wide">Ship Date</span>
+              <span className="text-cream-100 text-sm">1-2 business days</span>
             </div>
             <div className="flex justify-between items-start">
               <span className="text-charcoal-400 text-xs uppercase tracking-wide">Carrier</span>
-              <span className="text-cream-100 text-sm">{shippingRate.carrier}</span>
+              <span className="text-cream-100 text-sm">We will notify once it is being picked up</span>
             </div>
             <div className="pt-2 border-t border-charcoal-700/50 text-charcoal-500 text-xs">
               ✓ Insured during transit
