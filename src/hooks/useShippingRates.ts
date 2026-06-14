@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getShippingRates } from '../lib/shopify';
 
 interface ShippingRate {
   cost: string;
@@ -22,20 +23,7 @@ export function useShippingRates(productHandle: string) {
     setError(null);
 
     try {
-      const response = await fetch('/api/shipping-rates', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          zipCode: zip,
-          productHandle,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to calculate shipping');
-      }
-
-      const data = await response.json();
+      const data = await getShippingRates(zip, productHandle);
       setShippingRate({
         cost: data.cost,
         deliveryDate: data.deliveryDate,
