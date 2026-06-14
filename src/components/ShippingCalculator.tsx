@@ -1,55 +1,86 @@
+import { useState } from 'react';
 import { useShippingRates } from '../hooks/useShippingRates';
+import { Truck, AlertCircle } from 'lucide-react';
 
 interface ShippingCalculatorProps {
   productHandle: string;
 }
 
 export default function ShippingCalculator({ productHandle }: ShippingCalculatorProps) {
-  const { zipCode, setZipCode, shippingRate, loading, error, calculateShipping } =
-    useShippingRates(productHandle);
+  const [inputZip, setInputZip] = useState('');
+  const { zipCode, setZipCode, shippingRate, loading, error, calculateShipping } = useShippingRates(productHandle);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    calculateShipping(zipCode);
+  const handleCalculate = () => {
+    calculateShipping(inputZip);
+    if (inputZip.length === 5) {
+      setZipCode(inputZip);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && inputZip.length === 5) {
+      handleCalculate();
+    }
   };
 
   return (
-    <div className="bg-charcoal-900 border border-charcoal-800/50 rounded-lg p-4 mb-4">
-      <h3 className="text-gold-400 text-xs font-bold tracking-[0.3em] uppercase mb-3">
-        Shipping Estimate
-      </h3>
+    <div className="bg-charcoal-900/50 border border-charcoal-800/50 rounded-lg p-4 mb-6">
+      <div className="flex items-center gap-2 mb-3">
+        <Truck size={18} className="text-gold-400" />
+        <h3 className="text-cream-100 font-medium text-sm">Shipping Cost Estimator</h3>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-2">
-        <input
-          type="text"
-          inputMode="numeric"
-          placeholder="Enter ZIP code"
-          value={zipCode}
-          onChange={(e) => setZipCode(e.target.value.replace(/\D/g, '').slice(0, 5))}
-          maxLength={5}
-          className="w-full bg-charcoal-950 border border-charcoal-700/60 text-cream-200 placeholder:text-charcoal-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500/60 outline-none transition-colors"
-        />
-        <button
-          type="submit"
-          disabled={zipCode.length !== 5 || loading}
-          className="w-full bg-gold-gradient text-charcoal-950 font-bold text-xs tracking-wide uppercase py-2 rounded-lg disabled:opacity-50 transition-opacity"
-        >
-          {loading ? 'Calculating...' : 'Calculate'}
-        </button>
-      </form>
-
-      {error && <p className="text-red-500 text-xs mt-2">{error}</p>}
-
-      {shippingRate && (
-        <div className="bg-charcoal-950 rounded-lg p-3 mt-3 text-sm">
-          <p className="text-cream-200/70 text-xs mb-1">📍 Ships to your area</p>
-          <p className="text-white font-bold">
-            <span className="text-gold-400">${shippingRate.cost}</span> • Arrives by{' '}
-            {shippingRate.deliveryDate}
-          </p>
-          <p className="text-charcoal-500 text-xs mt-1">via {shippingRate.carrier}</p>
+      <div className="space-y-3">
+        <div className="flex gap-2">
+          <input
+            type="text"
+            maxLength={5}
+            placeholder="Enter ZIP code"
+            value={inputZip}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, '');
+              setInputZip(val);
+            }}
+            onKeyPress={handleKeyPress}
+            disabled={loading}
+            className="flex-1 bg-charcoal-950 border border-charcoal-700 rounded px-3 py-2 text-cream-100 placeholder-charcoal-600 text-sm disabled:opacity-50"
+          />
+          <button
+            onClick={handleCalculate}
+            disabled={inputZip.length !== 5 || loading}
+            className="bg-gold-gradient text-charcoal-950 font-semibold px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition text-sm"
+          >
+            {loading ? 'Calculating...' : 'Calculate'}
+          </button>
         </div>
-      )}
+
+        {error && (
+          <div className="flex items-start gap-2 text-red-400 text-sm bg-red-950/30 border border-red-900/50 rounded p-2">
+            <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {shippingRate && zipCode && (
+          <div className="bg-charcoal-950/70 border border-gold-600/30 rounded p-3 space-y-2">
+            <div className="flex justify-between items-start">
+              <span className="text-charcoal-400 text-xs uppercase tracking-wide">Estimated Shipping</span>
+              <span className="text-gold-400 font-bold text-lg">${shippingRate.cost}</span>
+            </div>
+            <div className="flex justify-between items-start">
+              <span className="text-charcoal-400 text-xs uppercase tracking-wide">Delivery by</span>
+              <span className="text-cream-100 text-sm">{shippingRate.deliveryDate}</span>
+            </div>
+            <div className="flex justify-between items-start">
+              <span className="text-charcoal-400 text-xs uppercase tracking-wide">Carrier</span>
+              <span className="text-cream-100 text-sm">{shippingRate.carrier}</span>
+            </div>
+            <div className="pt-2 border-t border-charcoal-700/50 text-charcoal-500 text-xs">
+              ✓ Insured during transit
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

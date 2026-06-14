@@ -33,6 +33,7 @@ import { generateProductSchema } from '../lib/schemaMarkupHelpers';
 import { qualifiesForFinancing } from '../lib/financing';
 import { getWebPPath } from '../lib/imageOptimization';
 import { getRelatedLinks } from '../lib/internalLinkMap';
+import ShippingCalculator from './ShippingCalculator';
 
 /* ─── Sub-components ─────────────────────────────────────────────────────────── */
 
@@ -240,7 +241,7 @@ export default function ProductPage({ handle }: { handle: string }) {
   /* ─── Render ───────────────────────────────────────────────────────────────── */
 
   return (
-    <div className="min-h-screen bg-charcoal-950 pb-24">
+    <div className="min-h-screen bg-charcoal-950 pb-32 lg:pb-24">
       {/* Breadcrumb Navigation with Schema */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
         <BreadcrumbSchema
@@ -417,6 +418,9 @@ export default function ProductPage({ handle }: { handle: string }) {
             {/* Specifications */}
             <ProductSpecifications specs={getProductSpecs(handle, prod.productType)} />
 
+            {/* Shipping Calculator */}
+            <ShippingCalculator productHandle={handle} />
+
             {/* Add to Cart */}
             <div className="mb-6">
               <button
@@ -584,6 +588,27 @@ export default function ProductPage({ handle }: { handle: string }) {
 
       {/* Product FAQ */}
       <ProductFAQ />
+
+      {/* ── Sticky Mobile Button ── */}
+      <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-charcoal-950 border-t border-charcoal-800/50 p-4 z-40">
+        <button
+          onClick={handleAddToCart}
+          disabled={added}
+          className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-bold text-sm tracking-widest uppercase py-3 rounded hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-70"
+        >
+          {added ? (
+            <>
+              <CheckCircle2 size={16} />
+              Added!
+            </>
+          ) : (
+            <>
+              <ShoppingBag size={16} />
+              Proceed to Checkout
+            </>
+          )}
+        </button>
+      </div>
 
       {/* ── Zoom Modal ── */}
       {zoomImage && (
