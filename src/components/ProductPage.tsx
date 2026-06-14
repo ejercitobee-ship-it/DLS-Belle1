@@ -410,7 +410,7 @@ export default function ProductPage({ handle }: { handle: string }) {
               </div>
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
-                <span>30-day return guarantee</span>
+                <span>10-day return guarantee</span>
               </div>
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />

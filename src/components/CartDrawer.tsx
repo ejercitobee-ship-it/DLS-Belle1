@@ -158,7 +158,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         {/* Footer */}
         {items.length > 0 && (
           <div className="px-5 py-5 border-t border-charcoal-800/50 space-y-4 bg-charcoal-900/40 safe-bottom" style={{ paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))' }}>
-            {/* Subtotal */}
+            {/* Subtotal & Shipping Summary */}
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-cream-200/50">Subtotal</span>
@@ -169,14 +169,6 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               <ShippingCalculator productPrice={subtotal} compact={true} />
 
               <div className="space-y-2 border-t border-charcoal-800/50 pt-3 mt-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-cream-200/50">Subtotal</span>
-                  <span className="text-cream-100">{fmt(subtotal)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-cream-200/50">Shipping & Insurance</span>
-                  <span className="text-gold-400 font-medium">{fmt(shippingCost)}</span>
-                </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-cream-200/50">Taxes</span>
                   <span className="text-cream-200/40 text-xs">Calculated at checkout</span>
@@ -189,14 +181,14 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             </div>
 
             {/* Financing reminder */}
-            {qualifiesForFinancing(subtotal) && (
+            {qualifiesForFinancing(totalWithShipping) && (
               <div className="bg-gold-600/15 border border-gold-500/40 rounded-lg px-3 py-2.5 text-center">
                 <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-cream-100">
                   <BadgeCheck size={13} className="text-gold-400 flex-shrink-0" />
                   <span>
                     Your order qualifies for financing: as low as{' '}
                     <span className="text-gold-300 font-bold">
-                      {formatMonthlyPayment(subtotal)}/month × {FINANCING_TERM_MONTHS}
+                      {formatMonthlyPayment(totalWithShipping)}/month × {FINANCING_TERM_MONTHS}
                     </span>{' '}
                     with Shop Pay — 0% interest for qualified buyers
                   </span>
@@ -289,7 +281,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                   <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span>30-day return guarantee</span>
+                  <span>10-day return guarantee</span>
                 </div>
                 <div className="flex items-center justify-center gap-1.5 text-[10px] text-cream-200/50">
                   <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
