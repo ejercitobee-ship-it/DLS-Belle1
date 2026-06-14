@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useShippingRates } from '../hooks/useShippingRates';
+import { trackShippingCalculatorUsed } from '../lib/analytics';
 import { Truck, AlertCircle } from 'lucide-react';
 
 interface ShippingCalculatorProps {
@@ -22,6 +23,12 @@ export default function ShippingCalculator({ productHandle }: ShippingCalculator
       handleCalculate();
     }
   };
+
+  useEffect(() => {
+    if (shippingRate && zipCode) {
+      trackShippingCalculatorUsed(zipCode, parseFloat(shippingRate.cost));
+    }
+  }, [shippingRate, zipCode]);
 
   return (
     <div className="bg-charcoal-900/50 border border-charcoal-800/50 rounded-lg p-4 mb-6">

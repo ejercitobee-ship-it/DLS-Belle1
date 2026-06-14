@@ -34,6 +34,7 @@ import { qualifiesForFinancing } from '../lib/financing';
 import { getWebPPath } from '../lib/imageOptimization';
 import { getRelatedLinks } from '../lib/internalLinkMap';
 import ShippingCalculator from './ShippingCalculator';
+import { trackAddToCart, trackExpertChatClick } from '../lib/analytics';
 
 /* ─── Sub-components ─────────────────────────────────────────────────────────── */
 
@@ -225,15 +226,17 @@ export default function ProductPage({ handle }: { handle: string }) {
   function handleAddToCart() {
     const variantId = getDefaultVariantId(prod);
     const img = allImages[0] ?? '';
+    const priceNum = parseFloat(variant?.price.amount ?? prod.priceRange.minVariantPrice.amount);
     addItem({
       id: prod.id,
       shopifyVariantId: variantId,
       name: prod.title,
       price: variantPrice,
-      priceNum: parseFloat(variant?.price.amount ?? prod.priceRange.minVariantPrice.amount),
+      priceNum: priceNum,
       image: img,
       category: prod.productType,
     });
+    trackAddToCart(prod.title, priceNum, handle);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   }
@@ -449,6 +452,7 @@ export default function ProductPage({ handle }: { handle: string }) {
             <div className="mb-6">
               <button
                 onClick={() => {
+                  trackExpertChatClick();
                   // Open Tawk.to live chat
                   if (typeof window !== 'undefined' && (window as any).Tawk_API) {
                     (window as any).Tawk_API.maximize();
