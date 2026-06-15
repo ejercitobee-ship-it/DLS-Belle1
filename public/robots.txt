@@ -1,5 +1,13 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /services/login_with_shop
+Disallow: /*?*analytics_context*
+Disallow: /*?*session*
+Disallow: /*?*token*
+Disallow: /*?*preview*
 
 # AI Crawlers
 User-agent: GPTBot
