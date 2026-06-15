@@ -178,4 +178,7 @@ const baseHtml = fs.readFileSync(path.join(DIST_DIR, 'index.html'), 'utf-8');
 
   console.log(`\nStatic site generation complete!`);
   console.log(`Generated ${allRoutes.length} pages (${routes.length} static + ${productRoutes.length} products).`);
-})();
+})().catch(error => {
+  console.error('FATAL: Unhandled error in prerender:', error);
+  process.exit(1);
+});
