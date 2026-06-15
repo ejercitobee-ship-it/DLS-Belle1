@@ -160,13 +160,13 @@ export default function ArticlePage({
   useEffect(() => {
     if (article) {
       const articlePath = `/journal/${article.blog.handle}/${article.handle}`;
-      const articleImage = article.image?.url || 'https://images.pexels.com/photos/5379763/pexels-photo-5379763.jpeg?auto=compress&cs=tinysrgb&w=1200';
+      const imagePath = articleImage(article);
 
       usePageMeta({
         title: `${article.title} | Dunn's Luxury Selections`,
         description: article.excerpt || `Read this article from Dunn's Luxury Selections Journal.`,
         canonicalPath: articlePath,
-        ogImage: articleImage,
+        ogImage: imagePath,
       });
     }
   }, [article]);
