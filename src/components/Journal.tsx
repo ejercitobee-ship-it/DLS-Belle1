@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Calendar, User, Loader2, Tag } from 'lucide-react';
 import { fetchArticles, type ShopifyArticle } from '../lib/shopify';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const CATEGORIES = ['All', 'Cigar Care', 'New Arrivals', 'Brand Stories'] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -178,6 +179,13 @@ export default function Journal() {
   const [articles, setArticles] = useState<ShopifyArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<Category>('All');
+
+  usePageMeta({
+    title: "The Dunn's Journal | Stories of Craft, Culture & Connoisseurship",
+    description: "Insights on cigar care, collector culture, and the art of the perfect smoke. Read expert guides and brand stories from Dunn's Luxury Selections.",
+    canonicalPath: '/journal',
+    ogImage: 'https://dunnluxuryselections.com/og-image.jpg',
+  });
 
   useEffect(() => {
     let cancelled = false;
