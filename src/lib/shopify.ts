@@ -1,13 +1,21 @@
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const STOREFRONT_ENDPOINT = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN
-  ? `https://${import.meta.env.VITE_SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`
+// Support both browser (import.meta.env) and Node.js (process.env) environments
+const getEnv = (key: string): string | undefined => {
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    return import.meta.env[key as keyof ImportMetaEnv];
+  }
+  return process.env[key];
+};
+
+const STOREFRONT_ENDPOINT = getEnv('VITE_SHOPIFY_STORE_DOMAIN')
+  ? `https://${getEnv('VITE_SHOPIFY_STORE_DOMAIN')}/api/2024-01/graphql.json`
   : '';
-const STOREFRONT_TOKEN = (import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN as string) || '';
+const STOREFRONT_TOKEN = (getEnv('VITE_SHOPIFY_STOREFRONT_TOKEN') as string) || '';
 
 export const shopifyConfigured = !!(
-  import.meta.env.VITE_SHOPIFY_STORE_DOMAIN &&
-  import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN
+  getEnv('VITE_SHOPIFY_STORE_DOMAIN') &&
+  getEnv('VITE_SHOPIFY_STOREFRONT_TOKEN')
 );
 
 // ─── Legacy config helpers (used by ShopifyConnect UI) ───────────────────────

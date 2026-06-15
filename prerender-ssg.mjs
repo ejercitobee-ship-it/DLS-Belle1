@@ -2,8 +2,13 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Load environment variables from .env.local
+dotenv.config({ path: path.join(__dirname, '.env.local') });
+
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const BASE_URL = 'https://dunnluxuryselections.com';
 
@@ -78,8 +83,9 @@ const productPageSchema = (product) => ({
 async function generateProductRoutes() {
   try {
     // Import shopify module dynamically after build completes
-    const { getProducts } = await import('./src/lib/shopify.ts');
-    const products = await getProducts();
+    const { fetchProducts } = await import('./src/lib/shopify.ts');
+    // Fetch all products (use a high limit to get all)
+    const { products } = await fetchProducts(250);
 
     return products.map(product => ({
       path: `/product/${product.handle}`,
