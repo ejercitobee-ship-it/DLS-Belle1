@@ -7,6 +7,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const BASE_URL = 'https://dunnluxuryselections.com';
 
+// Products will be fetched and added to routes dynamically
+let productRoutes = [];
+
 // FAQ content shared with the React components (visible accordions).
 // Editing src/data/siteFaqs.json updates both the page and this schema.
 const siteFaqs = JSON.parse(
@@ -50,6 +53,54 @@ const walkInServiceSchema = {
       'Custom-quoted per project after complimentary consultation. Financing available through Shop Pay Installments for qualified buyers.',
   },
 };
+
+const productPageSchema = (product) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: product.title,
+  description: product.description || `Premium humidor: ${product.title}`,
+  url: `${BASE_URL}/product/${product.handle}`,
+  image: product.image?.src || `${BASE_URL}/placeholder-humidor.jpg`,
+  brand: {
+    '@type': 'Brand',
+    name: "Dunn's Luxury Selections",
+  },
+  sku: product.id,
+  offers: {
+    '@type': 'Offer',
+    url: `${BASE_URL}/product/${product.handle}`,
+    priceCurrency: 'USD',
+    price: product.priceRange?.minVariantPrice?.amount || '0',
+    availability: product.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+  },
+});
+
+// Dynamically generate product routes from Shopify data
+async function generateProductRoutes() {
+  try {
+    // Import shopify module dynamically after build completes
+    const { getProducts } = await import('./src/lib/shopify.ts');
+    const products = await getProducts();
+
+    return products.map(product => ({
+      path: `/product/${product.handle}`,
+      file: `product/${product.handle}/index.html`,
+      title: `${product.title} | Dunn's Luxury Selections`,
+      description: product.description ? product.description.substring(0, 160) : `Premium humidor: ${product.title}`,
+      canonical: `${BASE_URL}/product/${product.handle}`,
+      schemas: [productPageSchema(product)],
+      productData: {
+        title: product.title,
+        price: product.priceRange?.minVariantPrice?.amount || 'Contact for pricing',
+        image: product.image?.src || `${BASE_URL}/placeholder.jpg`,
+        handle: product.handle,
+      },
+    }));
+  } catch (error) {
+    console.warn('Could not fetch products:', error.message);
+    return [];
+  }
+}
 
 // Route metadata for static generation
 const routes = [
