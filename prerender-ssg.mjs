@@ -130,9 +130,16 @@ const routes = [
 // Read the base index.html
 const baseHtml = fs.readFileSync(path.join(DIST_DIR, 'index.html'), 'utf-8');
 
-console.log('Starting static site generation...\n');
+(async () => {
+  console.log('Starting static site generation...\n');
 
-for (const route of routes) {
+  // Generate dynamic product routes from Shopify
+  const productRoutes = await generateProductRoutes();
+  const allRoutes = [...routes, ...productRoutes];
+
+  console.log(`Found ${productRoutes.length} products to prerender.\n`);
+
+  for (const route of allRoutes) {
   // Replace meta tags in the HTML
   let html = baseHtml
     .replace(/\u003ctitle\u003e[^\u003c]*\u003c\/title\u003e/, `\u003ctitle\u003e${route.title}\u003c/title\u003e`)
@@ -144,25 +151,31 @@ for (const route of routes) {
     .replace(/\u003cmeta name="twitter:title" content="[^"]*"\s*\/?\u003e/, `\u003cmeta name="twitter:title" content="${route.title}" /\u003e`)
     .replace(/\u003cmeta name="twitter:description" content="[^"]*"\s*\/?\u003e/, `\u003cmeta name="twitter:description" content="${route.description}" /\u003e`);
 
-  // Inject page-specific JSON-LD schemas into the static HTML so crawlers
-  // that don't execute JavaScript (GPTBot, ClaudeBot, etc.) still see them.
-  if (route.schemas?.length) {
-    const schemaTags = route.schemas
-      .map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`)
-      .join('\n    ');
-    html = html.replace('</head>', `    ${schemaTags}\n  </head>`);
+    // Inject page-specific JSON-LD schemas into the static HTML so crawlers
+    // that don't execute JavaScript (GPTBot, ClaudeBot, etc.) still see them.
+    if (route.schemas?.length) {
+      const schemaTags = route.schemas
+        .map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`)
+        .join('\n    ');
+      html = html.replace('</head>', `    ${schemaTags}\n  </head>`);
+    }
+
+    // For product pages, inject product data as a data attribute so React can hydrate
+    if (route.productData) {
+      html = html.replace('<div id="root">', `<div id="root" data-product='${JSON.stringify(route.productData).replace(/'/g, "&apos;")}'>`);
+    }
+
+    // Create directory if needed
+    const outputPath = path.join(DIST_DIR, route.file);
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+
+    // Write the file
+    fs.writeFileSync(outputPath, html);
+    console.log(`✓ Generated: ${route.file}`);
+    console.log(`  Title: ${route.title}`);
+    console.log(`  Canonical: ${route.canonical}`);
   }
 
-  // Create directory if needed
-  const outputPath = path.join(DIST_DIR, route.file);
-  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  
-  // Write the file
-  fs.writeFileSync(outputPath, html);
-  console.log(`✓ Generated: ${route.file}`);
-  console.log(`  Title: ${route.title}`);
-  console.log(`  Canonical: ${route.canonical}`);
-}
-
-console.log('\nStatic site generation complete!');
-console.log(`Generated ${routes.length} pages.`);
+  console.log(`\nStatic site generation complete!`);
+  console.log(`Generated ${allRoutes.length} pages (${routes.length} static + ${productRoutes.length} products).`);
+})();
