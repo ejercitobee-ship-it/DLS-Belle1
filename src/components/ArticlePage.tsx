@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Calendar, User, Tag, Loader2, AlertCircle } from 'lucide-react';
 import { fetchArticleByHandle, fetchArticles, type ShopifyArticle } from '../lib/shopify';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 // ─── Shared helpers (mirror Journal.tsx) ─────────────────────────────────────
 
@@ -154,6 +155,21 @@ export default function ArticlePage({
     load();
     return () => { cancelled = true; };
   }, [blogHandle, articleHandle]);
+
+  // Set OG tags when article is loaded
+  useEffect(() => {
+    if (article) {
+      const articlePath = `/journal/${article.blog.handle}/${article.handle}`;
+      const articleImage = article.image?.url || 'https://images.pexels.com/photos/5379763/pexels-photo-5379763.jpeg?auto=compress&cs=tinysrgb&w=1200';
+
+      usePageMeta({
+        title: `${article.title} | Dunn's Luxury Selections`,
+        description: article.excerpt || `Read this article from Dunn's Luxury Selections Journal.`,
+        canonicalPath: articlePath,
+        ogImage: articleImage,
+      });
+    }
+  }, [article]);
 
   function goBack(e: React.MouseEvent) {
     e.preventDefault();
