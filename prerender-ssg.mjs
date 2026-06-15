@@ -8,7 +8,6 @@ const DIST_DIR = path.resolve(__dirname, 'dist');
 const BASE_URL = 'https://dunnluxuryselections.com';
 
 // Products will be fetched and added to routes dynamically
-let productRoutes = [];
 
 // FAQ content shared with the React components (visible accordions).
 // Editing src/data/siteFaqs.json updates both the page and this schema.
@@ -97,8 +96,9 @@ async function generateProductRoutes() {
       },
     }));
   } catch (error) {
-    console.warn('Could not fetch products:', error.message);
-    return [];
+    console.error('FATAL: Could not fetch products from Shopify:', error);
+    console.error('Stack trace:', error.stack);
+    process.exit(1); // Fail the build explicitly
   }
 }
 
