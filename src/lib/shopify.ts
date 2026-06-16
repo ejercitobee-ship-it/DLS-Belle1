@@ -619,21 +619,20 @@ function selectCarrierForOrder(orderValue: number, productCarrierPref?: string):
   // If product has explicit carrier preference, use it
   if (productCarrierPref) {
     const prefs: Record<string, string> = {
-      'usps': 'USPS Priority Mail',
-      'ups': 'UPS Ground',
-      'dhl': 'DHL Express',
+      'usps': 'White-Glove Delivery',
+      'ups': 'Premium Delivery',
+      'dhl': 'Express Delivery',
     };
     return { carrier: productCarrierPref.toUpperCase(), name: prefs[productCarrierPref] || productCarrierPref };
   }
 
   // Smart default based on order value
-  // High-value items: UPS (more reliable for expensive products)
-  // Standard items: USPS (cost-effective for most items)
-  // Small items: USPS (most cost-effective)
+  // High-value items: Premium Delivery (more reliable for expensive products)
+  // Standard items: White-Glove Delivery (emphasizes service for all items)
   if (orderValue >= 1500) {
-    return { carrier: 'UPS', name: 'UPS Ground' };
+    return { carrier: 'UPS', name: 'Premium Delivery' };
   }
-  return { carrier: 'USPS', name: 'USPS Priority Mail' };
+  return { carrier: 'USPS', name: 'White-Glove Delivery' };
 }
 
 export async function getShippingRates(orderValue: number, _productHandle: string, productCarrierPref?: string) {
