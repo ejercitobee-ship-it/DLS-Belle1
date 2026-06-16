@@ -614,7 +614,29 @@ export async function fetchArticleByHandle(
 
 // ─── Shipping Rates ───────────────────────────────────────────────────────────
 
-export async function getShippingRates(orderValue: number, _productHandle: string) {
+// Determine carrier based on order value and product preference
+function selectCarrierForOrder(orderValue: number, productCarrierPref?: string): { carrier: string; name: string } {
+  // If product has explicit carrier preference, use it
+  if (productCarrierPref) {
+    const prefs: Record<string, string> = {
+      'usps': 'USPS Priority Mail',
+      'ups': 'UPS Ground',
+      'dhl': 'DHL Express',
+    };
+    return { carrier: productCarrierPref.toUpperCase(), name: prefs[productCarrierPref] || productCarrierPref };
+  }
+
+  // Smart default based on order value
+  // High-value items: UPS (more reliable for expensive products)
+  // Standard items: USPS (cost-effective for most items)
+  // Small items: USPS (most cost-effective)
+  if (orderValue >= 1500) {
+    return { carrier: 'UPS', name: 'UPS Ground' };
+  }
+  return { carrier: 'USPS', name: 'USPS Priority Mail' };
+}
+
+export async function getShippingRates(orderValue: number, _productHandle: string, productCarrierPref?: string) {
   // Rates based on order value from Shopify shipping zones
   let cost: string;
 
@@ -632,9 +654,11 @@ export async function getShippingRates(orderValue: number, _productHandle: strin
     cost = '15.00';
   }
 
-  // Calculate delivery date (5 business days from now)
+  // Calculate delivery date (carrier varies: USPS 3-5 days, UPS 2-4 days)
   const deliveryDate = new Date();
-  deliveryDate.setDate(deliveryDate.getDate() + 7);
+  const carrierData = selectCarrierForOrder(orderValue, productCarrierPref);
+  const daysToAdd = carrierData.carrier === 'UPS' ? 4 : 6; // UPS slightly faster
+  deliveryDate.setDate(deliveryDate.getDate() + daysToAdd);
   const formattedDate = deliveryDate.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -643,7 +667,7 @@ export async function getShippingRates(orderValue: number, _productHandle: strin
   return {
     cost,
     deliveryDate: formattedDate,
-    carrier: 'FedEx',
+    carrier: carrierData.name,
   };
 }
 

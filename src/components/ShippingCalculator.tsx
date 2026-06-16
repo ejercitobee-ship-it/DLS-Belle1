@@ -6,12 +6,19 @@ import { Truck, AlertCircle, ChevronDown } from 'lucide-react';
 interface ShippingCalculatorProps {
   productHandle?: string;
   productPrice: number;
+  productTags?: string[];
   compact?: boolean;
 }
 
-export default function ShippingCalculator({ productHandle = 'cart', productPrice, compact = false }: ShippingCalculatorProps) {
+export default function ShippingCalculator({ productHandle = 'cart', productPrice, productTags = [], compact = false }: ShippingCalculatorProps) {
   const [expanded, setExpanded] = useState(false);
-  const { shippingRate, loading, error, calculateShipping } = useShippingRates(productHandle);
+
+  // Extract carrier preference from product tags (e.g., "shipping:usps", "shipping:ups")
+  const carrierPref = productTags
+    ?.find(tag => tag.startsWith('shipping:'))
+    ?.split(':')[1];
+
+  const { shippingRate, loading, error, calculateShipping } = useShippingRates(productHandle, carrierPref);
 
   useEffect(() => {
     // Automatically calculate shipping based on product price
@@ -87,7 +94,7 @@ export default function ShippingCalculator({ productHandle = 'cart', productPric
               </div>
               <div className="flex justify-between items-start">
                 <span className="text-charcoal-400 text-xs uppercase tracking-wide">Carrier</span>
-                <span className="text-cream-100 text-sm">FedEx premium delivery</span>
+                <span className="text-cream-100 text-sm">Dunn's {shippingRate.carrier}</span>
               </div>
               <div className="pt-2 border-t border-charcoal-700/50 text-charcoal-500 text-xs">
                 ✓ Full insurance coverage included

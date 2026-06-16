@@ -425,6 +425,7 @@ export default function ProductPage({ handle }: { handle: string }) {
             <ShippingCalculator
               productHandle={handle}
               productPrice={parseFloat(variant?.price.amount ?? prod.priceRange.minVariantPrice.amount)}
+              productTags={prod.tags}
             />
 
             {/* Add to Cart */}

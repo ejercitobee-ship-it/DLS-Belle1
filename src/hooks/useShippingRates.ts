@@ -7,7 +7,7 @@ interface ShippingRate {
   carrier: string;
 }
 
-export function useShippingRates(productHandle: string) {
+export function useShippingRates(productHandle: string, productCarrierPref?: string) {
   const [shippingRate, setShippingRate] = useState<ShippingRate | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +22,7 @@ export function useShippingRates(productHandle: string) {
     setError(null);
 
     try {
-      const data = await getShippingRates(orderValue, productHandle);
+      const data = await getShippingRates(orderValue, productHandle, productCarrierPref);
       setShippingRate({
         cost: data.cost,
         deliveryDate: data.deliveryDate,
@@ -34,7 +34,7 @@ export function useShippingRates(productHandle: string) {
     } finally {
       setLoading(false);
     }
-  }, [productHandle]);
+  }, [productHandle, productCarrierPref]);
 
   return {
     shippingRate,
