@@ -97,22 +97,71 @@ async function generateProductRoutes() {
 // Dynamically generate article routes from Shopify data
 async function generateArticleRoutes() {
   try {
-    // Fetch articles from Shopify
+    // Fetch articles from Shopify GraphQL API
     console.log('Fetching articles from Shopify...');
 
-    // Use dynamic import - try to load the compiled shopify module
-    let articles = [];
-    try {
-      // Attempt to import from dist if available (after TypeScript compilation)
-      const { fetchArticles: fetchArticlesImpl } = await import('./dist/lib/shopify.mjs')
-        .catch(() => ({ fetchArticles: async () => [] }));
+    const storeDomain = process.env.VITE_SHOPIFY_STORE_DOMAIN;
+    const storefrontToken = process.env.VITE_SHOPIFY_STOREFRONT_TOKEN;
 
-      if (fetchArticlesImpl) {
-        articles = await fetchArticlesImpl(100); // Fetch up to 100 articles
-      }
-    } catch (importError) {
-      console.warn('Could not import fetchArticles, articles will not be prerendered:', importError.message);
+    if (!storeDomain || !storefrontToken) {
+      console.warn('Shopify credentials not found, skipping article prerendering');
       return [];
+    }
+
+    const query = `
+      query {
+        blogs(first: 1) {
+          edges {
+            node {
+              articles(first: 100) {
+                edges {
+                  node {
+                    id
+                    title
+                    handle
+                    excerpt
+                    publishedAt
+                    image {
+                      url
+                      altText
+                    }
+                    blog {
+                      handle
+                      title
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await fetch(`https://${storeDomain}/api/2024-01/graphql.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': storefrontToken,
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Shopify API returned ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.errors) {
+      throw new Error(data.errors.map((e) => e.message).join(', '));
+    }
+
+    const articles = [];
+    if (data.data?.blogs?.edges?.[0]?.node?.articles?.edges) {
+      articles.push(
+        ...data.data.blogs.edges[0].node.articles.edges.map((edge) => edge.node),
+      );
     }
 
     if (articles.length === 0) {
