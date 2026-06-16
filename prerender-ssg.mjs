@@ -11,6 +11,7 @@ dotenv.config({ path: path.join(__dirname, '.env.local') });
 
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const BASE_URL = 'https://dunnluxuryselections.com';
+const FALLBACK_OG_IMAGE = 'https://images.pexels.com/photos/5379763/pexels-photo-5379763.jpeg?auto=compress&cs=tinysrgb&w=1200';
 
 // Products will be fetched and added to routes dynamically
 
@@ -173,7 +174,7 @@ async function generateArticleRoutes() {
 
     return articles.map(article => {
       // Ensure image URL is absolute
-      let imageUrl = article.image?.url || `${BASE_URL}/og-image.jpg`;
+      let imageUrl = article.image?.url || FALLBACK_OG_IMAGE;
       // If relative, make it absolute
       if (imageUrl && !imageUrl.startsWith('http')) {
         imageUrl = `${BASE_URL}${imageUrl}`;
