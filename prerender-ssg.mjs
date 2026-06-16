@@ -94,6 +94,57 @@ async function generateProductRoutes() {
   }
 }
 
+// Dynamically generate article routes from Shopify data
+async function generateArticleRoutes() {
+  try {
+    // Fetch articles from Shopify
+    console.log('Fetching articles from Shopify...');
+
+    // Use dynamic import - try to load the compiled shopify module
+    let articles = [];
+    try {
+      // Attempt to import from dist if available (after TypeScript compilation)
+      const { fetchArticles: fetchArticlesImpl } = await import('./dist/lib/shopify.mjs')
+        .catch(() => ({ fetchArticles: async () => [] }));
+
+      if (fetchArticlesImpl) {
+        articles = await fetchArticlesImpl(100); // Fetch up to 100 articles
+      }
+    } catch (importError) {
+      console.warn('Could not import fetchArticles, articles will not be prerendered:', importError.message);
+      return [];
+    }
+
+    if (articles.length === 0) {
+      console.log('No articles to prerender');
+      return [];
+    }
+
+    console.log(`Found ${articles.length} articles to prerender`);
+
+    return articles.map(article => {
+      // Ensure image URL is absolute
+      let imageUrl = article.image?.url || `${BASE_URL}/og-image.jpg`;
+      // If relative, make it absolute
+      if (imageUrl && !imageUrl.startsWith('http')) {
+        imageUrl = `${BASE_URL}${imageUrl}`;
+      }
+
+      return {
+        path: `/article/${article.blog.handle}/${article.handle}`,
+        file: `article/${article.blog.handle}/${article.handle}/index.html`,
+        title: `${article.title} | Dunn's Luxury Selections`,
+        description: article.excerpt ? article.excerpt.substring(0, 160) : `Read this article from Dunn's Luxury Selections Journal.`,
+        canonical: `${BASE_URL}/article/${article.blog.handle}/${article.handle}`,
+        ogImage: imageUrl,
+      };
+    });
+  } catch (error) {
+    console.warn('Could not fetch articles, skipping article prerendering:', error.message);
+    return [];
+  }
+}
+
 // Route metadata for static generation
 const routes = [
   { path: '/', file: 'index.html', title: "Dunn's Luxury Selections | Humidor Collections", description: "Explore Dunn's Luxury Selections — bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories.", canonical: 'https://dunnluxuryselections.com/' },
@@ -127,9 +178,10 @@ const baseHtml = fs.readFileSync(path.join(DIST_DIR, 'index.html'), 'utf-8');
 
   // Generate dynamic product routes from Shopify
   const productRoutes = await generateProductRoutes();
-  const allRoutes = [...routes, ...productRoutes];
+  const articleRoutes = await generateArticleRoutes();
+  const allRoutes = [...routes, ...productRoutes, ...articleRoutes];
 
-  console.log(`Found ${productRoutes.length} products to prerender.\n`);
+  console.log(`Found ${productRoutes.length} products and ${articleRoutes.length} articles to prerender.\n`);
 
   for (const route of allRoutes) {
   // Replace meta tags in the HTML
@@ -169,7 +221,7 @@ const baseHtml = fs.readFileSync(path.join(DIST_DIR, 'index.html'), 'utf-8');
   }
 
   console.log(`\nStatic site generation complete!`);
-  console.log(`Generated ${allRoutes.length} pages (${routes.length} static + ${productRoutes.length} products).`);
+  console.log(`Generated ${allRoutes.length} pages (${routes.length} static + ${productRoutes.length} products + ${articleRoutes.length} articles).`);
 })().catch(error => {
   console.error('FATAL: Unhandled error in prerender:', error);
   process.exit(1);
