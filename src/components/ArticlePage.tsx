@@ -117,6 +117,23 @@ export default function ArticlePage({
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
+  // Set OG tags at top level (never inside useEffect or conditionally)
+  const articlePath = article
+    ? `/journal/${article.blog.handle}/${article.handle}`
+    : `/journal/${blogHandle}/${articleHandle}`;
+  const imagePath = article ? articleImage(article) : FALLBACK_IMG;
+
+  usePageMeta({
+    title: article
+      ? `${article.title} | Dunn's Luxury Selections`
+      : "Article | Dunn's Luxury Selections",
+    description: article
+      ? article.excerpt || `Read this article from Dunn's Luxury Selections Journal.`
+      : "Loading article...",
+    canonicalPath: articlePath,
+    ogImage: imagePath,
+  });
+
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -155,21 +172,6 @@ export default function ArticlePage({
     load();
     return () => { cancelled = true; };
   }, [blogHandle, articleHandle]);
-
-  // Set OG tags when article is loaded
-  useEffect(() => {
-    if (article) {
-      const articlePath = `/journal/${article.blog.handle}/${article.handle}`;
-      const imagePath = articleImage(article);
-
-      usePageMeta({
-        title: `${article.title} | Dunn's Luxury Selections`,
-        description: article.excerpt || `Read this article from Dunn's Luxury Selections Journal.`,
-        canonicalPath: articlePath,
-        ogImage: imagePath,
-      });
-    }
-  }, [article]);
 
   function goBack(e: React.MouseEvent) {
     e.preventDefault();
