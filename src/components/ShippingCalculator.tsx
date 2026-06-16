@@ -92,10 +92,6 @@ export default function ShippingCalculator({ productHandle = 'cart', productPric
                 <span className="text-charcoal-400 text-xs uppercase tracking-wide">Ships In</span>
                 <span className="text-cream-100 text-sm">1–2 business days</span>
               </div>
-              <div className="flex justify-between items-start">
-                <span className="text-charcoal-400 text-xs uppercase tracking-wide">Carrier</span>
-                <span className="text-cream-100 text-sm">Dunn's {shippingRate.carrier}</span>
-              </div>
               <div className="pt-2 border-t border-charcoal-700/50 text-charcoal-500 text-xs">
                 ✓ Full insurance coverage included
               </div>
