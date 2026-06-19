@@ -683,6 +683,14 @@
             .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
             .then(function (res) {
               if (!res.ok) throw new Error(res.j.error || 'Something went wrong.');
+              // Track form submission as conversion in Google Ads
+              if (typeof window !== 'undefined' && window.gtag) {
+                window.gtag('event', 'generate_lead', {
+                  'value': 1,
+                  'currency': 'USD',
+                  'form_type': form.dataset.formType || 'inquiry',
+                });
+              }
               form.parentElement.innerHTML =
                 '<div class="form-success"><div class="tick">✓</div>' +
                 '<h4>Thank you — request received.</h4>' +
