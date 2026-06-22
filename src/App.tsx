@@ -15,6 +15,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import LeadPopup from './components/LeadPopup';
 import StickyCartBar from './components/StickyCartBar';
 import FinancingBanner from './components/FinancingBanner';
+import { PersistentCTA } from './components/PersistentCTA';
 import { CartProvider, useCart } from './context/CartContext';
 import { usePageMeta } from './hooks/usePageMeta';
 
@@ -586,7 +587,7 @@ function AppInner() {
       )}
 
       <main
-        className="transition-opacity duration-220"
+        className="transition-opacity duration-220 pb-32"
         style={{ opacity: transitioning ? 0 : 1, transitionDuration: '220ms' }}
       >
         <Suspense fallback={<div className="min-h-screen bg-charcoal-950" />}>
@@ -599,6 +600,9 @@ function AppInner() {
           <Footer />
         </footer>
       )}
+
+      {/* Persistent CTA for consultations */}
+      {!isFullPageOverlay && <PersistentCTA />}
 
       <CartDrawer onCheckout={() => navigate('checkout')} />
 

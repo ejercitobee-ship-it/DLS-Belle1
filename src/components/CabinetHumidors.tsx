@@ -23,6 +23,7 @@ import {
   PaymentMethods
 } from './ConversionElements';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
+import { CustomizationCTA } from './CustomizationCTA';
 
 type Category = 'All' | 'Dual-Zone' | 'Classic Cabinet' | 'Smart Climate';
 
@@ -536,6 +537,11 @@ export default function CabinetHumidors() {
 
       {/* FAQ Section */}
       <FAQSection />
+
+      {/* Customization CTA */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-12">
+        <CustomizationCTA useCase="retail" />
+      </div>
 
       {/* Payment Methods */}
       <PaymentMethods />

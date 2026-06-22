@@ -35,6 +35,7 @@ import { getWebPPath } from '../lib/imageOptimization';
 import { getRelatedLinks } from '../lib/internalLinkMap';
 import ShippingCalculator from './ShippingCalculator';
 import { trackAddToCart, trackExpertChatClick } from '../lib/analytics';
+import { CustomizationCTA } from './CustomizationCTA';
 
 /* ─── Sub-components ─────────────────────────────────────────────────────────── */
 
@@ -593,6 +594,11 @@ export default function ProductPage({ handle }: { handle: string }) {
 
       {/* Product FAQ */}
       <ProductFAQ />
+
+      {/* Customization CTA */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-20 lg:mb-12">
+        <CustomizationCTA useCase="custom" />
+      </div>
 
       {/* ── Sticky Mobile Button ── */}
       <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-charcoal-950 border-t border-charcoal-800/50 p-4 z-40">
