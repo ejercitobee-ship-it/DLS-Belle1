@@ -15,7 +15,7 @@ const useCaseMessages: Record<string, { title: string; description: string }> = 
   },
   'retail': {
     title: 'Showcase Your Collection',
-    description: 'Looking for a premium display solution for your retail store? Let's build something extraordinary.',
+    description: 'Looking for a premium display solution for your retail store? Let\'s build something extraordinary.',
   },
   'custom': {
     title: 'Can\'t Find What You Need?',
