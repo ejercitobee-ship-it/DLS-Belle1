@@ -47,8 +47,9 @@ export default function LazyImage({
     }
 
     return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current);
+      const current = imgRef.current;
+      if (current) {
+        observer.unobserve(current);
       }
     };
   }, [src, webpSrc]);

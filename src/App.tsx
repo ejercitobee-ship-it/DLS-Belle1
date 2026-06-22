@@ -496,7 +496,7 @@ function AppInner() {
       window.removeEventListener('navigate', onNavigate);
       window.removeEventListener('navigate-article', onNavigateArticle);
     };
-  }, [navigate]);
+  }, [navigate, displayPage]);
 
   useEffect(() => {
     // Map both /path and legacy #hash hrefs to page navigation

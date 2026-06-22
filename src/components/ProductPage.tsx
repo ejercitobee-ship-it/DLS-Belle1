@@ -101,7 +101,7 @@ export default function ProductPage({ handle }: { handle: string }) {
 
     // GA4 - View Item Event
     const viewItemEvent = () => {
-      if (typeof window !== 'undefined' && (window as any).gtag) {
+      if (typeof window !== 'undefined' && (window as any).gtag && (product || staticProduct)) {
         const itemData = product || staticProduct;
         if (itemData) {
           const priceStr = 'price' in itemData ? itemData.price : undefined;
@@ -120,7 +120,7 @@ export default function ProductPage({ handle }: { handle: string }) {
     };
 
     let cancelled = false;
-    async function load() {
+    async function load(): Promise<void> {
       try {
         const p = await fetchProductByHandle(handle);
         if (!cancelled) {
@@ -163,7 +163,7 @@ export default function ProductPage({ handle }: { handle: string }) {
     }
     load();
     return () => { cancelled = true; };
-  }, [handle]);
+  }, [handle, product, staticProduct]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });

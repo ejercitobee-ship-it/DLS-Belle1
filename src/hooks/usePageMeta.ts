@@ -47,20 +47,20 @@ export function usePageMeta(meta: PageMeta) {
     descMeta.content = meta.description;
 
     // Update OG title
-    let ogTitle = document.querySelector('meta[property="og:title"]') as HTMLMetaElement | null;
+    const ogTitle = document.querySelector('meta[property="og:title"]') as HTMLMetaElement | null;
     if (ogTitle) ogTitle.content = meta.title;
 
     // Update OG description
-    let ogDesc = document.querySelector('meta[property="og:description"]') as HTMLMetaElement | null;
+    const ogDesc = document.querySelector('meta[property="og:description"]') as HTMLMetaElement | null;
     if (ogDesc) ogDesc.content = meta.description;
 
     // Update OG URL
-    let ogUrl = document.querySelector('meta[property="og:url"]') as HTMLMetaElement | null;
+    const ogUrl = document.querySelector('meta[property="og:url"]') as HTMLMetaElement | null;
     if (ogUrl) ogUrl.content = canonicalUrl;
 
     // Update OG image if provided
     if (meta.ogImage) {
-      let ogImage = document.querySelector('meta[property="og:image"]') as HTMLMetaElement | null;
+      const ogImage = document.querySelector('meta[property="og:image"]') as HTMLMetaElement | null;
       if (ogImage) ogImage.content = meta.ogImage;
     }
 

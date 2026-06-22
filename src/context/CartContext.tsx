@@ -265,7 +265,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Hook into beforeunload for cart abandonment
   useEffect(() => {
-    const handleBeforeUnload = (_e: BeforeUnloadEvent) => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       // Only trigger if there are items in cart and user hasn't completed checkout
       if (items.length > 0 && !cartAbandonmentTriggered.current) {
         // Try to get email from sessionStorage (if user entered it in popup)
@@ -280,7 +280,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [items, subtotal, checkoutUrl]);
+  }, [items, subtotal, checkoutUrl, triggerCartAbandonmentEmail]);
 
   const shopifyCheckout = async (): Promise<{ url: string | null; fallback: boolean }> => {
     if (!getShopifyConfigured()) return { url: null, fallback: true };
