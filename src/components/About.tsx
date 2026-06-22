@@ -53,12 +53,10 @@ export default function About() {
               <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Story</span>
             </div>
             <h1 className="font-serif text-5xl md:text-6xl text-white font-bold leading-[1.1] mb-6">
-              America's Premier
-              <br />
-              <span className="text-gradient-gold italic">Humidor Destination</span>
+              The Man Behind It
             </h1>
-            <p className="text-cream-200/70 text-xl leading-relaxed">
-              Born from a passion for the craft and a belief that cigars deserve better preservation, Dunn's Luxury Selections has spent a decade curating the world's finest humidors for discerning collectors across the United States.
+            <p className="text-cream-200/70 text-xl leading-relaxed mb-4">
+              Meet Brian Dunn
             </p>
           </div>
         </div>
