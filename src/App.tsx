@@ -587,7 +587,7 @@ function AppInner() {
       )}
 
       <main
-        className="transition-opacity duration-220 pb-32"
+        className="transition-opacity duration-220 pb-24"
         style={{ opacity: transitioning ? 0 : 1, transitionDuration: '220ms' }}
       >
         <Suspense fallback={<div className="min-h-screen bg-charcoal-950" />}>
