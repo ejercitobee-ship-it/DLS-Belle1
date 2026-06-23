@@ -121,11 +121,8 @@ export default function About() {
           <h2 className="font-serif text-4xl text-white font-bold mb-8">
             Preserving the <span className="text-gradient-gold italic">Art of the Cigar</span>
           </h2>
-          <p className="text-cream-200/60 text-xl leading-relaxed mb-6">
-            We believe that the way a cigar is stored is as important as the cigar itself. Temperature, humidity, and the quality of the enclosure determine whether a fine cigar reaches its full potential — or falls short of it.
-          </p>
-          <p className="text-cream-200/50 text-lg leading-relaxed">
-            Our mission is to ensure that every Dunn's customer has access to a storage solution equal to the calibre of their collection — from the entry-level aficionado to the seasoned private collector building a walk-in sanctuary.
+          <p className="text-cream-200/60 text-lg leading-relaxed mb-6">
+            Founded on Brian's belief that cigars deserve precision engineering, not compromise, Dunn's Luxury Selections exists to ensure every collector — from the entry-level aficionado to the seasoned private collector — has access to a storage solution equal to the calibre of their collection.
           </p>
         </div>
       </section>
