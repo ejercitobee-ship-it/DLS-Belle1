@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ShoppingBag, Star, ArrowRight, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useNavigateToProduct } from '../hooks/useNavigateToProduct';
 import { fetchProductsByTag, fetchProducts, type ShopifyProduct, type ShopifyProductVariant } from '../lib/shopify';
 
 function formatMoney(amount: string, currency: string) {
@@ -48,6 +49,7 @@ export default function FeaturedProducts() {
   const [error, setError] = useState(false);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
+  const navigateToProduct = useNavigateToProduct();
 
   useEffect(() => {
     async function load() {
@@ -154,6 +156,11 @@ export default function FeaturedProducts() {
                   <a
                     key={product.id}
                     href={`/product/${product.handle}`}
+                    onClick={(e) => {
+                      if ((e.target as HTMLElement).closest('button')) return;
+                      e.preventDefault();
+                      navigateToProduct(product.handle);
+                    }}
                     className="group bg-charcoal-950 rounded-xl overflow-hidden border border-charcoal-800/50 hover:border-gold-600/50 card-hover cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-gold-900/10"
                   >
                     {/* Image */}
