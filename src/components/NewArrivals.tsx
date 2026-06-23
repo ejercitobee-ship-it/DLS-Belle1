@@ -10,6 +10,7 @@ import {
   CheckCircle2 as Check,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useNavigateToProduct } from '../hooks/useNavigateToProduct';
 import { useShopifyCollection, getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
 import type { ShopifyProduct } from '../lib/shopify';
 import FinancingBanner from './FinancingBanner';
@@ -463,6 +464,7 @@ export default function NewArrivals() {
   const [sortOpen, setSortOpen] = useState(false);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
+  const navigateToProduct = useNavigateToProduct();
 
   const { products: shopifyProducts } = useShopifyCollection('new-arrivals');
   const products: Product[] = shopifyProducts.length
@@ -619,6 +621,11 @@ export default function NewArrivals() {
               <a
                 key={product.id}
                 href={`/product/${product.handle}`}
+                onClick={(e) => {
+                  if ((e.target as HTMLElement).closest('button')) return;
+                  e.preventDefault();
+                  navigateToProduct(product.handle);
+                }}
                 className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
               >
                 {/* Image */}
