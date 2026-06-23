@@ -8,6 +8,7 @@ import SchemaMarkup from './SchemaMarkup';
 import { generateProductSchema } from '../lib/schemaMarkupHelpers';
 import { getRelatedLinks } from '../lib/internalLinkMap';
 import FinancingBanner from './FinancingBanner';
+import { useNavigateToProduct } from '../hooks/useNavigateToProduct';
 import {
   CustomerReviews,
   WhyBuyFromUs,
@@ -164,6 +165,7 @@ export default function DesktopHumidors() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [addedKey, setAddedKey] = useState<string | null>(null);
   const { addItem } = useCart();
+  const navigateToProduct = useNavigateToProduct();
 
   const { products: shopifyProducts, loading, collectionImage } = useShopifyCollection('desktop-humidors');
 
@@ -329,6 +331,11 @@ export default function DesktopHumidors() {
                 <a
                   key={product.key}
                   href={`/product/${product.handle}`}
+                  onClick={(e) => {
+                    if ((e.target as HTMLElement).closest('button')) return;
+                    e.preventDefault();
+                    navigateToProduct(product.handle);
+                  }}
                   className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
                 >
                   <div className="relative overflow-hidden aspect-[4/3] bg-charcoal-900">
