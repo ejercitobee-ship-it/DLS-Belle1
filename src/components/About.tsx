@@ -36,8 +36,8 @@ export default function About() {
       <section className="relative py-32 overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/images/hero-bg.png"
-            alt="Luxury cigars"
+            src="/images/brian-dunn-founder.png"
+            alt="Brian Dunn, Founder"
             className="w-full h-full object-cover object-center"
             loading="lazy"
           />
