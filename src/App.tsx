@@ -492,12 +492,13 @@ function AppInner() {
     const onNavigateProduct = (e: Event) => {
       const detail = (e as CustomEvent).detail as { productHandle: string };
       const target = 'product';
+      // Update URL FIRST before React state, so getProductHandle() reads correct pathname
+      window.history.pushState({ page: target }, '', `/product/${detail.productHandle}`);
       pendingPage.current = target;
       setTransitioning(true);
       setTimeout(() => {
         setPage(target);
         setDisplayPage(target);
-        window.history.pushState({ page: target }, '', `/product/${detail.productHandle}`);
         window.scrollTo({ top: 0, behavior: 'instant' });
         setTransitioning(false);
       }, 220);
