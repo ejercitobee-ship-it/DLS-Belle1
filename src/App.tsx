@@ -489,13 +489,29 @@ function AppInner() {
       navigate('article', `${detail.blogHandle}/${detail.articleHandle}`);
     };
 
+    const onNavigateProduct = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { productHandle: string };
+      const target = 'product';
+      pendingPage.current = target;
+      setTransitioning(true);
+      setTimeout(() => {
+        setPage(target);
+        setDisplayPage(target);
+        window.history.pushState({ page: target }, '', `/product/${detail.productHandle}`);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        setTransitioning(false);
+      }, 220);
+    };
+
     window.addEventListener('popstate', onPopState);
     window.addEventListener('navigate', onNavigate);
     window.addEventListener('navigate-article', onNavigateArticle);
+    window.addEventListener('navigate-product', onNavigateProduct);
     return () => {
       window.removeEventListener('popstate', onPopState);
       window.removeEventListener('navigate', onNavigate);
       window.removeEventListener('navigate-article', onNavigateArticle);
+      window.removeEventListener('navigate-product', onNavigateProduct);
     };
   }, [navigate, displayPage]);
 
