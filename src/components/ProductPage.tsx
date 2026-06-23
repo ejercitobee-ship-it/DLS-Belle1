@@ -164,7 +164,7 @@ export default function ProductPage({ handle }: { handle: string }) {
     }
     load();
     return () => { cancelled = true; };
-  }, [handle, product, staticProduct]);
+  }, [handle]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
