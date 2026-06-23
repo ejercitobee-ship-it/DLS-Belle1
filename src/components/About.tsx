@@ -65,7 +65,7 @@ export default function About() {
       {/* Act 1: Brian's Origin Story */}
       <section className="py-24 bg-charcoal-950">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="prose-article text-cream-200/70 leading-relaxed space-y-6">
+          <div className="prose-article leading-relaxed space-y-6">
 
             <p className="text-lg text-cream-100">
               Brian Dunn, an application engineer at one of America's largest banks, discovered his passion for cigars during his banking career in Chicago. Like many collectors, he quickly realized the humidor market offered only two inadequate options: cheap imports with no support, or mass-produced furniture that treated cigars as an afterthought.
