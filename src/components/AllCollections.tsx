@@ -13,6 +13,7 @@ import {
 } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import { getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
+import { useNavigateToProduct } from '../hooks/useNavigateToProduct';
 import BreadcrumbSchema from './BreadcrumbSchema';
 import FinancingBanner from './FinancingBanner';
 import { getCollectionLinks } from '../lib/internalLinkMap';
@@ -62,6 +63,7 @@ void _formatMoney; // available for future use
 function ProductCard({ product }: { product: ShopifyProduct }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
+  const navigateToProduct = useNavigateToProduct();
   const imgUrl = product.featuredImage?.url ?? product.images[0]?.url ?? '';
   const imgAlt = product.featuredImage?.altText ?? product.title;
   const { price, compareAt } = getProductPrice(product);
@@ -85,9 +87,19 @@ function ProductCard({ product }: { product: ShopifyProduct }) {
     setTimeout(() => setAdded(false), 1800);
   }
 
+  function handleCardClick(e: React.MouseEvent) {
+    // Don't navigate if clicking add-to-cart button
+    if ((e.target as HTMLElement).closest('button')) {
+      return;
+    }
+    e.preventDefault();
+    navigateToProduct(product.handle);
+  }
+
   return (
     <a
       href={productPageHref}
+      onClick={handleCardClick}
       className="group relative flex flex-col bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-600/40 rounded-xl overflow-hidden transition-all duration-300"
     >
       {/* Image */}
