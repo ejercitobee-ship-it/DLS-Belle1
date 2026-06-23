@@ -159,11 +159,11 @@ export default function About() {
           <div className="text-center mb-14">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="h-px w-8 bg-gold-500" />
-              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Journey</span>
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Timeline</span>
               <div className="h-px w-8 bg-gold-500" />
             </div>
             <h2 className="font-serif text-4xl text-white font-bold">
-              A Legacy of <span className="text-gradient-gold italic">Excellence</span>
+              From Vision to <span className="text-gradient-gold italic">Reality</span>
             </h2>
           </div>
 
