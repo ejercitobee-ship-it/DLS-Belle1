@@ -64,19 +64,19 @@ export default function About() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="prose-article leading-relaxed space-y-6">
 
-            <p className="text-lg text-cream-100">
+            <p className="text-lg text-cream-200/90">
               Brian Dunn, an engineer at one of America's largest banks, discovered his passion for cigars during his banking career in Chicago. Like many collectors, he quickly realized the humidor market offered only two inadequate options: cheap imports with no support, or mass-produced furniture that treated cigars as an afterthought.
             </p>
 
-            <p className="text-lg text-cream-100">
+            <p className="text-lg text-cream-200/90">
               But Brian saw a deeper problem. Every collector's needs were different. One person needed a 500-cigar cabinet for a man cave. Another needed a precision walk-in system for a retail lounge. A third needed a bespoke solution for a specific space. Yet the industry offered only generic, off-the-shelf answers. Brian believed every collection deserved a custom-engineered solution, designed with precision engineering and tailored to that collector's unique vision.
             </p>
 
-            <p className="text-lg text-cream-100">
+            <p className="text-lg text-cream-200/90">
               This conviction — that cigars and their storage deserve better — became the foundation of Dunn's Luxury Selections. Not just selling humidors. Designing them. Custom-engineered, precision-crafted solutions for collectors who refuse to compromise.
             </p>
 
-            <p className="text-lg text-cream-100">
+            <p className="text-lg text-cream-200/90">
               In 2025, Brian founded Dunn's Luxury Selections to bring that vision to life. By early 2026, he'd partnered with the industry's most respected brands to expand the possibilities — ensuring that whether you need a curated collection piece or a fully custom walk-in sanctuary, Brian's team can engineer the perfect solution.
             </p>
 
