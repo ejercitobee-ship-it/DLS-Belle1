@@ -1,11 +1,8 @@
 import { Gem, Globe, Shield, Star } from 'lucide-react';
 
 const milestones = [
-  { year: '2015', title: 'Founded', desc: 'Dunn\'s Luxury Selections is established with a singular vision: to bring world-class cigar storage to the American market.' },
-  { year: '2017', title: 'First Raching Partnership', desc: 'We become an authorised dealer for Raching, introducing precision electronic humidors to our curated collection.' },
-  { year: '2019', title: 'Bespoke Division Launched', desc: 'Our bespoke walk-in humidor design service opens — custom-engineered components shipped with full installation guidance, serving private collectors and hospitality venues.' },
-  { year: '2022', title: 'National Expansion', desc: 'We expand our white-glove delivery service to all 50 states, cementing our position as America\'s premier humidor destination.' },
-  { year: '2024', title: 'Digital Flagship', desc: 'Our newly designed online flagship store launches, offering the full collection with seamless checkout and expert consultation booking.' },
+  { year: '2025', title: 'Founded', desc: 'Brian\'s vision becomes Dunn\'s Luxury Selections, bringing curated precision-engineered humidors to discerning collectors nationwide.' },
+  { year: '2026', title: 'Strategic Partnerships', desc: 'Partnered with industry-leading brands — Raching, Akar, Humidor Supreme, Palio, Cigar Caddy, and Stinky — collectively representing 200+ years of expertise in humidor engineering and design.' },
 ];
 
 const values = [
