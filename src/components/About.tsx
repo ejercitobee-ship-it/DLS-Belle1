@@ -50,7 +50,7 @@ export default function About() {
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-5">
               <div className="h-px w-8 bg-gold-500" />
-              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Story</span>
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Founder's Story</span>
             </div>
             <h1 className="font-serif text-5xl md:text-6xl text-white font-bold leading-[1.1] mb-6">
               The Man Behind It
