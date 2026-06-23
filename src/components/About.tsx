@@ -33,26 +33,26 @@ export default function About() {
     <div className="min-h-screen bg-charcoal-950">
 
       {/* Hero */}
-      <section className="relative py-32 overflow-hidden">
+      <section className="relative py-20 sm:py-28 md:py-32 overflow-hidden min-h-[500px] sm:min-h-[600px] md:min-h-[700px]">
         <div className="absolute inset-0">
           <img
             src="/images/brian-dunn-founder.png"
             alt="Brian Dunn, Founder"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-right-top sm:object-center"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/80 to-charcoal-950/50" />
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/98 via-charcoal-950/90 sm:via-charcoal-950/80 to-charcoal-950/60 md:to-charcoal-950/40" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="h-px w-8 bg-gold-500" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+          <div className="max-w-2xl pt-8 sm:pt-0">
+            <div className="flex items-center gap-3 mb-4 sm:mb-5">
+              <div className="h-px w-6 sm:w-8 bg-gold-500" />
               <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Founder's Story</span>
             </div>
-            <h1 className="font-serif text-5xl md:text-6xl text-white font-bold leading-[1.1] mb-6">
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-white font-bold leading-[1.1] mb-4 sm:mb-6">
               The Man Behind It
             </h1>
-            <p className="text-cream-200/70 text-xl leading-relaxed mb-4">
+            <p className="text-cream-200/70 text-lg sm:text-xl leading-relaxed">
               Meet Brian Dunn
             </p>
           </div>
