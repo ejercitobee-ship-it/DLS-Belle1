@@ -41,7 +41,7 @@ export default function About() {
             className="w-full h-full object-cover object-right-top sm:object-center"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950 via-charcoal-950/95 sm:via-charcoal-950/90 to-charcoal-950/80 md:to-charcoal-950/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/90 via-charcoal-950/80 to-charcoal-950/60 sm:from-charcoal-950 sm:via-charcoal-950/90 sm:to-charcoal-950/80 md:to-charcoal-950/70" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div className="max-w-2xl pt-8 sm:pt-0">
@@ -65,7 +65,7 @@ export default function About() {
           <div className="prose-article leading-relaxed space-y-6">
 
             <p className="text-lg text-cream-100">
-              Brian Dunn, an application engineer at one of America's largest banks, discovered his passion for cigars during his banking career in Chicago. Like many collectors, he quickly realized the humidor market offered only two inadequate options: cheap imports with no support, or mass-produced furniture that treated cigars as an afterthought.
+              Brian Dunn, an engineer at one of America's largest banks, discovered his passion for cigars during his banking career in Chicago. Like many collectors, he quickly realized the humidor market offered only two inadequate options: cheap imports with no support, or mass-produced furniture that treated cigars as an afterthought.
             </p>
 
             <p className="text-lg text-cream-100">
