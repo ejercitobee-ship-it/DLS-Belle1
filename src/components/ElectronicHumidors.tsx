@@ -2,6 +2,7 @@
 import { ShoppingBag, Star, ChevronDown, Zap, Box, CheckCircle2, Loader2, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
+import { useNavigateToProduct } from '../hooks/useNavigateToProduct';
 import type { ShopifyProduct } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
 import SchemaMarkup from './SchemaMarkup';
@@ -286,6 +287,7 @@ export default function ElectronicHumidors() {
   const [sortOpen, setSortOpen] = useState(false);
   const [addedKey, setAddedKey] = useState<string | null>(null);
   const { addItem } = useCart();
+  const navigateToProduct = useNavigateToProduct();
 
   const { products: shopifyProducts, loading, collectionImage } = useShopifyCollection(
     'electronic-humidors',
@@ -425,6 +427,11 @@ export default function ElectronicHumidors() {
               <a
                 key={product.key}
                 href={`/product/${product.handle}`}
+                onClick={(e) => {
+                  if ((e.target as HTMLElement).closest('button')) return;
+                  e.preventDefault();
+                  navigateToProduct(product.handle);
+                }}
                 className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
               >
                 <div className="relative overflow-hidden aspect-[4/3] bg-charcoal-900">
