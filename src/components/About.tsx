@@ -41,18 +41,18 @@ export default function About() {
             className="w-full h-full object-cover object-right-top sm:object-center"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/98 via-charcoal-950/90 sm:via-charcoal-950/80 to-charcoal-950/60 md:to-charcoal-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950 via-charcoal-950/95 sm:via-charcoal-950/90 to-charcoal-950/80 md:to-charcoal-950/70" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div className="max-w-2xl pt-8 sm:pt-0">
             <div className="flex items-center gap-3 mb-4 sm:mb-5">
               <div className="h-px w-6 sm:w-8 bg-gold-500" />
-              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Founder's Story</span>
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase drop-shadow-lg">Our Founder's Story</span>
             </div>
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-white font-bold leading-[1.1] mb-4 sm:mb-6">
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-white font-bold leading-[1.1] mb-4 sm:mb-6 drop-shadow-xl">
               The Man Behind It
             </h1>
-            <p className="text-cream-200/70 text-lg sm:text-xl leading-relaxed">
+            <p className="text-cream-100 text-lg sm:text-xl leading-relaxed drop-shadow-lg">
               Meet Brian Dunn
             </p>
           </div>
