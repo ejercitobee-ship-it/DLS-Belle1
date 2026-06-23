@@ -24,6 +24,7 @@ import {
 } from './ConversionElements';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 import { CustomizationCTA } from './CustomizationCTA';
+import { useNavigateToProduct } from '../hooks/useNavigateToProduct';
 
 type Category = 'All' | 'Dual-Zone' | 'Classic Cabinet' | 'Smart Climate';
 
@@ -255,6 +256,7 @@ export default function CabinetHumidors() {
   const [sortOpen, setSortOpen] = useState(false);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
+  const navigateToProduct = useNavigateToProduct();
 
   const { products: shopifyProducts, loading, collectionImage } = useShopifyCollection('cabinet-humidors');
 
@@ -426,6 +428,11 @@ export default function CabinetHumidors() {
               <a
                 key={product.id}
                 href={`/product/${product.handle}`}
+                onClick={(e) => {
+                  if ((e.target as HTMLElement).closest('button')) return;
+                  e.preventDefault();
+                  navigateToProduct(product.handle);
+                }}
                 className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
               >
                 {/* Image */}
