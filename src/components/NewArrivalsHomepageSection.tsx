@@ -101,9 +101,12 @@ export default function NewArrivalsHomepageSection() {
   return (
     <section className="py-16 md:py-20 bg-charcoal-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-10 md:mb-12">
-          New <span className="text-gradient-gold italic">Arrivals</span>
-        </h2>
+        <div className="mb-10 md:mb-12">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-2">
+            New <span className="text-gradient-gold italic">Arrivals</span>
+          </h2>
+          <p className="text-cream-200/60 text-sm md:text-base">Fresh arrivals for the discerning collector</p>
+        </div>
 
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
