@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react'
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Collections from './components/Collections';
-import ElectronicHumidorsSection from './components/ElectronicHumidorsSection';
+import NewArrivalsHomepageSection from './components/NewArrivalsHomepageSection';
 import Bespoke from './components/Bespoke';
 import DealsBanner from './components/DealsBanner';
 import Testimonials from './components/Testimonials';
@@ -227,7 +227,7 @@ function PageContent({ page }: { page: Page }) {
       <Hero />
       <FinancingBanner />
       <Collections />
-      <ElectronicHumidorsSection />
+      <NewArrivalsHomepageSection />
       <Bespoke />
       <DealsBanner />
       <Testimonials />
