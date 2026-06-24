@@ -646,7 +646,7 @@ export async function getShippingRates(orderValue: number, _productHandle: strin
   } else if (orderValue >= 800) {
     cost = '280.00';
   } else if (orderValue >= 500) {
-    cost = '150.00';
+    cost = '230.00';
   } else if (orderValue >= 100) {
     cost = '45.00';
   } else {
