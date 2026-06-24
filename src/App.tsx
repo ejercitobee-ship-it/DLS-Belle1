@@ -245,6 +245,7 @@ function AppInner() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMinimized, setPopupMinimized] = useState(false);
   const pendingPage = useRef<Page | null>(null);
+  const displayPageRef = useRef<Page>(getInitialPage());
   const { openCart } = useCart();
 
   // Seed the initial history state so back button works from first navigation
@@ -254,6 +255,11 @@ function AppInner() {
       window.history.replaceState({ page: initialPage }, '', window.location.href);
     }
   }, []);
+
+  // Keep displayPageRef in sync for popstate handler to always read current page
+  useEffect(() => {
+    displayPageRef.current = displayPage;
+  }, [displayPage]);
 
   // Dynamic meta tags based on current page
   usePageMeta(
@@ -468,12 +474,12 @@ function AppInner() {
       const dest = PATH_TO_PAGE[path] ?? HASH_TO_PAGE[hash];
       if (dest) {
         // Only navigate if we're actually changing pages
-        if (dest !== displayPage || dest === 'article') {
+        if (dest !== displayPageRef.current || dest === 'article') {
           navigate(dest);
         }
       } else {
         // Unknown path — go home if not already there
-        if (displayPage !== 'home') {
+        if (displayPageRef.current !== 'home') {
           navigate('home');
         }
       }
