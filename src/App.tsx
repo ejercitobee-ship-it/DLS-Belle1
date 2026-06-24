@@ -514,7 +514,7 @@ function AppInner() {
       window.removeEventListener('navigate-article', onNavigateArticle);
       window.removeEventListener('navigate-product', onNavigateProduct);
     };
-  }, [navigate, displayPage]);
+  }, []);
 
   useEffect(() => {
     // Map both /path and legacy #hash hrefs to page navigation
