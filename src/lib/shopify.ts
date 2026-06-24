@@ -639,13 +639,7 @@ export async function getShippingRates(orderValue: number, _productHandle: strin
   // Rates based on order value from Shopify shipping zones
   let cost: string;
 
-  if (orderValue >= 2000) {
-    cost = '360.00';
-  } else if (orderValue >= 1000) {
-    cost = '300.00';
-  } else if (orderValue >= 800) {
-    cost = '280.00';
-  } else if (orderValue >= 500) {
+  if (orderValue >= 500) {
     cost = '230.00';
   } else if (orderValue >= 100) {
     cost = '45.00';
