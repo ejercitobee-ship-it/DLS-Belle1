@@ -443,13 +443,19 @@ function AppInner() {
         isFirstPopState = false;
         return;
       }
-      
+
       const path = window.location.pathname.replace(/\/$/, '') || '/'; // Remove trailing slash
       const hash = window.location.hash;
 
       if (path.startsWith('/article/')) {
-        const handle = path.slice('/article/'.length);
-        navigate('article', handle);
+        pendingPage.current = 'article';
+        setTransitioning(true);
+        setTimeout(() => {
+          setPage('article');
+          setDisplayPage('article');
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          setTransitioning(false);
+        }, 220);
         return;
       }
       if (path.startsWith('/product/')) {
@@ -466,21 +472,39 @@ function AppInner() {
       }
       // Legacy hash fallback
       if (hash.startsWith('#article/')) {
-        const handle = hash.slice('#article/'.length);
-        navigate('article', handle);
+        pendingPage.current = 'article';
+        setTransitioning(true);
+        setTimeout(() => {
+          setPage('article');
+          setDisplayPage('article');
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          setTransitioning(false);
+        }, 220);
         return;
       }
 
       const dest = PATH_TO_PAGE[path] ?? HASH_TO_PAGE[hash];
       if (dest) {
-        // Only navigate if we're actually changing pages
-        if (dest !== displayPageRef.current || dest === 'article') {
-          navigate(dest);
-        }
+        // Always update state for popstate, even if appears to be same page
+        pendingPage.current = dest;
+        setTransitioning(true);
+        setTimeout(() => {
+          setPage(dest);
+          setDisplayPage(dest);
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          setTransitioning(false);
+        }, 220);
       } else {
         // Unknown path — go home if not already there
         if (displayPageRef.current !== 'home') {
-          navigate('home');
+          pendingPage.current = 'home';
+          setTransitioning(true);
+          setTimeout(() => {
+            setPage('home');
+            setDisplayPage('home');
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            setTransitioning(false);
+          }, 220);
         }
       }
     };
