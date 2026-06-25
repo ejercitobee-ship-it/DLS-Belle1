@@ -212,6 +212,15 @@ export default function WalkInHumidor() {
                 <ArrowRight size={15} />
               </a>
               <a
+                href="https://dunnluxuryselections.com/onepager/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-gold-500/50 text-gold-400 font-medium text-sm tracking-widest uppercase px-7 py-4 rounded hover:bg-gold-700/10 transition-colors"
+              >
+                Download One-Pager
+                <ArrowRight size={14} />
+              </a>
+              <a
                 href="tel:8884319214"
                 className="inline-flex items-center gap-2 border border-gold-500/50 text-gold-400 font-medium text-sm tracking-widest uppercase px-7 py-4 rounded hover:bg-gold-700/10 transition-colors"
               >
