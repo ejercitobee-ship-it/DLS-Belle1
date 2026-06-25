@@ -32,10 +32,12 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<ShopifyProduct[]>([]);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const { totalItems } = useCart();
   const navRef = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -82,6 +84,9 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
     const handleClickOutside = (e: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
         setSearchOpen(false);
+      }
+      if (mobileSearchRef.current && !mobileSearchRef.current.contains(e.target as Node)) {
+        setMobileSearchOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -233,6 +238,77 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
                         </div>
                       </button>
                     ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Search - Mobile */}
+              <div ref={mobileSearchRef} className="md:hidden relative">
+                {!mobileSearchOpen ? (
+                  <button
+                    onClick={() => setMobileSearchOpen(true)}
+                    className="text-cream-200/60 hover:text-gold-400 transition-colors p-2.5"
+                    aria-label="Search"
+                  >
+                    <Search size={20} />
+                  </button>
+                ) : (
+                  <div className="absolute right-0 top-full mt-2 w-72 bg-charcoal-900 border border-charcoal-700 rounded shadow-lg shadow-black/50 z-50">
+                    <div className="flex items-center bg-charcoal-900 border-b border-charcoal-700 px-3 py-2">
+                      <Search size={16} className="text-cream-200/40 flex-shrink-0" />
+                      <input
+                        type="text"
+                        placeholder="Search products..."
+                        autoFocus
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="bg-transparent text-cream-100 text-sm placeholder-cream-200/40 outline-none ml-2 w-full"
+                      />
+                      <button
+                        onClick={() => {
+                          setMobileSearchOpen(false);
+                          setSearchOpen(false);
+                        }}
+                        className="text-cream-200/60 hover:text-gold-400 transition-colors p-1"
+                        aria-label="Close search"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+
+                    {/* Mobile search results */}
+                    {searchQuery.trim().length >= 2 && (
+                      <div className="max-h-80 overflow-y-auto">
+                        {searchLoading && (
+                          <div className="px-4 py-3 text-cream-200/50 text-sm">Searching...</div>
+                        )}
+                        {!searchLoading && searchResults.length === 0 && (
+                          <div className="px-4 py-3 text-cream-200/50 text-sm">No products found</div>
+                        )}
+                        {!searchLoading && searchResults.map((product) => (
+                          <button
+                            key={product.id}
+                            onClick={() => {
+                              handleSearchSelect(product.handle);
+                              setMobileSearchOpen(false);
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gold-700/10 transition-colors border-b border-charcoal-800/50 last:border-b-0"
+                          >
+                            {product.featuredImage && (
+                              <img
+                                src={product.featuredImage.url}
+                                alt={product.title}
+                                className="w-8 h-8 object-contain rounded"
+                              />
+                            )}
+                            <div className="text-left flex-1">
+                              <div className="text-cream-100 text-xs font-medium line-clamp-1">{product.title}</div>
+                              <div className="text-cream-200/50 text-xs">${Math.round(parseFloat(product.priceRange.minVariantPrice.amount))}</div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
