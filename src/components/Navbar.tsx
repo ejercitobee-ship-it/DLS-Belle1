@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, ShoppingBag, ChevronDown } from 'lucide-react';
+import { Menu, X, ShoppingBag, ChevronDown, Search } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { fetchProducts } from '../lib/shopify';
+import type { ShopifyProduct } from '../lib/shopify';
 
 const navLinks = [
   {
@@ -12,11 +14,11 @@ const navLinks = [
       { label: 'Electronic Humidors', href: '/electronic-humidors' },
       { label: 'Travel Humidors', href: '/travel-humidors' },
       { label: 'Accessories', href: '/accessories' },
-      { label: 'Walk-In Humidors', href: '/walk-in-humidor' },
+      { label: 'Bespoke Humidors', href: '/walk-in-humidor' },
       { label: 'All Products', href: '/all-collections' },
     ],
   },
-  { label: 'Walk-In Humidors', href: '/walk-in-humidor' },
+  { label: 'Bespoke Humidors', href: '/walk-in-humidor' },
   { label: 'New Arrivals', href: '/new-arrivals' },
   { label: 'Journal', href: '/journal' },
   { label: 'About', href: '/about' },
@@ -27,8 +29,13 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collectionsOpen, setCollectionsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<ShopifyProduct[]>([]);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
   const { totalItems } = useCart();
   const navRef = useRef<HTMLElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -42,9 +49,54 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
+  // Search products
+  useEffect(() => {
+    const handleSearch = async () => {
+      if (searchQuery.trim().length < 2) {
+        setSearchResults([]);
+        return;
+      }
+
+      setSearchLoading(true);
+      try {
+        const { products } = await fetchProducts(100);
+        const filtered = products.filter((p) =>
+          p.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setSearchResults(filtered.slice(0, 8));
+        setSearchOpen(true);
+      } catch (error) {
+        console.error('Search failed:', error);
+        setSearchResults([]);
+      } finally {
+        setSearchLoading(false);
+      }
+    };
+
+    const debounceTimer = setTimeout(handleSearch, 300);
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
+
+  // Close search when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const closeMenu = () => {
     setMobileOpen(false);
     setCollectionsOpen(false);
+  };
+
+  const handleSearchSelect = (handle: string) => {
+    window.dispatchEvent(new CustomEvent('navigate-product', { detail: { productHandle: handle } }));
+    setSearchQuery('');
+    setSearchOpen(false);
   };
 
   return (
@@ -139,6 +191,52 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
 
             {/* Actions */}
             <div className="flex items-center gap-1 md:gap-4">
+              {/* Search - Desktop only */}
+              <div ref={searchRef} className="hidden md:block relative">
+                <div className="flex items-center bg-charcoal-900 border border-charcoal-700 hover:border-gold-600/50 rounded-lg px-3 py-1.5 transition-colors w-56">
+                  <Search size={16} className="text-cream-200/40 flex-shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onFocus={() => searchQuery.trim().length >= 2 && setSearchOpen(true)}
+                    className="bg-transparent text-cream-100 text-sm placeholder-cream-200/40 outline-none ml-2 w-full"
+                  />
+                </div>
+
+                {/* Search results dropdown */}
+                {searchOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-charcoal-900 border border-charcoal-700 rounded shadow-lg shadow-black/50 max-h-96 overflow-y-auto z-50">
+                    {searchLoading && (
+                      <div className="px-4 py-3 text-cream-200/50 text-sm">Searching...</div>
+                    )}
+                    {!searchLoading && searchResults.length === 0 && searchQuery.trim().length >= 2 && (
+                      <div className="px-4 py-3 text-cream-200/50 text-sm">No products found</div>
+                    )}
+                    {!searchLoading && searchResults.map((product) => (
+                      <button
+                        key={product.id}
+                        onClick={() => handleSearchSelect(product.handle)}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gold-700/10 transition-colors border-b border-charcoal-800/50 last:border-b-0"
+                      >
+                        {product.featuredImage && (
+                          <img
+                            src={product.featuredImage.url}
+                            alt={product.title}
+                            className="w-10 h-10 object-contain rounded"
+                          />
+                        )}
+                        <div className="text-left flex-1">
+                          <div className="text-cream-100 text-sm font-medium line-clamp-1">{product.title}</div>
+                          <div className="text-cream-200/50 text-xs">${Math.round(parseFloat(product.priceRange.minVariantPrice.amount))}</div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <button
                 aria-label="Cart"
                 onClick={onCartOpen}
