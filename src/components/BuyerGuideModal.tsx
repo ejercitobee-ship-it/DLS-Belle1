@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Download } from 'lucide-react';
 import { LeadFormData } from '../types/lead';
-// import { submitLead } from '../lib/leadService';
+import { submitLead } from '../lib/leadService';
 
 interface BuyerGuideModalProps {
   isOpen: boolean;
@@ -71,14 +71,14 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
 
     try {
       // Submit lead data to Zapier webhook
-      // const result = await submitLead(formData);
+      const result = await submitLead(formData);
 
       // Check if submission was successful before proceeding
-      // if (!result.success) {
-      //   setErrors({ form: result.message });
-      //   setIsDownloading(false);
-      //   return;
-      // }
+      if (!result.success) {
+        setErrors({ form: result.message });
+        setIsDownloading(false);
+        return;
+      }
 
       // Trigger PDF download
       const link = document.createElement('a');

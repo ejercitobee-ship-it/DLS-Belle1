@@ -1,39 +1,36 @@
 // src/lib/leadService.ts
 import { LeadFormData, LeadSubmissionResponse } from '../types/lead';
 
-const ZAPIER_WEBHOOK_URL = process.env.VITE_ZAPIER_WEBHOOK_URL || '';
+const SUPPORT_EMAIL = 'support@dunnluxuryselections.com';
 
 export const submitLead = async (data: LeadFormData): Promise<LeadSubmissionResponse> => {
-  if (!ZAPIER_WEBHOOK_URL) {
-    console.warn('Zapier webhook not configured. Lead data not sent.');
-    return {
-      success: false,
-      message: 'Lead service not configured',
-    };
-  }
-
   try {
-    const response = await fetch(ZAPIER_WEBHOOK_URL, {
+    const emailContent = `New Buyer's Guide Lead Submission
+
+Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone}
+Collection Size: ${data.collectionSize || 'Not specified'}
+Has Dedicated Space: ${data.dedicatedSpace ? 'Yes' : 'No'}
+Timestamp: ${new Date().toISOString()}`;
+
+    const response = await fetch('/api/send-email', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        collection_size: data.collectionSize || 'Not specified',
-        dedicated_space: data.dedicatedSpace ?? false,
-        timestamp: new Date().toISOString(),
-        source: 'buyer-guide-modal',
+        to: SUPPORT_EMAIL,
+        subject: `New Lead: ${data.name} - Buyer's Guide Download`,
+        text: emailContent,
       }),
     });
 
+    const result = await response.json();
+
     if (!response.ok) {
-      console.error('Lead submission failed:', response.status);
+      console.error('Lead submission failed:', result.error);
       return {
         success: false,
-        message: 'Lead submission failed',
+        message: result.error || 'Lead submission failed',
       };
     }
 
