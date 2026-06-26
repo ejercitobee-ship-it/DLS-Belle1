@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Download } from 'lucide-react';
 import { LeadFormData } from '../types/lead';
-import { submitLead } from '../lib/leadService';
+// import { submitLead } from '../lib/leadService';
 
 interface BuyerGuideModalProps {
   isOpen: boolean;
@@ -70,14 +71,14 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
 
     try {
       // Submit lead data to Zapier webhook
-      const result = await submitLead(formData);
+      // const result = await submitLead(formData);
 
       // Check if submission was successful before proceeding
-      if (!result.success) {
-        setErrors({ form: result.message });
-        setIsDownloading(false);
-        return;
-      }
+      // if (!result.success) {
+      //   setErrors({ form: result.message });
+      //   setIsDownloading(false);
+      //   return;
+      // }
 
       // Trigger PDF download
       const link = document.createElement('a');
@@ -136,11 +137,11 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
       onClick={handleBackdropClick}
       role="presentation"
     >
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-8 max-h-[90vh] overflow-y-auto relative">
+      <div className="bg-gradient-to-b from-charcoal-900 to-charcoal-950 rounded-lg shadow-2xl max-w-md w-full mx-4 p-8 max-h-[90vh] overflow-y-auto relative border border-gold-500/30">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -162,24 +163,25 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Download Starting!</h3>
-            <p className="text-gray-600">Check your email for the guide and next steps.</p>
+            <h3 className="text-2xl font-serif font-bold text-gold-400 mb-2">Success!</h3>
+            <p className="text-cream-200/70">Check your email for the guide and next steps.</p>
           </div>
         ) : (
           // Form
           <>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Download Free Guide
+            <div className="mb-1 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent" />
+            <h2 className="text-3xl font-serif font-bold text-gold-400 mb-1 text-center">
+              Buyer's Guide
             </h2>
-            <p id="modal-description" className="text-gray-600 text-sm mb-6">
-              Get instant access to "The Ultimate Luxury Humidor Buyer's Guide"
+            <p id="modal-description" className="text-cream-200/70 text-center text-sm mb-6">
+              Master climate control, craftsmanship, and investment value before choosing your humidor
             </p>
 
             <form onSubmit={handleDownload} className="space-y-4" aria-describedby="modal-description">
               {/* Name Field */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-900 mb-1">
-                  Full Name <span className="text-red-600">*</span>
+                <label htmlFor="name" className="block text-sm font-medium text-cream-100 mb-1">
+                  Full Name <span className="text-gold-400">*</span>
                 </label>
                 <input
                   id="name"
@@ -187,10 +189,10 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
                   type="text"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm ${
-                    errors.name ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm transition-all bg-charcoal-800 text-cream-100 placeholder-cream-300/50 ${
+                    errors.name ? 'border-red-500' : 'border-gold-500/40 hover:border-gold-500/70'
                   }`}
-                  placeholder="John Doe"
+                  placeholder="Full name"
                   disabled={isDownloading}
                 />
                 {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
@@ -198,8 +200,8 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
 
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1">
-                  Email <span className="text-red-600">*</span>
+                <label htmlFor="email" className="block text-sm font-medium text-cream-100 mb-1">
+                  Email <span className="text-gold-400">*</span>
                 </label>
                 <input
                   id="email"
@@ -207,19 +209,19 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm transition-all bg-charcoal-800 text-cream-100 placeholder-cream-300/50 ${
+                    errors.email ? 'border-red-500' : 'border-gold-500/40 hover:border-gold-500/70'
                   }`}
                   placeholder="you@example.com"
                   disabled={isDownloading}
                 />
-                {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+                {errors.email && <p className="mt-1 text-xs text-red-300">{errors.email}</p>}
               </div>
 
               {/* Phone Field */}
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-900 mb-1">
-                  Phone <span className="text-red-600">*</span>
+                <label htmlFor="phone" className="block text-sm font-medium text-cream-100 mb-1">
+                  Phone <span className="text-gold-400">*</span>
                 </label>
                 <input
                   id="phone"
@@ -227,18 +229,18 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
                   type="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm ${
-                    errors.phone ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm transition-all bg-charcoal-800 text-cream-100 placeholder-cream-300/50 ${
+                    errors.phone ? 'border-red-500' : 'border-gold-500/40 hover:border-gold-500/70'
                   }`}
                   placeholder="(555) 123-4567"
                   disabled={isDownloading}
                 />
-                {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
+                {errors.phone && <p className="mt-1 text-xs text-red-300">{errors.phone}</p>}
               </div>
 
               {/* Collection Size (Optional) */}
               <div>
-                <label htmlFor="collectionSize" className="block text-sm font-medium text-gray-900 mb-1">
+                <label htmlFor="collectionSize" className="block text-sm font-medium text-cream-100 mb-1">
                   Collection Size (optional)
                 </label>
                 <select
@@ -246,7 +248,7 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
                   name="collectionSize"
                   value={formData.collectionSize}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm"
+                  className="w-full px-4 py-2.5 border border-gold-500/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm bg-charcoal-800 text-cream-100 hover:border-gold-500/70 transition-all"
                   disabled={isDownloading}
                 >
                   <option value="">Select collection size...</option>
@@ -265,31 +267,42 @@ export const BuyerGuideModal = ({ isOpen, onClose }: BuyerGuideModalProps) => {
                   type="checkbox"
                   checked={formData.dedicatedSpace}
                   onChange={handleChange}
-                  className="h-4 w-4 rounded border-gray-300 text-gold-600"
+                  className="h-4 w-4 rounded border-gold-500 text-gold-500 bg-charcoal-800"
                   disabled={isDownloading}
                 />
-                <label htmlFor="dedicatedSpace" className="ml-2 text-sm text-gray-700">
+                <label htmlFor="dedicatedSpace" className="ml-2 text-sm text-cream-100">
                   I have dedicated space for a humidor
                 </label>
               </div>
 
               {/* Form Error */}
               {errors.form && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-xs text-red-700">{errors.form}</p>
+                <div className="p-3 bg-red-900/20 border border-red-500/50 rounded-lg">
+                  <p className="text-xs text-red-300">{errors.form}</p>
                 </div>
               )}
 
               {/* Download Button */}
+              <div className="h-px bg-gradient-to-r from-transparent via-gold-400/50 to-transparent my-6" />
               <button
                 type="submit"
                 disabled={isDownloading}
-                className="w-full px-4 py-3 bg-gold-600 text-white font-semibold rounded-lg hover:bg-gold-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors mt-6"
+                className="w-full px-6 py-3.5 bg-gradient-to-r from-gold-600 to-gold-700 text-white font-serif font-bold text-lg rounded-lg hover:shadow-2xl hover:shadow-gold-600/50 hover:from-gold-500 hover:to-gold-600 disabled:from-gray-500 disabled:to-gray-600 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2 group"
               >
-                {isDownloading ? 'Processing...' : 'Download Guide'}
+                {isDownloading ? (
+                  <>
+                    <span className="animate-spin">⟳</span>
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    Download Here
+                    <Download size={20} className="group-hover:translate-y-1 transition-transform" />
+                  </>
+                )}
               </button>
 
-              <p className="text-xs text-gray-500 text-center">
+              <p className="text-xs text-cream-300/60 text-center mt-4">
                 We respect your privacy. Your information will never be shared.
               </p>
             </form>

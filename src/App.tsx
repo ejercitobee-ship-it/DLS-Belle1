@@ -16,7 +16,8 @@ import LeadPopup from './components/LeadPopup';
 import StickyCartBar from './components/StickyCartBar';
 import FinancingBanner from './components/FinancingBanner';
 import { PersistentCTA } from './components/PersistentCTA';
-// import { BuyerGuideModal } from './components/BuyerGuideModal';
+// import { TestModal } from './components/TestModal';
+import { BuyerGuideModal } from './components/BuyerGuideModal';
 import { CartProvider, useCart } from './context/CartContext';
 import { usePageMeta } from './hooks/usePageMeta';
 
@@ -677,10 +678,10 @@ function AppInner() {
         />
       )}
 
-      {/* <BuyerGuideModal
+      <BuyerGuideModal
         isOpen={showBuyerGuideModal}
         onClose={() => setShowBuyerGuideModal(false)}
-      /> */}
+      />
     </div>
   );
 }

@@ -63,9 +63,10 @@ export default function Hero({ onOpenBuyerGuideModal }: { onOpenBuyerGuideModal?
             {onOpenBuyerGuideModal && (
               <button
                 onClick={onOpenBuyerGuideModal}
-                className="inline-block px-6 py-3 bg-gold-600 text-white font-semibold rounded-lg hover:bg-gold-700 transition-colors"
+                className="flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-sm tracking-widest uppercase px-7 py-4 rounded hover:opacity-90 active:scale-95 transition-all group"
               >
-                Download Free Guide
+                Download Your Free Buyer's Guide
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </button>
             )}
           </div>
