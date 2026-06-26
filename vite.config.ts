@@ -1,5 +1,6 @@
 import { defineConfig, Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
 const cloudflareRocketLoaderFix = (): Plugin => ({
   name: 'cloudflare-rocket-loader-fix',
@@ -16,6 +17,11 @@ const buildTimestamp = Date.now().toString();
 
 export default defineConfig({
   plugins: [react(), cloudflareRocketLoaderFix()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     // Optimize chunk size
     chunkSizeWarningLimit: 500,

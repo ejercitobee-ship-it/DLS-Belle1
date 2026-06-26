@@ -6,7 +6,7 @@ const trustBadges = [
   { icon: Truck, label: 'White-Glove Delivery', sub: 'Free on select items' },
 ];
 
-export default function Hero() {
+export default function Hero({ onOpenBuyerGuideModal }: { onOpenBuyerGuideModal?: () => void }) {
   return (
     <section className="relative min-h-[100svh] md:min-h-[90vh] flex items-center overflow-hidden">
       {/* Background image */}
@@ -60,6 +60,14 @@ export default function Hero() {
             >
               Bespoke Solutions
             </a>
+            {onOpenBuyerGuideModal && (
+              <button
+                onClick={onOpenBuyerGuideModal}
+                className="inline-block px-6 py-3 bg-gold-600 text-white font-semibold rounded-lg hover:bg-gold-700 transition-colors"
+              >
+                Download Free Guide
+              </button>
+            )}
           </div>
 
           {/* Trust badges */}

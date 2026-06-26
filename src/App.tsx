@@ -16,6 +16,7 @@ import LeadPopup from './components/LeadPopup';
 import StickyCartBar from './components/StickyCartBar';
 import FinancingBanner from './components/FinancingBanner';
 import { PersistentCTA } from './components/PersistentCTA';
+// import { BuyerGuideModal } from './components/BuyerGuideModal';
 import { CartProvider, useCart } from './context/CartContext';
 import { usePageMeta } from './hooks/usePageMeta';
 
@@ -180,7 +181,7 @@ function getProductHandle(): string {
   return '';
 }
 
-function PageContent({ page }: { page: Page }) {
+function PageContent({ page, onOpenBuyerGuideModal }: { page: Page; onOpenBuyerGuideModal: () => void }) {
   const isFullPageOverlay = page === 'checkout' || page === 'shopify-setup' || page === 'order-confirmation';
   const { openCart } = useCart();
 
@@ -224,7 +225,7 @@ function PageContent({ page }: { page: Page }) {
   void openCart;
   return (
     <>
-      <Hero />
+      <Hero onOpenBuyerGuideModal={onOpenBuyerGuideModal} />
       <FinancingBanner />
       <Collections />
       <NewArrivalsHomepageSection />
@@ -244,6 +245,7 @@ function AppInner() {
   const [displayPage, setDisplayPage] = useState<Page>(() => getInitialPage());
   const [showPopup, setShowPopup] = useState(false);
   const [popupMinimized, setPopupMinimized] = useState(false);
+  const [showBuyerGuideModal, setShowBuyerGuideModal] = useState(false);
   const pendingPage = useRef<Page | null>(null);
   const displayPageRef = useRef<Page>(getInitialPage());
   const { openCart } = useCart();
@@ -638,7 +640,7 @@ function AppInner() {
         style={{ opacity: transitioning ? 0 : 1, transitionDuration: '220ms' }}
       >
         <Suspense fallback={<div className="min-h-screen bg-charcoal-950" />}>
-          <PageContent page={displayPage} />
+          <PageContent page={displayPage} onOpenBuyerGuideModal={() => setShowBuyerGuideModal(true)} />
         </Suspense>
       </main>
 
@@ -674,6 +676,11 @@ function AppInner() {
           }}
         />
       )}
+
+      {/* <BuyerGuideModal
+        isOpen={showBuyerGuideModal}
+        onClose={() => setShowBuyerGuideModal(false)}
+      /> */}
     </div>
   );
 }
