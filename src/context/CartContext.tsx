@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 import {
   cartCreate,
   cartLinesAdd,
@@ -102,7 +102,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // Flush all pending batched operations to Shopify API
-  const flushPendingOperations = async () => {
+  const flushPendingOperations = useCallback(async () => {
     if (!getShopifyConfigured() || pendingOperations.length === 0) return;
 
     const operations = [...pendingOperations];
@@ -144,10 +144,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
       // Restore operations on failure for retry
       setPendingOperations(operations);
     }
-  };
+  }, [pendingOperations, shopifyCart]);
 
   const debouncedFlush = useRef(debounce(flushPendingOperations, DEBOUNCE_DELAY)).current;
 
+  // Cleanup: flush pending operations on unmount to ensure cart stays in sync
+  useEffect(() => {
+    return () => {
+      if (debouncedFlush && typeof debouncedFlush.flush === 'function') {
+        debouncedFlush.flush();
+      }
+    };
+  }, []);
 
   // Sync local items → Shopify cart whenever items change
   useEffect(() => {
@@ -279,7 +287,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const removeItem = (id: string) => {
+  const removeItem = useCallback((id: string) => {
     setItems((prev) => {
       const item = prev.find((i) => i.id === id);
       // Queue batched removal if it's a Shopify item with a line ID
@@ -295,9 +303,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return prev.filter((i) => i.id !== id);
     });
-  };
+  }, []);
 
-  const updateQty = (id: string, qty: number) => {
+  const updateQty = useCallback((id: string, qty: number) => {
     if (qty < 1) { removeItem(id); return; }
     setItems((prev) => {
       const item = prev.find((i) => i.id === id);
@@ -315,7 +323,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return prev.map((i) => i.id === id ? { ...i, quantity: qty } : i);
     });
-  };
+  }, [removeItem]);
 
   const clearCart = () => {
     setItems([]);
