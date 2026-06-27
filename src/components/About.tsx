@@ -35,12 +35,15 @@ export default function About() {
       {/* Hero */}
       <section className="relative min-h-[100svh] md:min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src="/images/brian-dunn-founder.png"
-            alt="Brian Dunn, Founder"
-            className="w-full h-full object-cover"
-            style={{ objectPosition: '60% center' }}
-          />
+          <picture>
+            <source srcSet="/images/brian-dunn-founder.webp" type="image/webp" />
+            <img
+              src="/images/brian-dunn-founder.png"
+              alt="Brian Dunn, Founder"
+              className="w-full h-full object-cover"
+              style={{ objectPosition: '60% center' }}
+            />
+          </picture>
           {/* Primary Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/75 to-charcoal-950/50" />
           {/* Secondary Gradient for Depth */}

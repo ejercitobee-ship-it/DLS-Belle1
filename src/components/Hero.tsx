@@ -11,11 +11,14 @@ export default function Hero({ onOpenBuyerGuideModal }: { onOpenBuyerGuideModal?
     <section className="relative min-h-[100svh] md:min-h-[90vh] flex items-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img
-          src="/images/hero-bg.png"
-          alt="Luxury humidor"
-          className="w-full h-full object-cover object-center"
-        />
+        <picture>
+          <source srcSet="/images/hero-bg.webp" type="image/webp" />
+          <img
+            src="/images/hero-bg.png"
+            alt="Luxury humidor"
+            className="w-full h-full object-cover object-center"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/75 to-charcoal-950/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/70 via-transparent to-transparent" />
       </div>

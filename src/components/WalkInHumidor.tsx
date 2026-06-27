@@ -172,11 +172,14 @@ export default function WalkInHumidor() {
       {/* ── Hero ── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src="/images/bespoke-walk-in-humidor.png"
-            alt="Bespoke walk-in humidor"
-            className="w-full h-full object-cover object-center"
-          />
+          <picture>
+            <source srcSet="/images/bespoke-walk-in-humidor.webp" type="image/webp" />
+            <img
+              src="/images/bespoke-walk-in-humidor.png"
+              alt="Bespoke walk-in humidor"
+              className="w-full h-full object-cover object-center"
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/75 to-charcoal-950/40" />
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/50 via-transparent to-transparent" />
         </div>

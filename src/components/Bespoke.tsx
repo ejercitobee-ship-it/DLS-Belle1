@@ -17,12 +17,15 @@ export default function Bespoke() {
           {/* Image */}
           <div className="relative overflow-hidden lg:overflow-visible">
             <div className="relative rounded-lg overflow-hidden aspect-[4/5] lg:aspect-auto lg:h-[600px]">
-              <img
-                src="/images/bespoke-walk-in-humidor.png"
-                alt="Bespoke walk-in humidor"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
+              <picture>
+                <source srcSet="/images/bespoke-walk-in-humidor.webp" type="image/webp" />
+                <img
+                  src="/images/bespoke-walk-in-humidor.png"
+                  alt="Bespoke walk-in humidor"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/60 to-transparent" />
             </div>
 
