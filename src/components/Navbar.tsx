@@ -108,7 +108,7 @@ export default function Navbar({ currentPage, onCartOpen }: { currentPage?: stri
     <>
       {/* Announcement bar */}
       <div className="bg-gold-600 text-charcoal-950 text-center py-2 px-4 text-xs font-medium tracking-widest uppercase">
-        Free Shipping on Selected Items &mdash; <a href="/all-collections" className="underline underline-offset-2 hover:opacity-70 transition-opacity">Shop the Full Collections</a>
+        Expert Consultation Available &mdash; <a href="tel:8884319214" className="underline underline-offset-2 hover:opacity-70 transition-opacity">Call (888) 431-9214</a>
       </div>
 
       <nav
