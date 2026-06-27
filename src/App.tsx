@@ -15,7 +15,6 @@ import ErrorBoundary from './components/ErrorBoundary';
 import LeadPopup from './components/LeadPopup';
 import StickyCartBar from './components/StickyCartBar';
 import FinancingBanner from './components/FinancingBanner';
-import { PersistentCTA } from './components/PersistentCTA';
 // import { TestModal } from './components/TestModal';
 import { BuyerGuideModal } from './components/BuyerGuideModal';
 import { CartProvider, useCart } from './context/CartContext';
@@ -652,8 +651,6 @@ function AppInner() {
         </footer>
       )}
 
-      {/* Persistent CTA for consultations */}
-      {!isFullPageOverlay && <PersistentCTA />}
 
       <CartDrawer onCheckout={() => navigate('checkout')} />
 
