@@ -49,24 +49,24 @@ export default function About() {
         {/* Decorative gold line */}
         <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gold-500/60 to-transparent" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24 w-full">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 w-full">
           <div className="max-w-2xl">
             {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-4 md:mb-6">
-              <div className="h-px w-10 bg-gold-500" />
+            <div className="flex items-center gap-3 mb-3 sm:mb-4 md:mb-6">
+              <div className="h-px w-8 sm:w-10 bg-gold-500" />
               <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
                 Our Founder's Story
               </span>
             </div>
 
             {/* Headline */}
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-4 md:mb-6">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] mb-3 sm:mb-4 md:mb-6">
               The Man<br />
-              <span className="text-gradient-gold italic">Behind It</span>
+              <span className="text-gold-400 italic">Behind It</span>
             </h1>
 
             {/* Sub-headline */}
-            <p className="text-cream-200/70 text-base md:text-xl leading-relaxed mb-8 md:mb-10 max-w-lg">
+            <p className="text-cream-200/70 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-8 md:mb-10 max-w-lg">
               The engineer who refused to settle for mediocre humidors — and built America's premier collection destination.
             </p>
           </div>
@@ -80,11 +80,11 @@ export default function About() {
       </section>
 
       {/* Act 1: Brian's Origin Story */}
-      <section className="py-24 bg-charcoal-950">
+      <section className="py-16 sm:py-20 md:py-24 bg-charcoal-950">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="prose-article leading-relaxed space-y-6">
+          <div className="prose-article leading-relaxed space-y-4 sm:space-y-6">
 
-            <p className="text-lg text-cream-100 leading-relaxed">
+            <p className="text-base sm:text-lg text-cream-100 leading-relaxed">
               Brian Dunn, an engineer at one of America's largest banks, discovered his passion for cigars during his banking career in Chicago. Like many collectors, he quickly realized the humidor market offered only two inadequate options: cheap imports with no support, or mass-produced furniture that treated cigars as an afterthought.
             </p>
 
@@ -128,32 +128,32 @@ export default function About() {
       </section>
 
       {/* Mission */}
-      <section className="py-24 bg-charcoal-900">
+      <section className="py-16 sm:py-20 md:py-24 bg-charcoal-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-px w-8 bg-gold-500" />
+          <div className="flex items-center justify-center gap-3 mb-4 sm:mb-6">
+            <div className="h-px w-6 sm:w-8 bg-gold-500" />
             <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Mission</span>
-            <div className="h-px w-8 bg-gold-500" />
+            <div className="h-px w-6 sm:w-8 bg-gold-500" />
           </div>
-          <h2 className="font-serif text-5xl md:text-6xl text-white font-bold mb-8 tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white font-bold mb-6 sm:mb-8 tracking-tight">
             Preserving the <span className="text-gold-400 italic">Art of the Cigar</span>
           </h2>
-          <p className="text-cream-100 text-lg leading-relaxed mb-6 max-w-3xl mx-auto">
+          <p className="text-cream-100 text-sm sm:text-base md:text-lg leading-relaxed mb-6 max-w-3xl mx-auto">
             We believe every collection deserves precision engineering, not compromise. Whether you're building your first humidor or curating a museum-quality collection, we exist to design solutions that match the calibre of your passion.
           </p>
         </div>
       </section>
 
       {/* Values */}
-      <section className="py-24 bg-charcoal-950">
+      <section className="py-16 sm:py-20 md:py-24 bg-charcoal-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="h-px w-8 bg-gold-500" />
+          <div className="text-center mb-10 sm:mb-12 md:mb-14">
+            <div className="flex items-center justify-center gap-3 mb-3 sm:mb-4">
+              <div className="h-px w-6 sm:w-8 bg-gold-500" />
               <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">What We Stand For</span>
-              <div className="h-px w-8 bg-gold-500" />
+              <div className="h-px w-6 sm:w-8 bg-gold-500" />
             </div>
-            <h2 className="font-serif text-5xl md:text-6xl text-white font-bold tracking-tight">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white font-bold tracking-tight">
               Our <span className="text-gold-400 italic">Values</span>
             </h2>
           </div>
@@ -174,15 +174,15 @@ export default function About() {
       </section>
 
       {/* Timeline */}
-      <section className="py-24 bg-charcoal-900">
+      <section className="py-16 sm:py-20 md:py-24 bg-charcoal-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="h-px w-8 bg-gold-500" />
+          <div className="text-center mb-10 sm:mb-12 md:mb-14">
+            <div className="flex items-center justify-center gap-3 mb-3 sm:mb-4">
+              <div className="h-px w-6 sm:w-8 bg-gold-500" />
               <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Timeline</span>
-              <div className="h-px w-8 bg-gold-500" />
+              <div className="h-px w-6 sm:w-8 bg-gold-500" />
             </div>
-            <h2 className="font-serif text-5xl md:text-6xl text-white font-bold tracking-tight">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white font-bold tracking-tight">
               From Vision to <span className="text-gold-400 italic">Reality</span>
             </h2>
           </div>
@@ -205,12 +205,12 @@ export default function About() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-charcoal-950 border-t border-charcoal-800/40">
+      <section className="py-16 sm:py-20 bg-charcoal-950 border-t border-charcoal-800/40">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-serif text-4xl md:text-5xl text-white font-bold mb-4 tracking-tight">
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-bold mb-3 sm:mb-4 tracking-tight">
             Ready to Elevate Your Collection?
           </h2>
-          <p className="text-cream-100 mb-8">Browse our full collection or speak with our team for expert guidance tailored to your needs.</p>
+          <p className="text-cream-100 text-sm sm:text-base mb-6 sm:mb-8">Browse our full collection or speak with our team for expert guidance tailored to your needs.</p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="/all-collections" className="inline-flex items-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-7 py-3.5 rounded hover:opacity-90 transition-opacity">
               Shop Collection
