@@ -8,9 +8,18 @@ import {
   getShopifyConfigured,
   type ShopifyCart,
 } from '../lib/shopify';
+import { debounce } from '../utils/debounce';
 
 const CART_ID_KEY = 'dunns_shopify_cart_id';
 const LOCAL_CART_KEY = 'dunns_cart';
+const DEBOUNCE_DELAY = 50; // 50ms for batching
+
+type PendingOperation = {
+  type: 'add' | 'update' | 'remove';
+  merchandiseId?: string;
+  id?: string;
+  quantity?: number;
+};
 
 export type CartItem = {
   id: string;
@@ -66,6 +75,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [shopifyCart, setShopifyCart] = useState<ShopifyCart | null>(null);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
+  const [pendingOperations, setPendingOperations] = useState<PendingOperation[]>([]);
 
   const syncLock = useRef(false);
   const pendingSync = useRef(false);
@@ -90,6 +100,54 @@ export function CartProvider({ children }: { children: ReactNode }) {
       })
       .catch(() => clearCartId());
   }, []);
+
+  // Flush all pending batched operations to Shopify API
+  const flushPendingOperations = async () => {
+    if (!getShopifyConfigured() || pendingOperations.length === 0) return;
+
+    const operations = [...pendingOperations];
+    setPendingOperations([]);
+
+    try {
+      const savedId = getSavedCartId();
+      if (!savedId) return;
+
+      const toAdd: { merchandiseId: string; quantity: number }[] = [];
+      const toUpdate: { id: string; quantity: number }[] = [];
+      const toRemove: string[] = [];
+
+      // Aggregate operations by type
+      for (const op of operations) {
+        if (op.type === 'add' && op.merchandiseId && op.quantity) {
+          toAdd.push({ merchandiseId: op.merchandiseId, quantity: op.quantity });
+        } else if (op.type === 'update' && op.id && op.quantity) {
+          toUpdate.push({ id: op.id, quantity: op.quantity });
+        } else if (op.type === 'remove' && op.id) {
+          toRemove.push(op.id);
+        }
+      }
+
+      let updatedCart = shopifyCart;
+      if (!updatedCart) {
+        updatedCart = await fetchCart(savedId);
+        if (!updatedCart) return;
+      }
+
+      if (toAdd.length) updatedCart = await cartLinesAdd(savedId, toAdd);
+      if (toUpdate.length) updatedCart = await cartLinesUpdate(savedId, toUpdate);
+      if (toRemove.length) updatedCart = await cartLinesRemove(savedId, toRemove);
+
+      setShopifyCart(updatedCart);
+      setCheckoutUrl(updatedCart.checkoutUrl);
+    } catch (err) {
+      console.error('[Cart] Failed to flush pending operations:', err);
+      // Restore operations on failure for retry
+      setPendingOperations(operations);
+    }
+  };
+
+  const debouncedFlush = useRef(debounce(flushPendingOperations, DEBOUNCE_DELAY)).current;
+
 
   // Sync local items → Shopify cart whenever items change
   useEffect(() => {
@@ -193,6 +251,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
     setIsOpen(true);
 
+    // Queue batched operation if it's a Shopify item
+    if (newItem.shopifyVariantId && getShopifyConfigured()) {
+      setPendingOperations((prev) => [
+        ...prev,
+        {
+          type: 'add',
+          merchandiseId: newItem.shopifyVariantId!,
+          quantity: 1,
+        },
+      ]);
+      debouncedFlush();
+    }
+
     // Google Analytics 4 - Add to Cart Event
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'add_to_cart', {
@@ -208,11 +279,42 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const removeItem = (id: string) => setItems((prev) => prev.filter((i) => i.id !== id));
+  const removeItem = (id: string) => {
+    setItems((prev) => {
+      const item = prev.find((i) => i.id === id);
+      // Queue batched removal if it's a Shopify item with a line ID
+      if (item && item.shopifyLineId && getShopifyConfigured()) {
+        setPendingOperations((prevOps) => [
+          ...prevOps,
+          {
+            type: 'remove',
+            id: item.shopifyLineId!,
+          },
+        ]);
+        debouncedFlush();
+      }
+      return prev.filter((i) => i.id !== id);
+    });
+  };
 
   const updateQty = (id: string, qty: number) => {
     if (qty < 1) { removeItem(id); return; }
-    setItems((prev) => prev.map((i) => i.id === id ? { ...i, quantity: qty } : i));
+    setItems((prev) => {
+      const item = prev.find((i) => i.id === id);
+      // Queue batched update if it's a Shopify item with a line ID
+      if (item && item.shopifyLineId && getShopifyConfigured()) {
+        setPendingOperations((prevOps) => [
+          ...prevOps,
+          {
+            type: 'update',
+            id: item.shopifyLineId!,
+            quantity: qty,
+          },
+        ]);
+        debouncedFlush();
+      }
+      return prev.map((i) => i.id === id ? { ...i, quantity: qty } : i);
+    });
   };
 
   const clearCart = () => {
