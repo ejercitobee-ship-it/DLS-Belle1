@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { ShoppingBag, Star, ChevronDown, Box, CheckCircle2, Loader2, SlidersHorizontal, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
@@ -156,6 +156,100 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
+const ProductCard = React.memo(function ProductCard({
+  product,
+  addedKey,
+  onAddToCart,
+  navigateToProduct,
+  badgeStyles,
+}: {
+  product: DisplayProduct;
+  addedKey: string | null;
+  onAddToCart: (e: React.MouseEvent, product: DisplayProduct) => void;
+  navigateToProduct: (handle: string) => void;
+  badgeStyles: Record<string, string>;
+}) {
+  return (
+    <a
+      key={product.key}
+      href={`/product/${product.handle}`}
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest('button')) return;
+        e.preventDefault();
+        navigateToProduct(product.handle);
+      }}
+      className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
+    >
+      <div className="relative overflow-hidden aspect-[4/3] bg-charcoal-900">
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full bg-charcoal-800 flex items-center justify-center">
+            <Box size={28} className="text-charcoal-600" />
+          </div>
+        )}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none">
+          <span className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 text-xs tracking-widest uppercase font-medium drop-shadow-lg">View Product</span>
+        </div>
+        {product.badge && (
+          <span className={`absolute top-2.5 left-2.5 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded ${badgeStyles[product.badge] || ''}`}>
+            {product.badge}
+          </span>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <button
+          onClick={(e) => onAddToCart(e, product)}
+          className={`absolute bottom-2.5 right-2.5 w-8 h-8 bg-gold-gradient rounded flex items-center justify-center text-charcoal-950 shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ${addedKey === product.key ? 'opacity-100 translate-y-0' : ''}`}
+          aria-label="Add to cart"
+        >
+          {addedKey === product.key ? <CheckCircle2 size={13} /> : <ShoppingBag size={13} />}
+        </button>
+      </div>
+
+      <div className="p-4">
+        <h3 className="text-cream-100 text-sm font-semibold leading-snug mb-1.5 group-hover:text-white transition-colors">
+          {product.name}
+        </h3>
+        {product.rating && product.priceNum && (
+          <SchemaMarkup
+            schema={generateProductSchema({
+              name: product.name,
+              description: product.description,
+              image: product.image,
+              price: product.priceNum,
+              url: `/product/${product.handle}`,
+              rating: product.rating,
+              reviewCount: product.reviews
+            })}
+          />
+        )}
+        <div className="flex items-center gap-1.5 mb-2">
+          <span className="text-[10px] text-cream-200/40 bg-charcoal-950/60 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <Box size={9} /> {product.capacity}
+          </span>
+        </div>
+        {product.rating && (
+          <div className="flex items-center gap-1.5 mb-2.5">
+            <StarRating rating={product.rating} />
+            <span className="text-cream-200/40 text-[11px]">({product.reviews})</span>
+          </div>
+        )}
+        <div className="flex items-center justify-between pt-2.5 border-t border-charcoal-800/40">
+          <div className="flex items-baseline gap-2">
+            <span className="text-white font-bold text-base font-serif">{product.price}</span>
+          </div>
+          <span className="text-gold-400 text-xs font-medium group-hover:text-gold-300 transition-colors">View →</span>
+        </div>
+      </div>
+    </a>
+  );
+});
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function DesktopHumidors() {
@@ -191,17 +285,25 @@ export default function DesktopHumidors() {
     setTimeout(() => setAddedKey(null), 1500);
   };
 
-  const filtered = displayProducts.filter((p) => {
-    const { min, max } = capacityFilters[capacityFilter];
-    return p.capacityMax >= min && p.capacityMax <= max;
-  });
+  const filtered = useMemo(
+    () =>
+      displayProducts.filter((p) => {
+        const { min, max } = capacityFilters[capacityFilter];
+        return p.capacityMax >= min && p.capacityMax <= max;
+      }),
+    [displayProducts, capacityFilter]
+  );
 
-  const sorted = [...filtered].sort((a, b) => {
-    if (sort === 'price-asc') return a.priceNum - b.priceNum;
-    if (sort === 'price-desc') return b.priceNum - a.priceNum;
-    if (sort === 'capacity-desc') return b.capacityMax - a.capacityMax;
-    return 0;
-  });
+  const sorted = useMemo(
+    () =>
+      [...filtered].sort((a, b) => {
+        if (sort === 'price-asc') return a.priceNum - b.priceNum;
+        if (sort === 'price-desc') return b.priceNum - a.priceNum;
+        if (sort === 'capacity-desc') return b.capacityMax - a.capacityMax;
+        return 0;
+      }),
+    [filtered, sort]
+  );
 
   const heroImage = collectionImage
     || '/images/collections/collections-travel-humidors.png';
@@ -328,83 +430,14 @@ export default function DesktopHumidors() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {sorted.map((product) => (
-                <a
+                <ProductCard
                   key={product.key}
-                  href={`/product/${product.handle}`}
-                  onClick={(e) => {
-                    if ((e.target as HTMLElement).closest('button')) return;
-                    e.preventDefault();
-                    navigateToProduct(product.handle);
-                  }}
-                  className="group bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/40 rounded-lg overflow-hidden cursor-pointer card-hover"
-                >
-                  <div className="relative overflow-hidden aspect-[4/3] bg-charcoal-900">
-                    {product.image ? (
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-charcoal-800 flex items-center justify-center">
-                        <Box size={28} className="text-charcoal-600" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none">
-                      <span className="text-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 text-xs tracking-widest uppercase font-medium drop-shadow-lg">View Product</span>
-                    </div>
-                    {product.badge && (
-                      <span className={`absolute top-2.5 left-2.5 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded ${badgeStyles[product.badge] || ''}`}>
-                        {product.badge}
-                      </span>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <button
-                      onClick={(e) => handleAddToCart(e, product)}
-                      className={`absolute bottom-2.5 right-2.5 w-8 h-8 bg-gold-gradient rounded flex items-center justify-center text-charcoal-950 shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ${addedKey === product.key ? 'opacity-100 translate-y-0' : ''}`}
-                      aria-label="Add to cart"
-                    >
-                      {addedKey === product.key ? <CheckCircle2 size={13} /> : <ShoppingBag size={13} />}
-                    </button>
-                  </div>
-
-                  <div className="p-4">
-                    <h3 className="text-cream-100 text-sm font-semibold leading-snug mb-1.5 group-hover:text-white transition-colors">
-                      {product.name}
-                    </h3>
-                    {product.rating && product.priceNum && (
-                      <SchemaMarkup
-                        schema={generateProductSchema({
-                          name: product.name,
-                          description: product.description,
-                          image: product.image,
-                          price: product.priceNum,
-                          url: `/product/${product.handle}`,
-                          rating: product.rating,
-                          reviewCount: product.reviews
-                        })}
-                      />
-                    )}
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <span className="text-[10px] text-cream-200/40 bg-charcoal-950/60 px-2 py-0.5 rounded-full flex items-center gap-1">
-                        <Box size={9} /> {product.capacity}
-                      </span>
-                    </div>
-                    {product.rating && (
-                      <div className="flex items-center gap-1.5 mb-2.5">
-                        <StarRating rating={product.rating} />
-                        <span className="text-cream-200/40 text-[11px]">({product.reviews})</span>
-                      </div>
-                    )}
-                    <div className="flex items-center justify-between pt-2.5 border-t border-charcoal-800/40">
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-white font-bold text-base font-serif">{product.price}</span>
-                      </div>
-                      <span className="text-gold-400 text-xs font-medium group-hover:text-gold-300 transition-colors">View →</span>
-                    </div>
-                  </div>
-                </a>
+                  product={product}
+                  addedKey={addedKey}
+                  onAddToCart={handleAddToCart}
+                  navigateToProduct={navigateToProduct}
+                  badgeStyles={badgeStyles}
+                />
               ))}
             </div>
           )
