@@ -33,29 +33,49 @@ export default function About() {
     <div className="min-h-screen bg-charcoal-950">
 
       {/* Hero */}
-      <section className="relative py-20 sm:py-28 md:py-32 overflow-hidden min-h-[500px] sm:min-h-[600px] md:min-h-[700px]">
+      <section className="relative min-h-[100svh] md:min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
             src="/images/brian-dunn-founder.png"
             alt="Brian Dunn, Founder"
             className="w-full h-full object-cover object-right-top sm:object-center"
-            loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/90 via-charcoal-950/80 to-charcoal-950/60 sm:from-charcoal-950 sm:via-charcoal-950/90 sm:to-charcoal-950/80 md:to-charcoal-950/70" />
+          {/* Primary Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/75 to-charcoal-950/50" />
+          {/* Secondary Gradient for Depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/70 via-transparent to-transparent" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-          <div className="max-w-2xl pt-8 sm:pt-0">
-            <div className="flex items-center gap-3 mb-4 sm:mb-5">
-              <div className="h-px w-6 sm:w-8 bg-gold-500" />
-              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase drop-shadow-lg">Our Founder's Story</span>
+
+        {/* Decorative gold line */}
+        <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gold-500/60 to-transparent" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24 w-full">
+          <div className="max-w-2xl">
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-4 md:mb-6">
+              <div className="h-px w-10 bg-gold-500" />
+              <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">
+                Our Founder's Story
+              </span>
             </div>
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-white font-bold leading-[1.1] mb-4 sm:mb-6 drop-shadow-xl">
-              The Man Behind It
+
+            {/* Headline */}
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-4 md:mb-6">
+              The Man<br />
+              <span className="text-gradient-gold italic">Behind It</span>
             </h1>
-            <p className="text-cream-100 text-lg sm:text-xl leading-relaxed drop-shadow-lg">
-              Meet Brian Dunn
+
+            {/* Sub-headline */}
+            <p className="text-cream-200/70 text-base md:text-xl leading-relaxed mb-8 md:mb-10 max-w-lg">
+              The engineer who refused to settle for mediocre humidors — and built America's premier collection destination.
             </p>
           </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2">
+          <span className="text-cream-200/30 text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+          <div className="w-px h-10 bg-gradient-to-b from-gold-500/60 to-transparent animate-pulse" />
         </div>
       </section>
 
@@ -64,19 +84,19 @@ export default function About() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="prose-article leading-relaxed space-y-6">
 
-            <p className="text-lg text-cream-200/90">
+            <p className="text-lg text-cream-100 leading-relaxed">
               Brian Dunn, an engineer at one of America's largest banks, discovered his passion for cigars during his banking career in Chicago. Like many collectors, he quickly realized the humidor market offered only two inadequate options: cheap imports with no support, or mass-produced furniture that treated cigars as an afterthought.
             </p>
 
-            <p className="text-lg text-cream-200/90">
+            <p className="text-lg text-cream-100 leading-relaxed">
               But Brian saw a deeper problem. Every collector's needs were different. One person needed a 500-cigar cabinet for a man cave. Another needed a precision walk-in system for a retail lounge. A third needed a bespoke solution for a specific space. Yet the industry offered only generic, off-the-shelf answers. Brian believed every collection deserved a custom-engineered solution, designed with precision engineering and tailored to that collector's unique vision.
             </p>
 
-            <p className="text-lg text-cream-200/90">
-              This conviction — that cigars and their storage deserve better — became the foundation of Dunn's Luxury Selections. Not just selling humidors. Designing them. Custom-engineered, precision-crafted solutions for collectors who refuse to compromise.
+            <p className="text-lg text-cream-100 leading-relaxed">
+              This conviction — that cigars and their storage deserve better — became the foundation of Dunn's Luxury Selections. Not just selling humidors. <span className="text-gold-400">Designing them.</span> Custom-engineered, precision-crafted solutions for collectors who refuse to compromise.
             </p>
 
-            <p className="text-lg text-cream-200/90">
+            <p className="text-lg text-cream-100 leading-relaxed">
               In 2025, Brian founded Dunn's Luxury Selections to bring that vision to life. By early 2026, he'd partnered with the industry's most respected brands to expand the possibilities — ensuring that whether you need a curated collection piece or a fully custom walk-in sanctuary, Brian's team can engineer the perfect solution.
             </p>
 
@@ -115,11 +135,11 @@ export default function About() {
             <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Mission</span>
             <div className="h-px w-8 bg-gold-500" />
           </div>
-          <h2 className="font-serif text-4xl text-white font-bold mb-8">
-            Preserving the <span className="text-gradient-gold italic">Art of the Cigar</span>
+          <h2 className="font-serif text-5xl md:text-6xl text-white font-bold mb-8 tracking-tight">
+            Preserving the <span className="text-gold-400 italic">Art of the Cigar</span>
           </h2>
-          <p className="text-cream-200/60 text-lg leading-relaxed mb-6">
-            Founded on Brian's belief that cigars deserve precision engineering, not compromise, Dunn's Luxury Selections exists to ensure every collector — from the entry-level aficionado to the seasoned private collector — has access to a storage solution equal to the calibre of their collection.
+          <p className="text-cream-100 text-lg leading-relaxed mb-6 max-w-3xl mx-auto">
+            We believe every collection deserves precision engineering, not compromise. Whether you're building your first humidor or curating a museum-quality collection, we exist to design solutions that match the calibre of your passion.
           </p>
         </div>
       </section>
@@ -133,19 +153,19 @@ export default function About() {
               <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">What We Stand For</span>
               <div className="h-px w-8 bg-gold-500" />
             </div>
-            <h2 className="font-serif text-4xl text-white font-bold">
-              Our <span className="text-gradient-gold italic">Values</span>
+            <h2 className="font-serif text-5xl md:text-6xl text-white font-bold tracking-tight">
+              Our <span className="text-gold-400 italic">Values</span>
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {values.map(({ icon: Icon, title, description }) => (
-              <div key={title} className="bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-700/30 rounded-lg p-8 transition-colors flex gap-6">
+              <div key={title} className="bg-charcoal-900 border border-charcoal-800/50 hover:border-gold-500/40 rounded-lg p-8 transition-colors flex gap-6">
                 <div className="w-12 h-12 rounded-lg border border-gold-600/30 bg-gold-700/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Icon size={20} className="text-gold-500" />
+                  <Icon size={20} className="text-gold-400" />
                 </div>
                 <div>
-                  <h3 className="font-serif text-xl text-white font-semibold mb-3">{title}</h3>
-                  <p className="text-cream-200/55 text-sm leading-relaxed">{description}</p>
+                  <h3 className="font-serif text-lg text-white font-bold mb-3 tracking-tight">{title}</h3>
+                  <p className="text-cream-200/70 text-sm leading-relaxed">{description}</p>
                 </div>
               </div>
             ))}
@@ -162,8 +182,8 @@ export default function About() {
               <span className="text-gold-400 text-xs font-medium tracking-[0.4em] uppercase">Our Timeline</span>
               <div className="h-px w-8 bg-gold-500" />
             </div>
-            <h2 className="font-serif text-4xl text-white font-bold">
-              From Vision to <span className="text-gradient-gold italic">Reality</span>
+            <h2 className="font-serif text-5xl md:text-6xl text-white font-bold tracking-tight">
+              From Vision to <span className="text-gold-400 italic">Reality</span>
             </h2>
           </div>
 
@@ -175,8 +195,8 @@ export default function About() {
                   <span className="text-gold-400 text-[10px] font-bold leading-none">{year}</span>
                 </div>
                 <div className={`md:w-[calc(50%-4rem)] bg-charcoal-950 border border-charcoal-800/50 rounded-lg p-6 ml-20 md:ml-0 ${i % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'}`}>
-                  <h3 className="text-white font-semibold mb-2">{title}</h3>
-                  <p className="text-cream-200/55 text-sm leading-relaxed">{desc}</p>
+                  <h3 className="font-serif text-lg text-white font-bold mb-2 tracking-tight">{title}</h3>
+                  <p className="text-cream-200/70 text-sm leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -187,10 +207,10 @@ export default function About() {
       {/* CTA */}
       <section className="py-20 bg-charcoal-950 border-t border-charcoal-800/40">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-serif text-3xl text-white font-bold mb-4">
+          <h2 className="font-serif text-4xl md:text-5xl text-white font-bold mb-4 tracking-tight">
             Ready to Elevate Your Collection?
           </h2>
-          <p className="text-cream-200/55 mb-8">Browse our full collection or speak with our team for expert guidance tailored to your needs.</p>
+          <p className="text-cream-100 mb-8">Browse our full collection or speak with our team for expert guidance tailored to your needs.</p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="/all-collections" className="inline-flex items-center gap-2 bg-gold-gradient text-charcoal-950 font-semibold text-xs tracking-widest uppercase px-7 py-3.5 rounded hover:opacity-90 transition-opacity">
               Shop Collection

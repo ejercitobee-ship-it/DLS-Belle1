@@ -2,8 +2,8 @@ import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react'
 // Build v2 - Cache bust
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import { NewArrivalsCarousel } from './components/NewArrivalsCarousel';
 import Collections from './components/Collections';
-import NewArrivalsHomepageSection from './components/NewArrivalsHomepageSection';
 import Bespoke from './components/Bespoke';
 import DealsBanner from './components/DealsBanner';
 import Testimonials from './components/Testimonials';
@@ -227,9 +227,9 @@ function PageContent({ page, onOpenBuyerGuideModal }: { page: Page; onOpenBuyerG
   return (
     <>
       <Hero onOpenBuyerGuideModal={onOpenBuyerGuideModal} />
+      <NewArrivalsCarousel />
       <FinancingBanner />
       <Collections />
-      <NewArrivalsHomepageSection />
       <Bespoke />
       <DealsBanner />
       <Testimonials />
@@ -566,7 +566,7 @@ function AppInner() {
       if (href.startsWith('/product/')) {
         e.preventDefault();
         console.log('[Router] Product link clicked:', href);
-        window.history.pushState(null, '', href);
+        window.history.pushState({ page: 'product' }, '', href);
         // Force navigation even if already on product page (different product)
         pendingPage.current = 'product';
         setTransitioning(true);
@@ -583,6 +583,7 @@ function AppInner() {
       if (href.startsWith('/article/')) {
         e.preventDefault();
         const handle = href.slice('/article/'.length);
+        window.history.pushState({ page: 'article' }, '', href);
         navigate('article', handle);
         return;
       }
