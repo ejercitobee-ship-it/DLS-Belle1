@@ -1,6 +1,5 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { fetchCollections, type ShopifyCollection } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
 
 const STATIC_COLLECTIONS = [
@@ -70,56 +69,11 @@ type DisplayCollection = {
   featured: boolean;
 };
 
-// Map Shopify handle → local nav id
-const HANDLE_TO_NAV: Record<string, string> = {
-  'desktop-humidors': 'desktop',
-  'electronic-hunidors': 'electronic',
-  'electronic-humidors': 'electronic',
-  'cabinet-humidors': 'cabinet-humidors',
-  'travel-humidors': 'travel',
-  'accessories-1': 'accessories',
-  'accessories': 'accessories',
-  'bespoke-walkins': 'bespoke-walkins',
-};
-
-const FEATURED_HANDLES = new Set([
-  'electronic-hunidors',
-  'electronic-humidors',
-  'bespoke-walkins',
-]);
-
-function fromShopify(col: ShopifyCollection, index: number): DisplayCollection {
-  const navId = HANDLE_TO_NAV[col.handle] ?? col.handle;
-  return {
-    id: navId,
-    handle: col.handle,
-    name: col.title,
-    description: col.description,
-    image: col.image?.url ?? '',
-    count: `${col.products.length > 0 ? col.products.length + ' Products' : 'View'}`,
-    featured: FEATURED_HANDLES.has(col.handle) || index === 0,
-  };
-}
-
 export default function Collections() {
-  const [collections, setCollections] = useState<DisplayCollection[]>(STATIC_COLLECTIONS);
-
-  useEffect(() => {
-    fetchCollections(20)
-      .then((cols) => {
-        if (!cols.length) return;
-        const mapped = cols
-          .filter((c) => {
-            // Only show collections that map to a known nav section
-            return HANDLE_TO_NAV[c.handle] !== undefined ||
-              FEATURED_HANDLES.has(c.handle) ||
-              ['desktop-humidors','electronic-hunidors','electronic-humidors','cabinet-humidors','travel-humidors','accessories-1','accessories'].includes(c.handle);
-          })
-          .map((c, i) => fromShopify(c, i));
-        if (mapped.length >= 4) setCollections(mapped);
-      })
-      .catch(() => {/* keep static fallback */});
-  }, []);
+  const [collections] = useState<DisplayCollection[]>(STATIC_COLLECTIONS);
+  // Note: Removed unnecessary fetchCollections API call
+  // STATIC_COLLECTIONS provides excellent fallback and prevents waterfall
+  // Collections page has dedicated fetching via Collections.tsx component
 
   return (
     <section id="collections" className="py-24 bg-charcoal-950">

@@ -54,17 +54,24 @@ export default function FeaturedProducts() {
   useEffect(() => {
     async function load() {
       try {
-        // Try common Shopify tag variants used for new arrivals
-        let p = await fetchProductsByTag('New Arrival', 20);
-        if (!p.length) p = await fetchProductsByTag('new-arrival', 20);
-        if (!p.length) p = await fetchProductsByTag('new_arrival', 20);
-        if (!p.length) p = await fetchProductsByTag('New', 20);
-        // Final fallback: latest products
-        if (!p.length) {
-          const result = await fetchProducts(12);
+        // Single attempt with immediate fallback (eliminates 4-5 sequential API calls)
+        // Try one common tag variant; if fails or empty, fallback to latest products
+        let p: ShopifyProduct[] = [];
+
+        try {
+          p = await Promise.race([
+            fetchProductsByTag('New Arrival', 20),
+            new Promise<ShopifyProduct[]>((_, reject) =>
+              setTimeout(() => reject(new Error('timeout')), 2000)
+            )
+          ]);
+        } catch {
+          // Tag failed or timed out - use fallback
+          const result = await fetchProducts(20);
           p = result.products;
         }
-        setProducts(p);
+
+        setProducts(p.length ? p : []);
       } catch {
         setError(true);
       } finally {
