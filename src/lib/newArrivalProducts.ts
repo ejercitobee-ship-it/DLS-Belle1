@@ -58,7 +58,7 @@ export const STATIC_PRODUCTS: Product[] = [
     ],
     description:
       'The RR980 is the definitive grand estate humidor — a monumental cabinet engineered for collectors who demand the absolute apex of environmental precision. TFT diagnostics, draw resistance detection, and mobile app remote unlock place it in a category of its own. Spanish cedar throughout, ammonia removal, and customizable lighting make this the centerpiece of any serious private lounge or tasting room.',
-    image: 'https://via.placeholder.com/400x500?text=Raching+RR980',
+    image: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22500%22%3E%3Crect fill=%22%23333%22 width=%22400%22 height=%22500%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22%3ERaching RR980%3C/text%3E%3C/svg%3E',
     badge: 'New',
     rating: 5.0,
     reviews: 3,
