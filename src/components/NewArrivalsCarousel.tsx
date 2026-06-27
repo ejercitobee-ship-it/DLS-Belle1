@@ -127,20 +127,20 @@ export const NewArrivalsCarousel = () => {
           <button
             onClick={scrollPrev}
             disabled={!canScrollPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-10 sm:-translate-x-12 md:-translate-x-16 z-20 p-2 sm:p-3 rounded-full border border-gold-500/40 hover:border-gold-500/100 hover:bg-gold-500/15 disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-300 group hover:shadow-lg hover:shadow-gold-500/30"
+            className="absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 sm:-translate-x-12 md:-translate-x-16 z-20 p-2.5 sm:p-3 rounded-full border-2 border-gold-500 bg-gold-500/25 hover:border-gold-400 hover:bg-gold-500/40 disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-300 group hover:shadow-lg hover:shadow-gold-500/30 sm:border sm:bg-gold-500/15"
             aria-label="Previous slide"
           >
-            <ChevronLeft size={20} className="sm:w-6 sm:h-6 text-gold-400 group-hover:text-gold-300 transition-colors" />
+            <ChevronLeft size={24} className="sm:w-6 sm:h-6 text-gold-300 group-hover:text-gold-200 transition-colors" />
           </button>
 
           {/* Navigation Buttons - Right */}
           <button
             onClick={scrollNext}
             disabled={!canScrollNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-10 sm:translate-x-12 md:translate-x-16 z-20 p-2 sm:p-3 rounded-full border border-gold-500/40 hover:border-gold-500/100 hover:bg-gold-500/15 disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-300 group hover:shadow-lg hover:shadow-gold-500/30"
+            className="absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 sm:translate-x-12 md:translate-x-16 z-20 p-2.5 sm:p-3 rounded-full border-2 border-gold-500 bg-gold-500/25 hover:border-gold-400 hover:bg-gold-500/40 disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-300 group hover:shadow-lg hover:shadow-gold-500/30 sm:border sm:bg-gold-500/15"
             aria-label="Next slide"
           >
-            <ChevronRight size={20} className="sm:w-6 sm:h-6 text-gold-400 group-hover:text-gold-300 transition-colors" />
+            <ChevronRight size={24} className="sm:w-6 sm:h-6 text-gold-300 group-hover:text-gold-200 transition-colors" />
           </button>
         </div>
 
