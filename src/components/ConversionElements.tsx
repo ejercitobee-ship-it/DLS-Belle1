@@ -151,8 +151,8 @@ export function WhyBuyFromUs() {
             <span className="text-sm">Secure Checkout</span>
           </div>
           <div className="flex items-center gap-2 text-cream-200/60">
-            <Truck size={20} className="text-gold-500" />
-            <span className="text-sm">Free Shipping</span>
+            <Award size={20} className="text-gold-500" />
+            <span className="text-sm">Lifetime Support</span>
           </div>
           <div className="flex items-center gap-2 text-cream-200/60">
             <Phone size={20} className="text-gold-500" />
