@@ -1,4 +1,4 @@
-import { Star, Quote, CheckCircle2, Shield, Truck, Award, Phone, CreditCard } from 'lucide-react';
+import { Star, Quote, CheckCircle2, Shield, Truck, Award, Phone, Mail, CreditCard } from 'lucide-react';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 
 // Customer Reviews Section
@@ -249,14 +249,36 @@ export function PaymentMethods() {
   );
 }
 
-// Free Shipping Banner
-export function FreeShippingBanner() {
+// Consultation CTA Banner
+export function ConsultationBanner() {
   return (
-    <div className="bg-gold-600/10 border-y border-gold-500/20 py-3">
+    <div className="bg-gradient-to-r from-charcoal-900 to-charcoal-800 border-b border-gold-500/30 py-3">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center gap-2 text-gold-400">
-          <Truck size={18} />
-          <span className="text-sm font-medium">FREE White-Glove Delivery on All Cabinet Humidors</span>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div>
+            <p className="text-cream-100 text-sm font-medium">
+              Can't find what you're looking for?
+            </p>
+            <p className="text-cream-200/70 text-xs">
+              Our specialists can custom-design your perfect humidor solution.
+            </p>
+          </div>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <a
+              href="tel:8884319214"
+              className="flex items-center justify-center gap-1 px-3 py-2 bg-gold-500 hover:bg-gold-400 text-charcoal-950 rounded text-xs font-semibold transition-colors"
+            >
+              <Phone size={14} />
+              Call
+            </a>
+            <a
+              href="mailto:support@dunnluxuryselections.com"
+              className="flex items-center justify-center gap-1 px-3 py-2 border border-gold-500/50 hover:border-gold-400 text-gold-400 text-xs font-semibold transition-colors rounded"
+            >
+              <Mail size={14} />
+              Email
+            </a>
+          </div>
         </div>
       </div>
     </div>

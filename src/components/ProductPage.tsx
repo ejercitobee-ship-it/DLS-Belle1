@@ -15,7 +15,7 @@ import { fetchProductByHandle, type ShopifyProduct } from '../lib/shopify';
 import { getStaticProduct, type StaticProductData } from '../lib/staticProducts';
 import { getProductPrice, getDefaultVariantId, formatMoney } from '../hooks/useShopifyCollection';
 import { usePageMeta } from '../hooks/usePageMeta';
-import { PaymentMethods, CustomerReviews, WhyBuyFromUs, FreeShippingBanner } from './ConversionElements';
+import { PaymentMethods, CustomerReviews, WhyBuyFromUs, ConsultationBanner } from './ConversionElements';
 import { ProductRecommendations, ProductFAQ } from './ProductSections';
 import FinancingCallout from './FinancingCallout';
 import ProductSpecifications from './ProductSpecifications';
@@ -241,8 +241,8 @@ export default function ProductPage({ handle }: { handle: string }) {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-32 lg:pb-24">
-      {/* Free Shipping Banner */}
-      <FreeShippingBanner />
+      {/* Consultation CTA Banner */}
+      <ConsultationBanner />
 
       {/* Breadcrumb Navigation with Schema */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
@@ -675,8 +675,8 @@ function StaticProductPage({ product }: { product: StaticProductData }) {
 
   return (
     <div className="min-h-screen bg-charcoal-950 pb-24">
-      {/* Free Shipping Banner */}
-      <FreeShippingBanner />
+      {/* Consultation CTA Banner */}
+      <ConsultationBanner />
 
       {/* Breadcrumb Navigation with Schema */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
