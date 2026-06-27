@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   ArrowLeft,
   ChevronDown,
@@ -60,7 +60,7 @@ void _formatMoney; // available for future use
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 
-function ProductCard({ product }: { product: ShopifyProduct }) {
+const ProductCard = React.memo(function ProductCard({ product }: { product: ShopifyProduct }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const navigateToProduct = useNavigateToProduct();
@@ -164,7 +164,7 @@ function ProductCard({ product }: { product: ShopifyProduct }) {
       </div>
     </a>
   );
-}
+});
 
 // ─── Filter / Sort Bar ────────────────────────────────────────────────────────
 
@@ -288,15 +288,23 @@ export default function AllCollections() {
   const collectionFiltered = allProducts;
 
   // Filter by price range
-  const priceFiltered = collectionFiltered.filter((p) => {
-    const price = priceNum(p);
-    const minCheck = minPrice === 0 || price >= minPrice;
-    const maxCheck = maxPrice === 0 || price <= maxPrice;
-    return minCheck && maxCheck;
-  });
+  const priceFiltered = useMemo(() => {
+    return collectionFiltered.filter((p) => {
+      const price = priceNum(p);
+      const minCheck = minPrice === 0 || price >= minPrice;
+      const maxCheck = maxPrice === 0 || price <= maxPrice;
+      return minCheck && maxCheck;
+    });
+  }, [collectionFiltered, minPrice, maxPrice]);
 
-  const sorted = sortProducts(priceFiltered, sort);
-  const displayed = sorted.slice(0, visibleCount);
+  const sorted = useMemo(() => {
+    return sortProducts(priceFiltered, sort);
+  }, [priceFiltered, sort]);
+
+  const displayed = useMemo(() => {
+    return sorted.slice(0, visibleCount);
+  }, [sorted, visibleCount]);
+
   const canLoadMore = visibleCount < sorted.length || hasNextPage;
 
   function handleLoadMore() {
