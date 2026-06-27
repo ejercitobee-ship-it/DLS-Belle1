@@ -5,10 +5,10 @@ import BreadcrumbSchema from './BreadcrumbSchema';
 const STATIC_COLLECTIONS = [
   {
     id: 'electronic',
-    handle: 'electronic-hunidors',
+    handle: 'electronic-humidors',
     name: 'Electronic Humidors',
     description: 'Climate-controlled precision storage with digital humidity management.',
-    image: '/images/collections/electronic-humidors-hero.png',
+    image: '/images/hero-bg.png',
     count: '9 Products',
     featured: true,
   },
@@ -17,7 +17,7 @@ const STATIC_COLLECTIONS = [
     handle: 'desktop-humidors',
     name: 'Desktop Humidors',
     description: 'Elegant stationary humidors for the discerning home collector.',
-    image: '/images/collections/collections-travel-humidors.png',
+    image: '/images/collections-travel-humidors.png',
     count: '22 Products',
     featured: false,
   },
@@ -26,7 +26,7 @@ const STATIC_COLLECTIONS = [
     handle: 'cabinet-humidors',
     name: 'Cabinet Humidors',
     description: 'Floor-standing masterpieces from 600 to 4,000+ cigars — classic cedar cabinets and precision smart-climate systems.',
-    image: '/images/collections/cabinet-humidors-hero.png',
+    image: '/images/bespoke-walk-in-humidor.png',
     count: '8 Products',
     featured: false,
   },
@@ -35,16 +35,16 @@ const STATIC_COLLECTIONS = [
     handle: 'travel-humidors',
     name: 'Travel Humidors',
     description: 'Protect your prized cigars wherever your journey takes you.',
-    image: '/images/collections/chat-gpt-image-apr-15-2026.png',
+    image: '/images/collections-travel-humidors.png',
     count: '18 Products',
     featured: false,
   },
   {
     id: 'accessories',
-    handle: 'accessories-1',
+    handle: 'accessories',
     name: 'Accessories',
     description: 'Premium cutters, lighters, and care essentials for the aficionado.',
-    image: '/images/collections/accessories-hero.png',
+    image: '/images/hero-bg.png',
     count: '31 Products',
     featured: false,
   },
@@ -53,7 +53,7 @@ const STATIC_COLLECTIONS = [
     handle: 'bespoke-walkins',
     name: 'Walk-in Humidors',
     description: 'Bespoke floor-to-ceiling installations for the ultimate cigar sanctuary.',
-    image: '/images/collections/collections-banner.png',
+    image: '/images/bespoke-walk-in-humidor.png',
     count: 'By Commission',
     featured: true,
   },
@@ -111,7 +111,7 @@ export default function Collections() {
           {collections.map((col, i) => (
             <a
               key={col.id}
-              href={`#${col.id}`}
+              href={`/${col.handle}`}
               className={`group relative overflow-hidden rounded-lg card-hover ${
                 col.featured && i === 0 ? 'sm:col-span-2 lg:col-span-1 row-span-2' : ''
               }`}
