@@ -38,7 +38,8 @@ export default function About() {
           <img
             src="/images/brian-dunn-founder.png"
             alt="Brian Dunn, Founder"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: '60% center' }}
           />
           {/* Primary Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 via-charcoal-950/75 to-charcoal-950/50" />
