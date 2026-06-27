@@ -29,7 +29,7 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'newest', label: 'Newest' },
 ];
 
-const PAGE_SIZE = 16;
+const PAGE_SIZE = 12;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -252,7 +252,7 @@ export default function AllCollections() {
     let cancelled = false;
     async function load() {
       try {
-        const productsResult = await fetchProducts(50);
+        const productsResult = await fetchProducts(PAGE_SIZE);
         if (!cancelled) {
           setAllProducts(productsResult.products);
           setHasNextPage(productsResult.hasNextPage);
@@ -272,7 +272,7 @@ export default function AllCollections() {
     if (!hasNextPage || loadingMore) return;
     setLoadingMore(true);
     try {
-      const result = await fetchProducts(50, endCursor ?? undefined);
+      const result = await fetchProducts(PAGE_SIZE, endCursor ?? undefined);
       setAllProducts((prev) => [...prev, ...result.products]);
       setHasNextPage(result.hasNextPage);
       setEndCursor(result.endCursor);
