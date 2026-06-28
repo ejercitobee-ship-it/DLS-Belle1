@@ -53,14 +53,28 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
         setShouldShow(true);
         sessionStorage.setItem(STORAGE_KEYS.seen, 'true');
         document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('scroll', handleScroll);
+      }
+    };
+
+    // Scroll trigger for mobile (popup appears after scrolling 300px down)
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        clearTimeout(delayTimer);
+        setShouldShow(true);
+        sessionStorage.setItem(STORAGE_KEYS.seen, 'true');
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('scroll', handleScroll);
       }
     };
 
     document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('scroll', handleScroll);
 
     return () => {
       clearTimeout(delayTimer);
       document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
