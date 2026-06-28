@@ -8,13 +8,15 @@ interface PageMeta {
   canonicalPath: string;
   ogImage?: string;
   noindex?: boolean;
+  canonicalUrl?: string; // Full URL for external canonical (e.g., syndicated content)
 }
 
 export function usePageMeta(meta: PageMeta) {
   // Synchronous update for SSR/prerender compatibility
   useMemo(() => {
     const canonicalPath = meta.canonicalPath;
-    const canonicalUrl = `${BASE_URL}${canonicalPath === '/' ? '' : canonicalPath}`;
+    // Use provided canonicalUrl (for external sources) or build from canonicalPath
+    const canonicalUrl = meta.canonicalUrl || `${BASE_URL}${canonicalPath === '/' ? '' : canonicalPath}`;
 
     // Update title
     document.title = meta.title;
@@ -77,10 +79,10 @@ export function usePageMeta(meta: PageMeta) {
       let twImage = document.querySelector('meta[name="twitter:image"]') as HTMLMetaElement | null;
       if (twImage) twImage.content = meta.ogImage;
     }
-  }, [meta.title, meta.description, meta.canonicalPath, meta.ogImage, meta.noindex]);
+  }, [meta.title, meta.description, meta.canonicalPath, meta.canonicalUrl, meta.ogImage, meta.noindex]);
 
   // Also run in useEffect for client-side navigation
   useEffect(() => {
     // Meta tags are already updated by useMemo above
-  }, [meta.title, meta.description, meta.canonicalPath, meta.ogImage, meta.noindex]);
+  }, [meta.title, meta.description, meta.canonicalPath, meta.canonicalUrl, meta.ogImage, meta.noindex]);
 }

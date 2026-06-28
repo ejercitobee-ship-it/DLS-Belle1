@@ -123,6 +123,11 @@ export default function ArticlePage({
     : `/journal/${blogHandle}/${articleHandle}`;
   const imagePath = article ? articleImage(article) : FALLBACK_IMG;
 
+  // Canonical URL: point to original BabyLoveGrowth.ai article for syndicated content
+  const canonicalUrl = article
+    ? `https://babylovegrowth.ai/article/${article.blog.handle}/${article.handle}`
+    : undefined;
+
   usePageMeta({
     title: article
       ? `${article.title} | Dunn's Luxury Selections`
@@ -132,6 +137,7 @@ export default function ArticlePage({
       : "Loading article...",
     canonicalPath: articlePath,
     ogImage: imagePath,
+    canonicalUrl: canonicalUrl,
   });
 
   useEffect(() => {
