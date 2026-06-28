@@ -1,4 +1,5 @@
 import { Droplets, Thermometer, TreePine, Wrench, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const guides = [
   {
@@ -52,6 +53,13 @@ const guides = [
 ];
 
 export default function CareGuides() {
+  usePageMeta({
+    title: "Humidor Care Guides | Expert Maintenance Tips | Dunn's Luxury Selections",
+    description: "Expert guidance on humidor care, storage conditions, seasoning, and maintenance. Learn how to preserve your cigar collection with proper humidity and temperature control.",
+    canonicalPath: '/care-guides',
+    ogImage: 'https://dunnluxuryselections.com/og-image.jpg',
+  });
+
   return (
     <div className="min-h-screen bg-charcoal-950 py-24">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
