@@ -449,64 +449,36 @@ function AppInner() {
       const path = window.location.pathname.replace(/\/$/, '') || '/'; // Remove trailing slash
       const hash = window.location.hash;
 
+      // Update page state immediately on back button (no setTimeout delay)
+      // This keeps URL and page content in sync, avoiding "URL changes but page doesn't" lag
+      const updatePage = (dest: Page) => {
+        pendingPage.current = dest;
+        setPage(dest);
+        setDisplayPage(dest);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
       if (path.startsWith('/article/')) {
-        pendingPage.current = 'article';
-        setTransitioning(true);
-        setTimeout(() => {
-          setPage('article');
-          setDisplayPage('article');
-          window.scrollTo({ top: 0, behavior: 'instant' });
-          setTransitioning(false);
-        }, 220);
+        updatePage('article');
         return;
       }
       if (path.startsWith('/product/')) {
-        // Force re-render even if already on product page
-        pendingPage.current = 'product';
-        setTransitioning(true);
-        setTimeout(() => {
-          setPage('product');
-          setDisplayPage('product');
-          window.scrollTo({ top: 0, behavior: 'instant' });
-          setTransitioning(false);
-        }, 220);
+        updatePage('product');
         return;
       }
       // Legacy hash fallback
       if (hash.startsWith('#article/')) {
-        pendingPage.current = 'article';
-        setTransitioning(true);
-        setTimeout(() => {
-          setPage('article');
-          setDisplayPage('article');
-          window.scrollTo({ top: 0, behavior: 'instant' });
-          setTransitioning(false);
-        }, 220);
+        updatePage('article');
         return;
       }
 
       const dest = PATH_TO_PAGE[path] ?? HASH_TO_PAGE[hash];
       if (dest) {
-        // Always update state for popstate, even if appears to be same page
-        pendingPage.current = dest;
-        setTransitioning(true);
-        setTimeout(() => {
-          setPage(dest);
-          setDisplayPage(dest);
-          window.scrollTo({ top: 0, behavior: 'instant' });
-          setTransitioning(false);
-        }, 220);
+        updatePage(dest);
       } else {
         // Unknown path — go home if not already there
         if (displayPageRef.current !== 'home') {
-          pendingPage.current = 'home';
-          setTransitioning(true);
-          setTimeout(() => {
-            setPage('home');
-            setDisplayPage('home');
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            setTransitioning(false);
-          }, 220);
+          updatePage('home');
         }
       }
     };
