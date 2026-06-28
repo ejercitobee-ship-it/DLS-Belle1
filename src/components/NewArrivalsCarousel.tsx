@@ -148,7 +148,7 @@ export const NewArrivalsCarousel = () => {
         <div className="mt-12 sm:mt-14 md:mt-16 text-center">
           <a
             href="/new-arrivals"
-            className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-gold-gradient text-charcoal-950 font-serif font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-6 sm:px-8 md:px-10 lg:px-12 py-3 sm:py-4 md:py-5 rounded-lg hover:shadow-xl hover:shadow-gold-500/40 active:scale-95 transition-all duration-300 group"
+            className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-gold-gradient text-charcoal-950 font-semibold text-xs sm:text-sm md:text-base tracking-widest uppercase px-6 sm:px-8 md:px-10 lg:px-12 py-3 sm:py-4 md:py-5 rounded-lg hover:shadow-xl hover:shadow-gold-500/40 active:scale-95 transition-all duration-300 group"
           >
             View All New Arrivals
             <ChevronRight size={16} className="sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
