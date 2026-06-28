@@ -16,10 +16,11 @@ const STORAGE_KEYS = {
 };
 
 export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore }: LeadPopupProps) {
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [collectorType, setCollectorType] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [shouldShow, setShouldShow] = useState(false);
@@ -46,24 +47,20 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
     // Exit intent detection (mouse leaving viewport from top)
     const handleMouseMove = (e: MouseEvent) => {
       mouseYRef.current = e.clientY;
-    };
-
-    const handleMouseLeave = (e: MouseEvent) => {
-      // Only trigger if mouse leaves from the top of the viewport
-      if (e.clientY < 10 && mouseYRef.current < 100) {
+      // Trigger if mouse moves to top of viewport
+      if (e.clientY <= 5) {
         clearTimeout(delayTimer);
         setShouldShow(true);
         sessionStorage.setItem(STORAGE_KEYS.seen, 'true');
+        document.removeEventListener('mousemove', handleMouseMove);
       }
     };
 
     document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
       clearTimeout(delayTimer);
       document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, []);
 
@@ -117,6 +114,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
           lastName: '', // No longer collecting last name
           email: email.trim(),
           phone: phone.trim() || '', // Phone is optional
+          collectorType: collectorType, // Collector segmentation
         }),
       });
 
@@ -155,8 +153,6 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
         {/* Bubble */}
         <div className="relative bg-gold-600 hover:bg-gold-500 text-charcoal-950 rounded-full p-4 shadow-xl shadow-gold-900/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gold-900/50">
           <MessageCircle className="w-6 h-6" />
-          {/* Notification dot */}
-          <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-red-500 border-2 border-charcoal-900 rounded-full" />
         </div>
       </button>
     );
@@ -192,9 +188,9 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
         ) : (
           <>
             <div className="text-center mb-5">
-              <h3 className="text-xl font-serif text-white mb-1">Unlock Exclusive Access</h3>
+              <h3 className="text-xl font-serif text-white mb-1">Collection Preview Access</h3>
               <p className="text-cream-200/60 text-sm">
-                Join our inner circle for early access to rare collections and private events.
+                Every collector's needs are different. Help us recommend the right pieces for yours.
               </p>
             </div>
 
@@ -242,15 +238,77 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
                   Skip for now
                 </button>
               </form>
-            ) : (
-              // Step 2: Phone (optional) + Submit
-              <form onSubmit={handleSubmit} className="space-y-3">
+            ) : step === 2 ? (
+              // Step 2: Collector Type
+              <form onSubmit={(e) => { e.preventDefault(); setStep(3); }} className="space-y-3">
                 <div className="bg-charcoal-800/50 rounded-lg px-4 py-3 text-sm">
                   <p className="text-cream-200/60">
                     <span className="text-cream-100 font-medium">{firstName}</span> · {email}
                   </p>
                 </div>
-                
+
+                <div className="space-y-2">
+                  <p className="text-cream-200/70 text-sm font-medium">What draws you to humidors?</p>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'desktop', label: 'Desktop Collection' },
+                      { value: 'cabinet', label: 'Cabinet Installation' },
+                      { value: 'walkin', label: 'Walk-in Sanctuary' },
+                      { value: 'travel', label: 'Travel Preservation' },
+                      { value: 'investment', label: 'Investment Pieces' },
+                      { value: 'other', label: 'Something Else' },
+                    ].map((option) => (
+                      <label key={option.value} className="flex items-center gap-3 cursor-pointer p-2.5 rounded-lg hover:bg-charcoal-800/50 transition-colors">
+                        <input
+                          type="radio"
+                          name="collectorType"
+                          value={option.value}
+                          checked={collectorType === option.value}
+                          onChange={(e) => setCollectorType(e.target.value)}
+                          className="w-4 h-4 accent-gold-500"
+                        />
+                        <span className="text-cream-100 text-sm">{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={!collectorType}
+                  className="w-full bg-gold-600 hover:bg-gold-500 disabled:opacity-50 disabled:cursor-not-allowed text-charcoal-950 py-2.5 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="w-full text-cream-200/50 hover:text-cream-200 text-sm py-2 transition-colors"
+                >
+                  Back
+                </button>
+              </form>
+            ) : (
+              // Step 3: Phone (optional) + Submit
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <div className="bg-charcoal-800/50 rounded-lg px-4 py-3 text-sm space-y-1">
+                  <p className="text-cream-200/60">
+                    <span className="text-cream-100 font-medium">{firstName}</span> · {email}
+                  </p>
+                  <p className="text-cream-200/40 text-xs">
+                    {collectorType && `Interested in: ${(['desktop', 'cabinet', 'walkin', 'travel', 'investment', 'other'].includes(collectorType) ? {
+                      desktop: 'Desktop Collection',
+                      cabinet: 'Cabinet Installation',
+                      walkin: 'Walk-in Sanctuary',
+                      travel: 'Travel Preservation',
+                      investment: 'Investment Pieces',
+                      other: 'Bespoke Solutions'
+                    }[collectorType] : '')}`}
+                  </p>
+                </div>
+
                 <input
                   type="tel"
                   placeholder="Phone Number (optional)"
@@ -259,7 +317,7 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
                   className="w-full bg-charcoal-950 border border-charcoal-700/60 rounded-lg px-4 py-2.5 text-cream-100 placeholder-cream-200/30 text-sm focus:outline-none focus:border-gold-500/60 focus:ring-1 focus:ring-gold-500/20 transition-colors"
                 />
                 <p className="text-cream-200/40 text-xs px-1">
-                  Add your phone for exclusive SMS offers (optional)
+                  Add your phone to discuss your collection goals (optional)
                 </p>
 
                 {status === 'error' && (
@@ -282,27 +340,18 @@ export default function LeadPopup({ onClose, onMinimize, isMinimized, onRestore 
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      Get Exclusive Access
+                      Request Preview Access
                     </>
                   )}
                 </button>
 
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setStep(1)}
-                    className="flex-1 text-cream-200/50 hover:text-cream-200 text-sm py-2 transition-colors"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSkip}
-                    className="flex-1 text-cream-200/50 hover:text-cream-200 text-sm py-2 transition-colors"
-                  >
-                    Skip for now
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setStep(2)}
+                  className="w-full text-cream-200/50 hover:text-cream-200 text-sm py-2 transition-colors"
+                >
+                  Back
+                </button>
               </form>
             )}
 

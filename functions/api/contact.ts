@@ -1,6 +1,7 @@
 export interface Env {
   KLAVIYO_API_KEY: string;
   KLAVIYO_LIST_ID?: string;
+  RESEND_API_KEY: string;
 }
 
 // Helper to format phone number to E.164 format
@@ -30,9 +31,9 @@ function formatPhoneNumber(phone: string): string {
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const { request, env } = context;
-    const body = await request.json<{ firstName: string; lastName: string; email: string; phone: string }>();
+    const body = await request.json<{ firstName: string; lastName: string; email: string; phone: string; collectorType?: string }>();
 
-    const { firstName, lastName, email, phone } = body;
+    const { firstName, lastName, email, phone, collectorType } = body;
 
     if (!email.trim()) {
       return new Response(JSON.stringify({ error: 'Email is required' }), {
@@ -216,6 +217,50 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     if (!eventResponse.ok) {
       console.error('Failed to track event:', await eventResponse.text());
+    }
+
+    // Send lead info to support via Resend API
+    if (env.RESEND_API_KEY) {
+      const collectorTypeMap: Record<string, string> = {
+        desktop: 'Desktop Collection',
+        cabinet: 'Cabinet Installation',
+        walkin: 'Walk-in Sanctuary',
+        travel: 'Travel Preservation',
+        investment: 'Investment Pieces',
+        other: 'Bespoke Solutions',
+      };
+
+      const collectorTypeLabel = collectorType ? collectorTypeMap[collectorType] || collectorType : 'Not specified';
+
+      const emailHtml = `
+        <h2>New Lead from Collection Preview Form</h2>
+        <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+        <p><strong>Collector Type:</strong> ${collectorTypeLabel}</p>
+        <p><strong>Submitted:</strong> ${new Date().toISOString()}</p>
+        <hr>
+        <p>Follow up with this lead about their ${collectorTypeLabel.toLowerCase()} needs.</p>
+      `;
+
+      const resendResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'noreply@dunnluxuryselections.com',
+          to: 'support@dunnluxuryselections.com',
+          subject: `New Lead: ${firstName} - ${collectorTypeLabel}`,
+          html: emailHtml,
+          reply_to: email,
+        }),
+      });
+
+      if (!resendResponse.ok) {
+        console.error('Failed to send lead email via Resend:', await resendResponse.text());
+      }
     }
 
     return new Response(JSON.stringify({ success: true }), {
