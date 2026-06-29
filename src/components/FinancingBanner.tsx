@@ -102,7 +102,7 @@ export default function FinancingBanner({ className = '', variant = 'full' }: Fi
             </div>
             <div className="flex flex-wrap gap-2 text-cream-200/50 text-[11px] mt-5 pt-4 border-t border-charcoal-800/50">
               <span className="flex items-center gap-1">✓ <span className="leading-relaxed">0% APR, no fees</span></span>
-              <span className="flex items-center gap-1">✓ <span className="leading-relaxed">Decision in <60 seconds</span></span>
+              <span className="flex items-center gap-1">✓ <span className="leading-relaxed">Decision in under 60 seconds</span></span>
               <span className="flex items-center gap-1">✓ <span className="leading-relaxed">No credit impact</span></span>
             </div>
             <p className="text-cream-200/30 text-[10px] mt-3 italic">Used by millions of Shopify shoppers globally</p>
