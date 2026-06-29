@@ -19,8 +19,8 @@ export default function FinancingBanner({ className = '', variant = 'full' }: Fi
               <CreditCard size={18} className="text-gold-500" />
             </div>
             <div className="min-w-0">
-              <p className="font-semibold text-white text-sm">Shop Pay Installments Available</p>
-              <p className="text-cream-200/50 text-xs leading-relaxed">Pay in 4 interest-free monthly payments on qualifying purchases</p>
+              <p className="font-semibold text-white text-sm">Finance Your Collection</p>
+              <p className="text-cream-200/50 text-xs leading-relaxed">Shop Pay Installments: 0% APR, no fees, instant approval</p>
             </div>
           </div>
           <a
@@ -46,18 +46,20 @@ export default function FinancingBanner({ className = '', variant = 'full' }: Fi
               <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gold-600/10 border border-gold-500/30 flex items-center justify-center">
                 <CreditCard size={20} className="text-gold-500" />
               </div>
-              <span className="text-gold-400 text-xs font-medium tracking-[0.35em] uppercase">
-                Flexible Financing
-              </span>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-gold-400 text-xs font-medium tracking-[0.35em] uppercase">
+                  Flexible Financing
+                </span>
+                <span className="text-cream-200/40 text-[10px] tracking-wide">Powered by Shop Pay</span>
+              </div>
             </div>
 
             <h2 className="font-serif text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-              Own It Now. <span className="text-gradient-gold italic">Pay Over Time.</span>
+              Remove Barriers to <span className="text-gradient-gold italic">Building Your Collection</span>
             </h2>
 
             <p className="text-cream-200/70 text-base sm:text-lg leading-relaxed mb-6 sm:mb-7 max-w-sm">
-              Finance any qualifying purchase over $1,500 with Shop Pay Installments.
-              Pay in 4 equal, interest-free monthly payments — no hidden fees, no surprises.
+              Finance qualifying purchases over $1,500 with Shop Pay Installments. Approved buyers split payments into 4 equal, interest-free installments—zero fees, zero surprises. Decision in under 60 seconds at checkout.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -99,10 +101,11 @@ export default function FinancingBanner({ className = '', variant = 'full' }: Fi
               </div>
             </div>
             <div className="flex flex-wrap gap-2 text-cream-200/50 text-[11px] mt-5 pt-4 border-t border-charcoal-800/50">
-              <span className="flex items-center gap-1">✓ <span className="leading-relaxed">0% interest, 4 payments</span></span>
-              <span className="flex items-center gap-1">✓ <span className="leading-relaxed">Instant approval</span></span>
-              <span className="flex items-center gap-1">✓ <span className="leading-relaxed">No impact to credit</span></span>
+              <span className="flex items-center gap-1">✓ <span className="leading-relaxed">0% APR, no fees</span></span>
+              <span className="flex items-center gap-1">✓ <span className="leading-relaxed">Decision in <60 seconds</span></span>
+              <span className="flex items-center gap-1">✓ <span className="leading-relaxed">No credit impact</span></span>
             </div>
+            <p className="text-cream-200/30 text-[10px] mt-3 italic">Used by millions of Shopify shoppers globally</p>
           </div>
         </div>
       </div>
