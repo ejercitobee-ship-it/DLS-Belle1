@@ -273,9 +273,12 @@ async function generateArticleRoutes() {
   }
 }
 
+// Pages that should NOT be indexed
+const NOINDEX_PAGES = ['/checkout', '/order-confirmation', '/shopify-setup'];
+
 // Route metadata for static generation
 const routes = [
-  { path: '/', file: 'index.html', title: "Dunn's Luxury Selections | Humidor Collections", description: "Explore Dunn's Luxury Selections — bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories.", canonical: 'https://dunnluxuryselections.com/' },
+  { path: '/', file: 'index.html', title: "Dunn's Luxury Selections | Humidor Collections", description: "Explore Dunn's Luxury Selections — bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories.", canonical: 'https://dunnluxuryselections.com/', noindex: false },
   { path: '/electronic-humidors', file: 'electronic-humidors/index.html', title: "Electronic Humidors | Dunn's Luxury Selections", description: "Shop premium electronic humidors with precision climate control — cigar cabinets for collectors and luxury venues. Featuring Raching, Reagan, and more.", canonical: 'https://dunnluxuryselections.com/electronic-humidors' },
   { path: '/walk-in-humidor', file: 'walk-in-humidor/index.html', title: "Bespoke Walk-In Humidors | Dunn's Luxury Selections", description: "Custom walk-in humidor design with nationwide component shipping for private residences, lounges, and commercial spaces — complete installation guidance included.", canonical: 'https://dunnluxuryselections.com/walk-in-humidor', schemas: [walkInServiceSchema, faqPageSchema(siteFaqs.walkIn)] },
   { path: '/desktop-humidors', file: 'desktop-humidors/index.html', title: "Desktop Humidors | Dunn's Luxury Selections", description: "Elegant desktop humidors crafted from Spanish cedar, leather, and carbon fiber for the discerning aficionado.", canonical: 'https://dunnluxuryselections.com/desktop-humidors' },
