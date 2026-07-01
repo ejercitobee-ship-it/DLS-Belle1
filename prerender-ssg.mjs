@@ -65,7 +65,7 @@ const productPageSchema = (product) => ({
   name: product.title,
   description: product.description || `Premium humidor: ${product.title}`,
   url: `${BASE_URL}/product/${product.handle}`,
-  image: product.image?.src || `${BASE_URL}/placeholder-humidor.jpg`,
+  image: product.featuredImage?.url || `${BASE_URL}/placeholder-humidor.jpg`,
   brand: {
     '@type': 'Brand',
     name: "Dunn's Luxury Selections",
@@ -107,8 +107,8 @@ async function generateProductRoutes() {
                   amount
                 }
               }
-              image {
-                src
+              featuredImage {
+                url
               }
               availableForSale
             }
@@ -151,7 +151,7 @@ async function generateProductRoutes() {
     console.log(`Found ${products.length} products to prerender`);
 
     return products.map(product => {
-      const imageUrl = product.image?.src || FALLBACK_OG_IMAGE;
+      const imageUrl = product.featuredImage?.url || FALLBACK_OG_IMAGE;
       return {
         path: `/product/${product.handle}`,
         file: `product/${product.handle}/index.html`,
