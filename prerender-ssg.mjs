@@ -83,14 +83,88 @@ const productPageSchema = (product) => ({
 // Dynamically generate product routes from Shopify data
 async function generateProductRoutes() {
   try {
-    // Note: Product pages are client-side rendered via React routing.
-    // Prerendering them here is optional for SEO enhancement.
-    // If import fails (e.g., TS not transpiled), we gracefully skip and
-    // let React handle product pages on the client side.
-    console.log('Skipping product page prerendering (client-side rendered via React routing)');
-    return [];
+    console.log('Fetching products from Shopify for prerendering...');
+
+    const storeDomain = process.env.VITE_SHOPIFY_STORE_DOMAIN;
+    const storefrontToken = process.env.VITE_SHOPIFY_STOREFRONT_TOKEN;
+
+    if (!storeDomain || !storefrontToken) {
+      console.warn('Shopify credentials not found, skipping product prerendering');
+      return [];
+    }
+
+    const query = `
+      query {
+        products(first: 250) {
+          edges {
+            node {
+              id
+              title
+              handle
+              description
+              priceRange {
+                minVariantPrice {
+                  amount
+                }
+              }
+              image {
+                src
+              }
+              availableForSale
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await fetch(`https://${storeDomain}/api/2024-01/graphql.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': storefrontToken,
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Shopify API returned ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.errors) {
+      throw new Error(data.errors.map((e) => e.message).join(', '));
+    }
+
+    const products = [];
+    if (data.data?.products?.edges) {
+      products.push(
+        ...data.data.products.edges.map((edge) => edge.node),
+      );
+    }
+
+    if (products.length === 0) {
+      console.log('No products to prerender');
+      return [];
+    }
+
+    console.log(`Found ${products.length} products to prerender`);
+
+    return products.map(product => {
+      const imageUrl = product.image?.src || FALLBACK_OG_IMAGE;
+      return {
+        path: `/product/${product.handle}`,
+        file: `product/${product.handle}/index.html`,
+        title: `${product.title} | Dunn's Luxury Selections`,
+        description: product.description ? product.description.substring(0, 160) : `Premium humidor: ${product.title}`,
+        canonical: `${BASE_URL}/product/${product.handle}`,
+        ogImage: imageUrl,
+        productData: product,
+        schemas: [productPageSchema(product)],
+      };
+    });
   } catch (error) {
-    console.warn('Could not fetch products:', error.message);
+    console.warn('Could not fetch products, skipping product prerendering:', error.message);
     return [];
   }
 }
@@ -166,13 +240,13 @@ async function generateArticleRoutes() {
     }
 
     if (articles.length === 0) {
-      console.log('No articles to prerender');
+      console.warn('⚠️  No articles found in Shopify. Check blog configuration.');
       return [];
     }
 
-    console.log(`Found ${articles.length} articles to prerender`);
+    console.log(`✓ Found ${articles.length} articles to prerender`);
 
-    return articles.map(article => {
+    const articleRoutes = articles.map(article => {
       // Ensure image URL is absolute
       let imageUrl = article.image?.url || FALLBACK_OG_IMAGE;
       // If relative, make it absolute
@@ -189,8 +263,12 @@ async function generateArticleRoutes() {
         ogImage: imageUrl,
       };
     });
+
+    return articleRoutes;
   } catch (error) {
-    console.warn('Could not fetch articles, skipping article prerendering:', error.message);
+    console.error('❌ CRITICAL: Article prerendering failed:', error.message);
+    console.error('   This means article pages will NOT be indexed by Google.');
+    console.error('   Check Shopify credentials in .env.local and API connectivity.');
     return [];
   }
 }
