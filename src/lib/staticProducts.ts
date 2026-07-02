@@ -364,6 +364,27 @@ const STATIC_PRODUCTS: StaticProductData[] = [
       interior: 'Spanish cedar lining',
     },
   },
+  {
+    id: 'acc-hydra-turbo',
+    handle: 'hydra-turbo-commercial-electronic-humidifier-black',
+    name: 'HYDRA® TURBO COMMERCIAL ELECTRONIC HUMIDIFIER (Black)',
+    subtitle: 'Commercial-Grade Electronic Humidification System',
+    price: '$0',
+    priceNum: 0,
+    category: 'Humidification',
+    description: 'Professional-grade electronic humidification system for commercial and large residential applications. Precision climate control for serious collections.',
+    image: '/images/collections/accessories-hero.png',
+    images: [],
+    features: ['Commercial-grade build', 'Electronic precision control', 'Turbo performance', 'Professional-tier humidification'],
+    badge: 'Commercial',
+    rating: 4.9,
+    reviews: 3,
+    specs: {
+      type: 'Commercial Electronic Humidifier',
+      grade: 'Professional',
+      category: 'Accessories - Humidification',
+    },
+  },
 ];
 
 export function getStaticProduct(handle: string): StaticProductData | undefined {
