@@ -175,7 +175,7 @@ export function FAQSection() {
     },
     {
       question: "How long does delivery take?",
-      answer: "White-glove delivery typically takes 5-10 business days. Our team will contact you to schedule a convenient delivery time and handle all setup."
+      answer: "Expert concierge support typically includes 5-10 business days for delivery coordination. Our team will contact you to schedule a convenient delivery time and handle all setup."
     },
     {
       question: "What does the 2-year warranty cover?",

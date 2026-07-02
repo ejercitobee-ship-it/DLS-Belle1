@@ -175,7 +175,7 @@ export default function Checkout({ onBack }: Props) {
               {[
                 { icon: Lock, text: '256-bit SSL Encryption' },
                 { icon: ShieldCheck, text: 'Powered by Shopify Payments' },
-                { icon: Truck, text: 'Insured White-Glove Delivery' },
+                { icon: Truck, text: 'Insured Expert Concierge Delivery' },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-2.5 text-xs text-cream-200/40 bg-charcoal-900/60 border border-charcoal-800/30 rounded-lg px-3.5 py-2.5">
                   <Icon size={13} className="text-gold-500/70 flex-shrink-0" />

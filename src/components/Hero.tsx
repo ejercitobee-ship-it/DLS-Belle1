@@ -3,7 +3,7 @@ import { ArrowRight, Award, Shield, Truck } from 'lucide-react';
 const trustBadges = [
   { icon: Award, label: 'Curated Luxury', sub: 'Handpicked collections' },
   { icon: Shield, label: 'Authenticity Guaranteed', sub: 'Certified products' },
-  { icon: Truck, label: 'White-Glove Delivery', sub: 'Free on select items' },
+  { icon: Truck, label: 'Expert Concierge Support', sub: 'Free on select items' },
 ];
 
 export default function Hero({ onOpenBuyerGuideModal }: { onOpenBuyerGuideModal?: () => void }) {

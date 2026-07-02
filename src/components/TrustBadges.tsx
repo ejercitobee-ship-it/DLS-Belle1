@@ -17,7 +17,7 @@ export function ShopWithConfidence() {
     },
     {
       icon: Truck,
-      title: 'Free White-Glove Delivery',
+      title: 'Expert Concierge Support',
       subtitle: 'Included on cabinet & electronic humidors',
       href: '/delivery-info',
     },

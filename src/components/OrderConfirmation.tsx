@@ -177,7 +177,7 @@ export default function OrderConfirmation() {
               <div className="w-12 h-12 rounded-full bg-gold-600/10 flex items-center justify-center mx-auto mb-4">
                 <Truck size={20} className="text-gold-500" />
               </div>
-              <h3 className="text-white font-semibold mb-2">White-Glove Delivery</h3>
+              <h3 className="text-white font-semibold mb-2">Expert Concierge Support</h3>
               <p className="text-cream-200/50 text-sm">Expect delivery within 5-10 business days.</p>
             </div>
           </div>

@@ -5,7 +5,7 @@
 
 export type ProductSpecs = Record<string, string>;
 
-const WHITE_GLOVE = 'White-glove delivery, 5–10 business days';
+const WHITE_GLOVE = 'Expert concierge support, 5–10 business days';
 const STANDARD_SHIPPING = 'Ships within 2–3 business days';
 
 const SPECS_BY_HANDLE: Record<string, ProductSpecs> = {

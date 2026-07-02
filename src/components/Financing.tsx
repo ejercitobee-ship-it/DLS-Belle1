@@ -28,7 +28,7 @@ const steps = [
   {
     icon: ShieldCheck,
     title: 'Enjoy Your Humidor Now',
-    desc: 'Your order ships on the normal schedule — white-glove delivery included on cabinet and electronic humidors.',
+    desc: 'Your order ships on the normal schedule — expert concierge support included on cabinet and electronic humidors.',
   },
 ];
 
@@ -87,7 +87,7 @@ export default function Financing() {
           <div className="bg-charcoal-900/40 border border-charcoal-800/30 rounded-lg p-6 sm:p-7">
             <p className="text-gold-400 text-sm font-semibold mb-3">Instant Approval, Same-Day Ship</p>
             <p className="text-cream-200/60 text-sm leading-relaxed">
-              Real-time credit decision at checkout. Approved orders ship on normal schedule with white-glove delivery.
+              Real-time credit decision at checkout. Approved orders ship on normal schedule with expert concierge support.
             </p>
           </div>
         </div>

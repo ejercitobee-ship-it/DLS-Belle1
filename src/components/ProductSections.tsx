@@ -137,7 +137,7 @@ export function ProductFAQ() {
     },
     {
       question: "How long does delivery take?",
-      answer: "White-glove delivery typically takes 5-10 business days for cabinet humidors. Our team will contact you to schedule a convenient delivery time and handle all setup, including placement and initial configuration."
+      answer: "Expert concierge support typically includes 5-10 business days for cabinet humidor delivery and coordination. Our team will contact you to schedule a convenient delivery time and handle all setup, including placement and initial configuration."
     },
     {
       question: "Manufacturing Warranty Covers",

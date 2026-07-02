@@ -74,7 +74,7 @@ export default function ProductPage({ handle }: { handle: string }) {
   const hasFinancing = qualifiesForFinancing(productPrice);
   const baseDesc = product?.description ?? staticProduct?.description ?? 'Explore luxury humidors and cigar accessories.';
   const metaDesc = hasFinancing
-    ? `${productName} - Premium humidor. Pay in 4 interest-free installments with Shop Pay. Free white-glove delivery.`
+    ? `${productName} - Premium humidor. Pay in 4 interest-free installments with Shop Pay. Expert concierge support included.`
     : baseDesc.slice(0, 160);
 
   usePageMeta({
@@ -413,7 +413,7 @@ export default function ProductPage({ handle }: { handle: string }) {
               </div>
               <div className="flex items-center gap-2 text-cream-200/60 text-xs">
                 <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />
-                <span>White-glove delivery & setup included</span>
+                <span>Expert concierge support & setup included</span>
               </div>
             </div>
 

@@ -19,7 +19,7 @@ const values = [
   {
     icon: Globe,
     title: 'Nationwide Commitment',
-    description: 'From Miami to Seattle, we deliver with white-glove care. Distance does not diminish service — every customer receives the same premium experience.',
+    description: 'From Miami to Seattle, we deliver with expert concierge support. Distance does not diminish service — every customer receives the same premium experience.',
   },
   {
     icon: Star,

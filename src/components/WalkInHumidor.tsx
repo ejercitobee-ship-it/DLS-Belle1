@@ -519,7 +519,7 @@ export default function WalkInHumidor() {
 
               <blockquote className="border-l-2 border-gold-500/50 pl-5">
                 <p className="text-cream-200/50 text-sm italic leading-relaxed">
-                  "A collection of such distinction deserves white-glove service."
+                  "A collection of such distinction deserves expert concierge service."
                 </p>
               </blockquote>
             </div>

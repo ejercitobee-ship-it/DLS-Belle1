@@ -1004,7 +1004,7 @@
       "services": [
         "Custom design and installation",
         "Private residences, lounges, and commercial spaces",
-        "White-glove delivery and setup",
+        "Expert concierge support and setup",
         "Climate control integration"
       ]
     }
@@ -1014,7 +1014,7 @@
       "free_threshold_usd": 5000,
       "standard_shipping_usd": 49,
       "delivery_time": "5–10 business days",
-      "type": "White-glove delivery"
+      "type": "Expert concierge support"
     },
     "returns": {
       "window_days": 10,
