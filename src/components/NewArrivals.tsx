@@ -269,7 +269,7 @@ export default function NewArrivals() {
         {/* Stats strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
           {[
-            { label: '10 New Products', sub: 'All freshly added' },
+            { label: `${products.length} New Products`, sub: 'All freshly added' },
             { label: 'Up to 4,000 Cigars', sub: 'Raching RR980' },
             { label: 'Dual-Zone Options', sub: 'Wine + cigar storage' },
             { label: 'From $34', sub: 'Traveler 5 travel humidor' },
