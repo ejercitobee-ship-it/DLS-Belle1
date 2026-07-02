@@ -10,9 +10,9 @@ const deliveryOptions = [
   },
   {
     icon: Package,
-    title: 'White-Glove Freight',
+    title: 'Expert Concierge Freight',
     time: '7–14 Business Days',
-    description: 'Required for all cabinet and electronic humidors. Specialist freight carriers handle oversized items with care. Delivery to your door with optional inside placement.',
+    description: 'Required for all cabinet and electronic humidors. Specialist freight carriers handle oversized items with care. Delivery to your door with optional inside placement and positioning support.',
     price: 'Quoted at checkout',
   },
   {

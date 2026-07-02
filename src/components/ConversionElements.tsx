@@ -17,7 +17,7 @@ export function CustomerReviews({ productName }: { productName: string }) {
       location: "Miami, FL",
       rating: 5,
       date: "1 month ago",
-      text: "The dual-zone feature is a game-changer. My cigars and wine are perfectly preserved. The white-glove delivery was impeccable.",
+      text: "The dual-zone feature is a game-changer. My cigars and wine are perfectly preserved. The expert concierge support throughout was impeccable.",
       verified: true,
     },
     {
@@ -101,8 +101,8 @@ export function WhyBuyFromUs() {
     },
     {
       icon: Truck,
-      title: "White-Glove Delivery",
-      description: "Professional delivery and setup included. We handle everything with care."
+      title: "Expert Concierge Support",
+      description: "Professional delivery coordination and setup guidance. We handle everything with care."
     },
     {
       icon: Award,

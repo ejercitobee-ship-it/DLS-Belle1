@@ -21,9 +21,9 @@ const reasons = [
   },
   {
     icon: Globe,
-    title: 'Nationwide Delivery',
+    title: 'Expert Concierge Support',
     description:
-      'White-glove delivery services across the USA with specialist handling to ensure your humidor arrives in perfect condition.',
+      'Dedicated support across the USA with specialist handling to ensure your humidor arrives in perfect condition and is perfectly positioned.',
   },
 ];
 
