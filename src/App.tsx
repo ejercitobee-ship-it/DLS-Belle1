@@ -438,7 +438,9 @@ function AppInner() {
       if (target === 'article' && articlePath) {
         window.history.pushState({ page: target, articlePath }, '', `/article/${articlePath}`);
       } else {
-        const url = target === 'home' ? '/' : `/${target}`;
+        // Collection pages use /collections/ prefix for SEO-friendly URLs
+        const isCollection = ['desktop-humidors', 'cabinet-humidors', 'travel-humidors', 'electronic-humidors', 'accessories'].includes(target);
+        const url = target === 'home' ? '/' : isCollection ? `/collections/${target}` : `/${target}`;
         window.history.pushState({ page: target }, '', url);
       }
       window.scrollTo({ top: 0, behavior: 'instant' });
