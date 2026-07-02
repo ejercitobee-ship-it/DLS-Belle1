@@ -2,6 +2,7 @@
 import { ShoppingBag, Star, ChevronDown, Box, Layers, Tag, Filter, Luggage, Scissors, CheckCircle2, Loader2, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { useNavigateToProduct } from '../hooks/useNavigateToProduct';
 import type { ShopifyProduct } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
@@ -265,6 +266,12 @@ export default function TravelHumidors() {
   const navigateToProduct = useNavigateToProduct();
 
   const { products: shopifyProducts, loading, collectionImage } = useShopifyCollection('travel-humidors');
+
+  usePageMeta({
+    title: 'Travel Humidors | Portable Cigar Cases | Dunn\'s Luxury Selections',
+    description: 'Premium portable humidors and travel cases for 4-50 cigars. Leather, acrylic, and aluminum designs. Perfect for on-the-go cigar storage.',
+    canonicalPath: '/collections/travel-humidors',
+  });
 
   const displayProducts: DisplayProduct[] =
     shopifyProducts.length > 0

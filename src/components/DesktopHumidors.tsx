@@ -2,6 +2,7 @@
 import { ShoppingBag, Star, ChevronDown, Box, CheckCircle2, Loader2, SlidersHorizontal, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
+import { usePageMeta } from '../hooks/usePageMeta';
 import type { ShopifyProduct } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
 import SchemaMarkup from './SchemaMarkup';
@@ -262,6 +263,12 @@ export default function DesktopHumidors() {
   const navigateToProduct = useNavigateToProduct();
 
   const { products: shopifyProducts, loading, collectionImage } = useShopifyCollection('desktop-humidors');
+
+  usePageMeta({
+    title: 'Desktop Humidors | Luxury Cigar Storage | Dunn\'s Luxury Selections',
+    description: 'Shop premium desktop humidors for 20-250 cigars. Handcrafted cedar cabinets with precision climate control. Free expert concierge support & delivery.',
+    canonicalPath: '/collections/desktop-humidors',
+  });
 
   const displayProducts: DisplayProduct[] =
     shopifyProducts.length > 0

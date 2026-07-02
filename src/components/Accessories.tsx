@@ -2,6 +2,7 @@
 import { ShoppingBag, Star, ChevronDown, Filter, CheckCircle2, Droplets, Thermometer, Wine, Circle, Package, Loader2, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { useNavigateToProduct } from '../hooks/useNavigateToProduct';
 import type { ShopifyProduct } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
@@ -270,6 +271,12 @@ export default function AccessoriesPage() {
     'accessories-1',
     'accessories',
   );
+
+  usePageMeta({
+    title: 'Cigar Accessories | Humidifiers, Ashtrays & More | Dunn\'s Luxury Selections',
+    description: 'Premium cigar accessories: humidification systems, ashtrays, cutters, lighters, and wine storage. Everything for serious collectors.',
+    canonicalPath: '/collections/accessories',
+  });
 
   const displayProducts: DisplayProduct[] =
     shopifyProducts.length > 0

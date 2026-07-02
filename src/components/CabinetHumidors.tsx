@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, getProductPrice, getDefaultVariantId } from '../hooks/useShopifyCollection';
+import { usePageMeta } from '../hooks/usePageMeta';
 import type { ShopifyProduct } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
 import SchemaMarkup from './SchemaMarkup';
@@ -366,6 +367,12 @@ export default function CabinetHumidors() {
   const navigateToProduct = useNavigateToProduct();
 
   const { products: shopifyProducts, loading, collectionImage } = useShopifyCollection('cabinet-humidors');
+
+  usePageMeta({
+    title: 'Cabinet Humidors | Floor-Standing Cigar Storage | Dunn\'s Luxury Selections',
+    description: 'Premium cabinet humidors holding 600-4,000+ cigars. Spanish cedar, dual-zone options, and precision climate control. Free expert concierge support.',
+    canonicalPath: '/collections/cabinet-humidors',
+  });
 
   const products: DisplayProduct[] = shopifyProducts.length
     ? shopifyProducts.map(fromShopify)

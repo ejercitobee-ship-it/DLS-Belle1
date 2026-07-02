@@ -2,6 +2,7 @@
 import { ShoppingBag, Star, ChevronDown, Zap, Box, CheckCircle2, Loader2, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useShopifyCollection, formatMoney } from '../hooks/useShopifyCollection';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { useNavigateToProduct } from '../hooks/useNavigateToProduct';
 import type { ShopifyProduct } from '../lib/shopify';
 import BreadcrumbSchema from './BreadcrumbSchema';
@@ -391,6 +392,12 @@ export default function ElectronicHumidors() {
     'electronic-humidors',
     'electronic-hunidors',
   );
+
+  usePageMeta({
+    title: 'Electronic Humidors | Climate-Controlled Cigar Storage | Dunn\'s Luxury Selections',
+    description: 'Advanced electronic humidors with precision temperature & humidity control. 500-4,000+ cigars. Smart features, water-cooling systems.',
+    canonicalPath: '/collections/electronic-humidors',
+  });
 
   const displayProducts: DisplayProduct[] =
     shopifyProducts.length > 0
