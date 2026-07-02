@@ -428,7 +428,9 @@ function AppInner() {
   );
 
   const navigate = useCallback((next: Page, articlePath?: string) => {
-    if (next === displayPage && next !== 'article') return;
+    if (next === displayPageRef.current && next !== 'article') {
+      return;
+    }
     pendingPage.current = next;
     setTransitioning(true);
     setTimeout(() => {
@@ -446,7 +448,7 @@ function AppInner() {
       window.scrollTo({ top: 0, behavior: 'instant' });
       setTransitioning(false);
     }, 220);
-  }, [displayPage]);
+  }, []);
 
   useEffect(() => {
     let isFirstPopState = true;
@@ -486,7 +488,10 @@ function AppInner() {
 
       const dest = PATH_TO_PAGE[path] ?? HASH_TO_PAGE[hash];
       if (dest) {
-        updatePage(dest);
+        // Only update if different from current page to avoid race conditions
+        if (displayPageRef.current !== dest) {
+          updatePage(dest);
+        }
       } else {
         // Unknown path — go home if not already there
         if (displayPageRef.current !== 'home') {
@@ -497,6 +502,13 @@ function AppInner() {
 
     const onNavigate = (e: Event) => {
       const detail = (e as CustomEvent).detail as Page;
+      // Verify URL matches the page being navigated to, ignore if mismatch
+      const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+      const expectedPage = PATH_TO_PAGE[currentPath] ?? HASH_TO_PAGE[window.location.hash];
+      if (expectedPage !== detail) {
+        console.log('[onNavigate] ignoring nav event - URL doesnt match detail:', {expectedPage, detail, currentPath});
+        return;
+      }
       navigate(detail);
     };
 
