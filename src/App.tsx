@@ -176,7 +176,7 @@ function getArticleHandles(): { blogHandle: string; articleHandle: string } {
 function getProductHandle(): string {
   const path = window.location.pathname;
   if (path.startsWith('/product/')) {
-    return path.slice('/product/'.length);
+    return path.slice('/product/'.length).replace(/\/$/, '');
   }
   return '';
 }
