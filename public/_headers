@@ -2,6 +2,7 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: frame-src 'self' cdn.shopifycloud.com cdn.shopify.com shop.app pay.shopify.com *.shopifysvc.com *.stripe.com; script-src 'self' cdn.shopifycloud.com cdn.shopify.com shop.app pay.shopify.com *.shopifysvc.com
   Cache-Control: public, max-age=0, must-revalidate
 
 *.html
