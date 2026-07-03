@@ -722,39 +722,23 @@ export async function shopPaySessionCreate(
   paymentRequest: ShopPayPaymentRequestInput,
   sourceIdentifier: string,
 ): Promise<ShopPayPaymentRequestSession> {
-  const data = await storefrontFetch<ShopPayPaymentRequestSessionCreatePayload>(
-    `
-    mutation shopPayPaymentRequestSessionCreate(
-      $paymentRequest: ShopPayPaymentRequestInput!,
-      $sourceIdentifier: String!
-    ) {
-      shopPayPaymentRequestSessionCreate(
-        paymentRequest: $paymentRequest,
-        sourceIdentifier: $sourceIdentifier
-      ) {
-        shopPayPaymentRequestSession {
-          token
-          sourceIdentifier
-          checkoutUrl
-        }
-        userErrors {
-          field
-          message
-        }
-      }
-    }
-  `,
-    { paymentRequest, sourceIdentifier },
-  );
+  const response = await fetch('/api/shop-pay-session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ paymentRequest, sourceIdentifier }),
+  });
 
-  if (!data.shopPayPaymentRequestSession) {
-    throw new Error('Failed to create Shop Pay session');
-  }
-  if (data.userErrors?.length) {
-    throw new Error(`Shop Pay error: ${data.userErrors[0].message}`);
+  if (!response.ok) {
+    const error = await response.json<{ error?: string }>();
+    throw new Error(error?.error || `Failed to create Shop Pay session (${response.status})`);
   }
 
-  return data.shopPayPaymentRequestSession;
+  const result = await response.json<{ token: string; checkoutUrl: string }>();
+  return {
+    token: result.token,
+    sourceIdentifier,
+    checkoutUrl: result.checkoutUrl,
+  };
 }
 
 export async function shopPaySessionSubmit(
@@ -763,42 +747,22 @@ export async function shopPaySessionSubmit(
   idempotencyKey: string,
   orderName?: string,
 ): Promise<ShopPayPaymentRequestReceipt> {
-  const data = await storefrontFetch<ShopPayPaymentRequestSessionSubmitPayload>(
-    `
-    mutation shopPayPaymentRequestSessionSubmit(
-      $token: String!,
-      $paymentRequest: ShopPayPaymentRequestInput!,
-      $idempotencyKey: String!,
-      $orderName: String
-    ) {
-      shopPayPaymentRequestSessionSubmit(
-        token: $token,
-        paymentRequest: $paymentRequest,
-        idempotencyKey: $idempotencyKey,
-        orderName: $orderName
-      ) {
-        paymentRequestReceipt {
-          token
-          processingStatusType
-        }
-        userErrors {
-          field
-          message
-        }
-      }
-    }
-  `,
-    { token, paymentRequest, idempotencyKey, orderName },
-  );
+  const response = await fetch('/api/shop-pay-submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token, paymentRequest, idempotencyKey, orderName }),
+  });
 
-  if (!data.paymentRequestReceipt) {
-    throw new Error('Failed to submit Shop Pay payment');
-  }
-  if (data.userErrors?.length) {
-    throw new Error(`Shop Pay error: ${data.userErrors[0].message}`);
+  if (!response.ok) {
+    const error = await response.json<{ error?: string }>();
+    throw new Error(error?.error || `Failed to submit Shop Pay payment (${response.status})`);
   }
 
-  return data.paymentRequestReceipt;
+  const result = await response.json<{ token: string; orderName: string }>();
+  return {
+    token: result.token,
+    processingStatusType: 'PENDING',
+  };
 }
 
 // ─── Legacy helper kept for Checkout component compatibility ──────────────────
