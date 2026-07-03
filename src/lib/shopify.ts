@@ -729,11 +729,11 @@ export async function shopPaySessionCreate(
   });
 
   if (!response.ok) {
-    const error = await response.json<{ error?: string }>();
+    const error = (await response.json()) as { error?: string };
     throw new Error(error?.error || `Failed to create Shop Pay session (${response.status})`);
   }
 
-  const result = await response.json<{ token: string; checkoutUrl: string }>();
+  const result = (await response.json()) as { token: string; checkoutUrl: string };
   return {
     token: result.token,
     sourceIdentifier,
@@ -754,11 +754,11 @@ export async function shopPaySessionSubmit(
   });
 
   if (!response.ok) {
-    const error = await response.json<{ error?: string }>();
+    const error = (await response.json()) as { error?: string };
     throw new Error(error?.error || `Failed to submit Shop Pay payment (${response.status})`);
   }
 
-  const result = await response.json<{ token: string; orderName: string }>();
+  const result = (await response.json()) as { token: string; orderName: string };
   return {
     token: result.token,
     processingStatusType: 'PENDING',
