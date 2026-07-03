@@ -16,12 +16,6 @@ export function ShopWithConfidence() {
       href: '/returns-warranty',
     },
     {
-      icon: Truck,
-      title: 'Expert Concierge Support',
-      subtitle: 'Included on cabinet & electronic humidors',
-      href: '/delivery-info',
-    },
-    {
       icon: ShieldCheck,
       title: 'Manufacturer Warranty',
       subtitle: '1–3 years on cabinets & electronics',
@@ -34,7 +28,7 @@ export function ShopWithConfidence() {
     },
     {
       icon: Phone,
-      title: 'Expert Support',
+      title: 'Expert Concierge Support',
       subtitle: `${PHONE_NUMBER} · Mon–Fri 9–6 CST`,
       href: PHONE_HREF,
     },
