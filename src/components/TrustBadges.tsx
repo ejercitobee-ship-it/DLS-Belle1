@@ -1,4 +1,4 @@
-import { RotateCcw, Truck, ShieldCheck, Phone, PackageCheck, Star, Mail } from 'lucide-react';
+import { RotateCcw, ShieldCheck, Phone, PackageCheck, Star, Mail } from 'lucide-react';
 import { PHONE_NUMBER, PHONE_HREF } from '../lib/constants';
 
 const SUPPORT_EMAIL = 'support@dunnluxuryselections.com';
