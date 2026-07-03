@@ -1,7 +1,7 @@
 export interface Env {
-  VITE_SHOPIFY_STORE_DOMAIN: string;
-  VITE_SHOPIFY_SHOP_PAY_CLIENT_ID: string;
-  VITE_SHOPIFY_SHOP_PAY_SECRET: string;
+  SHOPIFY_STORE_DOMAIN: string;
+  SHOPIFY_SHOP_PAY_CLIENT_ID: string;
+  SHOPIFY_SHOP_PAY_SECRET: string;
 }
 
 interface ShopPayLineItem {
@@ -39,14 +39,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     // Validate environment variables
-    if (!env.VITE_SHOPIFY_STORE_DOMAIN) {
+    if (!env.SHOPIFY_STORE_DOMAIN) {
       return new Response(JSON.stringify({ error: 'Store domain not configured' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    if (!env.VITE_SHOPIFY_SHOP_PAY_CLIENT_ID || !env.VITE_SHOPIFY_SHOP_PAY_SECRET) {
+    if (!env.SHOPIFY_SHOP_PAY_CLIENT_ID || !env.SHOPIFY_SHOP_PAY_SECRET) {
       console.error('Shop Pay credentials not configured');
       return new Response(JSON.stringify({ error: 'Server configuration error' }), {
         status: 500,
@@ -62,8 +62,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        client_id: env.VITE_SHOPIFY_SHOP_PAY_CLIENT_ID,
-        client_secret: env.VITE_SHOPIFY_SHOP_PAY_SECRET,
+        client_id: env.SHOPIFY_SHOP_PAY_CLIENT_ID,
+        client_secret: env.SHOPIFY_SHOP_PAY_SECRET,
         grant_type: 'client_credentials',
         scope: 'shopify_pay_wallet_api',
       }).toString(),
@@ -82,7 +82,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const accessToken = tokenData.access_token;
 
     // Step 2: Call Shop Pay Wallet API mutation using access token
-    const shopifyUrl = `https://${env.VITE_SHOPIFY_STORE_DOMAIN}/admin/graphql.json`;
+    const shopifyUrl = `https://${env.SHOPIFY_STORE_DOMAIN}/admin/graphql.json`;
 
     const mutation = `
       mutation SubmitShopPaySession($input: ShopPayPaymentRequestSessionSubmitInput!) {
