@@ -747,16 +747,14 @@ export async function shopPaySessionCreate(
     { paymentRequest, sourceIdentifier },
   );
 
-  const payload = data.shopPayPaymentRequestSessionCreate;
-  if (!payload) throw new Error('Failed to create Shop Pay session');
-  if (payload.userErrors?.length) {
-    throw new Error(`Shop Pay error: ${payload.userErrors[0].message}`);
+  if (!data.shopPayPaymentRequestSession) {
+    throw new Error('Failed to create Shop Pay session');
   }
-  if (!payload.shopPayPaymentRequestSession) {
-    throw new Error('No Shop Pay session returned');
+  if (data.userErrors?.length) {
+    throw new Error(`Shop Pay error: ${data.userErrors[0].message}`);
   }
 
-  return payload.shopPayPaymentRequestSession;
+  return data.shopPayPaymentRequestSession;
 }
 
 export async function shopPaySessionSubmit(
@@ -793,16 +791,14 @@ export async function shopPaySessionSubmit(
     { token, paymentRequest, idempotencyKey, orderName },
   );
 
-  const payload = data.shopPayPaymentRequestSessionSubmit;
-  if (!payload) throw new Error('Failed to submit Shop Pay payment');
-  if (payload.userErrors?.length) {
-    throw new Error(`Shop Pay error: ${payload.userErrors[0].message}`);
+  if (!data.paymentRequestReceipt) {
+    throw new Error('Failed to submit Shop Pay payment');
   }
-  if (!payload.paymentRequestReceipt) {
-    throw new Error('No payment receipt returned');
+  if (data.userErrors?.length) {
+    throw new Error(`Shop Pay error: ${data.userErrors[0].message}`);
   }
 
-  return payload.paymentRequestReceipt;
+  return data.paymentRequestReceipt;
 }
 
 // ─── Legacy helper kept for Checkout component compatibility ──────────────────

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowLeft, Lock, ShieldCheck, Truck, ExternalLink, ShoppingBag, AlertCircle, Minus, Plus, Trash2, MessageCircle, BadgeCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { qualifiesForFinancing, formatMonthlyPayment, FINANCING_TERM_MONTHS } from '../lib/financing';
@@ -93,7 +93,7 @@ export default function Checkout({ onBack }: Props) {
   }
 
   // Auto-redirect to Shop Pay checkout when session created via quick action
-  React.useEffect(() => {
+  useEffect(() => {
     if (shopPayCheckoutUrl && !shopPaySessionCreating && !loading) {
       window.location.href = shopPayCheckoutUrl;
     }
