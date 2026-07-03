@@ -49,6 +49,10 @@ type CartContextType = {
   isShopifyConfigured: boolean;
   shopifyCart: ShopifyCart | null;
   shopifyCheckout: () => Promise<{ url: string | null; fallback: boolean }>;
+  shopPaySessionToken: string | null;
+  shopPayCheckoutUrl: string | null;
+  shopPaySessionCreating: boolean;
+  createShopPaySession: () => Promise<{ token: string; checkoutUrl: string }>;
 };
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -75,6 +79,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [shopifyCart, setShopifyCart] = useState<ShopifyCart | null>(null);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
+  const [shopPaySessionToken, setShopPaySessionToken] = useState<string | null>(null);
+  const [shopPayCheckoutUrl, setShopPayCheckoutUrl] = useState<string | null>(null);
+  const [shopPaySessionCreating, setShopPaySessionCreating] = useState(false);
   const [pendingOperations, setPendingOperations] = useState<PendingOperation[]>([]);
 
   const syncLock = useRef(false);
@@ -411,6 +418,57 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const createShopPaySession = async (): Promise<{ token: string; checkoutUrl: string }> => {
+    setShopPaySessionCreating(true);
+    try {
+      if (!shopifyCart?.lines.length) throw new Error('Cart is empty');
+
+      // Build Shop Pay payment request from current cart
+      const paymentRequest: ShopPayPaymentRequestInput = {
+        lineItems: shopifyCart.lines.map((line) => ({
+          label: `${line.merchandise.product.title}${line.merchandise.title ? ` - ${line.merchandise.title}` : ''}`,
+          amount: line.cost.totalAmount.amount,
+          quantity: line.quantity,
+        })),
+        subtotalAmount: shopifyCart.cost.subtotalAmount.amount,
+        totalAmount: shopifyCart.cost.totalAmount.amount,
+        currencyCode: shopifyCart.cost.totalAmount.currencyCode,
+        countryCode: 'US',
+      };
+
+      // Generate unique source identifier
+      const sourceIdentifier = `dunn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+      // Create Shop Pay session
+      const session = await shopPaySessionCreate(paymentRequest, sourceIdentifier);
+
+      // Store session data in state
+      setShopPaySessionToken(session.token);
+      setShopPayCheckoutUrl(session.checkoutUrl);
+
+      // Store payment request in sessionStorage for confirmation hook
+      // The confirmation hook will retrieve this after Shop Pay redirects back
+      sessionStorage.setItem(
+        'shopPaySession',
+        JSON.stringify({
+          token: session.token,
+          paymentRequest,
+          sourceIdentifier,
+        }),
+      );
+
+      return {
+        token: session.token,
+        checkoutUrl: session.checkoutUrl,
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to create Shop Pay session';
+      throw new Error(message);
+    } finally {
+      setShopPaySessionCreating(false);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -428,6 +486,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         isShopifyConfigured: getShopifyConfigured(),
         shopifyCart,
         shopifyCheckout,
+        shopPaySessionToken,
+        shopPayCheckoutUrl,
+        shopPaySessionCreating,
+        createShopPaySession,
       }}
     >
       {children}

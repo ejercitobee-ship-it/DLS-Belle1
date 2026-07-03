@@ -123,6 +123,58 @@ export type ShopifyCollection = {
   products: ShopifyProduct[];
 };
 
+// ─── Shop Pay Wallet Types ────────────────────────────────────────────────────
+
+export type ShopPayLineItem = {
+  label: string;
+  amount: string;
+  quantity?: number;
+};
+
+export type ShopPayPaymentRequestInput = {
+  lineItems: ShopPayLineItem[];
+  shippingOptions?: Array<{
+    label: string;
+    amount: string;
+  }>;
+  discountApplications?: Array<{
+    label: string;
+    amount: string;
+  }>;
+  taxAmount?: string;
+  subtotalAmount: string;
+  totalAmount: string;
+  currencyCode: string;
+  countryCode: string;
+};
+
+export type ShopPayPaymentRequestSession = {
+  token: string;
+  sourceIdentifier: string;
+  checkoutUrl: string;
+};
+
+export type ShopPayPaymentRequestSessionCreatePayload = {
+  shopPayPaymentRequestSession: ShopPayPaymentRequestSession | null;
+  userErrors: Array<{
+    field: string[];
+    message: string;
+  }>;
+};
+
+export type ShopPayPaymentRequestReceipt = {
+  token: string;
+  processingStatusType: string;
+};
+
+export type ShopPayPaymentRequestSessionSubmitPayload = {
+  paymentRequestReceipt: ShopPayPaymentRequestReceipt | null;
+  userErrors: Array<{
+    field: string[];
+    message: string;
+  }>;
+};
+
 // ─── Fragments ────────────────────────────────────────────────────────────────
 
 const PRODUCT_FRAGMENT = `
@@ -662,6 +714,95 @@ export async function getShippingRates(orderValue: number, _productHandle: strin
     deliveryDate: formattedDate,
     carrier: carrierData.name,
   };
+}
+
+// ─── Shop Pay Wallet Session Management ───────────────────────────────────────
+
+export async function shopPaySessionCreate(
+  paymentRequest: ShopPayPaymentRequestInput,
+  sourceIdentifier: string,
+): Promise<ShopPayPaymentRequestSession> {
+  const data = await storefrontFetch<ShopPayPaymentRequestSessionCreatePayload>(
+    `
+    mutation shopPayPaymentRequestSessionCreate(
+      $paymentRequest: ShopPayPaymentRequestInput!,
+      $sourceIdentifier: String!
+    ) {
+      shopPayPaymentRequestSessionCreate(
+        paymentRequest: $paymentRequest,
+        sourceIdentifier: $sourceIdentifier
+      ) {
+        shopPayPaymentRequestSession {
+          token
+          sourceIdentifier
+          checkoutUrl
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `,
+    { paymentRequest, sourceIdentifier },
+  );
+
+  const payload = data.shopPayPaymentRequestSessionCreate;
+  if (!payload) throw new Error('Failed to create Shop Pay session');
+  if (payload.userErrors?.length) {
+    throw new Error(`Shop Pay error: ${payload.userErrors[0].message}`);
+  }
+  if (!payload.shopPayPaymentRequestSession) {
+    throw new Error('No Shop Pay session returned');
+  }
+
+  return payload.shopPayPaymentRequestSession;
+}
+
+export async function shopPaySessionSubmit(
+  token: string,
+  paymentRequest: ShopPayPaymentRequestInput,
+  idempotencyKey: string,
+  orderName?: string,
+): Promise<ShopPayPaymentRequestReceipt> {
+  const data = await storefrontFetch<ShopPayPaymentRequestSessionSubmitPayload>(
+    `
+    mutation shopPayPaymentRequestSessionSubmit(
+      $token: String!,
+      $paymentRequest: ShopPayPaymentRequestInput!,
+      $idempotencyKey: String!,
+      $orderName: String
+    ) {
+      shopPayPaymentRequestSessionSubmit(
+        token: $token,
+        paymentRequest: $paymentRequest,
+        idempotencyKey: $idempotencyKey,
+        orderName: $orderName
+      ) {
+        paymentRequestReceipt {
+          token
+          processingStatusType
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `,
+    { token, paymentRequest, idempotencyKey, orderName },
+  );
+
+  const payload = data.shopPayPaymentRequestSessionSubmit;
+  if (!payload) throw new Error('Failed to submit Shop Pay payment');
+  if (payload.userErrors?.length) {
+    throw new Error(`Shop Pay error: ${payload.userErrors[0].message}`);
+  }
+  if (!payload.paymentRequestReceipt) {
+    throw new Error('No payment receipt returned');
+  }
+
+  return payload.paymentRequestReceipt;
 }
 
 // ─── Legacy helper kept for Checkout component compatibility ──────────────────

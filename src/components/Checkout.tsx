@@ -10,7 +10,17 @@ function fmt(n: number) {
 }
 
 export default function Checkout({ onBack }: Props) {
-  const { items, subtotal, updateQty, removeItem, shopifyCheckout, checkoutUrl } = useCart();
+  const {
+    items,
+    subtotal,
+    updateQty,
+    removeItem,
+    shopifyCheckout,
+    checkoutUrl,
+    shopPaySessionCreating,
+    shopPayCheckoutUrl,
+    createShopPaySession,
+  } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -19,7 +29,7 @@ export default function Checkout({ onBack }: Props) {
 
   async function handleCheckout() {
     setError('');
-    
+
     // GA4 - Begin Checkout Event
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'begin_checkout', {
@@ -33,7 +43,7 @@ export default function Checkout({ onBack }: Props) {
         })),
       });
     }
-    
+
     setLoading(true);
     try {
       // Always create a fresh cart to avoid stale/expired checkout URLs
@@ -52,6 +62,42 @@ export default function Checkout({ onBack }: Props) {
       setLoading(false);
     }
   }
+
+  async function handleShopPay() {
+    setError('');
+
+    // GA4 - Begin Checkout Event (same as credit card flow)
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'begin_checkout', {
+        currency: 'USD',
+        value: total,
+        items: items.map(item => ({
+          item_id: item.id,
+          item_name: item.name,
+          price: item.priceNum,
+          quantity: item.quantity,
+        })),
+      });
+    }
+
+    try {
+      const { checkoutUrl: shopPayUrl } = await createShopPaySession();
+      // Redirect to Shop Pay checkout URL
+      if (shopPayUrl) {
+        window.location.href = shopPayUrl;
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to initialize Shop Pay';
+      setError(message);
+    }
+  }
+
+  // Auto-redirect to Shop Pay checkout when session created via quick action
+  React.useEffect(() => {
+    if (shopPayCheckoutUrl && !shopPaySessionCreating && !loading) {
+      window.location.href = shopPayCheckoutUrl;
+    }
+  }, [shopPayCheckoutUrl, shopPaySessionCreating, loading]);
 
   return (
     <div className="min-h-screen bg-charcoal-950">
@@ -112,6 +158,25 @@ export default function Checkout({ onBack }: Props) {
                   </p>
                 </div>
               )}
+
+              {/* Shop Pay button */}
+              <button
+                onClick={handleShopPay}
+                disabled={shopPaySessionCreating || items.length === 0}
+                className="w-full flex items-center justify-center gap-2 bg-[#5433FF] text-white font-bold text-sm tracking-widest uppercase py-4 rounded-lg hover:bg-[#4a2bd9] active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed mb-3"
+              >
+                {shopPaySessionCreating ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Preparing Shop Pay...
+                  </>
+                ) : (
+                  <>
+                    <span className="text-lg">🛒</span>
+                    Pay with Shop Pay
+                  </>
+                )}
+              </button>
 
               <button
                 onClick={handleCheckout}
