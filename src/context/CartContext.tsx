@@ -188,6 +188,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
               merchandiseId: i.shopifyVariantId!,
               quantity: i.quantity,
             })),
+            { countryCode: 'US' },
           );
           saveCartId(cart.id);
           setShopifyCart(cart);
@@ -410,7 +411,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       // Always create a fresh cart to avoid expired checkout URLs
       clearCartId();
-      const cart = await cartCreate(lines);
+      const cart = await cartCreate(lines, { countryCode: 'US' });
       saveCartId(cart.id);
       setShopifyCart(cart);
       setCheckoutUrl(cart.checkoutUrl);

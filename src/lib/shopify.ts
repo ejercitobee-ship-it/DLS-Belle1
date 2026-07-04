@@ -474,6 +474,7 @@ function mapCart(raw: Record<string, unknown>): ShopifyCart {
 
 export async function cartCreate(
   lines: { merchandiseId: string; quantity: number }[],
+  buyerIdentity?: { email?: string; countryCode?: string },
 ): Promise<ShopifyCart> {
   const data = await storefrontFetch<{
     cartCreate: { cart: Record<string, unknown>; userErrors: { message: string }[] };
@@ -487,7 +488,7 @@ export async function cartCreate(
       }
     }
   `,
-    { input: { lines } },
+    { input: { lines, buyerIdentity } },
   );
   if (data.cartCreate.userErrors.length) throw new Error(data.cartCreate.userErrors[0].message);
   return mapCart(data.cartCreate.cart);
