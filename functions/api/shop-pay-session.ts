@@ -106,6 +106,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       },
     };
 
+    // Log the payment request payload for debugging
+    console.log('Shop Pay session payload:', JSON.stringify(variables, null, 2));
+    console.log('Payment request:', JSON.stringify(paymentRequest, null, 2));
+    console.log('Country code:', paymentRequest.countryCode);
+    console.log('Currency code:', paymentRequest.currencyCode);
+
     const shopifyResponse = await fetch(shopifyUrl, {
       method: 'POST',
       headers: {
