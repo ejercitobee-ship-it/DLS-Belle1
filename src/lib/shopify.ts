@@ -418,6 +418,7 @@ export type ShopifyCartLine = {
   merchandise: {
     id: string;
     title: string;
+    availableForSale: boolean;
     price: Money;
     product: { title: string; featuredImage: ShopifyImage | null };
   };
