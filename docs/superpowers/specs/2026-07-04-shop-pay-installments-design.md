@@ -45,8 +45,8 @@ Shopify's Shop Pay Installments engine performs dynamic eligibility checks on th
 ### Phase 1: Credentials ✅ (COMPLETE)
 
 **Status:** Shopify Shop Pay OAuth credentials added to Cloudflare
-- `SHOPIFY_SHOP_PAY_CLIENT_ID`: `[REMOVED]`
-- `SHOPIFY_SHOP_PAY_SECRET`: `[REMOVED]`
+- `SHOPIFY_SHOP_PAY_CLIENT_ID`: Set in Cloudflare secrets
+- `SHOPIFY_SHOP_PAY_SECRET`: Set in Cloudflare secrets
 
 **Result:** Shop Pay redirect now works (no 401 errors)
 
