@@ -4,3 +4,5 @@ compatibility_date = "2026-05-05"
 
 [vars]
 KLAVIYO_LIST_ID = "W3FA6q"
+VITE_SHOPIFY_STOREFRONT_TOKEN = "68ba4d5231bfe1cc1889f16c62fa8882"
+VITE_SHOPIFY_STORE_DOMAIN = "luxury-dunn-selections.myshopify.com"
