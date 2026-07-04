@@ -448,7 +448,7 @@ const CART_FRAGMENT = `
           cost { totalAmount { amount currencyCode } }
           merchandise {
             ... on ProductVariant {
-              id title
+              id title availableForSale
               price { amount currencyCode }
               product { title featuredImage { url altText } }
             }
