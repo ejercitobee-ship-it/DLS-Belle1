@@ -6,7 +6,8 @@ import dotenv from 'dotenv';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Load environment variables from .env.local
+// Load environment variables: .env.production (for build-time vars) then .env.local (for overrides)
+dotenv.config({ path: path.join(__dirname, '.env.production') });
 dotenv.config({ path: path.join(__dirname, '.env.local') });
 
 const DIST_DIR = path.resolve(__dirname, 'dist');
