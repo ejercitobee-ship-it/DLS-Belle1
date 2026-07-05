@@ -68,10 +68,10 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
           </div>
           <button
             onClick={closeCart}
-            className="w-8 h-8 flex items-center justify-center text-cream-200/50 hover:text-white hover:bg-charcoal-800 rounded transition-colors"
+            className="w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center text-cream-200/50 hover:text-white hover:bg-charcoal-800 rounded transition-colors"
             aria-label="Close cart"
           >
-            <X size={18} />
+            <X size={18} className="sm:w-4 sm:h-4" />
           </button>
         </div>
 
@@ -132,27 +132,27 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                     <div className="flex items-center gap-0.5 bg-charcoal-950 border border-charcoal-700/50 rounded">
                       <button
                         onClick={() => updateQty(item.id, item.quantity - 1)}
-                        className="w-8 h-8 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors active:bg-charcoal-800"
+                        className="w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors active:bg-charcoal-800"
                         aria-label="Decrease quantity"
                       >
-                        <Minus size={12} />
+                        <Minus size={12} className="sm:w-2.5 sm:h-2.5" />
                       </button>
                       <span className="text-white text-xs font-medium w-6 text-center">{item.quantity}</span>
                       <button
                         onClick={() => updateQty(item.id, item.quantity + 1)}
-                        className="w-8 h-8 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors active:bg-charcoal-800"
+                        className="w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors active:bg-charcoal-800"
                         aria-label="Increase quantity"
                       >
-                        <Plus size={12} />
+                        <Plus size={12} className="sm:w-2.5 sm:h-2.5" />
                       </button>
                     </div>
 
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="w-8 h-8 flex items-center justify-center text-cream-200/30 hover:text-red-400 transition-colors active:scale-90"
+                      className="w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center text-cream-200/30 hover:text-red-400 transition-colors active:scale-90"
                       aria-label="Remove item"
                     >
-                      <Trash2 size={14} />
+                      <Trash2 size={14} className="sm:w-3.5 sm:h-3.5" />
                     </button>
                   </div>
                 </div>
