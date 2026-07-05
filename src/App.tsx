@@ -17,6 +17,7 @@ import StickyCartBar from './components/StickyCartBar';
 import FinancingBanner from './components/FinancingBanner';
 // import { TestModal } from './components/TestModal';
 import { BuyerGuideModal } from './components/BuyerGuideModal';
+import TawkChatbot from './components/TawkChatbot';
 import { CartProvider, useCart } from './context/CartContext';
 import { usePageMeta } from './hooks/usePageMeta';
 
@@ -676,6 +677,8 @@ function AppInner() {
         isOpen={showBuyerGuideModal}
         onClose={() => setShowBuyerGuideModal(false)}
       />
+
+      <TawkChatbot />
     </div>
   );
 }
