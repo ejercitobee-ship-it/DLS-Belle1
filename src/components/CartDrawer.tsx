@@ -164,25 +164,33 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         {/* Footer */}
         {items.length > 0 && (
           <div className="px-5 py-5 border-t border-charcoal-800/50 space-y-4 bg-charcoal-900/40 safe-bottom" style={{ paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))' }}>
-            {/* Subtotal */}
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-cream-200/50">Subtotal</span>
-                <span className="text-cream-100 font-medium">{fmt(subtotal)}</span>
+            {/* Cart Summary Section */}
+            <div className="mt-6 py-5">
+              {/* Summary Items */}
+              <div className="flex flex-col gap-3 mb-4">
+                {/* Subtotal Row */}
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-400 font-normal">Subtotal</span>
+                  <span className="text-white font-medium text-right">{fmt(subtotal)}</span>
+                </div>
+
+                {/* Shipping & Insurance */}
+                <ShippingCalculator productPrice={subtotal} compact={true} />
+
+                {/* Taxes Row */}
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-400 font-normal">Taxes</span>
+                  <span className="text-gray-400 font-normal text-right text-xs">Calculated at checkout</span>
+                </div>
               </div>
 
-              {/* Shipping & Insurance */}
-              <ShippingCalculator productPrice={subtotal} compact={true} />
+              {/* Divider */}
+              <div className="h-px bg-gradient-to-r from-charcoal-600 to-transparent my-4"></div>
 
-              <div className="space-y-2 border-t border-charcoal-800/50 pt-3 mt-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-cream-200/50">Taxes</span>
-                  <span className="text-cream-200/40 text-xs">Calculated at checkout</span>
-                </div>
-                <div className="flex justify-between text-base font-bold border-t border-charcoal-800/30 pt-2">
-                  <span className="text-white">Estimated Total</span>
-                  <span className="text-gold-400 font-serif text-lg">{fmt(totalWithShipping)}</span>
-                </div>
+              {/* Total Row */}
+              <div className="flex justify-between items-center pt-3 border-t border-charcoal-700">
+                <span className="text-gold-400 font-semibold text-base">Estimated Total</span>
+                <span className="text-gold-400 font-bold text-lg">{fmt(totalWithShipping)}</span>
               </div>
             </div>
 
