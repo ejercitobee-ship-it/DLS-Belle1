@@ -78,17 +78,17 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         {/* Items */}
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
           {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full gap-4 text-center pb-12">
-              <div className="w-16 h-16 rounded-full bg-charcoal-900 flex items-center justify-center">
-                <Package size={28} className="text-charcoal-600" />
+            <div className="flex flex-col items-center justify-center h-full gap-5 text-center py-12 px-2">
+              <div className="w-16 h-16 rounded-full bg-charcoal-800/60 flex items-center justify-center ring-1 ring-charcoal-700">
+                <Package size={28} className="text-gold-400/60" />
               </div>
-              <div>
-                <p className="text-cream-200/60 text-sm font-medium">Your cart is empty</p>
-                <p className="text-cream-200/30 text-xs mt-1">Add some luxury humidors to get started</p>
+              <div className="space-y-2">
+                <p className="text-cream-100 text-base font-semibold">Your cart is empty</p>
+                <p className="text-cream-200/50 text-sm leading-relaxed">Add some luxury humidors to get started</p>
               </div>
               <button
                 onClick={closeCart}
-                className="text-xs text-gold-400 hover:text-gold-300 font-medium transition-colors border border-gold-600/30 px-4 py-2 rounded hover:bg-gold-700/10"
+                className="text-xs text-gold-400 hover:text-gold-300 font-semibold transition-all duration-200 border border-gold-600/40 hover:border-gold-400 px-4 py-2.5 rounded hover:bg-gold-700/15 active:scale-95"
               >
                 Continue Shopping
               </button>
@@ -163,15 +163,15 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="px-5 py-5 border-t border-charcoal-800/50 space-y-4 bg-charcoal-900/40 safe-bottom" style={{ paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))' }}>
+          <div className="px-5 py-6 border-t border-charcoal-800/50 space-y-5 bg-charcoal-900/40 overflow-y-auto" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
             {/* Cart Summary Section */}
-            <div className="mt-6 py-5">
+            <div className="space-y-3">
               {/* Summary Items */}
-              <div className="flex flex-col gap-3 mb-4">
+              <div className="flex flex-col gap-3">
                 {/* Subtotal Row */}
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-400 font-normal">Subtotal</span>
-                  <span className="text-white font-medium text-right">{fmt(subtotal)}</span>
+                  <span className="text-cream-200/60 font-normal">Subtotal</span>
+                  <span className="text-cream-100 font-medium text-right">{fmt(subtotal)}</span>
                 </div>
 
                 {/* Shipping & Insurance */}
@@ -179,34 +179,34 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
                 {/* Taxes Row */}
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-400 font-normal">Taxes</span>
-                  <span className="text-gray-400 font-normal text-right text-xs">Calculated at checkout</span>
+                  <span className="text-cream-200/60 font-normal">Taxes</span>
+                  <span className="text-cream-200/50 font-normal text-right text-xs">Calculated at checkout</span>
                 </div>
               </div>
 
               {/* Divider */}
-              <div className="h-px bg-gradient-to-r from-charcoal-600 to-transparent my-4"></div>
+              <div className="h-px bg-gradient-to-r from-charcoal-600 via-charcoal-600/40 to-transparent"></div>
 
               {/* Total Row */}
-              <div className="flex justify-between items-center pt-3 border-t border-charcoal-700">
-                <span className="text-gold-400 font-semibold text-base">Estimated Total</span>
+              <div className="flex justify-between items-center pt-2">
+                <span className="text-gold-400 font-semibold text-sm">Estimated Total</span>
                 <span className="text-gold-400 font-bold text-lg">{fmt(totalWithShipping)}</span>
               </div>
             </div>
 
             {/* Financing Offer Banner */}
             {qualifiesForFinancing(totalWithShipping) && (
-              <section aria-label="Financing offer" className="bg-gold-400/10 border border-gold-400/30 rounded-lg p-4 mt-5 flex gap-3 items-start">
-                <div className="text-2xl flex-shrink-0 text-gold-400"><CreditCard size={24} /></div>
-                <div className="flex flex-col gap-1.5">
-                  <p className="text-sm font-semibold text-gold-400 m-0">Financing Available</p>
-                  <p className="text-xs text-white m-0 leading-relaxed">
-                    Your order qualifies for financing: as low as <strong className="text-gold-400">${formatMonthlyPayment(totalWithShipping)}/month × {FINANCING_TERM_MONTHS}</strong>
+              <section aria-label="Financing offer" className="bg-gold-400/8 border border-gold-400/25 rounded-lg p-4 flex gap-3 items-start transition-all duration-200 hover:bg-gold-400/12 hover:border-gold-400/35">
+                <div className="flex-shrink-0 text-gold-400 pt-0.5"><CreditCard size={20} /></div>
+                <div className="flex flex-col gap-2 min-w-0">
+                  <p className="text-sm font-semibold text-gold-300 m-0">Financing Available</p>
+                  <p className="text-xs text-cream-100 m-0 leading-relaxed">
+                    Your order qualifies: as low as <strong className="text-gold-400 font-semibold">${formatMonthlyPayment(totalWithShipping)}/month × {FINANCING_TERM_MONTHS}</strong>
                   </p>
-                  <p className="text-xs text-gray-400 m-0 leading-snug">
+                  <p className="text-xs text-cream-200/50 m-0 leading-snug">
                     With Shop Pay — 0% interest for qualified buyers
                   </p>
-                  <a href="/financing" onClick={closeCart} className="text-xs text-gold-400 no-underline mt-1 inline-block hover:underline transition-colors">
+                  <a href="/financing" onClick={closeCart} className="text-xs text-gold-400 no-underline mt-1 inline-block hover:text-gold-300 hover:underline transition-colors font-medium">
                     Learn more about financing →
                   </a>
                 </div>
@@ -214,7 +214,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             )}
 
             {/* Checkout CTA */}
-            <div className="flex flex-col gap-3 mt-6">
+            <div className="flex flex-col gap-3 pt-2">
               <button
                 onClick={async () => {
                   setCheckoutError(false);
@@ -248,7 +248,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                   }
                 }}
                 disabled={checkoutLoading}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-gold-400 to-amber-700 text-black border-none px-4 py-3.5 text-sm font-bold rounded tracking-wide transition-all duration-300 hover:from-amber-300 hover:to-amber-800 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold-400/30 disabled:opacity-70"
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-gold-400 to-amber-700 text-black border border-gold-300/30 px-4 py-3.5 text-sm font-bold rounded-lg tracking-wide transition-all duration-300 hover:from-amber-300 hover:to-amber-800 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold-400/40 hover:border-gold-300/60 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
               >
                 {checkoutLoading ? (
                   <><div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> Preparing Checkout...</>
@@ -259,51 +259,52 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
               <button
                 onClick={closeCart}
-                className="w-full bg-transparent text-gold-400 border border-gold-400 px-4 py-3 text-sm font-semibold rounded tracking-wide transition-all duration-300 hover:bg-gold-400/10"
+                className="w-full bg-transparent text-gold-400 border border-gold-400/60 px-4 py-3 text-sm font-semibold rounded-lg tracking-wide transition-all duration-300 hover:bg-gold-400/10 hover:border-gold-400 active:scale-95"
               >
                 Continue Shopping
               </button>
             </div>
 
             {checkoutError && (
-              <div className="flex flex-col gap-2 text-xs bg-red-900/20 border border-red-700/30 rounded px-3 py-2.5">
-                <div className="flex items-center gap-2 text-red-400">
-                  <AlertCircle size={12} />
-                  Couldn't connect to checkout. Try the direct link below.
+              <div className="flex flex-col gap-2.5 text-xs bg-red-900/15 border border-red-700/40 rounded-lg px-3.5 py-3">
+                <div className="flex items-start gap-2.5 text-red-400">
+                  <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
+                  <span className="leading-snug">Couldn't connect to checkout. Try the direct link below.</span>
                 </div>
                 <a
                   href={`https://${import.meta.env.VITE_SHOPIFY_STORE_DOMAIN}/cart`}
-                  className="text-gold-400 underline hover:text-gold-300 font-medium"
+                  className="text-gold-400 hover:text-gold-300 font-semibold transition-colors"
                 >
-                  Go directly to Shopify cart &rarr;
+                  Go directly to Shopify cart →
                 </a>
               </div>
             )}
 
             {/* Trust signals */}
-            <div className="space-y-3 pt-2">
+            <div className="space-y-4 pt-1">
               {/* Payment methods */}
-              <div className="flex items-center justify-center gap-2 flex-wrap">
+              <div className="flex items-center justify-center gap-1.5 flex-wrap">
                 {['Shop Pay', 'Visa', 'Mastercard', 'Amex', 'PayPal'].map((m) => (
-                  <span key={m} className="text-[10px] text-cream-200/40 bg-charcoal-800/60 border border-charcoal-700/30 px-2 py-1 rounded font-medium">
+                  <span key={m} className="text-[10px] text-cream-200/50 bg-charcoal-800/50 border border-charcoal-700/40 px-2.5 py-1.5 rounded-md font-medium transition-colors hover:text-cream-100 hover:border-charcoal-600">
                     {m}
                   </span>
                 ))}
               </div>
 
               {/* Trust badges */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-center gap-1.5 text-[10px] text-cream-200/50">
-                  <Lock size={10} className="text-emerald-500" />
+              <div className="space-y-2.5 text-[10px] text-cream-200/60">
+                <div className="flex items-center justify-center gap-1.5">
+                  <Lock size={11} className="text-emerald-500 flex-shrink-0" />
                   <span>SSL Secured by Shopify</span>
-                </div>                <div className="flex items-center justify-center gap-1.5 text-[10px] text-cream-200/50">
-                  <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                </div>
+                <div className="flex items-center justify-center gap-1.5">
+                  <svg className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   <span>10-day return guarantee</span>
                 </div>
-                <div className="flex items-center justify-center gap-1.5 text-[10px] text-cream-200/50">
-                  <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                <div className="flex items-center justify-center gap-1.5">
+                  <svg className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   <span>Expert concierge support & setup</span>
