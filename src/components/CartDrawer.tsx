@@ -51,12 +51,12 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full h-[100dvh] w-full sm:w-[420px] bg-charcoal-950 border-l border-charcoal-800/60 flex flex-col transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 z-[9999] h-full h-[100dvh] w-full sm:w-[420px] bg-charcoal-950 border-l border-charcoal-800/60 flex flex-col overflow-hidden transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-charcoal-800/50">
+        <div className="sticky top-0 z-10 flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-charcoal-800/50 bg-charcoal-950">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <ShoppingBag size={18} className="text-gold-400 flex-shrink-0" />
             <span className="font-serif text-base sm:text-lg md:text-xl text-white font-semibold truncate">Your Cart</span>
@@ -76,7 +76,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-3 sm:space-y-4 md:space-y-5 mb-2">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-3 sm:space-y-4 md:space-y-5 mb-2 min-h-0">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-3 sm:gap-5 text-center py-8 sm:py-12 px-2">
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-charcoal-800/60 flex items-center justify-center ring-1 ring-charcoal-700">
@@ -163,7 +163,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-6 border-t border-charcoal-800/50 bg-charcoal-900/40 overflow-y-auto flex flex-col gap-8 sm:gap-10 md:gap-12" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
+          <div className="sticky bottom-0 px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-6 border-t border-charcoal-800/50 bg-charcoal-900/40 flex flex-col gap-8 sm:gap-10 md:gap-12" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
             {/* Cart Summary Section */}
             <div className="space-y-2 sm:space-y-3 md:space-y-4">
               {/* Summary Items */}
