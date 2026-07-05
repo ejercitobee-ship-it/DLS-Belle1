@@ -297,7 +297,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               </div>
 
               {/* Trust badges */}
-              <div className="space-y-1.5 sm:space-y-2.5 text-xs text-gray-500">
+              <div className="space-y-1.5 sm:space-y-2.5 text-xs text-cream-200/40">
                 <div className="flex items-center justify-center gap-1.5">
                   <Lock size={11} className="text-emerald-500 flex-shrink-0" />
                   <span className="break-words">SSL Secured by Shopify</span>
