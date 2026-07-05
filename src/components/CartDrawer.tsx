@@ -76,7 +76,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 mb-2">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-3 sm:gap-5 text-center py-8 sm:py-12 px-2">
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-charcoal-800/60 flex items-center justify-center ring-1 ring-charcoal-700">
@@ -97,7 +97,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             items.map((item) => (
               <div
                 key={item.id}
-                className="flex gap-2 sm:gap-3 bg-charcoal-900 rounded-lg p-3 border border-charcoal-800/40"
+                className="flex gap-2 sm:gap-3 bg-charcoal-900 rounded-lg py-5 sm:py-6 px-4 sm:px-5 border border-charcoal-800/40"
               >
                 {/* Image */}
                 <div className="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 rounded-lg overflow-hidden">
@@ -105,7 +105,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 </div>
 
                 {/* Details */}
-                <div className="flex-1 min-w-0 flex flex-col gap-1.5 sm:gap-2">
+                <div className="flex-1 min-w-0 flex flex-col gap-4 sm:gap-5">
                   {/* Item Title */}
                   <h4 className="text-xs sm:text-sm font-medium m-0 leading-snug text-cream-100 line-clamp-2 break-words">
                     {item.name}
