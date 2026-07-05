@@ -169,26 +169,28 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               {/* Summary Items */}
               <div className="flex flex-col gap-2 sm:gap-3">
                 {/* Subtotal Row */}
-                <div className="flex justify-between items-center text-xs sm:text-sm gap-2">
+                <div className="flex justify-between items-center text-xs sm:text-sm gap-2 py-2.5 sm:py-3">
                   <span className="text-cream-200/60 font-normal">Subtotal</span>
                   <span className="text-cream-100 font-medium text-right break-words">{fmt(subtotal)}</span>
                 </div>
 
                 {/* Shipping & Insurance */}
-                <ShippingCalculator productPrice={subtotal} compact={true} />
+                <div className="py-2.5 sm:py-3">
+                  <ShippingCalculator productPrice={subtotal} compact={true} />
+                </div>
 
                 {/* Taxes Row */}
-                <div className="flex justify-between items-center text-xs sm:text-sm gap-2">
+                <div className="flex justify-between items-center text-xs sm:text-sm gap-2 py-2.5 sm:py-3">
                   <span className="text-cream-200/60 font-normal">Taxes</span>
                   <span className="text-cream-200/50 font-normal text-right text-[11px] sm:text-xs whitespace-nowrap">Calculated at checkout</span>
                 </div>
               </div>
 
               {/* Divider */}
-              <div className="h-px bg-gradient-to-r from-charcoal-600 via-charcoal-600/40 to-transparent"></div>
+              <div className="my-5 sm:my-6 h-px bg-gradient-to-r from-charcoal-600 via-charcoal-500/20 to-transparent"></div>
 
               {/* Total Row */}
-              <div className="flex justify-between items-center pt-1 sm:pt-2 gap-2">
+              <div className="flex justify-between items-center pt-4 sm:pt-5 border-t border-charcoal-700/50 gap-2">
                 <span className="text-gold-400 font-semibold text-xs sm:text-sm">Estimated Total</span>
                 <span className="text-gold-400 font-bold text-base sm:text-lg break-words">{fmt(totalWithShipping)}</span>
               </div>
