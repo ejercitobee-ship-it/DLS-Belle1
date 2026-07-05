@@ -218,7 +218,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               )}
 
               {/* Checkout CTA */}
-              <div className="flex flex-col gap-2 sm:gap-3">
+              <div className="flex flex-col gap-4 sm:gap-5 mt-8 sm:mt-10">
               <button
                 onClick={async () => {
                   setCheckoutError(false);
@@ -252,7 +252,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                   }
                 }}
                 disabled={checkoutLoading}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-gold-400 to-amber-700 text-black border border-gold-300/30 px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-bold rounded-lg tracking-wide transition-all duration-300 hover:from-amber-300 hover:to-amber-800 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold-400/40 hover:border-gold-300/60 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-gold-400 to-amber-700 text-black border border-gold-300/30 px-3 sm:px-4 py-4 sm:py-5 text-xs sm:text-sm font-bold rounded-lg tracking-wide transition-all duration-300 hover:from-amber-300 hover:to-amber-800 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold-400/40 hover:border-gold-300/60 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
               >
                 {checkoutLoading ? (
                   <><div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> <span className="hidden sm:inline">Preparing Checkout...</span><span className="sm:hidden">Preparing...</span></>
@@ -263,7 +263,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
               <button
                 onClick={closeCart}
-                className="w-full bg-transparent text-gold-400 border border-gold-400/60 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold rounded-lg tracking-wide transition-all duration-300 hover:bg-gold-400/10 hover:border-gold-400 active:scale-95"
+                className="w-full bg-transparent text-gold-400 border border-gold-400/60 px-3 sm:px-4 py-3.5 sm:py-4 text-xs sm:text-sm font-semibold rounded-lg tracking-wide transition-all duration-300 hover:bg-gold-400/10 hover:border-gold-400 active:scale-95"
               >
                 Continue Shopping
               </button>
