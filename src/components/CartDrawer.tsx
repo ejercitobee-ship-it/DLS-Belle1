@@ -200,9 +200,9 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             <div className="flex flex-col gap-6 sm:gap-8">
               {/* Financing Offer Banner */}
               {qualifiesForFinancing(totalWithShipping) && (
-                <section aria-label="Financing offer" className="bg-gold-400/8 border border-gold-400/25 rounded-lg p-3 sm:p-4 flex gap-2 sm:gap-3 items-start transition-all duration-200 hover:bg-gold-400/12 hover:border-gold-400/35">
+                <section aria-label="Financing offer" className="bg-gold-400/8 border border-gold-400/25 rounded-lg p-5 sm:p-6 mt-6 sm:mt-8 flex gap-2.5 sm:gap-3 items-start transition-all duration-200 hover:bg-gold-400/12 hover:border-gold-400/35">
                   <div className="flex-shrink-0 text-gold-400 pt-0.5"><CreditCard size={18} className="sm:w-5 sm:h-5" /></div>
-                  <div className="flex flex-col gap-1.5 sm:gap-2 min-w-0">
+                  <div className="flex flex-col gap-2.5 sm:gap-3 min-w-0">
                     <p className="text-xs sm:text-sm font-semibold text-gold-300 m-0">Financing Available</p>
                     <p className="text-[11px] sm:text-xs text-cream-100 m-0 leading-relaxed break-words">
                       Your order qualifies: as low as <strong className="text-gold-400 font-semibold">${formatMonthlyPayment(totalWithShipping)}/mo × {FINANCING_TERM_MONTHS}</strong>
