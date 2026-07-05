@@ -286,9 +286,9 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             </div>
 
             {/* Trust signals */}
-            <div className="space-y-3 sm:space-y-4 pt-1">
+            <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-charcoal-700/30 text-center space-y-3 sm:space-y-4">
               {/* Payment methods */}
-              <div className="flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap">
+              <div className="flex items-center justify-center gap-2 mb-4 flex-wrap opacity-60">
                 {['Shop Pay', 'Visa', 'Mastercard', 'Amex', 'PayPal'].map((m) => (
                   <span key={m} className="text-[9px] sm:text-[10px] text-cream-200/50 bg-charcoal-800/50 border border-charcoal-700/40 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-md font-medium transition-colors hover:text-cream-100 hover:border-charcoal-600">
                     {m}
@@ -297,7 +297,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               </div>
 
               {/* Trust badges */}
-              <div className="space-y-1.5 sm:space-y-2.5 text-[9px] sm:text-[10px] text-cream-200/60">
+              <div className="space-y-1.5 sm:space-y-2.5 text-xs text-gray-500">
                 <div className="flex items-center justify-center gap-1.5">
                   <Lock size={11} className="text-emerald-500 flex-shrink-0" />
                   <span className="break-words">SSL Secured by Shopify</span>
