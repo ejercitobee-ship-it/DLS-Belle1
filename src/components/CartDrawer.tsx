@@ -57,8 +57,8 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         {/* Header */}
         <div className="px-4 sm:px-5 py-4 sm:py-5 border-b border-charcoal-800/50 bg-charcoal-950 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <ShoppingBag size={20} className="text-gold-400" />
-            <h1 className="font-serif text-lg sm:text-xl text-white font-semibold">Your Cart</h1>
+            <ShoppingBag size={18} className="text-gold-400" />
+            <h1 className="font-serif text-base sm:text-lg text-white font-semibold">Your Cart</h1>
             {totalItems > 0 && (
               <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-gold-600 text-charcoal-950 rounded-full">
                 {totalItems}
@@ -101,10 +101,10 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex gap-3 sm:gap-4 bg-charcoal-900 rounded-lg p-4 sm:p-5 border border-charcoal-800/40"
+                    className="flex gap-2 sm:gap-3 bg-charcoal-900 rounded-lg p-3 sm:p-4 border border-charcoal-800/40"
                   >
                     {/* Product Image */}
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-lg overflow-hidden bg-charcoal-800">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 rounded-lg overflow-hidden bg-charcoal-800">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -116,8 +116,8 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                     {/* Product Details and Controls */}
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       {/* Product Info */}
-                      <div className="space-y-1.5">
-                        <h3 className="text-sm sm:text-base font-medium text-cream-100 line-clamp-2">
+                      <div className="space-y-1">
+                        <h3 className="text-xs sm:text-sm font-medium text-cream-100 line-clamp-2">
                           {item.name}
                         </h3>
                         {item.subtitle && (
@@ -129,8 +129,8 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                       </div>
 
                       {/* Price and Controls Row */}
-                      <div className="flex items-center justify-between gap-2 mt-2">
-                        <p className="text-sm sm:text-base font-semibold text-gold-400">
+                      <div className="flex items-center justify-between gap-2 mt-1">
+                        <p className="text-xs sm:text-sm font-semibold text-gold-400">
                           {fmt(item.priceNum * item.quantity)}
                         </p>
 
@@ -201,8 +201,8 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
                 {/* Total */}
                 <div className="flex justify-between items-center pt-2">
-                  <span className="text-gold-400 font-semibold text-sm">Estimated Total</span>
-                  <span className="text-gold-400 font-bold text-lg sm:text-xl">{fmt(totalWithShipping)}</span>
+                  <span className="text-gold-400 font-semibold text-xs sm:text-sm">Estimated Total</span>
+                  <span className="text-gold-400 font-bold text-sm sm:text-base">{fmt(totalWithShipping)}</span>
                 </div>
               </div>
 
