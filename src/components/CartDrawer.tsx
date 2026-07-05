@@ -214,47 +214,56 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             )}
 
             {/* Checkout CTA */}
-            <button
-              onClick={async () => {
-                setCheckoutError(false);
-                setCheckoutLoading(true);
-                // GA4 begin_checkout
-                if (typeof window !== 'undefined' && (window as any).gtag) {
-                  (window as any).gtag('event', 'begin_checkout', {
-                    currency: 'USD',
-                    value: subtotal,
-                    items: items.map(item => ({
-                      item_id: item.id,
-                      item_name: item.name,
-                      price: item.priceNum,
-                      quantity: item.quantity,
-                    })),
-                  });
-                }
-                try {
-                  const { url } = await shopifyCheckout();
-                  if (url) {
-                    const returnUrl = `${window.location.origin}/order-confirmation`;
-                    const separator = url.includes('?') ? '&' : '?';
-                    window.location.href = `${url}${separator}return_url=${encodeURIComponent(returnUrl)}`;
-                    return;
+            <div className="flex flex-col gap-3 mt-6">
+              <button
+                onClick={async () => {
+                  setCheckoutError(false);
+                  setCheckoutLoading(true);
+                  // GA4 begin_checkout
+                  if (typeof window !== 'undefined' && (window as any).gtag) {
+                    (window as any).gtag('event', 'begin_checkout', {
+                      currency: 'USD',
+                      value: subtotal,
+                      items: items.map(item => ({
+                        item_id: item.id,
+                        item_name: item.name,
+                        price: item.priceNum,
+                        quantity: item.quantity,
+                      })),
+                    });
                   }
-                  setCheckoutError(true);
-                } catch {
-                  setCheckoutError(true);
-                } finally {
-                  setCheckoutLoading(false);
-                }
-              }}
-              disabled={checkoutLoading}
-              className="w-full flex items-center justify-center gap-2 bg-gold-gradient text-charcoal-950 font-bold text-sm tracking-widest uppercase py-4 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-70"
-            >
-              {checkoutLoading ? (
-                <><div className="w-4 h-4 border-2 border-charcoal-950/30 border-t-charcoal-950 rounded-full animate-spin" /> Preparing Checkout...</>
-              ) : (
-                <><Lock size={13} /> Secure Checkout</>
-              )}
-            </button>
+                  try {
+                    const { url } = await shopifyCheckout();
+                    if (url) {
+                      const returnUrl = `${window.location.origin}/order-confirmation`;
+                      const separator = url.includes('?') ? '&' : '?';
+                      window.location.href = `${url}${separator}return_url=${encodeURIComponent(returnUrl)}`;
+                      return;
+                    }
+                    setCheckoutError(true);
+                  } catch {
+                    setCheckoutError(true);
+                  } finally {
+                    setCheckoutLoading(false);
+                  }
+                }}
+                disabled={checkoutLoading}
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-gold-400 to-amber-700 text-black border-none px-4 py-3.5 text-sm font-bold rounded tracking-wide transition-all duration-300 hover:from-amber-300 hover:to-amber-800 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold-400/30 disabled:opacity-70"
+              >
+                {checkoutLoading ? (
+                  <><div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> Preparing Checkout...</>
+                ) : (
+                  <><Lock size={13} /> SECURE CHECKOUT</>
+                )}
+              </button>
+
+              <button
+                onClick={closeCart}
+                className="w-full bg-transparent text-gold-400 border border-gold-400 px-4 py-3 text-sm font-semibold rounded tracking-wide transition-all duration-300 hover:bg-gold-400/10"
+              >
+                Continue Shopping
+              </button>
+            </div>
 
             {checkoutError && (
               <div className="flex flex-col gap-2 text-xs bg-red-900/20 border border-red-700/30 rounded px-3 py-2.5">
@@ -281,7 +290,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                   </span>
                 ))}
               </div>
-              
+
               {/* Trust badges */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-center gap-1.5 text-[10px] text-cream-200/50">
@@ -301,13 +310,6 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 </div>
               </div>
             </div>
-
-            <button
-              onClick={closeCart}
-              className="w-full text-center text-xs text-cream-200/40 hover:text-cream-200/70 transition-colors py-1"
-            >
-              Continue Shopping
-            </button>
           </div>
         )}
       </div>
