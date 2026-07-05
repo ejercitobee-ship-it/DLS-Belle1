@@ -1,0 +1,21 @@
+/* ── Cart Item Styles ── */
+
+.cart-item-container {
+  padding: 16px 0;
+  border-bottom: 1px solid #333;
+  margin-bottom: 16px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.item-image {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 4px;
+}
