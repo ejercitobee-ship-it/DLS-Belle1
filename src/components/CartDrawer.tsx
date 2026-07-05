@@ -59,7 +59,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-charcoal-800/50">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <ShoppingBag size={18} className="text-gold-400 flex-shrink-0" />
-            <span className="font-serif text-base sm:text-lg text-white font-semibold truncate">Your Cart</span>
+            <span className="font-serif text-base sm:text-lg md:text-xl text-white font-semibold truncate">Your Cart</span>
             {totalItems > 0 && (
               <span className="text-[11px] font-bold bg-gold-600 text-charcoal-950 px-2 py-0.5 rounded-full">
                 {totalItems}
@@ -76,7 +76,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 mb-2">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-3 sm:space-y-4 md:space-y-5 mb-2">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-3 sm:gap-5 text-center py-8 sm:py-12 px-2">
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-charcoal-800/60 flex items-center justify-center ring-1 ring-charcoal-700">
@@ -190,9 +190,9 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               <div className="my-5 sm:my-6 h-px bg-gradient-to-r from-charcoal-600 via-charcoal-500/20 to-transparent"></div>
 
               {/* Total Row */}
-              <div className="flex justify-between items-center pt-4 sm:pt-5 border-t border-charcoal-700/50 gap-2">
-                <span className="text-gold-400 font-semibold text-xs sm:text-sm">Estimated Total</span>
-                <span className="text-gold-400 font-bold text-base sm:text-lg break-words">{fmt(totalWithShipping)}</span>
+              <div className="flex justify-between items-center pt-4 sm:pt-5 md:pt-6 border-t border-charcoal-700/50 gap-2">
+                <span className="text-gold-400 font-semibold text-xs sm:text-sm md:text-base">Estimated Total</span>
+                <span className="text-gold-400 font-bold text-base sm:text-lg md:text-2xl break-words">{fmt(totalWithShipping)}</span>
               </div>
             </div>
 
@@ -252,7 +252,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                   }
                 }}
                 disabled={checkoutLoading}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-gold-400 to-amber-700 text-black border border-gold-300/30 px-3 sm:px-4 py-4 sm:py-5 text-xs sm:text-sm font-bold rounded-lg tracking-wide transition-all duration-300 hover:from-amber-300 hover:to-amber-800 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold-400/40 hover:border-gold-300/60 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-gold-400 to-amber-700 text-black border border-gold-300/30 px-3 sm:px-4 md:px-5 py-4 sm:py-5 md:py-6 text-xs sm:text-sm md:text-base font-bold rounded-lg tracking-wide transition-all duration-300 hover:from-amber-300 hover:to-amber-800 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold-400/40 hover:border-gold-300/60 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
               >
                 {checkoutLoading ? (
                   <><div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> <span className="hidden sm:inline">Preparing Checkout...</span><span className="sm:hidden">Preparing...</span></>
@@ -263,7 +263,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
               <button
                 onClick={closeCart}
-                className="w-full bg-transparent text-gold-400 border border-gold-400/60 px-3 sm:px-4 py-3.5 sm:py-4 text-xs sm:text-sm font-semibold rounded-lg tracking-wide transition-all duration-300 hover:bg-gold-400/10 hover:border-gold-400 active:scale-95"
+                className="w-full bg-transparent text-gold-400 border border-gold-400/60 px-3 sm:px-4 md:px-5 py-3.5 sm:py-4 md:py-5 text-xs sm:text-sm md:text-base font-semibold rounded-lg tracking-wide transition-all duration-300 hover:bg-gold-400/10 hover:border-gold-400 active:scale-95"
               >
                 Continue Shopping
               </button>
