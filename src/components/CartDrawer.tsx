@@ -163,13 +163,13 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="px-4 sm:px-6 py-4 sm:py-6 border-t border-charcoal-800/50 bg-charcoal-900/40 overflow-y-auto flex flex-col gap-8 sm:gap-10" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
+          <div className="px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-6 border-t border-charcoal-800/50 bg-charcoal-900/40 overflow-y-auto flex flex-col gap-8 sm:gap-10 md:gap-12" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
             {/* Cart Summary Section */}
-            <div className="space-y-2 sm:space-y-3">
+            <div className="space-y-2 sm:space-y-3 md:space-y-4">
               {/* Summary Items */}
               <div className="flex flex-col gap-2 sm:gap-3">
                 {/* Subtotal Row */}
-                <div className="flex justify-between items-center text-xs sm:text-sm gap-2 py-2.5 sm:py-3">
+                <div className="flex justify-between items-center text-xs sm:text-sm md:text-base gap-2 py-2.5 sm:py-3">
                   <span className="text-cream-200/60 font-normal">Subtotal</span>
                   <span className="text-cream-100 font-medium text-right break-words">{fmt(subtotal)}</span>
                 </div>
@@ -180,9 +180,9 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 </div>
 
                 {/* Taxes Row */}
-                <div className="flex justify-between items-center text-xs sm:text-sm gap-2 py-2.5 sm:py-3">
+                <div className="flex justify-between items-center text-xs sm:text-sm md:text-base gap-2 py-2.5 sm:py-3">
                   <span className="text-cream-200/60 font-normal">Taxes</span>
-                  <span className="text-cream-200/50 font-normal text-right text-[11px] sm:text-xs whitespace-nowrap">Calculated at checkout</span>
+                  <span className="text-cream-200/50 font-normal text-right text-[11px] sm:text-xs md:text-sm whitespace-nowrap">Calculated at checkout</span>
                 </div>
               </div>
 
