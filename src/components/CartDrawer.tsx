@@ -76,7 +76,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-3 sm:space-y-4 md:space-y-5 mb-2">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2 sm:space-y-3 mb-2">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-3 sm:gap-5 text-center py-8 sm:py-12 px-2">
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-charcoal-800/60 flex items-center justify-center ring-1 ring-charcoal-700">
@@ -163,13 +163,13 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-6 border-t border-charcoal-800/50 bg-charcoal-900/40 flex flex-col gap-8 sm:gap-10 md:gap-12" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
+          <div className="px-4 sm:px-6 py-4 sm:py-6 border-t border-charcoal-800/50 bg-charcoal-900/40 flex flex-col gap-5 sm:gap-6" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
             {/* Cart Summary Section */}
-            <div className="space-y-2 sm:space-y-3 md:space-y-4">
+            <div className="space-y-1.5 sm:space-y-2">
               {/* Summary Items */}
               <div className="flex flex-col gap-2 sm:gap-3">
                 {/* Subtotal Row */}
-                <div className="flex justify-between items-center text-xs sm:text-sm md:text-base gap-2 py-2.5 sm:py-3">
+                <div className="flex justify-between items-center text-xs sm:text-sm gap-2 py-2 sm:py-2.5">
                   <span className="text-cream-200/60 font-normal">Subtotal</span>
                   <span className="text-cream-100 font-medium text-right break-words">{fmt(subtotal)}</span>
                 </div>
@@ -180,7 +180,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 </div>
 
                 {/* Taxes Row */}
-                <div className="flex justify-between items-center text-xs sm:text-sm md:text-base gap-2 py-2.5 sm:py-3">
+                <div className="flex justify-between items-center text-xs sm:text-sm gap-2 py-2 sm:py-2.5">
                   <span className="text-cream-200/60 font-normal">Taxes</span>
                   <span className="text-cream-200/50 font-normal text-right text-[11px] sm:text-xs md:text-sm whitespace-nowrap">Calculated at checkout</span>
                 </div>
@@ -197,7 +197,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             </div>
 
             {/* Financing & Checkout Section */}
-            <div className="flex flex-col gap-6 sm:gap-8">
+            <div className="flex flex-col gap-4 sm:gap-5">
               {/* Financing Offer Banner */}
               {qualifiesForFinancing(totalWithShipping) && (
                 <section aria-label="Financing offer" className="bg-gold-400/8 border border-gold-400/25 rounded-lg p-5 sm:p-6 mt-6 sm:mt-8 flex gap-2.5 sm:gap-3 items-start transition-all duration-200 hover:bg-gold-400/12 hover:border-gold-400/35">
@@ -218,7 +218,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               )}
 
               {/* Checkout CTA */}
-              <div className="flex flex-col gap-4 sm:gap-5 mt-8 sm:mt-10">
+              <div className="flex flex-col gap-3 sm:gap-4 mt-6 sm:mt-8">
               <button
                 onClick={async () => {
                   setCheckoutError(false);
@@ -286,7 +286,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             </div>
 
             {/* Trust signals */}
-            <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-charcoal-700/30 text-center space-y-3 sm:space-y-4">
+            <div className="mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-charcoal-700/30 text-center space-y-3 sm:space-y-4">
               {/* Payment methods */}
               <div className="flex items-center justify-center gap-2 mb-4 flex-wrap opacity-60">
                 {['Shop Pay', 'Visa', 'Mastercard', 'Amex', 'PayPal'].map((m) => (
