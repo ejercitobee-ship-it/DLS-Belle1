@@ -56,10 +56,10 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-charcoal-800/50">
-          <div className="flex items-center gap-3">
-            <ShoppingBag size={18} className="text-gold-400" />
-            <span className="font-serif text-lg text-white font-semibold">Your Cart</span>
+        <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-charcoal-800/50">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <ShoppingBag size={18} className="text-gold-400 flex-shrink-0" />
+            <span className="font-serif text-base sm:text-lg text-white font-semibold truncate">Your Cart</span>
             {totalItems > 0 && (
               <span className="text-[11px] font-bold bg-gold-600 text-charcoal-950 px-2 py-0.5 rounded-full">
                 {totalItems}
@@ -76,19 +76,19 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+        <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-3 sm:py-4 space-y-3 sm:space-y-4">
           {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full gap-5 text-center py-12 px-2">
-              <div className="w-16 h-16 rounded-full bg-charcoal-800/60 flex items-center justify-center ring-1 ring-charcoal-700">
-                <Package size={28} className="text-gold-400/60" />
+            <div className="flex flex-col items-center justify-center h-full gap-3 sm:gap-5 text-center py-8 sm:py-12 px-2">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-charcoal-800/60 flex items-center justify-center ring-1 ring-charcoal-700">
+                <Package size={24} className="sm:w-7 sm:h-7 text-gold-400/60" />
               </div>
-              <div className="space-y-2">
-                <p className="text-cream-100 text-base font-semibold">Your cart is empty</p>
-                <p className="text-cream-200/50 text-sm leading-relaxed">Add some luxury humidors to get started</p>
+              <div className="space-y-1 sm:space-y-2">
+                <p className="text-cream-100 text-sm sm:text-base font-semibold">Your cart is empty</p>
+                <p className="text-cream-200/50 text-xs sm:text-sm leading-relaxed px-1">Add some luxury humidors to get started</p>
               </div>
               <button
                 onClick={closeCart}
-                className="text-xs text-gold-400 hover:text-gold-300 font-semibold transition-all duration-200 border border-gold-600/40 hover:border-gold-400 px-4 py-2.5 rounded hover:bg-gold-700/15 active:scale-95"
+                className="text-[11px] sm:text-xs text-gold-400 hover:text-gold-300 font-semibold transition-all duration-200 border border-gold-600/40 hover:border-gold-400 px-3 sm:px-4 py-2 sm:py-2.5 rounded hover:bg-gold-700/15 active:scale-95 mt-1"
               >
                 Continue Shopping
               </button>
@@ -97,62 +97,62 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             items.map((item) => (
               <div
                 key={item.id}
-                className="flex gap-3 bg-charcoal-900 rounded-lg p-3 border border-charcoal-800/40"
+                className="flex gap-2 sm:gap-3 bg-charcoal-900 rounded-lg p-3 border border-charcoal-800/40"
               >
                 {/* Image */}
-                <div className="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 rounded-lg overflow-hidden">
                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
                 </div>
 
                 {/* Details */}
-                <div className="flex-1 min-w-0 flex flex-col gap-2">
+                <div className="flex-1 min-w-0 flex flex-col gap-1.5 sm:gap-2">
                   {/* Item Title */}
-                  <h4 className="text-sm font-medium m-0 leading-snug text-cream-100 line-clamp-2">
+                  <h4 className="text-xs sm:text-sm font-medium m-0 leading-snug text-cream-100 line-clamp-2 break-words">
                     {item.name}
                   </h4>
 
                   {/* Item Size/Subtitle */}
                   {item.subtitle && (
-                    <p className="text-xs text-cream-200/40 m-0">{item.subtitle}</p>
+                    <p className="text-[11px] sm:text-xs text-cream-200/40 m-0 truncate">{item.subtitle}</p>
                   )}
 
                   {/* Item Category */}
                   {item.category && (
-                    <p className="text-xs text-cream-200/40 m-0">{item.category}</p>
+                    <p className="text-[11px] sm:text-xs text-cream-200/40 m-0 truncate">{item.category}</p>
                   )}
 
                   {/* Item Price */}
-                  <p className="text-sm font-semibold text-gold-400 mt-1 m-0">
+                  <p className="text-xs sm:text-sm font-semibold text-gold-400 mt-0.5 sm:mt-1 m-0">
                     {fmt(item.priceNum * item.quantity)}
                   </p>
 
                   {/* Item Controls */}
-                  <div className="flex items-center justify-between gap-2 mt-1">
+                  <div className="flex items-center justify-between gap-2 mt-0.5 sm:mt-1">
                     {/* Qty controls */}
-                    <div className="flex items-center gap-1 bg-charcoal-950 border border-charcoal-700/50 rounded">
+                    <div className="flex items-center gap-0.5 bg-charcoal-950 border border-charcoal-700/50 rounded">
                       <button
                         onClick={() => updateQty(item.id, item.quantity - 1)}
-                        className="w-7 h-7 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors"
+                        className="w-8 h-8 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors active:bg-charcoal-800"
                         aria-label="Decrease quantity"
                       >
-                        <Minus size={11} />
+                        <Minus size={12} />
                       </button>
-                      <span className="text-white text-xs font-medium w-5 text-center">{item.quantity}</span>
+                      <span className="text-white text-xs font-medium w-6 text-center">{item.quantity}</span>
                       <button
                         onClick={() => updateQty(item.id, item.quantity + 1)}
-                        className="w-7 h-7 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors"
+                        className="w-8 h-8 flex items-center justify-center text-cream-200/50 hover:text-white transition-colors active:bg-charcoal-800"
                         aria-label="Increase quantity"
                       >
-                        <Plus size={11} />
+                        <Plus size={12} />
                       </button>
                     </div>
 
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="text-cream-200/30 hover:text-red-400 transition-colors p-1"
+                      className="w-8 h-8 flex items-center justify-center text-cream-200/30 hover:text-red-400 transition-colors active:scale-90"
                       aria-label="Remove item"
                     >
-                      <Trash2 size={12} />
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 </div>
@@ -163,24 +163,24 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="px-5 py-6 border-t border-charcoal-800/50 space-y-5 bg-charcoal-900/40 overflow-y-auto" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
+          <div className="px-4 sm:px-5 py-4 sm:py-6 border-t border-charcoal-800/50 space-y-4 sm:space-y-5 bg-charcoal-900/40 overflow-y-auto" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
             {/* Cart Summary Section */}
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {/* Summary Items */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2 sm:gap-3">
                 {/* Subtotal Row */}
-                <div className="flex justify-between items-center text-sm">
+                <div className="flex justify-between items-center text-xs sm:text-sm gap-2">
                   <span className="text-cream-200/60 font-normal">Subtotal</span>
-                  <span className="text-cream-100 font-medium text-right">{fmt(subtotal)}</span>
+                  <span className="text-cream-100 font-medium text-right break-words">{fmt(subtotal)}</span>
                 </div>
 
                 {/* Shipping & Insurance */}
                 <ShippingCalculator productPrice={subtotal} compact={true} />
 
                 {/* Taxes Row */}
-                <div className="flex justify-between items-center text-sm">
+                <div className="flex justify-between items-center text-xs sm:text-sm gap-2">
                   <span className="text-cream-200/60 font-normal">Taxes</span>
-                  <span className="text-cream-200/50 font-normal text-right text-xs">Calculated at checkout</span>
+                  <span className="text-cream-200/50 font-normal text-right text-[11px] sm:text-xs whitespace-nowrap">Calculated at checkout</span>
                 </div>
               </div>
 
@@ -188,33 +188,33 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               <div className="h-px bg-gradient-to-r from-charcoal-600 via-charcoal-600/40 to-transparent"></div>
 
               {/* Total Row */}
-              <div className="flex justify-between items-center pt-2">
-                <span className="text-gold-400 font-semibold text-sm">Estimated Total</span>
-                <span className="text-gold-400 font-bold text-lg">{fmt(totalWithShipping)}</span>
+              <div className="flex justify-between items-center pt-1 sm:pt-2 gap-2">
+                <span className="text-gold-400 font-semibold text-xs sm:text-sm">Estimated Total</span>
+                <span className="text-gold-400 font-bold text-base sm:text-lg break-words">{fmt(totalWithShipping)}</span>
               </div>
             </div>
 
             {/* Financing Offer Banner */}
             {qualifiesForFinancing(totalWithShipping) && (
-              <section aria-label="Financing offer" className="bg-gold-400/8 border border-gold-400/25 rounded-lg p-4 flex gap-3 items-start transition-all duration-200 hover:bg-gold-400/12 hover:border-gold-400/35">
-                <div className="flex-shrink-0 text-gold-400 pt-0.5"><CreditCard size={20} /></div>
-                <div className="flex flex-col gap-2 min-w-0">
-                  <p className="text-sm font-semibold text-gold-300 m-0">Financing Available</p>
-                  <p className="text-xs text-cream-100 m-0 leading-relaxed">
-                    Your order qualifies: as low as <strong className="text-gold-400 font-semibold">${formatMonthlyPayment(totalWithShipping)}/month × {FINANCING_TERM_MONTHS}</strong>
+              <section aria-label="Financing offer" className="bg-gold-400/8 border border-gold-400/25 rounded-lg p-3 sm:p-4 flex gap-2 sm:gap-3 items-start transition-all duration-200 hover:bg-gold-400/12 hover:border-gold-400/35">
+                <div className="flex-shrink-0 text-gold-400 pt-0.5"><CreditCard size={18} className="sm:w-5 sm:h-5" /></div>
+                <div className="flex flex-col gap-1.5 sm:gap-2 min-w-0">
+                  <p className="text-xs sm:text-sm font-semibold text-gold-300 m-0">Financing Available</p>
+                  <p className="text-[11px] sm:text-xs text-cream-100 m-0 leading-relaxed break-words">
+                    Your order qualifies: as low as <strong className="text-gold-400 font-semibold">${formatMonthlyPayment(totalWithShipping)}/mo × {FINANCING_TERM_MONTHS}</strong>
                   </p>
-                  <p className="text-xs text-cream-200/50 m-0 leading-snug">
+                  <p className="text-[11px] sm:text-xs text-cream-200/50 m-0 leading-snug break-words">
                     With Shop Pay — 0% interest for qualified buyers
                   </p>
-                  <a href="/financing" onClick={closeCart} className="text-xs text-gold-400 no-underline mt-1 inline-block hover:text-gold-300 hover:underline transition-colors font-medium">
-                    Learn more about financing →
+                  <a href="/financing" onClick={closeCart} className="text-[11px] sm:text-xs text-gold-400 no-underline mt-0.5 sm:mt-1 inline-block hover:text-gold-300 hover:underline transition-colors font-medium whitespace-nowrap">
+                    Learn more →
                   </a>
                 </div>
               </section>
             )}
 
             {/* Checkout CTA */}
-            <div className="flex flex-col gap-3 pt-2">
+            <div className="flex flex-col gap-2 sm:gap-3 pt-2 sm:pt-3">
               <button
                 onClick={async () => {
                   setCheckoutError(false);
@@ -248,32 +248,32 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                   }
                 }}
                 disabled={checkoutLoading}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-gold-400 to-amber-700 text-black border border-gold-300/30 px-4 py-3.5 text-sm font-bold rounded-lg tracking-wide transition-all duration-300 hover:from-amber-300 hover:to-amber-800 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold-400/40 hover:border-gold-300/60 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-gold-400 to-amber-700 text-black border border-gold-300/30 px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-bold rounded-lg tracking-wide transition-all duration-300 hover:from-amber-300 hover:to-amber-800 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold-400/40 hover:border-gold-300/60 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
               >
                 {checkoutLoading ? (
-                  <><div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> Preparing Checkout...</>
+                  <><div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> <span className="hidden sm:inline">Preparing Checkout...</span><span className="sm:hidden">Preparing...</span></>
                 ) : (
-                  <><Lock size={13} /> SECURE CHECKOUT</>
+                  <><Lock size={14} className="sm:w-3.5 sm:h-3.5" /> SECURE CHECKOUT</>
                 )}
               </button>
 
               <button
                 onClick={closeCart}
-                className="w-full bg-transparent text-gold-400 border border-gold-400/60 px-4 py-3 text-sm font-semibold rounded-lg tracking-wide transition-all duration-300 hover:bg-gold-400/10 hover:border-gold-400 active:scale-95"
+                className="w-full bg-transparent text-gold-400 border border-gold-400/60 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold rounded-lg tracking-wide transition-all duration-300 hover:bg-gold-400/10 hover:border-gold-400 active:scale-95"
               >
                 Continue Shopping
               </button>
             </div>
 
             {checkoutError && (
-              <div className="flex flex-col gap-2.5 text-xs bg-red-900/15 border border-red-700/40 rounded-lg px-3.5 py-3">
-                <div className="flex items-start gap-2.5 text-red-400">
+              <div className="flex flex-col gap-2 sm:gap-2.5 text-[11px] sm:text-xs bg-red-900/15 border border-red-700/40 rounded-lg px-3 sm:px-3.5 py-2.5 sm:py-3">
+                <div className="flex items-start gap-2 sm:gap-2.5 text-red-400">
                   <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
-                  <span className="leading-snug">Couldn't connect to checkout. Try the direct link below.</span>
+                  <span className="leading-snug break-words">Couldn't connect to checkout. Try the direct link below.</span>
                 </div>
                 <a
                   href={`https://${import.meta.env.VITE_SHOPIFY_STORE_DOMAIN}/cart`}
-                  className="text-gold-400 hover:text-gold-300 font-semibold transition-colors"
+                  className="text-gold-400 hover:text-gold-300 font-semibold transition-colors break-all"
                 >
                   Go directly to Shopify cart →
                 </a>
@@ -281,33 +281,33 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
             )}
 
             {/* Trust signals */}
-            <div className="space-y-4 pt-1">
+            <div className="space-y-3 sm:space-y-4 pt-1">
               {/* Payment methods */}
-              <div className="flex items-center justify-center gap-1.5 flex-wrap">
+              <div className="flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap">
                 {['Shop Pay', 'Visa', 'Mastercard', 'Amex', 'PayPal'].map((m) => (
-                  <span key={m} className="text-[10px] text-cream-200/50 bg-charcoal-800/50 border border-charcoal-700/40 px-2.5 py-1.5 rounded-md font-medium transition-colors hover:text-cream-100 hover:border-charcoal-600">
+                  <span key={m} className="text-[9px] sm:text-[10px] text-cream-200/50 bg-charcoal-800/50 border border-charcoal-700/40 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-md font-medium transition-colors hover:text-cream-100 hover:border-charcoal-600">
                     {m}
                   </span>
                 ))}
               </div>
 
               {/* Trust badges */}
-              <div className="space-y-2.5 text-[10px] text-cream-200/60">
+              <div className="space-y-1.5 sm:space-y-2.5 text-[9px] sm:text-[10px] text-cream-200/60">
                 <div className="flex items-center justify-center gap-1.5">
                   <Lock size={11} className="text-emerald-500 flex-shrink-0" />
-                  <span>SSL Secured by Shopify</span>
+                  <span className="break-words">SSL Secured by Shopify</span>
                 </div>
                 <div className="flex items-center justify-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span>10-day return guarantee</span>
+                  <span className="break-words">10-day return guarantee</span>
                 </div>
                 <div className="flex items-center justify-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span>Expert concierge support & setup</span>
+                  <span className="break-words">Expert concierge support & setup</span>
                 </div>
               </div>
             </div>
