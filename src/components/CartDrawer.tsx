@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { X, ShoppingBag, Minus, Plus, Trash2, Package, Lock, AlertCircle, BadgeCheck } from 'lucide-react';
+import { X, ShoppingBag, Minus, Plus, Trash2, Package, Lock, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { qualifiesForFinancing, formatMonthlyPayment, FINANCING_TERM_MONTHS } from '../lib/financing';
 import ShippingCalculator from './ShippingCalculator';
@@ -194,26 +194,22 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               </div>
             </div>
 
-            {/* Financing reminder */}
+            {/* Financing Offer Banner */}
             {qualifiesForFinancing(totalWithShipping) && (
-              <div className="bg-gold-600/15 border border-gold-500/40 rounded-lg px-3 py-2.5 text-center">
-                <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-cream-100">
-                  <BadgeCheck size={13} className="text-gold-400 flex-shrink-0" />
-                  <span>
-                    Your order qualifies for financing: as low as{' '}
-                    <span className="text-gold-300 font-bold">
-                      {formatMonthlyPayment(totalWithShipping)}/month × {FINANCING_TERM_MONTHS}
-                    </span>{' '}
-                    with Shop Pay — 0% interest for qualified buyers
-                  </span>
+              <div className="bg-gold-400/10 border border-gold-400/30 rounded-lg p-4 mt-5 flex gap-3 items-start">
+                <div className="text-2xl flex-shrink-0">💳</div>
+                <div className="flex flex-col gap-1.5">
+                  <p className="text-sm font-semibold text-gold-400 m-0">Financing Available</p>
+                  <p className="text-xs text-white m-0 leading-relaxed">
+                    Your order qualifies for financing: as low as <strong className="text-gold-400">${formatMonthlyPayment(totalWithShipping)}/month × {FINANCING_TERM_MONTHS}</strong>
+                  </p>
+                  <p className="text-xs text-gray-400 m-0 leading-snug">
+                    With Shop Pay — 0% interest for qualified buyers
+                  </p>
+                  <a href="/financing" onClick={closeCart} className="text-xs text-gold-400 no-underline mt-1 inline-block hover:underline transition-colors">
+                    Learn more →
+                  </a>
                 </div>
-                <a
-                  href="/financing"
-                  onClick={closeCart}
-                  className="inline-block mt-1 text-gold-400 hover:text-gold-300 text-[11px] underline underline-offset-2 transition-colors"
-                >
-                  Learn more
-                </a>
               </div>
             )}
 
