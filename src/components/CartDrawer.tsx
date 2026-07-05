@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { X, ShoppingBag, Minus, Plus, Trash2, Package, Lock, AlertCircle } from 'lucide-react';
+import { X, ShoppingBag, Minus, Plus, Trash2, Package, Lock, AlertCircle, CreditCard } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { qualifiesForFinancing, formatMonthlyPayment, FINANCING_TERM_MONTHS } from '../lib/financing';
 import ShippingCalculator from './ShippingCalculator';
@@ -196,8 +196,8 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
             {/* Financing Offer Banner */}
             {qualifiesForFinancing(totalWithShipping) && (
-              <div className="bg-gold-400/10 border border-gold-400/30 rounded-lg p-4 mt-5 flex gap-3 items-start">
-                <div className="text-2xl flex-shrink-0">💳</div>
+              <section aria-label="Financing offer" className="bg-gold-400/10 border border-gold-400/30 rounded-lg p-4 mt-5 flex gap-3 items-start">
+                <div className="text-2xl flex-shrink-0 text-gold-400"><CreditCard size={24} /></div>
                 <div className="flex flex-col gap-1.5">
                   <p className="text-sm font-semibold text-gold-400 m-0">Financing Available</p>
                   <p className="text-xs text-white m-0 leading-relaxed">
@@ -207,10 +207,10 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                     With Shop Pay — 0% interest for qualified buyers
                   </p>
                   <a href="/financing" onClick={closeCart} className="text-xs text-gold-400 no-underline mt-1 inline-block hover:underline transition-colors">
-                    Learn more →
+                    Learn more about financing →
                   </a>
                 </div>
-              </div>
+              </section>
             )}
 
             {/* Checkout CTA */}
