@@ -105,18 +105,29 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                 </div>
 
                 {/* Details */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-cream-100 text-xs font-semibold leading-snug line-clamp-2 mb-0.5">
+                <div className="flex-1 min-w-0 flex flex-col gap-2">
+                  {/* Item Title */}
+                  <h4 className="text-sm font-medium m-0 leading-snug text-cream-100 line-clamp-2">
                     {item.name}
-                  </p>
+                  </h4>
+
+                  {/* Item Size/Subtitle */}
                   {item.subtitle && (
-                    <p className="text-cream-200/40 text-[10px] line-clamp-1 mb-1">{item.subtitle}</p>
-                  )}
-                  {item.category && (
-                    <p className="text-gold-500/60 text-[10px] tracking-wider uppercase mb-2">{item.category}</p>
+                    <p className="text-xs text-cream-200/40 m-0">{item.subtitle}</p>
                   )}
 
-                  <div className="flex items-center justify-between gap-2">
+                  {/* Item Category */}
+                  {item.category && (
+                    <p className="text-xs text-cream-200/40 m-0">{item.category}</p>
+                  )}
+
+                  {/* Item Price */}
+                  <p className="text-sm font-semibold text-gold-400 mt-1 m-0">
+                    {fmt(item.priceNum * item.quantity)}
+                  </p>
+
+                  {/* Item Controls */}
+                  <div className="flex items-center justify-between gap-2 mt-1">
                     {/* Qty controls */}
                     <div className="flex items-center gap-1 bg-charcoal-950 border border-charcoal-700/50 rounded">
                       <button
@@ -136,18 +147,13 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
                       </button>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <span className="text-white text-sm font-bold font-serif">
-                        {fmt(item.priceNum * item.quantity)}
-                      </span>
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-cream-200/30 hover:text-red-400 transition-colors p-1"
-                        aria-label="Remove item"
-                      >
-                        <Trash2 size={12} />
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => removeItem(item.id)}
+                      className="text-cream-200/30 hover:text-red-400 transition-colors p-1"
+                      aria-label="Remove item"
+                    >
+                      <Trash2 size={12} />
+                    </button>
                   </div>
                 </div>
               </div>
