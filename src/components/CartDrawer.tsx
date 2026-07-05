@@ -76,7 +76,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-3 sm:py-4 space-y-3 sm:space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-3 sm:gap-5 text-center py-8 sm:py-12 px-2">
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-charcoal-800/60 flex items-center justify-center ring-1 ring-charcoal-700">
@@ -163,7 +163,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="px-4 sm:px-6 py-4 sm:py-6 border-t border-charcoal-800/50 space-y-6 sm:space-y-8 bg-charcoal-900/40 overflow-y-auto" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
+          <div className="px-4 sm:px-6 py-4 sm:py-6 border-t border-charcoal-800/50 bg-charcoal-900/40 overflow-y-auto flex flex-col gap-8 sm:gap-10" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
             {/* Cart Summary Section */}
             <div className="space-y-2 sm:space-y-3">
               {/* Summary Items */}
@@ -194,27 +194,29 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               </div>
             </div>
 
-            {/* Financing Offer Banner */}
-            {qualifiesForFinancing(totalWithShipping) && (
-              <section aria-label="Financing offer" className="bg-gold-400/8 border border-gold-400/25 rounded-lg p-3 sm:p-4 flex gap-2 sm:gap-3 items-start transition-all duration-200 hover:bg-gold-400/12 hover:border-gold-400/35">
-                <div className="flex-shrink-0 text-gold-400 pt-0.5"><CreditCard size={18} className="sm:w-5 sm:h-5" /></div>
-                <div className="flex flex-col gap-1.5 sm:gap-2 min-w-0">
-                  <p className="text-xs sm:text-sm font-semibold text-gold-300 m-0">Financing Available</p>
-                  <p className="text-[11px] sm:text-xs text-cream-100 m-0 leading-relaxed break-words">
-                    Your order qualifies: as low as <strong className="text-gold-400 font-semibold">${formatMonthlyPayment(totalWithShipping)}/mo × {FINANCING_TERM_MONTHS}</strong>
-                  </p>
-                  <p className="text-[11px] sm:text-xs text-cream-200/50 m-0 leading-snug break-words">
-                    With Shop Pay — 0% interest for qualified buyers
-                  </p>
-                  <a href="/financing" onClick={closeCart} className="text-[11px] sm:text-xs text-gold-400 no-underline mt-0.5 sm:mt-1 inline-block hover:text-gold-300 hover:underline transition-colors font-medium whitespace-nowrap">
-                    Learn more →
-                  </a>
-                </div>
-              </section>
-            )}
+            {/* Financing & Checkout Section */}
+            <div className="flex flex-col gap-6 sm:gap-8">
+              {/* Financing Offer Banner */}
+              {qualifiesForFinancing(totalWithShipping) && (
+                <section aria-label="Financing offer" className="bg-gold-400/8 border border-gold-400/25 rounded-lg p-3 sm:p-4 flex gap-2 sm:gap-3 items-start transition-all duration-200 hover:bg-gold-400/12 hover:border-gold-400/35">
+                  <div className="flex-shrink-0 text-gold-400 pt-0.5"><CreditCard size={18} className="sm:w-5 sm:h-5" /></div>
+                  <div className="flex flex-col gap-1.5 sm:gap-2 min-w-0">
+                    <p className="text-xs sm:text-sm font-semibold text-gold-300 m-0">Financing Available</p>
+                    <p className="text-[11px] sm:text-xs text-cream-100 m-0 leading-relaxed break-words">
+                      Your order qualifies: as low as <strong className="text-gold-400 font-semibold">${formatMonthlyPayment(totalWithShipping)}/mo × {FINANCING_TERM_MONTHS}</strong>
+                    </p>
+                    <p className="text-[11px] sm:text-xs text-cream-200/50 m-0 leading-snug break-words">
+                      With Shop Pay — 0% interest for qualified buyers
+                    </p>
+                    <a href="/financing" onClick={closeCart} className="text-[11px] sm:text-xs text-gold-400 no-underline mt-0.5 sm:mt-1 inline-block hover:text-gold-300 hover:underline transition-colors font-medium whitespace-nowrap">
+                      Learn more →
+                    </a>
+                  </div>
+                </section>
+              )}
 
-            {/* Checkout CTA */}
-            <div className="flex flex-col gap-2 sm:gap-3 pt-2 sm:pt-3">
+              {/* Checkout CTA */}
+              <div className="flex flex-col gap-2 sm:gap-3">
               <button
                 onClick={async () => {
                   setCheckoutError(false);
@@ -265,20 +267,21 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
               </button>
             </div>
 
-            {checkoutError && (
-              <div className="flex flex-col gap-2 sm:gap-2.5 text-[11px] sm:text-xs bg-red-900/15 border border-red-700/40 rounded-lg px-3 sm:px-3.5 py-2.5 sm:py-3">
-                <div className="flex items-start gap-2 sm:gap-2.5 text-red-400">
-                  <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
-                  <span className="leading-snug break-words">Couldn't connect to checkout. Try the direct link below.</span>
+              {checkoutError && (
+                <div className="flex flex-col gap-2 sm:gap-2.5 text-[11px] sm:text-xs bg-red-900/15 border border-red-700/40 rounded-lg px-3 sm:px-3.5 py-2.5 sm:py-3">
+                  <div className="flex items-start gap-2 sm:gap-2.5 text-red-400">
+                    <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
+                    <span className="leading-snug break-words">Couldn't connect to checkout. Try the direct link below.</span>
+                  </div>
+                  <a
+                    href={`https://${import.meta.env.VITE_SHOPIFY_STORE_DOMAIN}/cart`}
+                    className="text-gold-400 hover:text-gold-300 font-semibold transition-colors break-all"
+                  >
+                    Go directly to Shopify cart →
+                  </a>
                 </div>
-                <a
-                  href={`https://${import.meta.env.VITE_SHOPIFY_STORE_DOMAIN}/cart`}
-                  className="text-gold-400 hover:text-gold-300 font-semibold transition-colors break-all"
-                >
-                  Go directly to Shopify cart →
-                </a>
-              </div>
-            )}
+              )}
+            </div>
 
             {/* Trust signals */}
             <div className="space-y-3 sm:space-y-4 pt-1">
