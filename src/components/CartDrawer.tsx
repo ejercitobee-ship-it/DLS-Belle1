@@ -163,7 +163,7 @@ export default function CartDrawer({ onCheckout: _onCheckout }: Props) {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="px-4 sm:px-5 py-4 sm:py-6 border-t border-charcoal-800/50 space-y-4 sm:space-y-5 bg-charcoal-900/40 overflow-y-auto" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
+          <div className="px-4 sm:px-6 py-4 sm:py-6 border-t border-charcoal-800/50 space-y-6 sm:space-y-8 bg-charcoal-900/40 overflow-y-auto" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
             {/* Cart Summary Section */}
             <div className="space-y-2 sm:space-y-3">
               {/* Summary Items */}
