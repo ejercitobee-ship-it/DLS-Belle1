@@ -103,12 +103,12 @@
 
     <!-- Products Grid (Intelligent Recommendations) -->
     {%- liquid
-      if section.settings.collection != blank
-        assign collection = section.settings.collection
-        assign products = collection.products
+      # Fall back to the automatic "all" collection — shop.products does not
+      # exist in Liquid, and the merchant may not have picked a collection yet.
+      if section.settings.collection != blank and section.settings.collection.products.size > 0
+        assign products = section.settings.collection.products
       else
-        assign all_products = shop.products
-        assign products = all_products
+        assign products = collections['all'].products
       endif
 
       if section.settings.sort_by == 'price-desc'

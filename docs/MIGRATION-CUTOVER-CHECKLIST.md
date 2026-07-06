@@ -19,12 +19,14 @@ Preview it with the theme editor before publishing. Do NOT publish until steps 2
 
 ## 2. Create content in Shopify Admin
 
-Collections (handles must match exactly — the header nav and redirect CSV depend on them):
-- [ ] `electronic-humidors`
-- [ ] `cabinet-humidors`
-- [ ] `desktop-humidors`
-- [ ] `travel-humidors`
-- [ ] `accessories`
+Collections — most already exist in the store (verified July 6, 2026). Handles must match
+exactly; the header/footer nav and redirect CSV depend on them:
+- [x] `cabinet-humidors`, `desktop-humidors`, `travel-humidors`, `new-arrivals` — exist with products
+- [ ] **Rename handle** `electronic-hunidors` → `electronic-humidors` (typo in admin;
+      Collections → Electronic Humidors → Edit website SEO → URL handle)
+- [ ] **Rename handle** `accessories-1` → `accessories`
+- [ ] `frontpage` collection is EMPTY — either add products to it or ignore it (the
+      homepage featured-products section falls back to all products automatically)
 
 Pages (Online Store → Pages; handles must match):
 - [ ] `about`, `financing`, `care-guides`, `delivery-info`, `returns-warranty`,
