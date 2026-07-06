@@ -1,0 +1,229 @@
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "class": "section-faq-accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Frequently Asked Questions"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your return policy?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Add your answer here</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What products do you offer?",
+            "answer": "<p>We specialize in luxury humidors and premium cigar storage solutions.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I care for my humidor?",
+            "answer": "<p>Regular maintenance includes monitoring humidity levels, rotating cigars, and cleaning the interior. See our Care Guides for detailed instructions.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer shipping?",
+            "answer": "<p>Yes, we ship throughout the continental United States. Orders over $2,000 qualify for free shipping.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="faq-accordion">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    {%- if section.settings.section_title -%}
+      <h2 class="section-title">{{ section.settings.section_title }}</h2>
+    {%- endif -%}
+
+    <div class="faq-items">
+      {%- for block in section.blocks -%}
+        <div class="faq-item" data-faq-item>
+          <button type="button" class="faq-trigger" data-faq-trigger>
+            <span class="faq-question">{{ block.settings.question }}</span>
+            <span class="faq-icon">
+              <svg class="icon-closed" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <svg class="icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer" data-faq-answer>
+            <div class="faq-answer-content">
+              {{ block.settings.answer }}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.faq-accordion {
+  background-color: var(--charcoal-950);
+}
+
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.faq-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background-color: var(--charcoal-900);
+  border: 1px solid rgba(70, 62, 59, 0.4);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.faq-trigger {
+  width: 100%;
+  padding: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.faq-trigger:hover {
+  background-color: rgba(70, 62, 59, 0.2);
+}
+
+.faq-question {
+  font-weight: 600;
+  color: white;
+  font-size: 1rem;
+  text-align: left;
+  flex: 1;
+}
+
+.faq-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--gold-500);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-open {
+  display: none;
+}
+
+.faq-item[data-faq-open] .icon-closed {
+  display: none;
+}
+
+.faq-item[data-faq-open] .icon-open {
+  display: block;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faq-item[data-faq-open] .faq-answer {
+  max-height: 500px;
+}
+
+.faq-answer-content {
+  padding: 0 1.5rem 1.5rem;
+  color: rgba(240, 221, 184, 0.8);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.faq-answer-content p {
+  margin: 0 0 0.75rem 0;
+}
+
+.faq-answer-content p:last-child {
+  margin-bottom: 0;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .md\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.querySelectorAll('[data-faq-trigger]').forEach(trigger => {
+  trigger.addEventListener('click', function() {
+    const item = this.closest('[data-faq-item]');
+    const isOpen = item.hasAttribute('data-faq-open');
+
+    document.querySelectorAll('[data-faq-item]').forEach(i => {
+      i.removeAttribute('data-faq-open');
+    });
+
+    if (!isOpen) {
+      item.setAttribute('data-faq-open', 'true');
+    }
+  });
+});
+{% endjavascript %}

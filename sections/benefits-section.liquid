@@ -1,0 +1,259 @@
+{% schema %}
+{
+  "name": "Benefits Section",
+  "class": "section-benefits",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Why Choose Dunn Luxury Selections?"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Section Description",
+      "default": "<p>Premium quality and service you can trust.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Premium Quality"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Handcrafted from the finest materials with expert attention to detail.</p>"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "check",
+          "options": [
+            {
+              "value": "check",
+              "label": "Checkmark"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits Section",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Premium Quality",
+            "description": "<p>Handcrafted from the finest materials with expert attention to detail.</p>",
+            "icon": "check"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Expert Service",
+            "description": "<p>Our team is dedicated to helping you find the perfect humidor.</p>",
+            "icon": "star"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Warranty Protection",
+            "description": "<p>Every purchase includes comprehensive warranty coverage.</p>",
+            "icon": "shield"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="benefits-section">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <div class="benefits-header">
+      {%- if section.settings.heading -%}
+        <h2 class="benefits-title">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.description -%}
+        <div class="benefits-description">
+          {{ section.settings.description }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="benefits-grid">
+      {%- for block in section.blocks -%}
+        <div class="benefit-card">
+          <div class="benefit-icon benefit-icon-{{ block.settings.icon }}">
+            {%- if block.settings.icon == 'check' -%}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            {%- elsif block.settings.icon == 'star' -%}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            {%- elsif block.settings.icon == 'heart' -%}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            {%- elsif block.settings.icon == 'shield' -%}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            {%- endif -%}
+          </div>
+          <h3 class="benefit-title">{{ block.settings.title }}</h3>
+          <div class="benefit-text">
+            {{ block.settings.description }}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.benefits-section {
+  background-color: var(--charcoal-950);
+}
+
+.benefits-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.benefits-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.benefits-description {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 1rem;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.benefit-card {
+  background-color: var(--charcoal-900);
+  border: 1px solid rgba(70, 62, 59, 0.4);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.benefit-card:hover {
+  border-color: rgba(201, 138, 16, 0.3);
+  background-color: rgba(70, 62, 59, 0.2);
+}
+
+.benefit-icon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  color: var(--gold-500);
+}
+
+.benefit-icon-check {
+  background-color: rgba(201, 138, 16, 0.1);
+}
+
+.benefit-icon-star {
+  background-color: rgba(201, 138, 16, 0.1);
+}
+
+.benefit-icon-heart {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.benefit-icon-shield {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.benefit-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.75rem 0;
+}
+
+.benefit-text {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.benefit-text p {
+  margin: 0;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .md\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+{% endstylesheet %}

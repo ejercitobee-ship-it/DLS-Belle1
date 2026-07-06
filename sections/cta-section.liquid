@@ -1,0 +1,211 @@
+{% schema %}
+{
+  "name": "Call to Action Section",
+  "class": "section-cta",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ready to Explore Our Collection?"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Discover premium humidors crafted for the discerning collector.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Primary Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_url",
+      "label": "Primary Button URL",
+      "default": "/collections/all"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary Button Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_url",
+      "label": "Secondary Button URL",
+      "default": "/pages/about"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "centered",
+      "options": [
+        {
+          "value": "centered",
+          "label": "Centered"
+        },
+        {
+          "value": "left",
+          "label": "Left Aligned"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#0a0a0a"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="cta-section" style="background-color: {{ section.settings.background_color }};">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+    <div class="cta-content cta-{{ section.settings.layout }}">
+      {%- if section.settings.heading -%}
+        <h2 class="cta-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description -%}
+        <div class="cta-description">
+          {{ section.settings.description }}
+        </div>
+      {%- endif -%}
+
+      <div class="cta-buttons">
+        {%- if section.settings.primary_button_text -%}
+          <a href="{{ section.settings.primary_button_url }}" class="btn btn-primary">
+            {{ section.settings.primary_button_text }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.secondary_button_text -%}
+          <a href="{{ section.settings.secondary_button_url }}" class="btn btn-secondary">
+            {{ section.settings.secondary_button_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.cta-section {
+  background-color: var(--charcoal-950);
+}
+
+.cta-content {
+  text-align: center;
+}
+
+.cta-centered {
+  text-align: center;
+}
+
+.cta-left {
+  text-align: left;
+}
+
+.cta-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.cta-description {
+  color: rgba(240, 221, 184, 0.8);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  max-width: 40rem;
+}
+
+.cta-left .cta-description {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cta-left .cta-buttons {
+  justify-content: flex-start;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%);
+  color: var(--charcoal-950);
+  box-shadow: 0 4px 12px rgba(201, 138, 16, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201, 138, 16, 0.4);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--gold-400);
+  border: 2px solid var(--gold-400);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(201, 138, 16, 0.1);
+  color: var(--gold-300);
+  border-color: var(--gold-300);
+}
+
+.max-w-4xl {
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .md\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .cta-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+{% endstylesheet %}
