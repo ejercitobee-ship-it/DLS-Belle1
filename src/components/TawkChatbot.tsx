@@ -19,7 +19,7 @@ export default function TawkChatbot() {
     const s0 = document.getElementsByTagName('script')[0];
 
     s1.async = true;
-    s1.src = `https://embed.tawk.to/${tawkId}/default`;
+    s1.src = `https://embed.tawk.to/${tawkId}/1jnurkehu`;
     s1.charset = 'UTF-8';
     s1.setAttribute('crossorigin', '*');
 
