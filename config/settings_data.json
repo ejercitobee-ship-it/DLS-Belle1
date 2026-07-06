@@ -35,7 +35,7 @@
           "section_heading": "Latest. <span class=\"text-gradient-gold\">Acquisitions.</span>",
           "section_description": "<p>Handpicked selections from our most exclusive collection</p>",
           "collection": "new-arrivals",
-          "products_count": 6,
+          "products_count": 4,
           "sort_by": "created"
         }
       },
@@ -80,7 +80,8 @@
         ],
         "settings": {
           "section_eyebrow": "The Aficionado's Verdict",
-          "section_heading": "Trusted by <span class=\"text-gradient-gold\">Connoisseurs</span>"
+          "section_heading": "Trusted by <span class=\"text-gradient-gold\">Connoisseurs</span>",
+          "section_description": ""
         }
       },
       "trust-signals": {
@@ -123,7 +124,7 @@
         ],
         "settings": {
           "section_eyebrow": "Why Choose Us",
-          "section_heading": "Products with the<br/><span class=\"text-gradient-gold\">Signature of Luxury</span>",
+          "section_heading": "Products with the<br><span class=\"text-gradient-gold\">Signature of Luxury</span>",
           "section_description": "Dunn's Luxury Selections is America's premier destination for fine cigar humidors. We exist for those who understand that the way a cigar is stored is as important as the cigar itself."
         }
       },
@@ -139,6 +140,28 @@
       "footer": {
         "type": "footer",
         "settings": {}
+      },
+      "financing-banner": {
+        "type": "financing-banner",
+        "settings": {
+          "section_label": "Flexible Financing",
+          "section_heading": "Remove Barriers to Building Your Collection",
+          "section_description": "<p>Finance qualifying purchases over $1,500 with Shop Pay Installments. Approved buyers split payments into 4 equal, interest-free installments—zero fees, zero surprises. Decision in under 60 seconds at checkout.</p>",
+          "cta_primary_text": "Learn About Financing",
+          "cta_primary_url": "",
+          "cta_secondary_text": "Shop Qualifying Products",
+          "cta_secondary_url": "shopify://collections/all",
+          "show_payment_examples": true,
+          "min_product_price": 1500
+        }
+      },
+      "deals-banner": {
+        "type": "deals-banner",
+        "settings": {
+          "section_eyebrow": "Limited Edition Deals",
+          "section_heading": "Exclusive Savings",
+          "products_count": 3
+        }
       }
     },
     "content_for_index": []
