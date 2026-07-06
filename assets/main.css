@@ -1678,3 +1678,12 @@ section {
     display: none;
   }
 }
+
+/* Gold gradient text accent — replicates the headless site's .text-gradient-gold */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #e5a524 0%, #f3d68b 50%, #c98a10 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-style: italic;
+}

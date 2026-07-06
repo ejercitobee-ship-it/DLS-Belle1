@@ -28,38 +28,103 @@
           "show_trust_badges": true
         }
       },
+      "featured-products": {
+        "type": "featured-products",
+        "settings": {
+          "section_eyebrow": "New Arrivals",
+          "section_heading": "Latest. <span class=\"text-gradient-gold\">Acquisitions.</span>",
+          "section_description": "<p>Handpicked selections from our most exclusive collection</p>",
+          "collection": "new-arrivals",
+          "products_count": 6,
+          "sort_by": "created"
+        }
+      },
+      "testimonials": {
+        "type": "testimonials",
+        "blocks": {
+          "testimonial_1": {
+            "type": "testimonial",
+            "settings": {
+              "author_name": "James Hartwell",
+              "author_role": "Private Collector, London",
+              "testimonial_text": "The Raching cabinet I purchased has completely transformed how I store my collection. The precision humidity control is unmatched and the craftsmanship is extraordinary.",
+              "rating": 5,
+              "product_tag": "Raching RR980"
+            }
+          },
+          "testimonial_2": {
+            "type": "testimonial",
+            "settings": {
+              "author_name": "Marcus de Vries",
+              "author_role": "Owner, The Cigar Lounge Amsterdam",
+              "testimonial_text": "Dunn's installed our bespoke walk-in humidor and the result exceeded every expectation. Our clients are consistently amazed. Truly the signature of luxury.",
+              "rating": 5,
+              "product_tag": "Bespoke Walk-in Installation"
+            }
+          },
+          "testimonial_3": {
+            "type": "testimonial",
+            "settings": {
+              "author_name": "Alessandro Ferrari",
+              "author_role": "F&B Director, Milan",
+              "testimonial_text": "Professional service from consultation to delivery. The Santiago counter display elevates our bar programme and attracts serious aficionados every evening.",
+              "rating": 5,
+              "product_tag": "Santiago Counter Display"
+            }
+          }
+        },
+        "block_order": [
+          "testimonial_1",
+          "testimonial_2",
+          "testimonial_3"
+        ],
+        "settings": {
+          "section_eyebrow": "The Aficionado's Verdict",
+          "section_heading": "Trusted by <span class=\"text-gradient-gold\">Connoisseurs</span>"
+        }
+      },
       "trust-signals": {
         "type": "trust-signals",
         "blocks": {
           "signal_rjxnez": {
             "type": "signal",
             "settings": {
-              "label": "",
-              "description": ""
+              "label": "Curated Excellence",
+              "description": "Every product in our range is personally selected for exceptional craftsmanship, material quality, and performance."
             }
           },
           "signal_4XrmJx": {
             "type": "signal",
             "settings": {
-              "label": "",
-              "description": ""
+              "label": "Precision Engineering",
+              "description": "From passive cedar-lined cabinets to fully electronic climate systems, each humidor is precision-calibrated for your collection."
             }
           },
           "signal_jJUNiq": {
             "type": "signal",
             "settings": {
-              "label": "",
-              "description": ""
+              "label": "Expert Guidance",
+              "description": "Our team of aficionados provides personalised advice on storage solutions tailored to your specific needs and budget."
+            }
+          },
+          "signal_concierge": {
+            "type": "signal",
+            "settings": {
+              "label": "Expert Concierge Support",
+              "description": "Dedicated support across the USA with specialist handling to ensure your humidor arrives in perfect condition and is perfectly positioned."
             }
           }
         },
         "block_order": [
           "signal_rjxnez",
           "signal_4XrmJx",
-          "signal_jJUNiq"
+          "signal_jJUNiq",
+          "signal_concierge"
         ],
         "settings": {
-          "section_heading": "Why Dunn's Luxury Selections"
+          "section_eyebrow": "Why Choose Us",
+          "section_heading": "Products with the<br/><span class=\"text-gradient-gold\">Signature of Luxury</span>",
+          "section_description": "Dunn's Luxury Selections is America's premier destination for fine cigar humidors. We exist for those who understand that the way a cigar is stored is as important as the cigar itself."
         }
       },
       "newsletter": {

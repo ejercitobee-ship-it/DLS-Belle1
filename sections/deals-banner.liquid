@@ -1,0 +1,168 @@
+{% schema %}
+{
+  "name": "Deals Banner",
+  "class": "section-deals-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Limited Edition Deals"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Exclusive Savings"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Max Deals Shown",
+      "default": 3
+    }
+  ]
+}
+{% endschema %}
+
+{%- liquid
+  # Replicates the headless DealsBanner: show products that are on sale
+  # (compare-at price above current price). Section hides itself when none.
+  assign deal_count = 0
+  assign deal_handles = ''
+  for deal_product in collections['all'].products
+    if deal_count >= section.settings.products_count
+      break
+    endif
+    if deal_product.compare_at_price > deal_product.price
+      assign deal_handles = deal_handles | append: deal_product.handle | append: ','
+      assign deal_count = deal_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if deal_count > 0 -%}
+  <section class="deals-banner">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+      <!-- Header -->
+      <div class="deals-header">
+        <div>
+          <div class="deals-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+            <span>{{ section.settings.section_eyebrow }}</span>
+          </div>
+          <h2 class="deals-heading">{{ section.settings.section_heading }}</h2>
+        </div>
+        <a href="/collections/on-sale" class="deals-view-all">
+          View All Deals
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Deal Cards -->
+      <div class="deals-grid">
+        {%- assign shown_handles = deal_handles | split: ',' -%}
+        {%- for handle in shown_handles -%}
+          {%- assign deal_product = collections['all'].products | where: 'handle', handle | first -%}
+          {%- if deal_product -%}
+            <div class="deal-item">
+              {%- assign discount = deal_product.compare_at_price | minus: deal_product.price | times: 100.0 | divided_by: deal_product.compare_at_price | round -%}
+              <div class="deal-badge">{{ discount }}% Off</div>
+              {% render 'product-card', product: deal_product, index: forloop.index %}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+.deals-banner {
+  background-color: var(--charcoal-950);
+}
+
+.deals-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.deals-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: var(--gold-400);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.deals-eyebrow svg {
+  color: var(--gold-500);
+}
+
+.deals-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.875rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.deals-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gold-400);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.deals-view-all:hover {
+  color: var(--gold-300);
+}
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.deal-item {
+  position: relative;
+}
+
+.deal-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  background: var(--gold-500);
+  color: var(--charcoal-950);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+}
+{% endstylesheet %}

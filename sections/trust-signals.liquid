@@ -5,9 +5,20 @@
   "settings": [
     {
       "type": "text",
+      "id": "section_eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Why Choose Us"
+    },
+    {
+      "type": "text",
       "id": "section_heading",
       "label": "Section Heading",
       "default": "Why Dunn's Luxury Selections"
+    },
+    {
+      "type": "textarea",
+      "id": "section_description",
+      "label": "Section Description"
     }
   ],
   "blocks": [
@@ -61,11 +72,25 @@
 
 <section class="trust-signals-section">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-    {%- if section.settings.section_heading != blank -%}
-      <h2 class="section-title text-center mb-12 md:mb-16">
-        {{ section.settings.section_heading }}
-      </h2>
-    {%- endif -%}
+    <div class="text-center" style="max-width: 48rem; margin: 0 auto 3.5rem;">
+      {%- if section.settings.section_eyebrow != blank -%}
+        <div class="signals-eyebrow">
+          <span class="eyebrow-line"></span>
+          <span>{{ section.settings.section_eyebrow }}</span>
+          <span class="eyebrow-line"></span>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.section_heading != blank -%}
+        <h2 class="section-title text-center">
+          {{ section.settings.section_heading }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.section_description != blank -%}
+        <p class="signals-description">{{ section.settings.section_description }}</p>
+      {%- endif -%}
+    </div>
 
     {%- if section.blocks.size > 0 -%}
       <div class="signals-grid">
@@ -108,8 +133,40 @@
 
 @media (min-width: 768px) {
   .signals-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
+}
+
+@media (min-width: 1024px) {
+  .signals-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.signals-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  color: var(--gold-400);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.signals-eyebrow .eyebrow-line {
+  width: 2rem;
+  height: 1px;
+  background: var(--gold-500);
+}
+
+.signals-description {
+  color: rgba(240, 221, 184, 0.6);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 1.5rem 0 0;
 }
 
 .signal-card {
