@@ -17,32 +17,32 @@
       </p>
     </div>
 
-  <div class="featured-grid">
-    {% for product in collections.featured.products limit: 3 %}
-      <a href="{{ product.url }}" class="featured-card">
-        {% if product.featured_image %}
-          <img src="{{ product.featured_image | img_url: '400x300' }}" alt="{{ product.title }}" class="featured-image" />
-        {% else %}
-          <div class="featured-image bg-charcoal-800"></div>
-        {% endif %}
+    <div class="featured-grid">
+      {% for product in collections.featured.products limit: 3 %}
+        <a href="{{ product.url }}" class="featured-card">
+          {% if product.featured_image %}
+            <img src="{{ product.featured_image | img_url: '400x300' }}" alt="{{ product.title }}" class="featured-image" />
+          {% else %}
+            <div class="featured-image bg-charcoal-800"></div>
+          {% endif %}
 
-        <div class="featured-content">
-          <h3 class="featured-title">{{ product.title }}</h3>
-          <div class="featured-price">
-            {% if product.price_min == product.price_max %}
-              {{ product.price_min | money }}
-            {% else %}
-              {{ product.price_min | money }} - {{ product.price_max | money }}
-            {% endif %}
+          <div class="featured-content">
+            <h3 class="featured-title">{{ product.title }}</h3>
+            <div class="featured-price">
+              {% if product.price_min == product.price_max %}
+                {{ product.price_min | money }}
+              {% else %}
+                {{ product.price_min | money }} - {{ product.price_max | money }}
+              {% endif %}
+            </div>
+            <p class="featured-desc">
+              {{ product.description | strip_html | truncatewords: 15 }}
+            </p>
+            <span class="featured-cta">View Details →</span>
           </div>
-          <p class="featured-desc">
-            {{ product.description | strip_html | truncatewords: 15 }}
-          </p>
-          <span class="featured-cta">View Details →</span>
-        </div>
-      </a>
-    {% endfor %}
-  </div>
+        </a>
+      {% endfor %}
+    </div>
   </div>
 </section>
 
