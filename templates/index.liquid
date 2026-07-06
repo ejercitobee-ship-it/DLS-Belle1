@@ -18,7 +18,7 @@
     </div>
 
     <div class="featured-grid">
-      {% for product in collections.featured.products limit: 3 %}
+      {% for product in collections.all.products limit: 3 %}
         <a href="{{ product.url }}" class="featured-card">
           {% if product.featured_image %}
             <img src="{{ product.featured_image | img_url: '400x300' }}" alt="{{ product.title }}" class="featured-image" />
