@@ -557,6 +557,14 @@ section {
   }
 }
 
+/* ── Financing Icons ────────────────────────────────────────────────────────── */
+.highlight-icon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 0.75rem;
+  color: var(--gold-400);
+}
+
 /* ── Footer ────────────────────────────────────────────────────────────────── */
 .footer {
   background-color: var(--charcoal-900);
