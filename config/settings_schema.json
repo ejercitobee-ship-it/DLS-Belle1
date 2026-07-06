@@ -103,15 +103,37 @@
         "default": 200
       },
       {
-        "type": "checkbox",
-        "id": "show_search",
-        "label": "Show Search Bar",
-        "default": true
-      },
-      {
         "type": "link_list",
         "id": "menu_main",
         "label": "Main Menu"
+      },
+      {
+        "type": "header",
+        "content": "Header Styling"
+      },
+      {
+        "type": "color",
+        "id": "header_background",
+        "label": "Header Background Color",
+        "default": "#211e1c"
+      },
+      {
+        "type": "color",
+        "id": "header_text_color",
+        "label": "Navigation Text Color",
+        "default": "#f8f0e0"
+      },
+      {
+        "type": "color",
+        "id": "header_text_hover",
+        "label": "Navigation Hover Color",
+        "default": "#e5a524"
+      },
+      {
+        "type": "checkbox",
+        "id": "header_sticky",
+        "label": "Sticky Header",
+        "default": true
       }
     ]
   },
