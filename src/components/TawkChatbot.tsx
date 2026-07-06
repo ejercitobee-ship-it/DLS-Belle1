@@ -11,7 +11,8 @@ declare global {
 
 export default function TawkChatbot() {
   useEffect(() => {
-    const tawkId = import.meta.env.VITE_TAWK_ID;
+    // Use environment variable or fallback to hard-coded ID (same as local dev)
+    const tawkId = import.meta.env.VITE_TAWK_ID || '69fb527d491d631c393ede51';
     if (!tawkId) return; // Don't load if ID is not configured
 
     // Initialize Tawk.to widget
