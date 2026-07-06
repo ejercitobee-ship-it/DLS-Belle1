@@ -37,7 +37,7 @@
       "type": "url",
       "id": "secondary_button_url",
       "label": "Secondary Button URL",
-      "default": "/pages/about"
+      "info": "Defaults to /pages/about if left blank"
     },
     {
       "type": "select",
@@ -86,7 +86,7 @@
         {%- endif -%}
 
         {%- if section.settings.secondary_button_text -%}
-          <a href="{{ section.settings.secondary_button_url }}" class="btn btn-secondary">
+          <a href="{{ section.settings.secondary_button_url | default: '/pages/about' }}" class="btn btn-secondary">
             {{ section.settings.secondary_button_text }}
           </a>
         {%- endif -%}

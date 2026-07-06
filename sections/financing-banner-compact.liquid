@@ -25,7 +25,7 @@
       "type": "url",
       "id": "cta_url",
       "label": "CTA URL",
-      "default": "/pages/financing"
+      "info": "Defaults to /pages/financing if left blank"
     }
   ]
 }
@@ -52,7 +52,7 @@
       </div>
 
       {%- if section.settings.cta_text -%}
-        <a href="{{ section.settings.cta_url }}" class="financing-cta">
+        <a href="{{ section.settings.cta_url | default: '/pages/financing' }}" class="financing-cta">
           {{ section.settings.cta_text }}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="5" y1="12" x2="19" y2="12"></line>
