@@ -1,0 +1,105 @@
+{%- comment -%}
+SEO Meta Tags & Open Graph
+Include in layout/theme.liquid <head> tag
+{%- endcomment -%}
+
+{% assign page_title = page.title | default: product.title | default: collection.title | default: shop.name %}
+{% assign page_description = page.description | default: product.description | default: collection.description | default: shop.description %}
+{% assign page_image = product.featured_image | default: collection.featured_image | default: '' %}
+{% assign canonical_url = canonical_url | default: request.url %}
+
+<!-- Essential Meta Tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="{{ page_description | truncatewords: 20 | escape }}">
+<meta name="keywords" content="luxury humidors, premium cigar storage, handcrafted humidors, financing options">
+<meta name="author" content="{{ shop.name }}">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="{{ canonical_url }}">
+
+<!-- Open Graph Tags (Social Media) -->
+<meta property="og:title" content="{{ page_title | escape }}">
+<meta property="og:description" content="{{ page_description | truncatewords: 20 | escape }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:type" content="{% if product %}product{% elsif collection %}website{% else %}website{% endif %}">
+{% if page_image %}
+  <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ page_image.alt | escape }}">
+{% else %}
+  <meta property="og:image" content="{{ shop.url }}/cdn/shop/files/og-image.png">
+{% endif %}
+
+<!-- Twitter Card Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page_title | escape }}">
+<meta name="twitter:description" content="{{ page_description | truncatewords: 20 | escape }}">
+<meta name="twitter:site" content="@dunnluxury">
+{% if page_image %}
+  <meta name="twitter:image" content="{{ page_image | image_url: width: 1200 }}">
+  <meta name="twitter:image:alt" content="{{ page_image.alt | escape }}">
+{% endif %}
+
+<!-- Pinterest Meta Tags -->
+<meta property="pinterest:description" content="{{ page_title | escape }} - {{ page_description | truncatewords: 15 | escape }}">
+
+<!-- Product-Specific Meta Tags -->
+{% if product %}
+  <meta property="og:price:amount" content="{{ product.price | divided_by: 100.0 }}">
+  <meta property="og:price:currency" content="USD">
+  {% if product.available %}
+    <meta property="product:availability" content="in stock">
+  {% else %}
+    <meta property="product:availability" content="out of stock">
+  {% endif %}
+{% endif %}
+
+<!-- Collection Meta Tags -->
+{% if collection %}
+  <meta name="collection" content="{{ collection.title }}">
+{% endif %}
+
+<!-- Search Engine Verification (add verification codes) -->
+<!-- Google Search Console -->
+<!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE"> -->
+
+<!-- Bing Webmaster Tools -->
+<!-- <meta name="msvalidate.01" content="YOUR_VERIFICATION_CODE"> -->
+
+<!-- Apple Meta Tags -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="{{ shop.name }}">
+
+<!-- Microsoft Meta Tags -->
+<meta name="msapplication-TileColor" content="#C98A10">
+<meta name="msapplication-config" content="/browserconfig.xml">
+
+<!-- Theme Color -->
+<meta name="theme-color" content="#0a0a0a">
+
+<!-- Favicons -->
+<link rel="icon" type="image/x-icon" href="{{ shop.url }}/favicon.ico">
+<link rel="apple-touch-icon" href="{{ shop.url }}/apple-touch-icon.png">
+<link rel="manifest" href="{{ shop.url }}/manifest.json">
+
+<!-- Preload Critical Resources -->
+<link rel="preload" as="font" href="{{ 'playfair-display.woff2' | asset_url }}" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="{{ 'inter.woff2' | asset_url }}" type="font/woff2" crossorigin>
+
+<!-- DNS Prefetch for External Resources -->
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
+<link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+<!-- Preconnect to Critical Origins -->
+<link rel="preconnect" href="https://cdn.shopify.com">
+<link rel="preconnect" href="https://www.google-analytics.com">
+
+<!-- Alternate Links (for multi-language if applicable) -->
+<!-- <link rel="alternate" hreflang="en-US" href="{{ canonical_url }}"> -->
