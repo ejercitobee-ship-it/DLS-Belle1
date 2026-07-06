@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>{{ page_title }}</title>
+    <meta name="description" content="{{ page_description | escape }}" />
+
+    {% if current_tags %}
+      <meta name="keywords" content="{{ current_tags | join: ', ' }}" />
+    {% endif %}
+
+    <!-- Open Graph / SEO -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ page_title }}" />
+    <meta property="og:description" content="{{ page_description | escape }}" />
+    <meta property="og:url" content="{{ canonical_url }}" />
+    {% if page_image %}
+      <meta property="og:image" content="{{ page_image | img_url: '1200x' }}" />
+    {% endif %}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ page_title }}" />
+    <meta name="twitter:description" content="{{ page_description | escape }}" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ canonical_url }}" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ 'favicon.png' | asset_url }}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Stylesheets -->
+    {{ 'main.css' | asset_url | stylesheet_tag }}
+
+    <!-- GA4 & Conversion Tracking -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GT-55VCHDDF"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GT-55VCHDDF');
+      gtag('config', 'AW-17833894840');
+    </script>
+
+    <!-- Shopify Head -->
+    {{ content_for_header }}
+  </head>
+
+  <body class="bg-charcoal-950 text-cream-100">
+    <!-- Header / Navigation -->
+    {% section 'header' %}
+
+    <!-- Page Content -->
+    <main class="min-h-screen">
+      {{ content_for_layout }}
+    </main>
+
+    <!-- Footer -->
+    {% section 'footer' %}
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="cart-drawer">
+      <!-- Rendered by JavaScript -->
+    </div>
+
+    <!-- Scripts -->
+    {{ 'main.js' | asset_url | script_tag }}
+  </body>
+</html>

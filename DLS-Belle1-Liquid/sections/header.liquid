@@ -1,0 +1,146 @@
+{% stylesheet %}
+  .header {
+    @apply bg-charcoal-950 border-b border-charcoal-800/40 sticky top-0 z-40;
+  }
+
+  .header-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    @apply font-serif text-2xl font-700 text-white;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+
+  .logo:hover {
+    @apply text-gold-400;
+    transition: color 0.3s ease;
+  }
+
+  .nav-menu {
+    @apply hidden md:flex gap-8;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-item a {
+    @apply text-cream-200 text-sm hover:text-gold-400 transition-colors;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .nav-item a.active {
+    @apply text-gold-400;
+    border-bottom: 2px solid;
+    border-color: currentColor;
+    padding-bottom: 2px;
+  }
+
+  .cart-icon-container {
+    @apply relative cursor-pointer;
+    position: relative;
+  }
+
+  .cart-icon {
+    @apply text-cream-200 hover:text-gold-400 transition-colors;
+    width: 24px;
+    height: 24px;
+  }
+
+  .cart-count {
+    @apply absolute -top-2 -right-2 w-5 h-5 bg-gold-600 text-charcoal-950 rounded-full text-xs font-bold flex items-center justify-center;
+  }
+
+  .mobile-menu-btn {
+    @apply md:hidden flex items-center justify-center w-10 h-10 rounded hover:bg-charcoal-800 transition-colors;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+  }
+{% endstylesheet %}
+
+<header class="header">
+  <div class="header-container">
+    <!-- Logo -->
+    <a href="/" class="logo">Dunn's</a>
+
+    <!-- Desktop Menu -->
+    <nav>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="/collections/electronic-humidors">Electronic</a>
+        </li>
+        <li class="nav-item">
+          <a href="/collections/cabinet-humidors">Cabinet</a>
+        </li>
+        <li class="nav-item">
+          <a href="/collections/desktop-humidors">Desktop</a>
+        </li>
+        <li class="nav-item">
+          <a href="/collections/travel-humidors">Travel</a>
+        </li>
+        <li class="nav-item">
+          <a href="/collections/accessories">Accessories</a>
+        </li>
+        <li class="nav-item">
+          <a href="/pages/about">About</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Right Section: Cart -->
+    <div class="flex items-center gap-6">
+      <button
+        class="cart-icon-container"
+        id="cart-toggle"
+        aria-label="Open shopping cart"
+      >
+        <svg class="cart-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        {% if cart.item_count > 0 %}
+          <span class="cart-count">{{ cart.item_count }}</span>
+        {% endif %}
+      </button>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 24px; height: 24px;">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+</header>
+
+<script>
+  document.getElementById('cart-toggle').addEventListener('click', () => {
+    const drawer = document.getElementById('cart-drawer');
+    if (drawer) {
+      drawer.classList.toggle('open');
+    }
+  });
+
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    const menu = document.querySelector('.nav-menu');
+    if (menu) {
+      menu.classList.toggle('hidden');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      menu.style.position = 'absolute';
+      menu.style.top = '100%';
+      menu.style.left = '0';
+      menu.style.right = '0';
+      menu.style.flexDirection = 'column';
+      menu.style.gap = '0';
+      menu.style.background = 'rgb(33, 30, 28)';
+      menu.style.padding = '1rem';
+      menu.style.zIndex = '30';
+    }
+  });
+</script>

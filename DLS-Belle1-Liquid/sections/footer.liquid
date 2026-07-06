@@ -1,0 +1,154 @@
+{% stylesheet %}
+  .footer {
+    @apply bg-charcoal-900 border-t border-charcoal-800/40 mt-24 py-16;
+  }
+
+  .footer-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .footer-grid {
+    @apply grid grid-cols-1 md:grid-cols-4 gap-8 mb-8;
+  }
+
+  .footer-section h3 {
+    @apply font-serif text-lg font-600 text-white mb-4;
+  }
+
+  .footer-links {
+    @apply space-y-2;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-links a {
+    @apply text-cream-200 text-sm hover:text-gold-400 transition-colors;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .trust-badges {
+    @apply flex flex-col gap-4 md:flex-row md:gap-8 items-start md:items-center;
+  }
+
+  .badge {
+    @apply flex items-center gap-2 text-sm text-cream-200;
+  }
+
+  .badge-icon {
+    @apply w-6 h-6 text-gold-400;
+  }
+
+  .footer-bottom {
+    @apply border-t border-charcoal-800/40 pt-8 flex flex-col md:flex-row justify-between items-center;
+    text-align: center;
+  }
+
+  .footer-copyright {
+    @apply text-cream-200/50 text-xs;
+  }
+
+  .footer-bottom-links {
+    @apply flex gap-4 md:gap-8 mt-4 md:mt-0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-bottom-links a {
+    @apply text-cream-200/50 text-xs hover:text-gold-400 transition-colors;
+    text-decoration: none;
+  }
+{% endstylesheet %}
+
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Footer Grid -->
+    <div class="footer-grid">
+      <!-- About -->
+      <div class="footer-section">
+        <h3>About Dunn's</h3>
+        <p class="text-cream-200/70 text-sm leading-relaxed mb-4">
+          America's premier destination for luxury humidors. Precision, prestige, and presence.
+        </p>
+        <p class="text-cream-200/50 text-xs">
+          Curating the finest cigar storage solutions since 2020.
+        </p>
+      </div>
+
+      <!-- Collections -->
+      <div class="footer-section">
+        <h3>Collections</h3>
+        <ul class="footer-links">
+          <li><a href="/collections/electronic-humidors">Electronic Humidors</a></li>
+          <li><a href="/collections/cabinet-humidors">Cabinet Humidors</a></li>
+          <li><a href="/collections/desktop-humidors">Desktop Humidors</a></li>
+          <li><a href="/collections/travel-humidors">Travel Humidors</a></li>
+          <li><a href="/collections/accessories">Accessories</a></li>
+        </ul>
+      </div>
+
+      <!-- Customer Service -->
+      <div class="footer-section">
+        <h3>Customer Service</h3>
+        <ul class="footer-links">
+          <li><a href="/pages/delivery-info">Shipping & Delivery</a></li>
+          <li><a href="/pages/returns-warranty">Returns & Warranty</a></li>
+          <li><a href="/pages/care-guides">Care Guides</a></li>
+          <li><a href="/pages/financing">Financing</a></li>
+          <li><a href="mailto:support@dunnluxuryselections.com">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div class="footer-section">
+        <h3>Legal</h3>
+        <ul class="footer-links">
+          <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/pages/terms-of-service">Terms of Service</a></li>
+          <li><a href="/pages/cookie-policy">Cookie Policy</a></li>
+          <li><a href="/pages/about">About Us</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Trust Badges -->
+    <div class="trust-badges">
+      <div class="badge">
+        <svg class="badge-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>Premium Quality Verified</span>
+      </div>
+
+      <div class="badge">
+        <svg class="badge-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 6H6.28l-.31-1.243A1 1 0 005 4H3z" />
+          <path d="M16 16a2 2 0 11-4 0 2 2 0 014 0z" />
+          <path d="M6 16a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span>Free Shipping on Orders $2,000+</span>
+      </div>
+
+      <div class="badge">
+        <svg class="badge-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+        </svg>
+        <span>Secure Shop Pay Checkout</span>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        &copy; {{ "now" | date: "%Y" }} Dunn's Luxury Selections. All rights reserved.
+      </p>
+      <ul class="footer-bottom-links">
+        <li><a href="/pages/privacy-policy">Privacy</a></li>
+        <li><a href="/pages/terms-of-service">Terms</a></li>
+        <li><a href="/pages/cookie-policy">Cookies</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,172 @@
+{% stylesheet %}
+  .page-hero {
+    @apply relative w-full h-48 md:h-64 bg-gradient-to-r from-charcoal-900 to-charcoal-800 overflow-hidden;
+  }
+
+  .page-hero-content {
+    @apply absolute inset-0 flex flex-col items-center justify-center text-center px-4;
+    background: linear-gradient(135deg, rgba(33, 30, 28, 0.7) 0%, rgba(70, 62, 59, 0.7) 100%);
+  }
+
+  .page-hero h1 {
+    @apply font-serif text-3xl md:text-5xl font-700 text-white;
+  }
+
+  .page-container {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16;
+  }
+
+  .page-content {
+    @apply prose prose-invert max-w-none;
+    background: transparent;
+  }
+
+  .page-content h2,
+  .page-content h3,
+  .page-content h4,
+  .page-content h5,
+  .page-content h6 {
+    @apply font-serif font-700 mt-8 mb-4 text-white;
+  }
+
+  .page-content p {
+    @apply text-cream-200/80 mb-4 leading-relaxed;
+  }
+
+  .page-content a {
+    @apply text-gold-400 hover:text-gold-300 underline underline-offset-2;
+  }
+
+  .page-content ul,
+  .page-content ol {
+    @apply mb-4 pl-6 space-y-2;
+  }
+
+  .page-content li {
+    @apply text-cream-200/80;
+  }
+
+  .page-content blockquote {
+    @apply border-l-4 border-gold-500 pl-4 italic text-cream-200/70 my-6;
+  }
+
+  .page-content strong {
+    @apply text-white font-semibold;
+  }
+
+  .page-content em {
+    @apply italic text-cream-200/70;
+  }
+
+  .back-link {
+    @apply text-gold-400 hover:text-gold-300 flex items-center gap-2 mb-8 font-semibold;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    @apply translate-x-1 transition-transform;
+  }
+
+  .financing-table {
+    @apply w-full mt-6 border-collapse;
+  }
+
+  .financing-table th,
+  .financing-table td {
+    @apply border border-charcoal-800/40 px-4 py-3 text-left;
+  }
+
+  .financing-table th {
+    @apply bg-charcoal-900 font-semibold text-white;
+  }
+
+  .financing-table tr:hover {
+    @apply bg-charcoal-900/50;
+  }
+
+  .financing-cta {
+    @apply mt-8 inline-block px-6 py-3 bg-gold-500 text-charcoal-950 font-bold rounded hover:bg-gold-400 transition-all active:scale-95;
+  }
+{% endstylesheet %}
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="page-hero-content">
+    <h1>{{ page.title }}</h1>
+  </div>
+</section>
+
+<!-- Page Content -->
+<div class="page-container">
+  <a href="/" class="back-link">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    Back to Home
+  </a>
+
+  <div class="page-content">
+    {{ page.content }}
+  </div>
+
+  <!-- Financing-Specific CTA -->
+  {% if page.handle == 'financing' %}
+    <div class="mt-12 text-center">
+      <h3 class="font-serif text-2xl font-700 text-white mb-4">Ready to Finance Your Humidor?</h3>
+      <p class="text-cream-200/70 mb-6">
+        Browse our collection of premium humidors eligible for Shop Pay Installments.
+      </p>
+      <a href="/collections/all" class="financing-cta">
+        Shop Now
+      </a>
+    </div>
+  {% endif %}
+
+  <!-- Testimonials/Trust for About page -->
+  {% if page.handle == 'about' %}
+    <section class="mt-16 pt-16 border-t border-charcoal-800/40">
+      <h2 class="font-serif text-3xl font-700 text-white text-center mb-12">What Our Customers Say</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-charcoal-900 p-6 rounded border border-charcoal-800/40">
+          <div class="flex gap-1 mb-4">
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          </div>
+          <p class="text-cream-200/80 mb-4 italic">
+            "Outstanding service and an incredible humidor. Worth every penny and the financing option made it easy."
+          </p>
+          <p class="text-white font-semibold">— Robert M.</p>
+        </div>
+
+        <div class="bg-charcoal-900 p-6 rounded border border-charcoal-800/40">
+          <div class="flex gap-1 mb-4">
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          </div>
+          <p class="text-cream-200/80 mb-4 italic">
+            "The quality is exceptional. Every detail shows the craftsmanship. Highly recommend!"
+          </p>
+          <p class="text-white font-semibold">— James T.</p>
+        </div>
+
+        <div class="bg-charcoal-900 p-6 rounded border border-charcoal-800/40">
+          <div class="flex gap-1 mb-4">
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <svg class="w-5 h-5 text-gold-500 fill-gold-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          </div>
+          <p class="text-cream-200/80 mb-4 italic">
+            "Customer service was above and beyond. They helped me choose the perfect humidor."
+          </p>
+          <p class="text-white font-semibold">— David N.</p>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+</div>

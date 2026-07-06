@@ -1,0 +1,370 @@
+{% stylesheet %}
+  .product-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16;
+  }
+
+  .breadcrumb {
+    @apply flex items-center gap-2 mb-8 text-cream-200/60 text-sm;
+  }
+
+  .breadcrumb a {
+    @apply hover:text-gold-400 transition-colors;
+    text-decoration: none;
+  }
+
+  .product-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-12 mb-16;
+  }
+
+  .product-images {
+    @apply space-y-4;
+  }
+
+  .main-image {
+    @apply w-full rounded overflow-hidden bg-charcoal-900 aspect-square;
+  }
+
+  .main-image img {
+    @apply w-full h-full object-cover;
+  }
+
+  .image-thumbnails {
+    @apply flex gap-2;
+  }
+
+  .thumbnail {
+    @apply w-20 h-20 rounded overflow-hidden cursor-pointer border-2 border-transparent hover:border-gold-500 transition-colors bg-charcoal-900;
+  }
+
+  .thumbnail img {
+    @apply w-full h-full object-cover;
+  }
+
+  .product-info h1 {
+    @apply font-serif text-3xl md:text-4xl font-700 text-white mb-4 leading-tight;
+  }
+
+  .product-meta {
+    @apply flex items-center gap-6 mb-6 pb-6 border-b border-charcoal-800/40;
+  }
+
+  .product-price {
+    @apply text-3xl font-bold text-gold-400;
+  }
+
+  .product-stock {
+    @apply text-sm text-cream-200/60;
+  }
+
+  .product-desc {
+    @apply text-cream-200/70 text-base leading-relaxed mb-8;
+  }
+
+  .product-options {
+    @apply mb-8 space-y-6;
+  }
+
+  .option-group {
+    @apply space-y-3;
+  }
+
+  .option-label {
+    @apply block text-sm font-semibold text-white mb-2;
+  }
+
+  .variant-selector {
+    @apply flex flex-wrap gap-3;
+  }
+
+  .variant-button {
+    @apply px-4 py-2 border border-charcoal-700 rounded text-sm text-cream-200 hover:border-gold-500/60 transition-colors cursor-pointer;
+  }
+
+  .variant-button.selected {
+    @apply border-gold-500 bg-gold-500/10 text-gold-400;
+  }
+
+  .quantity-selector {
+    @apply flex items-center border border-charcoal-700 rounded w-fit;
+  }
+
+  .qty-btn {
+    @apply w-10 h-10 flex items-center justify-center hover:bg-charcoal-800 transition-colors;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .qty-input {
+    @apply w-12 text-center bg-transparent border-x border-charcoal-700 text-white;
+    appearance: textfield;
+  }
+
+  .qty-input::-webkit-outer-spin-button,
+  .qty-input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  .add-to-cart-btn {
+    @apply w-full px-6 py-3 bg-gold-500 text-charcoal-950 font-bold rounded hover:bg-gold-400 transition-all active:scale-95 flex items-center justify-center gap-2;
+  }
+
+  .add-to-cart-btn:disabled {
+    @apply bg-charcoal-700 text-cream-200/40 cursor-not-allowed;
+  }
+
+  .financing-notice {
+    @apply mt-4 p-4 rounded bg-gold-500/10 border border-gold-500/30 text-gold-300 text-sm;
+  }
+
+  .specs-section {
+    @apply bg-charcoal-900 rounded p-8 mt-16;
+  }
+
+  .specs-section h3 {
+    @apply font-serif text-2xl font-600 text-white mb-6;
+  }
+
+  .specs-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+
+  .spec-item {
+    @apply pb-4 border-b border-charcoal-800/40;
+  }
+
+  .spec-label {
+    @apply text-cream-200/60 text-sm;
+  }
+
+  .spec-value {
+    @apply text-white font-semibold mt-1;
+  }
+
+  .related-section {
+    @apply mt-16 pt-16 border-t border-charcoal-800/40;
+  }
+
+  .related-section h3 {
+    @apply font-serif text-2xl font-600 text-white mb-8;
+  }
+
+  .related-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-6;
+  }
+
+  .related-card {
+    @apply rounded overflow-hidden bg-charcoal-900 border border-charcoal-800/40 hover:border-gold-500/40 transition-all hover:-translate-y-1;
+  }
+
+  .related-image {
+    @apply w-full h-48 object-cover bg-charcoal-800;
+  }
+
+  .related-content {
+    @apply p-4;
+  }
+
+  .related-title {
+    @apply font-serif text-lg font-600 text-white mb-2;
+  }
+
+  .related-price {
+    @apply text-gold-400 font-semibold;
+  }
+{% endstylesheet %}
+
+<div class="product-container">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="/">Home</a>
+    <span>/</span>
+    <a href="/collections">Collections</a>
+    <span>/</span>
+    <span class="text-gold-400">{{ product.title }}</span>
+  </div>
+
+  <!-- Product Main -->
+  <div class="product-grid">
+    <!-- Images -->
+    <div class="product-images">
+      {% if product.featured_image %}
+        <div class="main-image">
+          <img
+            src="{{ product.featured_image | img_url: '800x800' }}"
+            alt="{{ product.title }}"
+            id="main-image"
+          />
+        </div>
+      {% endif %}
+
+      {% if product.images.size > 1 %}
+        <div class="image-thumbnails">
+          {% for image in product.images limit: 5 %}
+            <div class="thumbnail" onclick="document.getElementById('main-image').src='{{ image | img_url: '800x800' }}'">
+              <img src="{{ image | img_url: '100x100' }}" alt="{{ product.title }}" />
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="product-info">
+      <h1>{{ product.title }}</h1>
+
+      <div class="product-meta">
+        <div class="product-price">
+          {% if product.price_min == product.price_max %}
+            {{ product.price | money }}
+          {% else %}
+            {{ product.price_min | money }} - {{ product.price_max | money }}
+          {% endif %}
+        </div>
+
+        <div class="product-stock">
+          {% if product.available %}
+            <span class="text-green-400">In Stock</span>
+          {% else %}
+            <span class="text-red-400">Out of Stock</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <p class="product-desc">
+        {{ product.description }}
+      </p>
+
+      <!-- Add to Cart Form -->
+      <form method="post" action="/cart/add" class="product-options">
+        {% if product.variants.size > 1 %}
+          <div class="option-group">
+            <label class="option-label">Select Options</label>
+            <select
+              name="id"
+              id="variant-select"
+              class="w-full px-4 py-2 bg-charcoal-900 border border-charcoal-700 rounded text-white focus:outline-none focus:border-gold-500/60"
+            >
+              {% for variant in product.variants %}
+                <option value="{{ variant.id }}" {% if variant.available %}{% else %}disabled{% endif %}>
+                  {{ variant.title }}
+                  {% if variant.price != product.price %}- {{ variant.price | money }}{% endif %}
+                  {% if variant.available == false %}(Sold Out){% endif %}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        {% else %}
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+        {% endif %}
+
+        <!-- Quantity -->
+        <div class="option-group">
+          <label class="option-label">Quantity</label>
+          <div class="quantity-selector">
+            <button type="button" class="qty-btn" onclick="this.parentElement.querySelector('input').value = Math.max(1, parseInt(this.parentElement.querySelector('input').value) - 1)">
+              −
+            </button>
+            <input type="number" name="quantity" value="1" min="1" class="qty-input" />
+            <button type="button" class="qty-btn" onclick="this.parentElement.querySelector('input').value = parseInt(this.parentElement.querySelector('input').value) + 1">
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Add to Cart -->
+        <button
+          type="submit"
+          class="add-to-cart-btn"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          {% if product.available %}Add to Cart{% else %}Out of Stock{% endif %}
+        </button>
+
+        <!-- Financing Badge -->
+        {% if product.price >= 1500 %}
+          <div class="financing-notice">
+            <strong>Shop Pay Installments Available</strong><br />
+            Pay in 4 interest-free payments with Shop Pay. <a href="/pages/financing" class="underline">Learn more</a>
+          </div>
+        {% endif %}
+      </form>
+
+      <!-- Trust Badges -->
+      <div class="mt-8 space-y-3 text-sm text-cream-200/70">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          <span>30-day money-back guarantee</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 6H6.28l-.31-1.243A1 1 0 005 4H3z" />
+          </svg>
+          <span>Free shipping on orders $2,000+</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+          </svg>
+          <span>Secure Shop Pay checkout</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Specifications -->
+  {% if product.metafields.custom.specifications %}
+    <div class="specs-section">
+      <h3>Specifications</h3>
+      <div class="specs-grid">
+        {% assign specs = product.metafields.custom.specifications | split: ',' %}
+        {% for spec in specs %}
+          {% assign spec_parts = spec | split: ':' %}
+          {% if spec_parts.size == 2 %}
+            <div class="spec-item">
+              <div class="spec-label">{{ spec_parts[0] | strip }}</div>
+              <div class="spec-value">{{ spec_parts[1] | strip }}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Related Products -->
+  {% if product.related_products.size > 0 %}
+    <div class="related-section">
+      <h3>You Might Also Like</h3>
+      <div class="related-grid">
+        {% for related_product in product.related_products limit: 3 %}
+          <a href="{{ related_product.url }}" class="related-card">
+            {% if related_product.featured_image %}
+              <img
+                src="{{ related_product.featured_image | img_url: '400x300' }}"
+                alt="{{ related_product.title }}"
+                class="related-image"
+              />
+            {% endif %}
+            <div class="related-content">
+              <h4 class="related-title">{{ related_product.title }}</h4>
+              <div class="related-price">
+                {% if related_product.price_min == related_product.price_max %}
+                  {{ related_product.price_min | money }}
+                {% else %}
+                  {{ related_product.price_min | money }} - {{ related_product.price_max | money }}
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>
