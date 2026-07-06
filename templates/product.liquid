@@ -1,129 +1,53 @@
-<!-- Product Detail Page -->
-
-<!-- Breadcrumb -->
-<div class="breadcrumb-section">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-    <nav class="breadcrumb">
-      <a href="/" class="breadcrumb-link">Home</a>
-      <span class="breadcrumb-sep">/</span>
-      <a href="/collections" class="breadcrumb-link">Collections</a>
-      <span class="breadcrumb-sep">/</span>
-      <span class="breadcrumb-current">{{ product.title }}</span>
-    </nav>
+<div class="product-container">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="/">Home</a>
+    <span>/</span>
+    <a href="/collections">Collections</a>
+    <span>/</span>
+    <span class="text-gold-400">{{ product.title }}</span>
   </div>
-</div>
 
-<!-- Product Main Section -->
-<section class="product-page">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-    <div class="product-layout">
-      <!-- Left: Product Gallery -->
-      <div class="product-gallery-wrapper">
-        {% section 'product-gallery' %}
-      </div>
+  <!-- Product Main -->
+  <div class="product-grid">
+    <!-- Images -->
+    <div class="product-images">
+      {% if product.featured_image %}
+        <div class="main-image">
+          <img
+            src="{{ product.featured_image | img_url: '800x800' }}"
+            alt="{{ product.title }}"
+            id="main-image"
+          />
+        </div>
+      {% endif %}
 
-      <!-- Right: Product Info -->
-      <div class="product-info-wrapper">
-        {% section 'product-info' %}
-      </div>
+      {% if product.images.size > 1 %}
+        <div class="image-thumbnails">
+          {% for image in product.images limit: 5 %}
+            <div class="thumbnail" onclick="document.getElementById('main-image').src='{{ image | img_url: '800x800' }}'">
+              <img src="{{ image | img_url: '100x100' }}" alt="{{ product.title }}" />
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
-  </div>
-</section>
 
-<!-- Product Financing Section -->
-{% section 'product-financing' %}
+    <!-- Info -->
+    <div class="product-info">
+      <h1>{{ product.title }}</h1>
 
-<!-- Related Products -->
-{% section 'related-products' %}
+      <div class="product-meta">
+        <div class="product-price">
+          {% if product.price_min == product.price_max %}
+            {{ product.price | money }}
+          {% else %}
+            {{ product.price_min | money }} - {{ product.price_max | money }}
+          {% endif %}
+        </div>
 
-<!-- Testimonials -->
-{% section 'testimonials' %}
-
-<!-- Newsletter -->
-{% section 'newsletter' %}
-
-<style>
-  .breadcrumb-section {
-    background-color: var(--charcoal-950);
-    border-bottom: 1px solid rgba(70, 62, 59, 0.4);
-  }
-
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  .breadcrumb-link {
-    color: var(--gold-400);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .breadcrumb-link:hover {
-    color: var(--gold-300);
-  }
-
-  .breadcrumb-sep {
-    color: rgba(240, 221, 184, 0.4);
-  }
-
-  .breadcrumb-current {
-    color: white;
-  }
-
-  .product-page {
-    background-color: var(--charcoal-950);
-  }
-
-  .product-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-
-  @media (max-width: 768px) {
-    .product-layout {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-  }
-
-  .product-gallery-wrapper {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .product-info-wrapper {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .max-w-7xl {
-    max-width: 80rem;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .py-4 {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  .py-8 {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-
-  @media (min-width: 768px) {
-    .md\:py-12 {
-      padding-top: 3rem;
-      padding-bottom: 3rem;
-    }
-  }
-</style>
+        <div class="product-stock">
+          {% if product.available %}
             <span class="text-green-400">In Stock</span>
           {% else %}
             <span class="text-red-400">Out of Stock</span>

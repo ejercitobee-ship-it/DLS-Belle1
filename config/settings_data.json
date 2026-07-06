@@ -1,0 +1,81 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {}
+      },
+      "hero": {
+        "type": "hero",
+        "settings": {
+          "background_image": "shopify://shop_images/Walk-in_Humidor_Guy.png",
+          "eyebrow_text": "Crafted for the Discerning Few",
+          "heading": "<h1>The World's Finest<br/><em>Humidor Collections</em></h1>",
+          "subheading": "<p>Dunn's Luxury Selections brings together the most exceptional humidors and cigar accessories in the world — curated for collectors, lounges, and connoisseurs who settle for nothing but the best.</p>",
+          "cta_primary_text": "Explore Collections",
+          "cta_primary_url": "shopify://collections/all",
+          "cta_secondary_text": "Bespoke Solutions",
+          "cta_secondary_url": "",
+          "show_trust_badges": true
+        }
+      },
+      "trust-signals": {
+        "type": "trust-signals",
+        "blocks": {
+          "signal_rjxnez": {
+            "type": "signal",
+            "settings": {
+              "label": "",
+              "description": ""
+            }
+          },
+          "signal_4XrmJx": {
+            "type": "signal",
+            "settings": {
+              "label": "",
+              "description": ""
+            }
+          },
+          "signal_jJUNiq": {
+            "type": "signal",
+            "settings": {
+              "label": "",
+              "description": ""
+            }
+          }
+        },
+        "block_order": [
+          "signal_rjxnez",
+          "signal_4XrmJx",
+          "signal_jJUNiq"
+        ],
+        "settings": {
+          "section_heading": "Why Dunn's Luxury Selections"
+        }
+      },
+      "newsletter": {
+        "type": "newsletter",
+        "settings": {
+          "heading": "Stay Updated",
+          "description": "<p>Get exclusive access to new arrivals, insider tips, and special offers</p>",
+          "button_text": "Subscribe",
+          "placeholder_text": "Enter your email"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
+  }
+}
