@@ -8,11 +8,14 @@
 </section>
 
 <!-- Featured Products Section -->
-<div class="section-header">
-  <h2>Featured Collection</h2>
-  <p class="text-cream-200/70 text-lg mb-12">
-    Discover our handpicked selection of premium humidors
-  </p>
+<section class="section-spacing">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="section-header">
+      <h2>Featured Collection</h2>
+      <p class="text-lg mb-12">
+        Discover our handpicked selection of premium humidors
+      </p>
+    </div>
 
   <div class="featured-grid">
     {% for product in collections.featured.products limit: 3 %}
@@ -40,10 +43,11 @@
       </a>
     {% endfor %}
   </div>
-</div>
+  </div>
+</section>
 
 <!-- Financing Banner -->
-<section class="financing-banner">
+<section class="financing-banner section-spacing">
   <div class="financing-container">
     <h2>Finance Your Luxury Humidor</h2>
     <p>
@@ -82,10 +86,13 @@
 </section>
 
 <!-- Collections Section -->
-<div class="section-header">
-  <h2>Browse by Category</h2>
+<section class="section-spacing">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="section-header">
+      <h2>Browse by Category</h2>
+    </div>
 
-  <div class="collections-grid">
+    <div class="collections-grid">
     {% assign categories = "Electronic Humidors|Cabinet Humidors|Desktop Humidors|Travel Humidors" | split: "|" %}
     {% assign handles = "electronic-humidors|cabinet-humidors|desktop-humidors|travel-humidors" | split: "|" %}
 
@@ -102,11 +109,12 @@
         </div>
       </a>
     {% endfor %}
+    </div>
   </div>
-</div>
+</section>
 
 <!-- Why Choose Us -->
-<section class="bg-charcoal-900 py-16">
+<section class="bg-charcoal-900 section-spacing">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <h2 class="font-serif text-3xl md:text-4xl font-700 text-white mb-12 text-center">
       Why Choose Dunn's?
@@ -153,7 +161,7 @@
 </section>
 
 <!-- Newsletter -->
-<section class="bg-charcoal-950 border-t border-charcoal-800/40 py-16">
+<section class="bg-charcoal-950 border-t border-charcoal-800/40 section-spacing">
   <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <h2 class="font-serif text-3xl font-700 text-white mb-4">
       Stay Updated

@@ -223,7 +223,7 @@ select:focus {
 /* ── Grid System ───────────────────────────────────────────────────────────── */
 .grid {
   display: grid;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .grid-2 {
@@ -231,14 +231,18 @@ select:focus {
 }
 
 .grid-3 {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .grid-4 {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 @media (max-width: 768px) {
+  .grid {
+    gap: 1.5rem;
+  }
+
   .grid-2,
   .grid-3,
   .grid-4 {
@@ -273,12 +277,16 @@ select:focus {
 .gap-8 { gap: 2rem; }
 
 /* ── Spacing ───────────────────────────────────────────────────────────────── */
+.mt-2 { margin-top: 0.5rem; }
 .mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
 .mt-8 { margin-top: 2rem; }
 .mt-12 { margin-top: 3rem; }
 .mt-16 { margin-top: 4rem; }
 
+.mb-2 { margin-bottom: 0.5rem; }
 .mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
 .mb-8 { margin-bottom: 2rem; }
 .mb-12 { margin-bottom: 3rem; }
 .mb-16 { margin-bottom: 4rem; }
@@ -287,13 +295,39 @@ select:focus {
 .px-6 { padding: 0 1.5rem; }
 .px-8 { padding: 0 2rem; }
 
+.py-6 { padding: 1.5rem 0; }
 .py-8 { padding: 2rem 0; }
 .py-12 { padding: 3rem 0; }
 .py-16 { padding: 4rem 0; }
+.py-20 { padding: 5rem 0; }
+
+/* Section spacing */
+.section-spacing {
+  padding: 3rem 0;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding: 5rem 0;
+  }
+}
 
 /* ── Sections ──────────────────────────────────────────────────────────────── */
 section {
   scroll-margin-top: 80px;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  margin-bottom: 0.5rem;
+}
+
+.section-header p {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 1.125rem;
 }
 
 /* ── Hero Section ──────────────────────────────────────────────────────────── */
@@ -557,12 +591,92 @@ section {
   }
 }
 
-/* ── Financing Icons ────────────────────────────────────────────────────────── */
+/* ── Financing Section ──────────────────────────────────────────────────────── */
+.financing-banner {
+  background: linear-gradient(135deg, var(--charcoal-900) 0%, var(--charcoal-800) 100%);
+  border-top: 1px solid rgba(229, 165, 36, 0.2);
+}
+
+.financing-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.highlight {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .highlight-icon {
   width: 3rem;
   height: 3rem;
-  margin: 0 auto 0.75rem;
+  margin: 0 auto 1rem;
   color: var(--gold-400);
+  flex-shrink: 0;
+}
+
+.highlight h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.highlight p {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* ── Why Choose Us / Feature Cards ──────────────────────────────────────────── */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-icon-circle {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1.5rem;
+  background-color: rgba(229, 165, 36, 0.1);
+  border-radius: 9999px;
+  border: 1px solid rgba(229, 165, 36, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feature-icon-circle svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.feature-card h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.75rem;
+}
+
+.feature-card p {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 /* ── Footer ────────────────────────────────────────────────────────────────── */
