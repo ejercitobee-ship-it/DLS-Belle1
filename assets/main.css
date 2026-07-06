@@ -822,6 +822,79 @@ section {
   color: var(--gold-400);
 }
 
+/* ── Customization Section ──────────────────────────────────────────────────── */
+.customization-section {
+  background: linear-gradient(135deg, var(--charcoal-900) 0%, var(--charcoal-800) 100%);
+}
+
+.customization-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .customization-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.customization-image {
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .customization-image {
+    height: 350px;
+  }
+}
+
+.customization-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.customization-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--gold-400);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.customization-content h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.customization-content p {
+  color: rgba(240, 221, 184, 0.8);
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+
+.customization-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.customization-content li {
+  color: var(--cream-100);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
 /* ── Why Choose Us / Feature Cards ──────────────────────────────────────────── */
 .feature-grid {
   display: grid;

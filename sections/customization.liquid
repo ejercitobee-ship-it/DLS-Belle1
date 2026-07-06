@@ -1,0 +1,115 @@
+<!-- Your Vision. Masterfully Crafted Section -->
+<section class="customization-section section-spacing">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="customization-grid">
+      <!-- Image Column -->
+      <div class="customization-image">
+        {% if section.settings.image %}
+          <img
+            src="{{ section.settings.image | img_url: '600x600' }}"
+            alt="{{ section.settings.title }}"
+            class="w-full h-full object-cover rounded-lg"
+          />
+        {% else %}
+          <div class="w-full h-full bg-charcoal-800 rounded-lg flex items-center justify-center">
+            <span class="text-cream-200/50">Add customization image</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Content Column -->
+      <div class="customization-content">
+        <div class="customization-label">{{ section.settings.label }}</div>
+        <h2 class="font-serif text-4xl md:text-5xl font-700 text-white mb-6">
+          {{ section.settings.title }}
+        </h2>
+        <p class="text-lg text-cream-200/80 mb-8 leading-relaxed">
+          {{ section.settings.description }}
+        </p>
+
+        <!-- Feature List -->
+        {% if section.settings.show_features %}
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-gold-400 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-cream-100">Premium customization options</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-gold-400 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-cream-100">Expert craftsmanship</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-gold-400 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-cream-100">Bespoke design consultation</span>
+            </li>
+          </ul>
+        {% endif %}
+
+        <!-- CTA Button -->
+        <a href="{{ section.settings.button_url }}" class="inline-block px-8 py-4 bg-gold-500 text-charcoal-950 font-bold text-lg rounded hover:bg-gold-400 transition-all active:scale-95">
+          {{ section.settings.button_text }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Your Vision. Masterfully Crafted",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "BESPOKE & CUSTOM"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Your Vision. Masterfully Crafted"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Work with our expert craftsmen to design the perfect humidor for your collection. From custom dimensions to premium materials, we create bespoke storage solutions that exceed your expectations."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Section Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show Feature List",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Start Your Bespoke Design"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL",
+      "default": "/pages/bespoke"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Your Vision. Masterfully Crafted"
+    }
+  ]
+}
+{% endschema %}
