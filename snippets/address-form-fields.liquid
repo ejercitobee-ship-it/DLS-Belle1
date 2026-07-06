@@ -1,0 +1,18 @@
+{%- comment -%}
+Shared address form fields for templates/customers/addresses.liquid.
+Expects: form (customer_address form object)
+{%- endcomment -%}
+<label>First Name<input type="text" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" /></label>
+<label>Last Name<input type="text" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" /></label>
+<label>Company<input type="text" name="address[company]" value="{{ form.company }}" autocomplete="organization" /></label>
+<label>Address<input type="text" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" /></label>
+<label>Apartment, suite, etc.<input type="text" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" /></label>
+<label>City<input type="text" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" /></label>
+<label>Country
+  <select name="address[country]" data-default="{{ form.country }}" autocomplete="country">
+    {{ all_country_option_tags }}
+  </select>
+</label>
+<label>State/Province<input type="text" name="address[province]" value="{{ form.province }}" autocomplete="address-level1" /></label>
+<label>ZIP/Postal Code<input type="text" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code" /></label>
+<label>Phone<input type="tel" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" /></label>

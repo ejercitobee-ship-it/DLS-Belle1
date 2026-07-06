@@ -1,0 +1,63 @@
+<!-- Customer Order Detail -->
+<div class="page-wrapper">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <header class="page-header" style="margin-bottom: 2.5rem;">
+      <a href="{{ routes.account_url }}" class="text-gold" style="font-size: 0.875rem; text-decoration: none;">&larr; Back to account</a>
+      <h1 class="page-title" style="margin-top: 0.75rem;">Order {{ order.name }}</h1>
+      <p style="opacity: 0.7;">Placed {{ order.created_at | date: '%B %d, %Y' }}</p>
+    </header>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+      <thead>
+        <tr style="text-align: left; border-bottom: 1px solid rgba(201, 138, 16, 0.3);">
+          <th style="padding: 0.75rem 0.5rem;">Item</th>
+          <th style="padding: 0.75rem 0.5rem;">Qty</th>
+          <th style="padding: 0.75rem 0.5rem; text-align: right;">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for line_item in order.line_items -%}
+          <tr style="border-bottom: 1px solid rgba(201, 138, 16, 0.1);">
+            <td style="padding: 0.75rem 0.5rem;">
+              {%- if line_item.product.url -%}
+                <a href="{{ line_item.product.url }}" class="text-gold">{{ line_item.title }}</a>
+              {%- else -%}
+                {{ line_item.title }}
+              {%- endif -%}
+            </td>
+            <td style="padding: 0.75rem 0.5rem;">{{ line_item.quantity }}</td>
+            <td style="padding: 0.75rem 0.5rem; text-align: right;">{{ line_item.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2" style="padding: 0.5rem;">Subtotal</td><td style="padding: 0.5rem; text-align: right;">{{ order.line_items_subtotal_price | money }}</td></tr>
+        {%- for shipping_method in order.shipping_methods -%}
+          <tr><td colspan="2" style="padding: 0.5rem;">Shipping ({{ shipping_method.title }})</td><td style="padding: 0.5rem; text-align: right;">{{ shipping_method.price | money }}</td></tr>
+        {%- endfor -%}
+        {%- for tax_line in order.tax_lines -%}
+          <tr><td colspan="2" style="padding: 0.5rem;">Tax ({{ tax_line.title }})</td><td style="padding: 0.5rem; text-align: right;">{{ tax_line.price | money }}</td></tr>
+        {%- endfor -%}
+        <tr style="border-top: 1px solid rgba(201, 138, 16, 0.3); font-weight: 700;">
+          <td colspan="2" style="padding: 0.75rem 0.5rem;">Total</td>
+          <td style="padding: 0.75rem 0.5rem; text-align: right;" class="text-gold">{{ order.total_price | money }}</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+      {%- if order.shipping_address -%}
+        <div>
+          <h2 style="font-size: 1.1rem;">Shipping Address</h2>
+          <p style="opacity: 0.8;">{{ order.shipping_address | format_address }}</p>
+        </div>
+      {%- endif -%}
+      {%- if order.billing_address -%}
+        <div>
+          <h2 style="font-size: 1.1rem;">Billing Address</h2>
+          <p style="opacity: 0.8;">{{ order.billing_address | format_address }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

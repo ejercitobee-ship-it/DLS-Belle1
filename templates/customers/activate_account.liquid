@@ -1,0 +1,47 @@
+<!-- Activate Account -->
+<div class="page-wrapper">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <header class="page-header" style="margin-bottom: 2.5rem; text-align: center;">
+      <h1 class="page-title">Activate Your Account</h1>
+      <p style="opacity: 0.8; margin-top: 0.75rem;">Create a password to activate your account.</p>
+    </header>
+
+    <div class="account-form-card">
+      {% form 'activate_customer_password' %}
+        {%- if form.errors -%}
+          <div class="form-errors">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+
+        <label for="ActivatePassword">Password</label>
+        <input type="password" name="customer[password]" id="ActivatePassword" autocomplete="new-password" required />
+
+        <label for="ActivatePasswordConfirm">Confirm Password</label>
+        <input type="password" name="customer[password_confirmation]" id="ActivatePasswordConfirm" autocomplete="new-password" required />
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.25rem;">Activate Account</button>
+        <button type="submit" name="decline" class="btn btn-ghost" style="width: 100%; margin-top: 0.75rem;">Decline Invitation</button>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .account-form-card {
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--charcoal-900);
+    border: 1px solid rgba(201, 138, 16, 0.2);
+    border-radius: 8px;
+  }
+  .account-form-card label { display: block; margin: 1rem 0 0.35rem; font-size: 0.9rem; }
+  .account-form-card input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--charcoal-950);
+    border: 1px solid rgba(201, 138, 16, 0.3);
+    border-radius: 4px;
+    color: var(--cream-100);
+  }
+  .form-errors { color: #e57373; margin-bottom: 1rem; font-size: 0.9rem; }
+</style>

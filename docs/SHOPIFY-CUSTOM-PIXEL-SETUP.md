@@ -90,7 +90,7 @@ The conversion label `CONVERSION_LABEL` in the code above must be replaced with 
 2. Select your conversion action
 3. Copy the **Conversion ID** and **Label**
 4. Format: `AW-ACCOUNT_ID/CONVERSION_LABEL`
-5. Example: `AW-17833894840/H0osCMD0pP0QErSCsesC`
+5. Current label (July 2026): `AW-17833894840/LxbdCPIH-7QcELjH7rdC` — labels have been rotated before; verify against Google Ads before pasting
 
 ### 4. Add gtag() Function to Theme
 

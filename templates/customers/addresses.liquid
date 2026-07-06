@@ -1,0 +1,76 @@
+<!-- Customer Addresses -->
+<div class="page-wrapper">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <header class="page-header" style="margin-bottom: 2.5rem;">
+      <a href="{{ routes.account_url }}" class="text-gold" style="font-size: 0.875rem; text-decoration: none;">&larr; Back to account</a>
+      <h1 class="page-title" style="margin-top: 0.75rem;">Addresses</h1>
+    </header>
+
+    <!-- Add New Address -->
+    <details class="address-card" style="margin-bottom: 2rem;">
+      <summary class="btn btn-primary" style="cursor: pointer; display: inline-block;">Add New Address</summary>
+      <div style="margin-top: 1.5rem;">
+        {% form 'customer_address', customer.new_address %}
+          {% render 'address-form-fields', form: form %}
+          <button type="submit" class="btn btn-primary" style="margin-top: 1.25rem;">Save Address</button>
+        {% endform %}
+      </div>
+    </details>
+
+    <!-- Existing Addresses -->
+    {%- paginate customer.addresses by 10 -%}
+      {%- for address in customer.addresses -%}
+        <div class="address-card" style="margin-bottom: 1.5rem;">
+          {%- if address == customer.default_address -%}
+            <p class="text-gold" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0;">Default</p>
+          {%- endif -%}
+          <p>{{ address | format_address }}</p>
+
+          <details>
+            <summary class="text-gold" style="cursor: pointer;">Edit</summary>
+            <div style="margin-top: 1.25rem;">
+              {% form 'customer_address', address %}
+                {% render 'address-form-fields', form: form %}
+                <label style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                  {{ form.set_as_default_checkbox }} Set as default address
+                </label>
+                <button type="submit" class="btn btn-primary" style="margin-top: 1.25rem;">Update Address</button>
+              {% endform %}
+            </div>
+          </details>
+
+          <form method="post" action="/account/addresses/{{ address.id }}" onsubmit="return confirm('Delete this address?');" style="margin-top: 0.75rem;">
+            <input type="hidden" name="_method" value="delete" />
+            <button type="submit" class="btn btn-ghost">Delete</button>
+          </form>
+        </div>
+      {%- endfor -%}
+
+      {%- if paginate.pages > 1 -%}
+        <nav style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="btn btn-secondary">Previous</a>{%- endif -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="btn btn-secondary">Next</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+<style>
+  .address-card {
+    padding: 1.5rem;
+    background: var(--charcoal-900);
+    border: 1px solid rgba(201, 138, 16, 0.2);
+    border-radius: 8px;
+  }
+  .address-card input, .address-card select {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    margin: 0.35rem 0 0.9rem;
+    background: var(--charcoal-950);
+    border: 1px solid rgba(201, 138, 16, 0.3);
+    border-radius: 4px;
+    color: var(--cream-100);
+  }
+  .address-card label { font-size: 0.9rem; }
+</style>

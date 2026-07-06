@@ -9,6 +9,8 @@
             src="{{ section.settings.image | img_url: '600x600' }}"
             alt="{{ section.settings.title }}"
             class="w-full h-full object-cover rounded-lg"
+            width="600"
+            height="600"
           />
         {% else %}
           <div class="w-full h-full bg-charcoal-800 rounded-lg flex items-center justify-center">
@@ -62,7 +64,7 @@
 
 {% schema %}
 {
-  "name": "Your Vision. Masterfully Crafted",
+  "name": "Customization CTA",
   "settings": [
     {
       "type": "text",
@@ -108,8 +110,9 @@
   ],
   "presets": [
     {
-      "name": "Your Vision. Masterfully Crafted"
+      "name": "Customization CTA"
     }
   ]
 }
 {% endschema %}
+

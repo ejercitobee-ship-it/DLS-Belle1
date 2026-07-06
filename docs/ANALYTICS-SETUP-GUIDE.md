@@ -269,7 +269,7 @@ GA4 Property: G-BG9K5QSYQQ
 ### Recommended Conversion Labels
 
 1. **Purchase** (Primary)
-   - `AW-17833894840/H0osCMD0pP0QErSCsesC` (example)
+   - `AW-17833894840/LxbdCPIH-7QcELjH7rdC` (current purchase label as of July 2026 — labels have been rotated before; always verify in Google Ads first)
    - Track all completed orders
 
 2. **High-Value Purchase** (Secondary)

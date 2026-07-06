@@ -1,178 +1,55 @@
 {%- comment -%}
-JSON-LD Schema Markup for SEO
-Include in layout/theme.liquid <head> tag
+JSON-LD Schema Markup for SEO — rendered from layout/theme.liquid <head>.
+
+Replicates the schema the headless site (main branch) serves live:
+- Organization (deliberately NOT OnlineStore/LocalBusiness — OnlineStore is a
+  LocalBusiness subtype and makes Google classify the site as a local business)
+- WebSite
+- Product + BreadcrumbList on product pages
+
+Never add bare {"@type":"Product"} stubs to org-level schema.
 {%- endcomment -%}
 
-<!-- Organization Schema (on all pages) -->
+<!-- Organization Schema (all pages) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Dunn Luxury Selections",
+  "@id": "{{ shop.url }}/#organization",
+  "name": "Dunn's Luxury Selections",
   "url": "{{ shop.url }}",
-  "logo": "{{ shop.url }}/cdn/shop/files/logo.png",
-  "description": "Premium luxury humidors and cigar storage solutions for discerning collectors.",
+  "logo": "{{ 'logo.png' | asset_url }}",
+  "description": "America's premier destination for luxury humidors — cabinet, electronic, desktop, and travel humidors — plus custom walk-in humidor design with nationwide component shipping and installation guidance.",
+  "email": "support@dunnluxuryselections.com",
+  "telephone": "+1-888-431-9214",
+  "sameAs": [
+    "https://www.facebook.com/dunnsluxuryselections",
+    "https://www.instagram.com/dunnsluxuryselections",
+    "https://www.twitter.com/dunnsluxury"
+  ],
+  "foundingDate": "2020",
+  "areaServed": {
+    "@type": "Country",
+    "name": "United States"
+  },
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "[PHONE_NUMBER]",
-    "contactType": "Customer Service",
+    "contactType": "customer service",
+    "telephone": "+1-888-431-9214",
     "email": "support@dunnluxuryselections.com"
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "[STREET_ADDRESS]",
-    "addressLocality": "[CITY]",
-    "addressRegion": "[STATE]",
-    "postalCode": "[ZIP]",
-    "addressCountry": "US"
-  },
-  "sameAs": [
-    "https://www.facebook.com/dunnluxuryselections",
-    "https://www.instagram.com/dunnluxuryselections",
-    "https://www.twitter.com/dunnluxury"
-  ]
+  }
 }
 </script>
 
-<!-- Product Schema (product pages only) -->
-{% if product %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "{{ product.title | escape }}",
-    "description": "{{ product.description | strip_html | escape }}",
-    "image": "{{ product.featured_image | image_url: width: 1200 }}",
-    "brand": {
-      "@type": "Brand",
-      "name": "{{ shop.name }}"
-    },
-    "offers": {
-      "@type": "Offer",
-      "url": "{{ shop.url }}{{ product.url }}",
-      "priceCurrency": "USD",
-      "price": "{{ product.price | divided_by: 100.0 }}",
-      "availability": "{{ product.available | if: 'https://schema.org/InStock', 'https://schema.org/OutOfStock' }}",
-      "seller": {
-        "@type": "Organization",
-        "name": "{{ shop.name }}"
-      }
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "156"
-    }
-  }
-  </script>
-{% endif %}
-
-<!-- BreadcrumbList Schema (collection and product pages) -->
-{% if collection or product %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "breadcrumbList": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "{{ shop.url }}"
-      }
-      {% if collection %}
-        ,{
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Collections",
-          "item": "{{ shop.url }}/collections"
-        }
-        ,{
-          "@type": "ListItem",
-          "position": 3,
-          "name": "{{ collection.title | escape }}",
-          "item": "{{ shop.url }}{{ collection.url }}"
-        }
-        {% if product %}
-          ,{
-            "@type": "ListItem",
-            "position": 4,
-            "name": "{{ product.title | escape }}",
-            "item": "{{ shop.url }}{{ product.url }}"
-          }
-        {% endif %}
-      {% endif %}
-    ]
-  }
-  </script>
-{% endif %}
-
-<!-- FAQ Schema (page with FAQs) -->
-{% if page and page.handle == 'care-guides' or page.handle == 'financing' %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What products do you offer?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "We specialize in luxury humidors and premium cigar storage solutions crafted from the finest materials."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do you offer financing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, we offer Shop Pay Installments for purchases $1,500 and above with interest-free financing options."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do I care for my humidor?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Regular maintenance includes monitoring humidity levels (65-75%), rotating cigars quarterly, and cleaning the interior annually. See our Care Guides for detailed instructions."
-        }
-      }
-    ]
-  }
-  </script>
-{% endif %}
-
-<!-- LocalBusiness Schema (if applicable) -->
-<!--
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Dunn Luxury Selections",
-  "image": "{{ shop.url }}/logo.png",
-  "description": "Premium luxury humidors and cigar storage solutions",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "[ADDRESS]",
-    "addressLocality": "[CITY]",
-    "addressRegion": "[STATE]",
-    "postalCode": "[ZIP]",
-    "addressCountry": "US"
-  },
-  "telephone": "[PHONE]",
-  "url": "{{ shop.url }}"
-}
-</script>
--->
-
-<!-- WebSite Schema (search box) -->
+<!-- WebSite Schema (all pages) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "name": "Dunn's Luxury Selections",
   "url": "{{ shop.url }}",
-  "name": "{{ shop.name }}",
-  "description": "Premium luxury humidors and cigar storage solutions",
+  "description": "The World's Finest Humidor Collections — shop curated collections of bespoke humidors, cabinet humidors, electronic humidors, travel humidors, and premium cigar accessories.",
+  "publisher": { "@id": "{{ shop.url }}/#organization" },
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
@@ -184,23 +61,90 @@ Include in layout/theme.liquid <head> tag
 }
 </script>
 
-<!-- Service/Warranty Schema (if offering services) -->
-<!--
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Humidor Maintenance Service",
-  "provider": {
-    "@type": "Organization",
-    "name": "Dunn Luxury Selections"
-  },
-  "description": "Professional humidor maintenance and restoration service",
-  "offers": {
-    "@type": "Offer",
-    "priceCurrency": "USD",
-    "price": "0"
+<!-- Product Schema (product pages only) -->
+{%- if template.name == 'product' and product -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "description": {{ product.description | strip_html | truncatewords: 100 | json }},
+    "image": {{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }},
+    "url": "{{ shop.url }}{{ product.url }}",
+    "sku": {{ product.selected_or_first_available_variant.sku | default: product.id | json }},
+    "brand": {
+      "@type": "Brand",
+      "name": {{ product.vendor | default: shop.name | json }}
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ shop.url }}{{ product.url }}",
+      "priceCurrency": {{ cart.currency.iso_code | default: 'USD' | json }},
+      "price": "{{ product.price | divided_by: 100.0 }}",
+      "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+      "seller": { "@id": "{{ shop.url }}/#organization" }
+    }
   }
-}
-</script>
--->
+  </script>
+
+  <!-- BreadcrumbList Schema (product pages) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "{{ shop.url }}"
+      },
+      {%- if collection -%}
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ collection.title | json }},
+        "item": "{{ shop.url }}{{ collection.url }}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": {{ product.title | json }},
+        "item": "{{ shop.url }}{{ product.url }}"
+      }
+      {%- else -%}
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ product.title | json }},
+        "item": "{{ shop.url }}{{ product.url }}"
+      }
+      {%- endif -%}
+    ]
+  }
+  </script>
+{%- endif -%}
+
+<!-- BreadcrumbList Schema (collection pages) -->
+{%- if template.name == 'collection' and collection -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "{{ shop.url }}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ collection.title | json }},
+        "item": "{{ shop.url }}{{ collection.url }}"
+      }
+    ]
+  }
+  </script>
+{%- endif -%}

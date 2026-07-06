@@ -1,0 +1,55 @@
+<!-- Customer Registration -->
+<div class="page-wrapper">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <header class="page-header" style="margin-bottom: 2.5rem; text-align: center;">
+      <h1 class="page-title">Create Account</h1>
+    </header>
+
+    <div class="account-form-card">
+      {% form 'create_customer' %}
+        {%- if form.errors -%}
+          <div class="form-errors">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+
+        <label for="RegisterFirstName">First Name</label>
+        <input type="text" name="customer[first_name]" id="RegisterFirstName" autocomplete="given-name" />
+
+        <label for="RegisterLastName">Last Name</label>
+        <input type="text" name="customer[last_name]" id="RegisterLastName" autocomplete="family-name" />
+
+        <label for="RegisterEmail">Email</label>
+        <input type="email" name="customer[email]" id="RegisterEmail" autocomplete="email" required />
+
+        <label for="RegisterPassword">Password</label>
+        <input type="password" name="customer[password]" id="RegisterPassword" autocomplete="new-password" required />
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.25rem;">Create Account</button>
+      {% endform %}
+
+      <p style="text-align: center; margin-top: 1.25rem; font-size: 0.9rem;">
+        Already have an account? <a href="{{ routes.account_login_url }}" class="text-gold">Sign in</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .account-form-card {
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--charcoal-900);
+    border: 1px solid rgba(201, 138, 16, 0.2);
+    border-radius: 8px;
+  }
+  .account-form-card label { display: block; margin: 1rem 0 0.35rem; font-size: 0.9rem; }
+  .account-form-card input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--charcoal-950);
+    border: 1px solid rgba(201, 138, 16, 0.3);
+    border-radius: 4px;
+    color: var(--cream-100);
+  }
+  .form-errors { color: #e57373; margin-bottom: 1rem; font-size: 0.9rem; }
+</style>

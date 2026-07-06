@@ -1,0 +1,103 @@
+<!-- Search Results -->
+<div class="page-wrapper">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <header class="page-header" style="margin-bottom: 2.5rem;">
+      <h1 class="page-title">
+        {%- if search.performed -%}
+          Search Results
+        {%- else -%}
+          Search
+        {%- endif -%}
+      </h1>
+      {%- if search.performed -%}
+        <p style="opacity: 0.8; margin-top: 0.5rem;">
+          {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for &ldquo;{{ search.terms | escape }}&rdquo;
+        </p>
+      {%- endif -%}
+    </header>
+
+    <form action="/search" method="get" role="search" data-search-form class="search-page-form">
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Search humidors, accessories, guides..."
+        aria-label="Search"
+        class="search-page-input"
+      />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results_count > 0 -%}
+        {%- paginate search.results by 24 -%}
+          <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; margin-top: 3rem;">
+            {%- for item in search.results -%}
+              {%- case item.object_type -%}
+                {%- when 'product' -%}
+                  {% render 'product-card', product: item, index: forloop.index %}
+                {%- when 'article' -%}
+                  <a href="{{ item.url }}" class="search-result-card">
+                    <p class="text-gold" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">Journal</p>
+                    <h3 style="margin: 0.5rem 0;">{{ item.title }}</h3>
+                    <p style="opacity: 0.7; font-size: 0.9rem;">{{ item.excerpt_or_content | strip_html | truncatewords: 25 }}</p>
+                  </a>
+                {%- when 'page' -%}
+                  <a href="{{ item.url }}" class="search-result-card">
+                    <p class="text-gold" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">Page</p>
+                    <h3 style="margin: 0.5rem 0;">{{ item.title }}</h3>
+                    <p style="opacity: 0.7; font-size: 0.9rem;">{{ item.content | strip_html | truncatewords: 25 }}</p>
+                  </a>
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination" style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 3rem;">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}" class="btn btn-secondary">Previous</a>
+              {%- endif -%}
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}" class="btn btn-secondary">Next</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- endpaginate -%}
+      {%- else -%}
+        <div style="text-align: center; padding: 4rem 0;">
+          <p style="opacity: 0.8;">No results found for &ldquo;{{ search.terms | escape }}&rdquo;.</p>
+          <a href="/collections/all" class="btn btn-primary" style="margin-top: 1.5rem;">Browse All Humidors</a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .search-page-form {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 560px;
+  }
+  .search-page-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: var(--charcoal-900);
+    border: 1px solid rgba(201, 138, 16, 0.3);
+    border-radius: 4px;
+    color: var(--cream-100);
+  }
+  .search-result-card {
+    display: block;
+    padding: 1.5rem;
+    background: var(--charcoal-900);
+    border: 1px solid rgba(201, 138, 16, 0.2);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease;
+  }
+  .search-result-card:hover {
+    border-color: rgba(201, 138, 16, 0.5);
+  }
+</style>

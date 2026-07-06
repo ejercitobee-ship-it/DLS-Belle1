@@ -19,6 +19,8 @@
     <meta property="og:url" content="{{ canonical_url }}" />
     {% if page_image %}
       <meta property="og:image" content="{{ page_image | img_url: '1200x' }}" />
+    {% else %}
+      <meta property="og:image" content="{{ 'og-image.jpg' | asset_url }}" />
     {% endif %}
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -34,6 +36,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://embed.tawk.to" />
+    <link rel="dns-prefetch" href="https://embed.tawk.to" />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
     <!-- Stylesheets -->
@@ -49,6 +53,9 @@
       gtag('config', 'GT-55VCHDDF');
       gtag('config', 'AW-17833894840');
     </script>
+
+    <!-- Structured Data (JSON-LD) -->
+    {% render 'schema-markup' %}
 
     <!-- Shopify Head -->
     {{ content_for_header }}
@@ -72,6 +79,24 @@
     </div>
 
     <!-- Scripts -->
-    {{ 'main.js' | asset_url | script_tag }}
+    <script src="{{ 'main.js' | asset_url }}" defer></script>
+
+    <!-- Analytics event tracking (add-to-cart, search, newsletter, etc.) -->
+    {% render 'analytics-events' %}
+
+    <!-- Tawk.to Live Chat (deferred until window load, same as the headless site) -->
+    <script>
+      window.addEventListener('load', function () {
+        var Tawk_API = window.Tawk_API || {}, Tawk_LoadStart = new Date();
+        window.Tawk_API = Tawk_API;
+        var s1 = document.createElement('script');
+        var s0 = document.getElementsByTagName('script')[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/69fb527d491d631c393ede51/1jnurkehu';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+      });
+    </script>
   </body>
 </html>

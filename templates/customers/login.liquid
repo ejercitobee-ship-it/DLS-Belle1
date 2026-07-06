@@ -1,0 +1,68 @@
+<!-- Customer Login -->
+<div class="page-wrapper">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <header class="page-header" style="margin-bottom: 2.5rem; text-align: center;">
+      <h1 class="page-title">Sign In</h1>
+    </header>
+
+    <div class="account-form-card">
+      {% form 'customer_login' %}
+        {%- if form.errors -%}
+          <div class="form-errors">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+
+        <label for="CustomerEmail">Email</label>
+        <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" required />
+
+        <label for="CustomerPassword">Password</label>
+        <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" required />
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Sign In</button>
+      {% endform %}
+
+      <div style="display: flex; justify-content: space-between; margin-top: 1.25rem; font-size: 0.9rem;">
+        <a href="#recover" class="text-gold" onclick="document.getElementById('recover-form').style.display='block'; return false;">Forgot password?</a>
+        <a href="{{ routes.account_register_url }}" class="text-gold">Create account</a>
+      </div>
+    </div>
+
+    <!-- Password Recovery -->
+    <div class="account-form-card" id="recover-form" style="display: none; margin-top: 2rem;">
+      <h2 style="margin-top: 0;">Reset Your Password</h2>
+      {% form 'recover_customer_password' %}
+        {%- if form.posted_successfully? -%}
+          <p>We've sent you an email with a link to reset your password.</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <div class="form-errors">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+
+        <label for="RecoverEmail">Email</label>
+        <input type="email" name="email" id="RecoverEmail" autocomplete="email" required />
+
+        <button type="submit" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">Send Reset Link</button>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .account-form-card {
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--charcoal-900);
+    border: 1px solid rgba(201, 138, 16, 0.2);
+    border-radius: 8px;
+  }
+  .account-form-card label { display: block; margin: 1rem 0 0.35rem; font-size: 0.9rem; }
+  .account-form-card input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--charcoal-950);
+    border: 1px solid rgba(201, 138, 16, 0.3);
+    border-radius: 4px;
+    color: var(--cream-100);
+  }
+  .form-errors { color: #e57373; margin-bottom: 1rem; font-size: 0.9rem; }
+</style>

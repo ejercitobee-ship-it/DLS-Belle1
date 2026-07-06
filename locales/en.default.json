@@ -1,0 +1,99 @@
+{
+  "general": {
+    "404": {
+      "title": "Page Not Found",
+      "subtext": "The page you're looking for may have moved."
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search humidors, accessories, guides...",
+      "no_results": "No results found"
+    },
+    "newsletter": {
+      "label": "Email address",
+      "button": "Subscribe",
+      "confirmation": "Thanks for subscribing"
+    },
+    "password_page": {
+      "login_form_heading": "Enter store using password",
+      "login_form_password_label": "Password",
+      "login_form_submit": "Enter"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "My Account",
+      "details": "Account Details"
+    },
+    "login_page": {
+      "title": "Sign In",
+      "email": "Email",
+      "password": "Password",
+      "sign_in": "Sign In",
+      "forgot_password": "Forgot password?",
+      "create_account": "Create account"
+    },
+    "register": {
+      "title": "Create Account",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create Account"
+    },
+    "orders": {
+      "title": "Order History",
+      "order_number": "Order",
+      "date": "Date",
+      "fulfillment_status": "Status",
+      "total": "Total",
+      "none": "You haven't placed any orders yet."
+    },
+    "addresses": {
+      "title": "Addresses",
+      "default": "Default",
+      "add_new": "Add New Address",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "recover_password": {
+      "title": "Reset Your Password",
+      "email": "Email",
+      "submit": "Send Reset Link",
+      "success": "We've sent you an email with a link to reset your password."
+    },
+    "reset_password": {
+      "title": "Reset Your Password",
+      "password": "New Password",
+      "password_confirm": "Confirm New Password",
+      "submit": "Reset Password"
+    },
+    "activate_account": {
+      "title": "Activate Your Account",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Activate Account",
+      "cancel": "Decline Invitation"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your Cart",
+      "empty": "Your cart is empty",
+      "checkout": "Checkout"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Gift Card",
+      "how_to_use_gift_card": "Use this code at checkout to redeem your gift card."
+    }
+  }
+}

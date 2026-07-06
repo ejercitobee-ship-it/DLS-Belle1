@@ -1,0 +1,13 @@
+# Theme Check config — this repo contains both the Liquid theme (layout/,
+# templates/, sections/, snippets/, assets/, config/, locales/) and the legacy
+# headless storefront (src/, public/, functions/, etc.). Only check theme files.
+ignore:
+  - node_modules/**
+  - dist/**
+  - public/**
+  - src/**
+  - functions/**
+  - cloudflare-worker/**
+  - docs/**
+  - scripts/**
+  - invoice-template-updated.liquid

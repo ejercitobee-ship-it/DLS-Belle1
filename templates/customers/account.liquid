@@ -1,0 +1,67 @@
+<!-- Customer Account -->
+<div class="page-wrapper">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <header class="page-header" style="margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem;">
+      <h1 class="page-title">My Account</h1>
+      <a href="{{ routes.account_logout_url }}" class="text-gold" style="font-size: 0.9rem;">Sign out</a>
+    </header>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;" class="account-grid">
+      <section>
+        <h2>Order History</h2>
+        {%- paginate customer.orders by 10 -%}
+          {%- if customer.orders.size > 0 -%}
+            <table class="orders-table" style="width: 100%; border-collapse: collapse;">
+              <thead>
+                <tr style="text-align: left; border-bottom: 1px solid rgba(201, 138, 16, 0.3);">
+                  <th style="padding: 0.75rem 0.5rem;">Order</th>
+                  <th style="padding: 0.75rem 0.5rem;">Date</th>
+                  <th style="padding: 0.75rem 0.5rem;">Status</th>
+                  <th style="padding: 0.75rem 0.5rem;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%- for order in customer.orders -%}
+                  <tr style="border-bottom: 1px solid rgba(201, 138, 16, 0.1);">
+                    <td style="padding: 0.75rem 0.5rem;"><a href="{{ order.customer_url }}" class="text-gold">{{ order.name }}</a></td>
+                    <td style="padding: 0.75rem 0.5rem;">{{ order.created_at | date: '%b %d, %Y' }}</td>
+                    <td style="padding: 0.75rem 0.5rem;">{{ order.fulfillment_status_label }}</td>
+                    <td style="padding: 0.75rem 0.5rem;">{{ order.total_price | money }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+            {%- if paginate.pages > 1 -%}
+              <nav style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="btn btn-secondary">Previous</a>{%- endif -%}
+                {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="btn btn-secondary">Next</a>{%- endif -%}
+              </nav>
+            {%- endif -%}
+          {%- else -%}
+            <p style="opacity: 0.8;">You haven't placed any orders yet.</p>
+            <a href="/collections/all" class="btn btn-primary" style="margin-top: 1rem;">Browse Humidors</a>
+          {%- endif -%}
+        {%- endpaginate -%}
+      </section>
+
+      <aside>
+        <h2>Account Details</h2>
+        <p>{{ customer.name }}<br />{{ customer.email }}</p>
+        {%- if customer.default_address -%}
+          <p style="opacity: 0.8;">
+            {{ customer.default_address.address1 }}<br />
+            {%- if customer.default_address.address2 != blank -%}{{ customer.default_address.address2 }}<br />{%- endif -%}
+            {{ customer.default_address.city }}, {{ customer.default_address.province_code }} {{ customer.default_address.zip }}
+          </p>
+        {%- endif -%}
+        <a href="{{ routes.account_addresses_url }}" class="text-gold">Manage addresses ({{ customer.addresses_count }})</a>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    .account-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
