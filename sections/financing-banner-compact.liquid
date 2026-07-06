@@ -1,0 +1,149 @@
+{% schema %}
+{
+  "name": "Financing Banner - Compact",
+  "class": "section-financing-banner-compact",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Finance Your Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Shop Pay Installments: 0% APR, no fees, instant approval"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA URL",
+      "default": "/pages/financing"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="financing-banner-compact">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="financing-box">
+      <div class="financing-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 4V2m-8 2V2M2 11h20"></path>
+        </svg>
+      </div>
+
+      <div class="financing-text">
+        {%- if section.settings.heading -%}
+          <h3 class="financing-title">{{ section.settings.heading }}</h3>
+        {%- endif -%}
+
+        {%- if section.settings.description -%}
+          <p class="financing-description">{{ section.settings.description }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.cta_text -%}
+        <a href="{{ section.settings.cta_url }}" class="financing-cta">
+          {{ section.settings.cta_text }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.financing-banner-compact {
+  background-color: rgba(61, 54, 52, 0.6);
+  border-top: 1px solid rgba(201, 138, 16, 0.2);
+  border-bottom: 1px solid rgba(201, 138, 16, 0.2);
+  padding: 2rem 0;
+  margin: 2rem 0;
+}
+
+.financing-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+@media (min-width: 640px) {
+  .financing-box {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+}
+
+.financing-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background-color: rgba(201, 138, 16, 0.1);
+  border: 1px solid rgba(201, 138, 16, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-500);
+  flex-shrink: 0;
+}
+
+.financing-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.financing-title {
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.financing-description {
+  color: rgba(240, 221, 184, 0.5);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.financing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gold-400);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.financing-cta:hover {
+  color: var(--gold-300);
+  background-color: rgba(201, 138, 16, 0.1);
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+{% endstylesheet %}

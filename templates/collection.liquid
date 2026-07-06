@@ -1,53 +1,87 @@
+<!-- Collection Hero Section -->
+{% section 'collection-hero' %}
+
+<!-- Products Grid -->
+<section class="collection-products">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <div class="products-grid">
+      {%- for product in collection.products -%}
+        <div class="product-grid-item">
+          {% render 'product-card', product: product, index: forloop.index %}
+        </div>
+      {%- else -%}
+        <div class="collection-empty">
+          <p>No products found in this collection.</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<!-- Financing Banner -->
+{% section 'financing-banner-compact' %}
+
+<!-- Testimonials -->
+{% section 'testimonials' %}
+
+<!-- Newsletter -->
+{% section 'newsletter' %}
+
+<style>
+  .collection-products {
+    background-color: var(--charcoal-950);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .products-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .products-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .product-grid-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .collection-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: rgba(240, 221, 184, 0.5);
+  }
+
+  .max-w-7xl {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .md\:py-16 {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+  }
+</style>
+
 {% stylesheet %}
-  .collection-hero {
-    @apply relative w-full h-64 md:h-80 bg-gradient-to-r from-charcoal-900 to-charcoal-800 overflow-hidden;
-  }
-
-  .collection-hero-content {
-    @apply absolute inset-0 flex flex-col items-center justify-center text-center px-4;
-    background: linear-gradient(135deg, rgba(33, 30, 28, 0.7) 0%, rgba(70, 62, 59, 0.7) 100%);
-  }
-
-  .collection-hero h1 {
-    @apply font-serif text-3xl md:text-5xl font-700 text-white mb-2 leading-tight;
-  }
-
-  .collection-hero p {
-    @apply text-cream-200/80 text-lg;
-  }
-
-  .collection-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16;
-  }
-
-  .filters-and-products {
-    @apply grid grid-cols-1 md:grid-cols-4 gap-8;
-  }
-
-  .filters-sidebar {
-    @apply md:col-span-1;
-  }
-
-  .filter-group {
-    @apply mb-8 pb-8 border-b border-charcoal-800/40;
-  }
-
-  .filter-group:last-child {
-    @apply border-b-0;
-  }
-
-  .filter-title {
-    @apply font-semibold text-white text-sm mb-4;
-  }
-
-  .filter-options {
-    @apply space-y-3;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .filter-option {
     @apply flex items-center;
   }
 

@@ -1,0 +1,126 @@
+{% schema %}
+{
+  "name": "Collection Hero",
+  "class": "section-collection-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="collection-hero">
+  {%- if section.settings.background_image -%}
+    <div class="hero-background">
+      <img
+        src="{{ section.settings.background_image | img_url: '1920x600' }}"
+        alt="Collection background"
+        class="hero-image"
+      />
+      <div class="hero-overlay"></div>
+    </div>
+  {%- else -%}
+    <div class="hero-overlay-only"></div>
+  {%- endif -%}
+
+  <div class="hero-content">
+    {%- if section.settings.heading -%}
+      <h1 class="hero-heading">
+        {%- if collection.title -%}
+          {{ collection.title }}
+        {%- else -%}
+          {{ section.settings.heading }}
+        {%- endif -%}
+      </h1>
+    {%- endif -%}
+
+    {%- if collection.description or section.settings.description -%}
+      <p class="hero-description">
+        {%- if collection.description -%}
+          {{ collection.description | strip_html }}
+        {%- else -%}
+          {{ section.settings.description }}
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.collection-hero {
+  position: relative;
+  min-height: 16rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .collection-hero {
+    min-height: 20rem;
+  }
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-overlay,
+.hero-overlay-only {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(33, 30, 28, 0.85) 0%, rgba(70, 62, 59, 0.75) 100%);
+}
+
+.hero-overlay-only {
+  background: linear-gradient(135deg, rgba(33, 30, 28, 0.9) 0%, rgba(70, 62, 59, 0.85) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem 1rem;
+  max-width: 48rem;
+}
+
+.hero-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+  margin: 0 0 0.5rem 0;
+}
+
+.hero-description {
+  color: rgba(240, 221, 184, 0.8);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+{% endstylesheet %}
