@@ -1,0 +1,314 @@
+{% schema %}
+{
+  "name": "Featured Products Carousel",
+  "class": "section-featured-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_eyebrow",
+      "label": "Eyebrow Text",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Latest. Acquisitions."
+    },
+    {
+      "type": "richtext",
+      "id": "section_description",
+      "label": "Description",
+      "default": "<p>Discover our handpicked selection of premium humidors</p>"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "prod",
+      "label": "Number of Products",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "sort_by",
+      "label": "Sort By",
+      "options": [
+        {
+          "value": "manual",
+          "label": "Manual"
+        },
+        {
+          "value": "price-desc",
+          "label": "Price: High to Low"
+        },
+        {
+          "value": "price-asc",
+          "label": "Price: Low to High"
+        },
+        {
+          "value": "created",
+          "label": "Newest First"
+        }
+      ],
+      "default": "manual"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="featured-products-section">
+  <div class="featured-background"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10">
+    <!-- Section Header -->
+    {%- if section.settings.section_heading != blank -%}
+      <div class="section-header mb-10 md:mb-14">
+        {%- if section.settings.section_eyebrow != blank -%}
+          <div class="section-eyebrow mb-3">
+            <div class="eyebrow-line"></div>
+            <span class="eyebrow-icon">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.24l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L5 12.11 0 7.24l6.91-1.01L12 2z"/>
+              </svg>
+            </span>
+            <span class="eyebrow-text">{{ section.settings.section_eyebrow }}</span>
+          </div>
+        {%- endif -%}
+
+        <h2 class="section-title">
+          {%- if section.settings.section_heading contains '.' -%}
+            {%- assign parts = section.settings.section_heading | split: '.' -%}
+            <span class="title-main">{{ parts[0] }}.</span>
+            <span class="title-accent italic">{{ parts[1] }}</span>
+          {%- else -%}
+            {{ section.settings.section_heading }}
+          {%- endif -%}
+        </h2>
+
+        {%- if section.settings.section_description != blank -%}
+          <div class="rte section-description mt-4">
+            {{ section.settings.section_description }}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <!-- Products Grid -->
+    {%- if section.settings.collection != blank -%}
+      {%- liquid
+        assign collection = section.settings.collection
+        assign products = collection.products
+
+        if section.settings.sort_by == 'price-desc'
+          assign products = products | sort: 'price' | reverse
+        elsif section.settings.sort_by == 'price-asc'
+          assign products = products | sort: 'price'
+        elsif section.settings.sort_by == 'created'
+          assign products = products | sort: 'created_at' | reverse
+        endif
+      -%}
+
+      <div class="products-grid">
+        {%- for product in products limit: section.settings.products_count -%}
+          <div class="product-item">
+            {% render 'product-card', product: product, index: forloop.index %}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="placeholder-grid">
+        <div class="placeholder-card">
+          <div class="placeholder-image"></div>
+          <div class="placeholder-text"></div>
+        </div>
+        <div class="placeholder-card">
+          <div class="placeholder-image"></div>
+          <div class="placeholder-text"></div>
+        </div>
+        <div class="placeholder-card">
+          <div class="placeholder-image"></div>
+          <div class="placeholder-text"></div>
+        </div>
+      </div>
+      <p class="placeholder-message">Select a collection to display products</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.featured-products-section {
+  position: relative;
+  background-color: var(--charcoal-900);
+  padding: 4rem 0;
+  overflow: hidden;
+}
+
+.featured-background {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top right, rgba(180, 140, 60, 0.06), transparent 60%);
+  pointer-events: none;
+}
+
+.section-header {
+  text-align: center;
+}
+
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.eyebrow-line {
+  width: 2rem;
+  height: 1px;
+  background-color: var(--gold-500);
+}
+
+.eyebrow-icon {
+  color: var(--gold-400);
+  display: inline-flex;
+}
+
+.eyebrow-text {
+  color: var(--gold-400);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.title-main {
+  color: white;
+  font-style: normal;
+}
+
+.title-accent {
+  background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-200) 50%, var(--gold-600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-left: 0.25rem;
+}
+
+.section-description {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-description p {
+  margin: 0;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+@media (min-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+.product-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Placeholder State */
+.placeholder-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .placeholder-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.placeholder-card {
+  background-color: var(--charcoal-800);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.placeholder-image {
+  aspect-ratio: 1;
+  background-color: var(--charcoal-700);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  animation: shimmer 2s infinite;
+}
+
+.placeholder-text {
+  height: 1rem;
+  background-color: var(--charcoal-700);
+  border-radius: 0.25rem;
+  animation: shimmer 2s infinite;
+}
+
+.placeholder-message {
+  text-align: center;
+  color: rgba(240, 221, 184, 0.5);
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+@keyframes shimmer {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.rte {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.rte p {
+  margin: 0;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.italic {
+  font-style: italic;
+}
+{% endstylesheet %}

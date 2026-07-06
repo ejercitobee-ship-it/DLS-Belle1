@@ -1,0 +1,375 @@
+{% schema %}
+{
+  "name": "Financing Banner",
+  "class": "section-financing-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_label",
+      "label": "Section Label",
+      "default": "Flexible Financing"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Heading",
+      "default": "Remove Barriers to Building Your Collection"
+    },
+    {
+      "type": "richtext",
+      "id": "section_description",
+      "label": "Description",
+      "default": "<p>Finance qualifying purchases over $1,500 with Shop Pay Installments. Approved buyers split payments into 4 equal, interest-free installments—zero fees, zero surprises. Decision in under 60 seconds at checkout.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_text",
+      "label": "Primary CTA Text",
+      "default": "Learn About Financing"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Primary CTA URL",
+      "default": "/pages/financing"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_text",
+      "label": "Secondary CTA Text",
+      "default": "Shop Qualifying Products"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Secondary CTA URL",
+      "default": "/collections/all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_examples",
+      "label": "Show Payment Examples",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<section class="financing-banner">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14 md:py-16">
+    <div class="financing-grid">
+      <!-- Left: Content -->
+      <div class="financing-content">
+        {%- if section.settings.section_label != blank -%}
+          <div class="financing-label mb-4">
+            <div class="label-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 4V2m-8 2V2M2 11h20"></path>
+              </svg>
+            </div>
+            <div>
+              <span class="label-text">{{ section.settings.section_label }}</span>
+              <span class="label-sub">Powered by Shop Pay</span>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.section_heading != blank -%}
+          <h2 class="financing-heading">
+            {%- if section.settings.section_heading contains 'Collection' -%}
+              Remove Barriers to <span class="text-accent">Building Your Collection</span>
+            {%- else -%}
+              {{ section.settings.section_heading }}
+            {%- endif -%}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.section_description != blank -%}
+          <div class="rte financing-description">
+            {{ section.settings.section_description }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.cta_primary_text != blank or section.settings.cta_secondary_text != blank -%}
+          <div class="financing-ctas">
+            {%- if section.settings.cta_primary_text != blank -%}
+              <a href="{{ section.settings.cta_primary_url }}" class="btn btn-primary">
+                {{ section.settings.cta_primary_text }}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            {%- endif -%}
+
+            {%- if section.settings.cta_secondary_text != blank -%}
+              <a href="{{ section.settings.cta_secondary_url }}" class="btn btn-secondary">
+                {{ section.settings.cta_secondary_text }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Right: Payment Examples -->
+      {%- if section.settings.show_payment_examples -%}
+        <div class="financing-examples">
+          <p class="examples-label">Payment Examples</p>
+
+          <div class="examples-list">
+            <div class="example-item">
+              <span class="example-price">$1,500</span>
+              <span class="example-payment">
+                <span class="payment-amount">$375</span>
+                <span class="payment-period">/month</span>
+              </span>
+            </div>
+
+            <div class="example-divider"></div>
+
+            <div class="example-item">
+              <span class="example-price">$4,000</span>
+              <span class="example-payment">
+                <span class="payment-amount">$1,000</span>
+                <span class="payment-period">/month</span>
+              </span>
+            </div>
+
+            <div class="example-divider"></div>
+
+            <div class="example-item">
+              <span class="example-price">$6,000</span>
+              <span class="example-payment">
+                <span class="payment-amount">$1,500</span>
+                <span class="payment-period">/month</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.financing-banner {
+  background: linear-gradient(to right, var(--charcoal-900), var(--charcoal-900) 95%, var(--charcoal-900));
+  border-top: 1px solid rgba(201, 138, 16, 0.2);
+  border-bottom: 1px solid rgba(201, 138, 16, 0.2);
+  padding: 3rem 0;
+}
+
+.financing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .financing-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.financing-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.label-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background-color: rgba(201, 138, 16, 0.1);
+  border: 1px solid rgba(201, 138, 16, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-500);
+  flex-shrink: 0;
+}
+
+.label-text {
+  display: block;
+  color: var(--gold-400);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+.label-sub {
+  display: block;
+  color: rgba(240, 221, 184, 0.4);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+}
+
+.financing-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.financing-heading .text-accent {
+  background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-200) 50%, var(--gold-600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-style: italic;
+}
+
+.financing-description {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  max-width: 32rem;
+}
+
+.financing-description p {
+  margin: 0;
+}
+
+.financing-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 24rem;
+}
+
+@media (min-width: 640px) {
+  .financing-ctas {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%);
+  color: var(--charcoal-950);
+  box-shadow: 0 4px 12px rgba(201, 138, 16, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201, 138, 16, 0.4);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  border: 2px solid rgba(201, 138, 16, 0.5);
+  color: var(--gold-400);
+  background: transparent;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(201, 138, 16, 0.2);
+  border-color: var(--gold-500);
+}
+
+.financing-examples {
+  background-color: rgba(33, 30, 28, 0.6);
+  border: 1px solid rgba(70, 62, 59, 0.5);
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+.examples-label {
+  color: rgba(240, 221, 184, 0.5);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.examples-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.example-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.example-price {
+  color: rgba(240, 221, 184, 0.6);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.example-payment {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.payment-amount {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--gold-300);
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.payment-period {
+  color: rgba(240, 221, 184, 0.5);
+  font-size: 0.7rem;
+}
+
+.example-divider {
+  height: 1px;
+  background-color: rgba(70, 62, 59, 0.5);
+}
+
+.rte {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.rte p {
+  margin: 0;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+{% endstylesheet %}
