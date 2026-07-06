@@ -1,0 +1,163 @@
+{% schema %}
+{
+  "name": "Product Financing",
+  "class": "section-product-financing",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "Show Financing Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "threshold",
+      "label": "Minimum Purchase Amount",
+      "default": "$1,500"
+    }
+  ]
+}
+{% endschema %}
+
+{%- if section.settings.show_section and product.price_min >= 150000 -%}
+<section class="product-financing">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <div class="financing-card">
+      <div class="financing-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 4V2m-8 2V2M2 11h20"></path>
+        </svg>
+      </div>
+
+      <div class="financing-content">
+        <h3 class="financing-title">Shop Pay Installments</h3>
+        <p class="financing-description">
+          This item qualifies for 0% APR financing. Pay in 4 interest-free installments with Shop Pay at checkout.
+        </p>
+
+        {%- liquid
+          assign price = product.price_min | divided_by: 400 | round: 2
+        -%}
+
+        <div class="financing-calculation">
+          <span>{{ product.price_min | money }}</span>
+          <span class="equals">=</span>
+          <span>4 × {{ price | money }}</span>
+        </div>
+
+        <a href="#product-form" class="financing-cta">
+          Proceed to Checkout
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% stylesheet %}
+.product-financing {
+  background: linear-gradient(135deg, rgba(61, 54, 52, 0.6) 0%, rgba(70, 62, 59, 0.6) 100%);
+  border-top: 1px solid rgba(201, 138, 16, 0.2);
+  border-bottom: 1px solid rgba(201, 138, 16, 0.2);
+}
+
+.financing-card {
+  background-color: rgba(33, 30, 28, 0.8);
+  border: 1px solid rgba(201, 138, 16, 0.2);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.financing-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background-color: rgba(201, 138, 16, 0.1);
+  border: 1px solid rgba(201, 138, 16, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-500);
+  flex-shrink: 0;
+}
+
+.financing-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.financing-title {
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.financing-description {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.financing-calculation {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: var(--gold-400);
+}
+
+.equals {
+  color: rgba(240, 221, 184, 0.4);
+}
+
+.financing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gold-400);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  width: fit-content;
+}
+
+.financing-cta:hover {
+  color: var(--gold-300);
+  background-color: rgba(201, 138, 16, 0.1);
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .md\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+{% endstylesheet %}

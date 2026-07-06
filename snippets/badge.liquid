@@ -1,0 +1,44 @@
+{%- comment -%}
+  Badge component for product status
+
+  Usage:
+  {% render 'badge', type: 'sale', text: 'Sale' %}
+  {% render 'badge', type: 'new', text: 'New' %}
+  {% render 'badge', type: 'sold-out', text: 'Sold Out' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign type = type | default: 'new'
+  assign text = text | default: 'New'
+  assign badge_class = 'badge badge-' | append: type
+-%}
+
+<span class="{{ badge_class }}">{{ text }}</span>
+
+<style>
+  .badge {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .badge-new {
+    background-color: rgba(201, 138, 16, 0.15);
+    color: var(--gold-400);
+  }
+
+  .badge-sale {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+  }
+
+  .badge-sold-out {
+    background-color: rgba(107, 114, 128, 0.15);
+    color: #9ca3af;
+  }
+</style>

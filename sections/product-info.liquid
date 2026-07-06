@@ -1,0 +1,341 @@
+{% schema %}
+{
+  "name": "Product Info",
+  "class": "section-product-info",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show Product Rating",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show Product Description",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "Add to Cart Button Text",
+      "default": "Add to Cart"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="product-info">
+  {%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign featured_image = current_variant.featured_image | default: product.featured_image
+  -%}
+
+  <!-- Product Title -->
+  <h1 class="product-title">{{ product.title }}</h1>
+
+  <!-- Rating -->
+  {%- if section.settings.show_rating -%}
+    <div class="product-rating">
+      {% render 'rating', rating: 5, count: 12 %}
+    </div>
+  {%- endif -%}
+
+  <!-- Price -->
+  <div class="product-price-section">
+    {%- if product.price_min == product.price_max -%}
+      <span class="product-price">{{ product.price_min | money }}</span>
+    {%- else -%}
+      <span class="product-price">{{ product.price_min | money }} - {{ product.price_max | money }}</span>
+    {%- endif -%}
+
+    {%- if product.compare_at_price_max > product.price_max -%}
+      <span class="product-compare-price">{{ product.compare_at_price_max | money }}</span>
+    {%- endif -%}
+
+    {%- if product.available -%}
+      <span class="product-stock available">In Stock</span>
+    {%- else -%}
+      <span class="product-stock unavailable">Out of Stock</span>
+    {%- endif -%}
+  </div>
+
+  <!-- Description -->
+  {%- if section.settings.show_description and product.description -%}
+    <div class="rte product-description">
+      {{ product.description | strip_html | truncatewords: 50 }}
+    </div>
+  {%- endif -%}
+
+  <!-- Variants -->
+  {%- if product.variants.size > 1 -%}
+    <form id="product-form" method="post" action="/cart/add">
+      <input type="hidden" name="id" value="{{ current_variant.id }}" id="product-select" />
+
+      {%- for option in product.options_with_values -%}
+        <fieldset class="product-option">
+          <legend class="option-label">{{ option.name }}</legend>
+
+          <div class="option-values">
+            {%- for value in option.values -%}
+              <label class="option-value">
+                <input
+                  type="radio"
+                  name="{{ option.name }}"
+                  value="{{ value }}"
+                  {% if option.selected_value == value %}checked{% endif %}
+                  data-option-index="{{ option.position }}"
+                />
+                <span class="option-text">{{ value }}</span>
+              </label>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+      {%- endfor -%}
+
+      <div class="product-actions">
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          {{ section.settings.cta_text }}
+        </button>
+      </div>
+    </form>
+  {%- else -%}
+    <form method="post" action="/cart/add">
+      <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+
+      <div class="product-actions">
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          {{ section.settings.cta_text }}
+        </button>
+      </div>
+    </form>
+  {%- endif -%}
+
+  <!-- Trust Badges -->
+  <div class="product-trust">
+    <div class="trust-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span>Authenticity Guaranteed</span>
+    </div>
+    <div class="trust-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      <span>Secure Checkout</span>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.product-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.product-price-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.product-price {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gold-400);
+}
+
+.product-compare-price {
+  text-decoration: line-through;
+  color: rgba(240, 221, 184, 0.5);
+  font-size: 1rem;
+}
+
+.product-stock {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.product-stock.available {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.product-stock.unavailable {
+  background-color: rgba(107, 114, 128, 0.1);
+  color: #9ca3af;
+}
+
+.product-description {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.product-description p {
+  margin: 0;
+}
+
+.product-option {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.option-label {
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: block;
+}
+
+.option-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.option-value {
+  display: flex;
+  align-items: center;
+}
+
+.option-value input[type="radio"] {
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgba(201, 138, 16, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 0.5rem;
+  background-color: var(--charcoal-900);
+}
+
+.option-value input[type="radio"]:hover {
+  border-color: rgba(201, 138, 16, 0.6);
+}
+
+.option-value input[type="radio"]:checked {
+  background-color: var(--gold-500);
+  border-color: var(--gold-500);
+}
+
+.option-text {
+  color: rgba(240, 221, 184, 0.8);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.product-actions {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%);
+  color: var(--charcoal-950);
+  box-shadow: 0 4px 12px rgba(201, 138, 16, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201, 138, 16, 0.4);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.product-trust {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(70, 62, 59, 0.4);
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(240, 221, 184, 0.6);
+  font-size: 0.9rem;
+}
+
+.trust-item svg {
+  color: var(--gold-500);
+  flex-shrink: 0;
+}
+
+.rte {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.rte p {
+  margin: 0;
+}
+{% endstylesheet %}

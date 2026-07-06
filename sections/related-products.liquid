@@ -1,0 +1,119 @@
+{% schema %}
+{
+  "name": "Related Products",
+  "class": "section-related-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "You Might Also Like"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Number of Products",
+      "default": 4
+    }
+  ]
+}
+{% endschema %}
+
+{%- if product.collections.size > 0 -%}
+  {%- assign collection = product.collections.first -%}
+  {%- assign related_products = collection.products | where: "id", product.id | reverse -%}
+
+  {%- if related_products.size > 1 -%}
+    <section class="related-products">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        {%- if section.settings.heading -%}
+          <h2 class="section-title text-center mb-12">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        <div class="products-grid">
+          {%- for product in collection.products limit: section.settings.products_count -%}
+            {%- unless product.id == product.id -%}
+              <div class="product-item">
+                {% render 'product-card', product: product, index: forloop.index %}
+              </div>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+{%- endif -%}
+
+{% stylesheet %}
+.related-products {
+  background-color: var(--charcoal-950);
+  border-top: 1px solid rgba(70, 62, 59, 0.4);
+}
+
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.product-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .md\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+{% endstylesheet %}
