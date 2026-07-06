@@ -1,0 +1,243 @@
+{%- comment -%}
+Analytics Event Tracking Snippet
+Include this snippet to enable event tracking on page elements
+
+Usage:
+- Add data-track="event_name" to elements
+- Add data-track-value="amount" for monetary values
+- Add data-track-label="label_text" for descriptive labels
+
+Events tracked:
+- Newsletter signup
+- Contact form submission
+- Product searches
+- Filter selections
+- CTA clicks
+{%- endcomment -%}
+
+<script>
+  // Initialize analytics tracking
+  window.analyticsTracker = {
+    // Track general events
+    track: function(eventName, data = {}) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, {
+          'event_category': data.category || 'engagement',
+          'event_label': data.label || '',
+          'value': data.value || null,
+          'timestamp': new Date().toISOString()
+        });
+      }
+      console.log('Event tracked:', eventName, data);
+    },
+
+    // Track ecommerce events
+    trackAddToCart: function(productId, productName, price, quantity = 1) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'add_to_cart', {
+          'currency': 'USD',
+          'value': price * quantity,
+          'items': [{
+            'item_id': productId,
+            'item_name': productName,
+            'price': price,
+            'quantity': quantity
+          }]
+        });
+      }
+    },
+
+    // Track view item
+    trackViewItem: function(productId, productName, price, category = '') {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'view_item', {
+          'currency': 'USD',
+          'value': price,
+          'items': [{
+            'item_id': productId,
+            'item_name': productName,
+            'item_category': category,
+            'price': price
+          }]
+        });
+      }
+    },
+
+    // Track search
+    trackSearch: function(searchQuery, resultCount = 0) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'search', {
+          'search_term': searchQuery,
+          'result_count': resultCount
+        });
+      }
+    },
+
+    // Track form submission
+    trackFormSubmission: function(formName, formType = 'other') {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'form_submit', {
+          'form_name': formName,
+          'form_type': formType
+        });
+      }
+    }
+  };
+
+  // Auto-track elements with data-track attribute
+  document.addEventListener('DOMContentLoaded', function() {
+    // Track link clicks
+    document.querySelectorAll('[data-track]').forEach(element => {
+      element.addEventListener('click', function(e) {
+        const eventName = this.dataset.track || 'click';
+        const eventLabel = this.dataset.trackLabel || this.textContent?.trim() || '';
+        const eventValue = this.dataset.trackValue || null;
+
+        analyticsTracker.track(eventName, {
+          'label': eventLabel,
+          'value': eventValue,
+          'element': this.tagName
+        });
+      });
+    });
+
+    // Track form submissions
+    document.querySelectorAll('[data-track-form]').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        const formName = this.dataset.trackForm || 'form';
+        analyticsTracker.trackFormSubmission(formName);
+      });
+    });
+
+    // Track newsletter signup
+    const newsletterForm = document.querySelector('[data-track-newsletter]');
+    if (newsletterForm) {
+      newsletterForm.addEventListener('submit', function(e) {
+        analyticsTracker.track('newsletter_signup', {
+          'category': 'engagement',
+          'label': 'footer_newsletter'
+        });
+      });
+    }
+  });
+
+  // Track custom events when needed
+  window.track = function(eventName, data) {
+    analyticsTracker.track(eventName, data);
+  };
+
+  // Track add to cart with product data
+  window.trackAddToCart = function(productId, productName, price) {
+    analyticsTracker.trackAddToCart(productId, productName, price);
+  };
+</script>
+
+<!-- Product-Specific Tracking -->
+{% if product %}
+  <script>
+    // Track product view
+    document.addEventListener('DOMContentLoaded', function() {
+      analyticsTracker.trackViewItem(
+        '{{ product.id }}',
+        '{{ product.title | escape }}',
+        {{ product.price | divided_by: 100.0 }},
+        '{{ product.type }}'
+      );
+
+      // Track add-to-cart button
+      const addToCartBtn = document.querySelector('[data-action="add-to-cart"]');
+      if (addToCartBtn) {
+        addToCartBtn.setAttribute('data-track', 'add_to_cart');
+        addToCartBtn.setAttribute('data-track-label', '{{ product.title | escape }}');
+        addToCartBtn.setAttribute('data-track-value', {{ product.price | divided_by: 100.0 }});
+      }
+    });
+  </script>
+{% endif %}
+
+<!-- Collection-Specific Tracking -->
+{% if collection %}
+  <script>
+    // Track collection view
+    document.addEventListener('DOMContentLoaded', function() {
+      analyticsTracker.track('view_item_list', {
+        'category': 'collection',
+        'label': '{{ collection.title | escape }}'
+      });
+
+      // Track filter selections
+      document.querySelectorAll('[data-filter]').forEach(filter => {
+        filter.addEventListener('change', function() {
+          analyticsTracker.track('filter_product', {
+            'category': 'collection',
+            'label': this.dataset.filter + ': ' + this.value
+          });
+        });
+      });
+
+      // Track sort selections
+      document.querySelectorAll('[data-sort]').forEach(sort => {
+        sort.addEventListener('change', function() {
+          analyticsTracker.track('sort_product', {
+            'category': 'collection',
+            'label': this.value
+          });
+        });
+      });
+    });
+  </script>
+{% endif %}
+
+<!-- Cart Tracking -->
+{% if cart.item_count > 0 %}
+  <script>
+    // Track cart value
+    window.cartValue = {{ cart.total_price | divided_by: 100.0 }};
+    window.cartItems = {{ cart.item_count }};
+
+    // Track cart abandonment (after 5 minutes of inactivity)
+    let cartAbandonmentTimer;
+    document.addEventListener('click', function() {
+      clearTimeout(cartAbandonmentTimer);
+      cartAbandonmentTimer = setTimeout(function() {
+        analyticsTracker.track('view_cart', {
+          'value': window.cartValue,
+          'quantity': window.cartItems
+        });
+      }, 5 * 60 * 1000); // 5 minutes
+    });
+  </script>
+{% endif %}
+
+<!-- Search Tracking -->
+<script>
+  // Track search submissions
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.querySelector('[data-search-form]');
+    if (searchForm) {
+      searchForm.addEventListener('submit', function(e) {
+        const searchInput = this.querySelector('input[type="search"], input[type="text"]');
+        if (searchInput && searchInput.value) {
+          analyticsTracker.trackSearch(searchInput.value);
+        }
+      });
+    }
+  });
+</script>
+
+<!-- Order Confirmation Tracking -->
+{% if order %}
+  <script>
+    // Order data is tracked via Shopify Custom Pixel
+    // This is a backup/verification tracking
+    if (typeof analyticsTracker !== 'undefined') {
+      analyticsTracker.track('purchase_complete', {
+        'value': {{ order.total_price | divided_by: 100.0 }},
+        'label': '{{ order.order_number }}'
+      });
+    }
+
+    console.log('Order confirmation page - Order #{{ order.order_number }}');
+    console.log('Order total: ${{ order.total_price | divided_by: 100.0 }}');
+  </script>
+{% endif %}

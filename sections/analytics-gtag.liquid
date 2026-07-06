@@ -1,0 +1,187 @@
+<!-- Google Tag Manager & Analytics Configuration -->
+<!-- This section should be included in theme.liquid <head> tag -->
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-55VCHDDF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- Global Site Tag (gtag.js) - Google Ads & Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GT-55VCHDDF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  // Initialize Google Tag with configuration
+  gtag('js', new Date());
+  gtag('config', 'GT-55VCHDDF', {
+    'linker': {
+      'domains': ['www.dunnluxuryselections.com', 'dunnluxuryselections.com']
+    },
+    'send_page_view': true
+  });
+
+  // Configure Google Ads conversion tracking
+  gtag('config', 'AW-17833894840', {
+    'linker': {
+      'domains': ['www.dunnluxuryselections.com', 'dunnluxuryselections.com']
+    }
+  });
+
+  // Store cart value for conversion tracking
+  window.cartValue = {{ cart.total_price | default: 0 }};
+  window.cartItems = {{ cart.item_count | default: 0 }};
+
+  // Track page views
+  gtag('event', 'page_view', {
+    'page_path': window.location.pathname,
+    'page_title': document.title
+  });
+</script>
+
+<!-- Hotjar Analytics (optional - remove if not using) -->
+<!--
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:3696316,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+-->
+
+<!-- Product Impression Tracking (e-commerce) -->
+<script>
+  // Track product impressions on product pages
+  {% if product %}
+    gtag('event', 'view_item', {
+      'currency': 'USD',
+      'value': {{ product.price | divided_by: 100.0 }},
+      'items': [{
+        'item_id': '{{ product.id }}',
+        'item_name': '{{ product.title | escape }}',
+        'item_category': '{{ product.type }}',
+        'price': {{ product.price | divided_by: 100.0 }},
+        'quantity': 1
+      }]
+    });
+  {% endif %}
+</script>
+
+<!-- Add to Cart Event Tracking -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Track add-to-cart events
+    const addToCartButtons = document.querySelectorAll('[data-track-add-to-cart]');
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const productData = {
+          'item_name': this.dataset.productName || 'Unknown Product',
+          'item_id': this.dataset.productId || '',
+          'price': this.dataset.productPrice || '',
+          'quantity': 1
+        };
+
+        gtag('event', 'add_to_cart', {
+          'currency': 'USD',
+          'value': productData.price,
+          'items': [productData]
+        });
+      });
+    });
+  });
+</script>
+
+<!-- Conversion Tracking (fires on order confirmation) -->
+<script>
+  {% if order %}
+    gtag('event', 'purchase', {
+      'transaction_id': '{{ order.order_number }}',
+      'affiliation': 'Dunn Luxury Selections',
+      'value': {{ order.total_price | divided_by: 100.0 }},
+      'currency': 'USD',
+      'tax': {{ order.tax_price | divided_by: 100.0 }},
+      'shipping': {{ order.shipping_price | divided_by: 100.0 }},
+      'items': [
+        {%- for line_item in order.line_items -%}
+          {
+            'item_id': '{{ line_item.product_id }}',
+            'item_name': '{{ line_item.title | escape }}',
+            'price': {{ line_item.price | divided_by: 100.0 }},
+            'quantity': {{ line_item.quantity }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    });
+
+    // Send conversion event to Google Ads
+    gtag('event', 'conversion', {
+      'send_to': 'AW-17833894840/H0osCMD0pP0QErSCsesC',
+      'transaction_id': '{{ order.order_number }}',
+      'value': {{ order.total_price | divided_by: 100.0 }},
+      'currency': 'USD'
+    });
+  {% endif %}
+</script>
+
+<!-- Search Tracking -->
+<script>
+  // Track search events
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.querySelector('[data-track-search]');
+    if (searchForm) {
+      searchForm.addEventListener('submit', function(e) {
+        const searchQuery = this.querySelector('input[type="search"]').value;
+        gtag('event', 'search', {
+          'search_term': searchQuery
+        });
+      });
+    }
+  });
+</script>
+
+<!-- Analytics Schema Markup (FAQ & Product) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Dunn Luxury Selections",
+  "url": "https://www.dunnluxuryselections.com",
+  "logo": "https://www.dunnluxuryselections.com/logo.png",
+  "description": "Premium luxury humidors and cigar storage solutions",
+  "sameAs": [
+    "https://www.facebook.com/dunnluxuryselections",
+    "https://www.instagram.com/dunnluxuryselections",
+    "https://www.twitter.com/dunnluxury"
+  ],
+  "contact": {
+    "@type": "ContactPoint",
+    "contactType": "Customer Service",
+    "email": "support@dunnluxuryselections.com"
+  }
+}
+</script>
+
+{% comment %}
+GOOGLE ANALYTICS CONFIGURATION NOTES:
+
+1. Google Tag: GT-55VCHDDF (combines GA4 and Google Ads)
+2. Google Ads: AW-17833894840 (conversion tracking)
+3. GA4 ID: G-BG9K5QSYQQ (e-commerce tracking)
+
+CRITICAL:
+- gtag('config', 'AW-17833894840') MUST be called for Google Ads to work
+- Conversion labels are configured separately in Google Ads admin
+- Shopify Custom Pixel is the preferred method for purchase events
+- If conversions don't show in GA4, verify the gtag calls are firing
+
+TO USE THIS SECTION:
+1. Add to layout/theme.liquid <head> tag via: {% section 'analytics-gtag' %}
+2. Or include directly in theme.liquid <head>
+3. Verify tracking tags fire in browser console: gtag event log
+4. Monitor Google Analytics real-time dashboard for events
+5. Verify Google Ads conversion tracking in ads.google.com
+
+REFERENCE: docs/GOOGLE-SETUP-SUMMARY.md for complete tracking architecture
+{% endcomment %}
