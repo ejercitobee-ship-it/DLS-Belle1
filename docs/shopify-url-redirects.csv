@@ -9,7 +9,7 @@ Redirect from,Redirect to
 /walk-in-humidor,/pages/walk-in-humidor
 /financing,/pages/financing
 /journal,/blogs/news
-/about,/pages/about
+/about,/pages/about-us
 /care-guides,/pages/care-guides
 /delivery-info,/pages/delivery-info
 /returns-warranty,/pages/returns-warranty
@@ -147,4 +147,5 @@ Redirect from,Redirect to
 /product/urbanmatrx-cigar-accessory,/products/urbanmatrx-cigar-accessory
 /product/vizcaya-ebony-desktop-cigar-humidor,/products/vizcaya-ebony-desktop-cigar-humidor
 /product/vizcaya-makorem-pommele-desktop-cigar-humidor,/products/vizcaya-makorem-pommele-desktop-cigar-humidor
+
 

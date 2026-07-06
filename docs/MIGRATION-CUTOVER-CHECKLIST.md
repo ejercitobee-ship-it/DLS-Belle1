@@ -28,15 +28,16 @@ exactly; the header/footer nav and redirect CSV depend on them:
 - [ ] `frontpage` collection is EMPTY — either add products to it or ignore it (the
       homepage featured-products section falls back to all products automatically)
 
-Pages (Online Store → Pages; handles must match):
-- [ ] `about`, `financing`, `care-guides`, `delivery-info`, `returns-warranty`,
-      `walk-in-humidor`, `cookie-policy`, `contact`
+Pages (Online Store → Pages; handles must match). Verified July 6, 2026:
+- [x] `about-us`, `walk-in-humidor`, `contact`, `shipping-policy` — already exist
+      (theme + redirect CSV use `about-us`, the store's real handle)
+- [ ] Still to create: `financing`, `care-guides`, `delivery-info`, `returns-warranty`,
+      `cookie-policy`
 - Content sources: copy from the live headless pages (see docs/UTILITY-PAGES-GUIDE.md)
 
 Blog:
-- [ ] Confirm the blog handle is `news` (the redirect CSV maps `/article/news/<slug>` →
-      `/blogs/news/<slug>`). All 60+ journal articles must exist as Shopify articles with
-      the same slugs — they already do if the headless site was reading them from Shopify.
+- [x] Blog `news` exists with the journal articles (verified via Storefront API) —
+      the redirect CSV's `/article/news/<slug>` → `/blogs/news/<slug>` mapping works.
 
 Policies (Settings → Policies):
 - [ ] Privacy policy, Terms of service (redirects point at /policies/...)
