@@ -1,0 +1,266 @@
+{% schema %}
+{
+  "name": "Cart Items",
+  "class": "section-cart-items",
+  "settings": []
+}
+{% endschema %}
+
+<div class="cart-items">
+  {%- for item in cart.items -%}
+    <div class="cart-item" data-cart-item-key="{{ item.key }}">
+      <div class="item-image">
+        {%- if item.image -%}
+          <img
+            src="{{ item.image | img_url: '150x150' }}"
+            alt="{{ item.title }}"
+            width="150"
+            height="150"
+          />
+        {%- endif -%}
+      </div>
+
+      <div class="item-details">
+        <h3 class="item-title">{{ item.title }}</h3>
+
+        {%- if item.variant_title -%}
+          <p class="item-variant">{{ item.variant_title }}</p>
+        {%- endif -%}
+
+        <p class="item-price">{{ item.price | money }}</p>
+
+        {%- if item.product.available -%}
+          <p class="item-stock in-stock">In Stock</p>
+        {%- else -%}
+          <p class="item-stock out-of-stock">Out of Stock</p>
+        {%- endif -%}
+      </div>
+
+      <div class="item-quantity">
+        <form action="/cart/change" method="post">
+          <input type="hidden" name="id" value="{{ item.key }}" />
+
+          <div class="quantity-control">
+            <button
+              type="submit"
+              name="quantity"
+              value="{{ item.quantity | minus: 1 }}"
+              class="qty-btn"
+              {% if item.quantity <= 1 %}disabled{% endif %}
+            >
+              −
+            </button>
+
+            <input
+              type="text"
+              name="quantity"
+              value="{{ item.quantity }}"
+              class="qty-input"
+              readonly
+            />
+
+            <button type="submit" name="quantity" value="{{ item.quantity | plus: 1 }}" class="qty-btn">
+              +
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="item-total">
+        <p class="total-price">{{ item.final_line_price | money }}</p>
+      </div>
+
+      <div class="item-remove">
+        <a href="/cart/change?id={{ item.key }}&quantity=0" class="remove-btn" title="Remove item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </a>
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+{% stylesheet %}
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 150px 1fr auto auto auto;
+  gap: 1rem;
+  align-items: start;
+  padding: 1.5rem;
+  background-color: var(--charcoal-900);
+  border: 1px solid rgba(70, 62, 59, 0.4);
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .cart-item {
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+  }
+}
+
+.item-image {
+  width: 150px;
+  height: 150px;
+  background-color: var(--charcoal-800);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .item-image {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item-title {
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.item-variant {
+  color: rgba(240, 221, 184, 0.6);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.item-price {
+  color: var(--gold-400);
+  font-weight: 600;
+  margin: 0;
+}
+
+.item-stock {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.item-stock.in-stock {
+  color: #22c55e;
+}
+
+.item-stock.out-of-stock {
+  color: #ef4444;
+}
+
+.item-quantity {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(70, 62, 59, 0.4);
+  border-radius: 0.375rem;
+  background-color: var(--charcoal-800);
+}
+
+.qty-btn {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  color: var(--gold-400);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover:not(:disabled) {
+  background-color: rgba(201, 138, 16, 0.1);
+}
+
+.qty-btn:disabled {
+  color: rgba(240, 221, 184, 0.3);
+  cursor: not-allowed;
+}
+
+.qty-input {
+  width: 2.5rem;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: white;
+  font-weight: 600;
+  border-left: 1px solid rgba(70, 62, 59, 0.4);
+  border-right: 1px solid rgba(70, 62, 59, 0.4);
+}
+
+.qty-input:focus {
+  outline: none;
+}
+
+.item-total {
+  text-align: right;
+}
+
+.total-price {
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.item-remove {
+  display: flex;
+  align-items: center;
+}
+
+.remove-btn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  color: rgba(240, 221, 184, 0.5);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.remove-btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+@media (max-width: 640px) {
+  .cart-item {
+    grid-column: 1 / -1;
+  }
+
+  .item-quantity,
+  .item-total,
+  .item-remove {
+    display: none;
+  }
+}
+{% endstylesheet %}
