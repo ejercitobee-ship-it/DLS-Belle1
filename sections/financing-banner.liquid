@@ -67,11 +67,12 @@
 {% endschema %}
 
 {%- liquid
+  # shop.products does not exist in Liquid — scan the automatic "all" collection.
   assign min_price_cents = section.settings.min_product_price | times: 100
   assign has_qualifying_products = false
 
-  for product in shop.products
-    if product.price >= min_price_cents
+  for qualifying_product in collections['all'].products
+    if qualifying_product.price >= min_price_cents
       assign has_qualifying_products = true
       break
     endif
