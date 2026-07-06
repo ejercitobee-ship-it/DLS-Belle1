@@ -1,0 +1,342 @@
+{% schema %}
+{
+  "name": "Testimonials",
+  "class": "section-testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_eyebrow",
+      "label": "Eyebrow Text",
+      "default": "The Aficionado's Verdict"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Trusted by Connoisseurs"
+    },
+    {
+      "type": "textarea",
+      "id": "section_description",
+      "label": "Section Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name"
+        },
+        {
+          "type": "text",
+          "id": "author_role",
+          "label": "Author Role/Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image"
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial_text",
+          "label": "Testimonial Text"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "unit": "star",
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "product_tag",
+          "label": "Product/Service Tagged"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "James Hartwell",
+            "author_role": "Private Collector, London",
+            "testimonial_text": "The Raching cabinet I purchased has completely transformed how I store my collection. The precision humidity control is unmatched and the craftsmanship is extraordinary.",
+            "rating": 5,
+            "product_tag": "Raching RR980"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="testimonials-section">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    {%- if section.settings.section_eyebrow != blank or section.settings.section_heading != blank -%}
+      <div class="section-header text-center mb-12 md:mb-16">
+        {%- if section.settings.section_eyebrow != blank -%}
+          <div class="section-eyebrow mb-4">
+            <div class="eyebrow-line-left"></div>
+            <span class="eyebrow-text">{{ section.settings.section_eyebrow }}</span>
+            <div class="eyebrow-line-right"></div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.section_heading != blank -%}
+          <h2 class="section-title mb-4">
+            Trusted by <span class="text-accent">Connoisseurs</span>
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.section_description != blank -%}
+          <p class="section-description">{{ section.settings.section_description }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="testimonials-grid">
+        {%- for block in section.blocks -%}
+          <div class="testimonial-card" {{ block.shopify_attributes }}>
+            <svg class="testimonial-quote" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 21c3 0 7-1 7-8V5c0-1.25-4.716-5-7-5s-7 3.75-7 5c0 1.393.857 7.08 7 7s6.882-.88 7-7.5c0 0 .5 3.5-7 3.5s-4.861-7.75-4.861-7.75"></path>
+              <path d="M15 21c3 0 7-1 7-8V5c0-1.393-4.716-5-7-5s-7 3.75-7 5c0 1.25.857 7.08 7 7s6.782-.883 6.974-7.5c0 0 .543 3.5-6.974 3.5s-4.725-7.75-4.725-7.75"></path>
+            </svg>
+
+            <p class="testimonial-text">{{ block.settings.testimonial_text }}</p>
+
+            {%- if block.settings.rating -%}
+              <div class="testimonial-rating mb-4">
+                {%- for i in (1..5) -%}
+                  <svg
+                    class="star {% if i <= block.settings.rating %}filled{% endif %}"
+                    width="11"
+                    height="11"
+                    viewBox="0 0 20 20"
+                    fill="{% if i <= block.settings.rating %}currentColor{% else %}none{% endif %}"
+                    stroke="currentColor"
+                  >
+                    <path d="M10 1l3.09 6.26L20 7.24l-5 4.87 1.18 6.88L10 15.77l-6.18 3.25L5 12.11 0 7.24l6.91-1.01L10 1z" />
+                  </svg>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.author_image or block.settings.author_name -%}
+              <div class="testimonial-author-section">
+                {%- if block.settings.author_image -%}
+                  <img
+                    src="{{ block.settings.author_image | img_url: '80x80' }}"
+                    alt="{{ block.settings.author_name }}"
+                    class="author-image"
+                    width="40"
+                    height="40"
+                  />
+                {%- endif -%}
+
+                <div>
+                  {%- if block.settings.author_name -%}
+                    <div class="author-name">{{ block.settings.author_name }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.author_role -%}
+                    <div class="author-role">{{ block.settings.author_role }}</div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.product_tag -%}
+              <div class="product-tag">{{ block.settings.product_tag }}</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.testimonials-section {
+  background-color: var(--charcoal-900);
+}
+
+.section-header {
+  margin-bottom: 3.5rem;
+}
+
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.eyebrow-line-left,
+.eyebrow-line-right {
+  width: 2rem;
+  height: 1px;
+  background-color: var(--gold-500);
+}
+
+.eyebrow-text {
+  color: var(--gold-400);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+}
+
+.section-title .text-accent {
+  background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-200) 50%, var(--gold-600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-style: italic;
+}
+
+.section-description {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+.testimonial-card {
+  background-color: var(--charcoal-950);
+  border: 1px solid rgba(70, 62, 59, 0.6);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  border-color: rgba(201, 138, 16, 0.3);
+}
+
+.testimonial-quote {
+  color: rgba(201, 138, 16, 0.4);
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.testimonial-text {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+  font-style: italic;
+}
+
+.testimonial-rating {
+  display: flex;
+  gap: 0.125rem;
+  margin-bottom: 1rem;
+}
+
+.testimonial-rating .star {
+  width: 0.75rem;
+  height: 0.75rem;
+  color: var(--gold-500);
+}
+
+.testimonial-rating .star.filled {
+  fill: var(--gold-500);
+}
+
+.testimonial-author-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(70, 62, 59, 0.6);
+  margin-bottom: 0.75rem;
+}
+
+.author-image {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  object-position: top;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.testimonial-card:hover .author-image {
+  filter: grayscale(0%);
+}
+
+.author-name {
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.author-role {
+  color: rgba(240, 221, 184, 0.4);
+  font-size: 0.75rem;
+}
+
+.product-tag {
+  color: rgba(201, 138, 16, 0.5);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-top: 0.75rem;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 640px) {
+  .max-w-7xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+{% endstylesheet %}

@@ -1,0 +1,31 @@
+{%- comment -%}
+  Optimized image component with responsive srcset and lazy loading
+
+  Usage:
+  {% render 'image', image: product.featured_image, alt: product.title, sizes: '(max-width: 768px) 100vw, 50vw' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign alt = alt | default: image.alt | escape
+  assign loading = loading | default: 'lazy'
+  assign sizes = sizes | default: '(max-width: 768px) 100vw, 50vw'
+  assign widths = widths | default: '375,512,768,1024,1280'
+%}
+
+{%- if image -%}
+  <img
+    src="{{ image | img_url: '512x' }}"
+    alt="{{ alt }}"
+    loading="{{ loading }}"
+    width="{{ image.width }}"
+    height="{{ image.height }}"
+    srcset="
+      {{ image | img_url: '375x' }} 375w,
+      {{ image | img_url: '512x' }} 512w,
+      {{ image | img_url: '768x' }} 768w,
+      {{ image | img_url: '1024x' }} 1024w,
+      {{ image | img_url: '1280x' }} 1280w"
+    sizes="{{ sizes }}"
+    class="responsive-image {{ image_class | default: '' }}"
+  />
+{%- endif -%}

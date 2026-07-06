@@ -1,0 +1,158 @@
+{% schema %}
+{
+  "name": "Trust Signals",
+  "class": "section-trust-signals",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Why Dunn's Luxury Selections"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "signal",
+      "name": "Trust Signal",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Signals",
+      "blocks": [
+        {
+          "type": "signal",
+          "settings": {
+            "label": "Curated Selection",
+            "description": "Every humidor is handpicked for quality, craftsmanship, and performance"
+          }
+        },
+        {
+          "type": "signal",
+          "settings": {
+            "label": "Expert Support",
+            "description": "Our team of specialists are ready to help you find the perfect solution"
+          }
+        },
+        {
+          "type": "signal",
+          "settings": {
+            "label": "Guaranteed Authenticity",
+            "description": "All products are certified genuine from authorized distributors"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="trust-signals-section">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    {%- if section.settings.section_heading != blank -%}
+      <h2 class="section-title text-center mb-12 md:mb-16">
+        {{ section.settings.section_heading }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="signals-grid">
+        {%- for block in section.blocks -%}
+          <div class="signal-card" {{ block.shopify_attributes }}>
+            <div class="signal-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+              </svg>
+            </div>
+            <h3 class="signal-label">{{ block.settings.label }}</h3>
+            <p class="signal-description">{{ block.settings.description }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.trust-signals-section {
+  background-color: var(--charcoal-950);
+  padding: 4rem 0;
+}
+
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.signals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .signals-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.signal-card {
+  text-align: center;
+  padding: 2rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.signal-card:hover {
+  transform: translateY(-4px);
+}
+
+.signal-icon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 1rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: rgba(201, 138, 16, 0.1);
+  color: var(--gold-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signal-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.signal-description {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+{% endstylesheet %}
