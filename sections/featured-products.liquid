@@ -58,7 +58,7 @@
           "label": "Newest First"
         }
       ],
-      "default": "manual"
+      "default": "price-desc"
     }
   ]
 }
@@ -101,21 +101,26 @@
       </div>
     {%- endif -%}
 
-    <!-- Products Grid -->
-    {%- if section.settings.collection != blank -%}
-      {%- liquid
+    <!-- Products Grid (Intelligent Recommendations) -->
+    {%- liquid
+      if section.settings.collection != blank
         assign collection = section.settings.collection
         assign products = collection.products
+      else
+        assign all_products = shop.products
+        assign products = all_products
+      endif
 
-        if section.settings.sort_by == 'price-desc'
-          assign products = products | sort: 'price' | reverse
-        elsif section.settings.sort_by == 'price-asc'
-          assign products = products | sort: 'price'
-        elsif section.settings.sort_by == 'created'
-          assign products = products | sort: 'created_at' | reverse
-        endif
-      -%}
+      if section.settings.sort_by == 'price-desc'
+        assign products = products | sort: 'price' | reverse
+      elsif section.settings.sort_by == 'price-asc'
+        assign products = products | sort: 'price'
+      elsif section.settings.sort_by == 'created'
+        assign products = products | sort: 'created_at' | reverse
+      endif
+    -%}
 
+    {%- if products.size > 0 -%}
       <div class="products-grid">
         {%- for product in products limit: section.settings.products_count -%}
           <div class="product-item">
@@ -138,7 +143,7 @@
           <div class="placeholder-text"></div>
         </div>
       </div>
-      <p class="placeholder-message">Select a collection to display products</p>
+      <p class="placeholder-message">No products available. Add products to Shopify and select a collection above.</p>
     {%- endif -%}
   </div>
 </section>

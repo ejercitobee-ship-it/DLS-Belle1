@@ -50,11 +50,35 @@
       "id": "show_payment_examples",
       "label": "Show Payment Examples",
       "default": true
+    },
+    {
+      "type": "range",
+      "id": "min_product_price",
+      "min": 500,
+      "max": 5000,
+      "step": 100,
+      "unit": "$",
+      "label": "Minimum Product Price to Display (cents × 100)",
+      "default": 1500,
+      "info": "Only show banner if store has products at or above this price"
     }
   ]
 }
 {% endschema %}
 
+{%- liquid
+  assign min_price_cents = section.settings.min_product_price | times: 100
+  assign has_qualifying_products = false
+
+  for product in shop.products
+    if product.price >= min_price_cents
+      assign has_qualifying_products = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if has_qualifying_products -%}
 <section class="financing-banner">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14 md:py-16">
     <div class="financing-grid">
@@ -151,6 +175,7 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% stylesheet %}
 .financing-banner {
