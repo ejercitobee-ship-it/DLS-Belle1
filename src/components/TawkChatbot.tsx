@@ -11,12 +11,15 @@ declare global {
 
 export default function TawkChatbot() {
   useEffect(() => {
+    const tawkId = import.meta.env.VITE_TAWK_ID;
+    if (!tawkId) return; // Don't load if ID is not configured
+
     // Initialize Tawk.to widget
     const s1 = document.createElement('script');
     const s0 = document.getElementsByTagName('script')[0];
 
     s1.async = true;
-    s1.src = 'https://embed.tawk.to/YOUR_TAWK_PROPERTY_ID/default';
+    s1.src = `https://embed.tawk.to/${tawkId}/default`;
     s1.charset = 'UTF-8';
     s1.setAttribute('crossorigin', '*');
 
