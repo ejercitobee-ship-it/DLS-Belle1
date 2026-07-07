@@ -31,9 +31,15 @@ exactly; the header/footer nav and redirect CSV depend on them:
 Pages (Online Store → Pages; handles must match). Verified July 6, 2026:
 - [x] `about-us`, `walk-in-humidor`, `contact`, `shipping-policy` — already exist
       (theme + redirect CSV use `about-us`, the store's real handle)
-- [ ] Still to create: `financing`, `care-guides`, `delivery-info`, `returns-warranty`,
-      `cookie-policy`
-- Content sources: copy from the live headless pages (see docs/UTILITY-PAGES-GUIDE.md)
+- [ ] Still to create (title only — leave the body EMPTY): `financing`, `care-guides`,
+      `delivery-info`, `returns-warranty`, `privacy-policy`, `terms-of-service`,
+      `cookie-policy`. The theme carries the full designed content for these handles
+      (snippets/page-content-*.liquid, ported from the headless React pages) and
+      ignores the admin body. Creating the page just makes the URL exist.
+- `about-us` also renders theme-baked content (the founder story from the headless
+  site) — the admin body for that page is ignored. To edit any of these pages in the
+  admin instead, remove its handle from the baked list at the top of
+  templates/page.liquid.
 
 Blog:
 - [x] Blog `news` exists with the journal articles (verified via Storefront API) —

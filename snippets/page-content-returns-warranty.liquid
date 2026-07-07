@@ -1,0 +1,84 @@
+{%- comment -%}Returns & Warranty content ported from the headless ReturnsWarranty.tsx.{%- endcomment -%}
+
+<div class="dls-page">
+  <div class="dls-container">
+    <div class="dls-eyebrow">Support</div>
+    <h1 class="dls-h1">Returns &amp; <span class="text-gradient-gold">Warranty</span></h1>
+    <p class="dls-lead">We stand behind every product in our collection. Our returns and warranty policy is designed to give you complete peace of mind.</p>
+
+    <!-- Policy overview cards -->
+    <div class="dls-grid-2" style="margin-bottom: 4rem;">
+      <div class="dls-card">
+        <div class="dls-icon-circle" style="margin-bottom: 1.25rem;">&#8634;</div>
+        <h2 class="dls-h2" style="margin-bottom: 0.75rem;">Returns Policy</h2>
+        <p class="dls-muted" style="margin: 0 0 1rem;">We accept returns on most items within <strong>10 days</strong> of delivery, provided they are unused and in their original packaging with all accessories and documentation included.</p>
+        <p class="dls-muted" style="margin: 0;">Returns must be authorised by our team before sending any items back. Please contact us to initiate the process and receive a Return Merchandise Authorisation (RMA) number.</p>
+      </div>
+      <div class="dls-card">
+        <div class="dls-icon-circle" style="margin-bottom: 1.25rem;">&#128737;</div>
+        <h2 class="dls-h2" style="margin-bottom: 0.75rem;">Warranty Coverage</h2>
+        <p class="dls-muted" style="margin: 0 0 1rem;">All products are covered by the manufacturer's warranty. Electronic humidors and cabinet units typically carry a <strong>1&ndash;3 year warranty</strong> covering defects in materials and workmanship.</p>
+        <p class="dls-muted" style="margin: 0;">Warranty claims must be supported by proof of purchase. We will coordinate with the manufacturer on your behalf to ensure a smooth resolution.</p>
+      </div>
+    </div>
+
+    <!-- Process steps -->
+    <div class="dls-card" style="margin-bottom: 3rem;">
+      <h2 class="dls-h2" style="margin-bottom: 2rem;">How to Return an Item</h2>
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div class="dls-flex" style="gap: 1.25rem;">
+          <div class="dls-step-num">01</div>
+          <div>
+            <h3 style="color: white; font-size: 0.95rem; margin: 0 0 0.25rem;">Contact Us First</h3>
+            <p class="dls-muted" style="margin: 0;">Email or call our support team to describe your issue and reason for return. We will issue an RMA number and provide return shipping instructions.</p>
+          </div>
+        </div>
+        <div class="dls-flex" style="gap: 1.25rem;">
+          <div class="dls-step-num">02</div>
+          <div>
+            <h3 style="color: white; font-size: 0.95rem; margin: 0 0 0.25rem;">Pack Securely</h3>
+            <p class="dls-muted" style="margin: 0;">Return items in their original packaging. Ensure the humidor and all accessories are secured to prevent transit damage. Mark your RMA number clearly on the outer box.</p>
+          </div>
+        </div>
+        <div class="dls-flex" style="gap: 1.25rem;">
+          <div class="dls-step-num">03</div>
+          <div>
+            <h3 style="color: white; font-size: 0.95rem; margin: 0 0 0.25rem;">Ship the Item</h3>
+            <p class="dls-muted" style="margin: 0;">Send the item to the address provided by our team. We recommend using a tracked and insured shipping service. Return shipping costs are the customer's responsibility unless the return is due to a defect or error on our part.</p>
+          </div>
+        </div>
+        <div class="dls-flex" style="gap: 1.25rem;">
+          <div class="dls-step-num">04</div>
+          <div>
+            <h3 style="color: white; font-size: 0.95rem; margin: 0 0 0.25rem;">Refund or Replacement</h3>
+            <p class="dls-muted" style="margin: 0;">Once we receive and inspect the item, we will process your refund or send a replacement within 5&ndash;7 business days. Refunds are issued to the original payment method.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Non-returnable items -->
+    <div class="dls-card" style="margin-bottom: 3rem;">
+      <h2 class="dls-h2" style="margin-bottom: 1.5rem;">Non-Returnable Items</h2>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        {%- assign items_raw = 'Items that have been used, loaded with cigars, or show evidence of humidity exposure.~Bespoke or custom-ordered products made specifically to your specifications.~Items returned without prior authorisation or missing their original packaging.~Accessories such as hygrometers, humidification solution, or Boveda packs once opened.' | split: '~' -%}
+        {%- for item in items_raw -%}
+          <div class="dls-flex" style="gap: 0.75rem;">
+            <span class="dls-gold">&#10003;</span>
+            <p class="dls-muted" style="margin: 0;">{{ item }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="dls-card">
+      <h2 class="dls-h2" style="margin-bottom: 1rem;">Start a Return or Warranty Claim</h2>
+      <p class="dls-muted" style="margin: 0 0 1.5rem;">Our customer care team is available Monday through Friday, 9:00 AM &ndash; 6:00 PM CST.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+        <a href="mailto:support@dunnluxuryselections.com" class="dls-gold" style="font-size: 0.9rem;">&#9993; support@dunnluxuryselections.com</a>
+        <a href="tel:8884319214" class="dls-gold" style="font-size: 0.9rem;">&#9742; (888) 431-9214</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,8 +15,8 @@ Redirect from,Redirect to
 /returns-warranty,/pages/returns-warranty
 /contact,/pages/contact
 /onepager,/
-/privacy-policy,/policies/privacy-policy
-/terms-of-service,/policies/terms-of-service
+/privacy-policy,/pages/privacy-policy
+/terms-of-service,/pages/terms-of-service
 /cookie-policy,/pages/cookie-policy
 /article/news/amazon-com-alternatives-cigar-humidors-6,/blogs/news/amazon-com-alternatives-cigar-humidors-6
 /article/news/best-cigars-for-lounges-top-picks-for-social-smokers,/blogs/news/best-cigars-for-lounges-top-picks-for-social-smokers
@@ -147,5 +147,6 @@ Redirect from,Redirect to
 /product/urbanmatrx-cigar-accessory,/products/urbanmatrx-cigar-accessory
 /product/vizcaya-ebony-desktop-cigar-humidor,/products/vizcaya-ebony-desktop-cigar-humidor
 /product/vizcaya-makorem-pommele-desktop-cigar-humidor,/products/vizcaya-makorem-pommele-desktop-cigar-humidor
+
 
 

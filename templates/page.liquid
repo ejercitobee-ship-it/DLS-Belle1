@@ -1,3 +1,25 @@
+{%- comment -%}
+Pages ported from the headless storefront render fully-designed baked content
+(snippets/page-content-<handle>.liquid) so they match dunnluxuryselections.com
+exactly. Admin page body is ignored for these handles — remove a handle from
+this list to hand control back to the Shopify page editor.
+{%- endcomment -%}
+{%- assign baked_handles = 'about-us,financing,care-guides,delivery-info,returns-warranty,privacy-policy,terms-of-service,cookie-policy' | split: ',' -%}
+
+{%- if baked_handles contains page.handle -%}
+  {%- case page.handle -%}
+    {%- when 'about-us' -%}{% render 'page-content-about-us' %}
+    {%- when 'financing' -%}{% render 'page-content-financing' %}
+    {%- when 'care-guides' -%}{% render 'page-content-care-guides' %}
+    {%- when 'delivery-info' -%}{% render 'page-content-delivery-info' %}
+    {%- when 'returns-warranty' -%}{% render 'page-content-returns-warranty' %}
+    {%- when 'privacy-policy' -%}{% render 'page-content-privacy-policy' %}
+    {%- when 'terms-of-service' -%}{% render 'page-content-terms-of-service' %}
+    {%- when 'cookie-policy' -%}{% render 'page-content-cookie-policy' %}
+  {%- endcase -%}
+
+  {% section 'newsletter' %}
+{%- else -%}
 <!-- Page Content -->
 <div class="page-wrapper">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
@@ -50,6 +72,7 @@
 
 <!-- Newsletter Section -->
 {% section 'newsletter' %}
+{%- endif -%}
 
 <style>
   .page-wrapper {
