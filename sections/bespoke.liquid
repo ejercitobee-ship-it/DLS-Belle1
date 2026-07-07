@@ -1,0 +1,257 @@
+{% schema %}
+{
+  "name": "Bespoke",
+  "class": "section-bespoke",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Bespoke Solutions"
+    },
+    {
+      "type": "text",
+      "id": "stat_number",
+      "label": "Stat Number",
+      "default": "50+"
+    },
+    {
+      "type": "text",
+      "id": "stat_label",
+      "label": "Stat Label",
+      "default": "Bespoke projects worldwide"
+    }
+  ]
+}
+{% endschema %}
+
+{%- comment -%}
+Bespoke homepage section — replicates the headless Bespoke.tsx: split layout
+with the walk-in image, floating stat card, decorative corner frames,
+"Your Vision, Masterfully Crafted" heading, 6-feature checklist, CTAs.
+{%- endcomment -%}
+
+<section id="bespoke" class="bsp">
+  <div class="bsp-container">
+    <div class="bsp-grid">
+      <!-- Image -->
+      <div class="bsp-media-wrap">
+        <div class="bsp-media">
+          <img
+            src="{{ 'bespoke-walk-in-humidor.webp' | asset_url }}"
+            alt="Bespoke walk-in humidor"
+            loading="lazy"
+            width="800"
+            height="1000"
+          />
+          <div class="bsp-media__overlay"></div>
+        </div>
+
+        <!-- Floating stat card -->
+        <div class="bsp-stat">
+          <div class="bsp-stat__number text-gradient-gold">{{ section.settings.stat_number }}</div>
+          <div class="bsp-stat__label">{{ section.settings.stat_label }}</div>
+        </div>
+
+        <!-- Decorative corner frames -->
+        <div class="bsp-frame bsp-frame--tl"></div>
+        <div class="bsp-frame bsp-frame--br"></div>
+      </div>
+
+      <!-- Content -->
+      <div>
+        <div class="bsp-eyebrow">{{ section.settings.eyebrow }}</div>
+
+        <h2 class="bsp-title">Your Vision,<br /><span class="text-gradient-gold">Masterfully Crafted</span></h2>
+
+        <p class="bsp-desc">From intimate private collections to grand commercial builds, our bespoke walk-in humidors are designed to transform any space into a sanctuary for the world's finest cigars. Each commission begins with a personal consultation.</p>
+
+        <ul class="bsp-features">
+          <li>Custom dimensions and finishes</li>
+          <li>Climate-controlled systems</li>
+          <li>Integrated lighting and display</li>
+          <li>Commercial-grade humidity control</li>
+          <li>Private consultation and design</li>
+          <li>Installation guidance and support</li>
+        </ul>
+
+        <div class="bsp-ctas">
+          <a href="/pages/walk-in-humidor#enquire" class="btn btn-primary">
+            Request Consultation
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <a href="/pages/walk-in-humidor" class="btn btn-secondary">View Portfolio</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.bsp {
+  padding: 6rem 0;
+  background: var(--charcoal-950);
+  overflow: hidden;
+}
+
+.bsp-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.bsp-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .bsp-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.bsp-media-wrap {
+  position: relative;
+}
+
+.bsp-media {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+@media (min-width: 1024px) {
+  .bsp-media { aspect-ratio: auto; height: 600px; }
+}
+
+.bsp-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bsp-media__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(33, 30, 28, 0.6), transparent);
+}
+
+.bsp-stat {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  max-width: 200px;
+  background: var(--charcoal-900);
+  border: 1px solid rgba(125, 80, 14, 0.3);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+}
+
+.bsp-stat__number {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.bsp-stat__label {
+  color: rgba(240, 221, 184, 0.6);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.bsp-frame {
+  position: absolute;
+  width: 6rem;
+  height: 6rem;
+  pointer-events: none;
+}
+
+.bsp-frame--tl {
+  top: -1rem;
+  left: -1rem;
+  border-left: 2px solid rgba(164, 108, 12, 0.3);
+  border-top: 2px solid rgba(164, 108, 12, 0.3);
+  border-top-left-radius: 2px;
+}
+
+.bsp-frame--br {
+  bottom: -1rem;
+  right: -1rem;
+  border-right: 2px solid rgba(164, 108, 12, 0.3);
+  border-bottom: 2px solid rgba(164, 108, 12, 0.3);
+  border-bottom-right-radius: 2px;
+}
+
+.bsp-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  color: var(--gold-400);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.bsp-eyebrow::before {
+  content: '';
+  width: 2rem;
+  height: 1px;
+  background: var(--gold-500);
+}
+
+.bsp-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.25rem, 5vw, 3rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.15;
+  margin: 0 0 1.5rem;
+}
+
+.bsp-desc {
+  color: rgba(240, 221, 184, 0.6);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0 0 2rem;
+}
+
+.bsp-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .bsp-features { grid-template-columns: repeat(2, 1fr); }
+}
+
+.bsp-features li {
+  color: rgba(240, 221, 184, 0.7);
+  font-size: 0.875rem;
+  padding-left: 1.6rem;
+  position: relative;
+}
+
+.bsp-features li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+  color: var(--gold-500);
+  font-weight: 700;
+}
+
+.bsp-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+{% endstylesheet %}
