@@ -60,8 +60,8 @@
 {% endschema %}
 
 <section class="hero">
-  {%- if section.settings.background_image -%}
-    <div class="hero-background">
+  <div class="hero-background">
+    {%- if section.settings.background_image -%}
       <img
         src="{{ section.settings.background_image | img_url: '1920x1080' }}"
         alt="Hero background"
@@ -69,11 +69,18 @@
         width="1920"
         height="1080"
       />
-      <div class="hero-overlay"></div>
-    </div>
-  {%- else -%}
-    <div class="hero-overlay-only"></div>
-  {%- endif -%}
+    {%- else -%}
+      {%- comment -%}Default: the headless site's hero image.{%- endcomment -%}
+      <img
+        src="{{ 'hero-bg.webp' | asset_url }}"
+        alt="Luxury humidor"
+        class="hero-image"
+        width="1920"
+        height="1080"
+      />
+    {%- endif -%}
+    <div class="hero-overlay"></div>
+  </div>
 
   <div class="hero-content">
     <div class="max-w-2xl">
@@ -158,9 +165,13 @@
     </div>
   </div>
 
-  {%- if section.settings.background_image == blank -%}
-    <div class="hero-decorative-line"></div>
-  {%- endif -%}
+  <div class="hero-decorative-line"></div>
+
+  <!-- Scroll indicator (headless Hero.tsx) -->
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll__line"></div>
+  </div>
 </section>
 
 {% stylesheet %}
@@ -195,6 +206,40 @@
 
 .hero-overlay-only {
   background: linear-gradient(135deg, rgba(33, 30, 28, 0.95) 0%, rgba(61, 54, 52, 0.75) 100%);
+}
+
+.hero-scroll {
+  display: none;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .hero-scroll { display: flex; }
+}
+
+.hero-scroll span {
+  color: rgba(240, 221, 184, 0.3);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.hero-scroll__line {
+  width: 1px;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, rgba(201, 138, 16, 0.6), transparent);
+  animation: heroScrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes heroScrollPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
 }
 
 .hero-decorative-line {

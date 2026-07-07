@@ -17,7 +17,7 @@
       "hero": {
         "type": "hero",
         "settings": {
-          "background_image": "shopify://shop_images/Walk-in_Humidor_Guy.png",
+          "background_image": "",
           "eyebrow_text": "Crafted for the Discerning Few",
           "heading": "<h1>The World's Finest<br/><em>Humidor Collections</em></h1>",
           "subheading": "<p>Dunn's Luxury Selections brings together the most exceptional humidors and cigar accessories in the world — curated for collectors, lounges, and connoisseurs who settle for nothing but the best.</p>",
