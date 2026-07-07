@@ -5,8 +5,16 @@
 
 <header class="header">
   <div class="header-container">
-    <!-- Logo -->
-    <a href="/" class="logo">Dunn's</a>
+    <!-- Logo (image, matching the headless navbar) -->
+    <a href="/" class="logo logo--image" aria-label="Dunn's Luxury Selections — Home">
+      <img
+        src="{{ 'logo.png' | asset_url }}"
+        alt="Dunn's Luxury Selections"
+        class="logo-img"
+        width="240"
+        height="80"
+      />
+    </a>
 
     <!-- Desktop Menu (mirrors the headless site's navigation) -->
     <nav>
@@ -74,6 +82,22 @@
 </header>
 
 <style>
+  .logo--image {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .logo-img {
+    height: 3rem;
+    width: auto;
+    object-fit: contain;
+  }
+
+  @media (min-width: 768px) {
+    .logo-img { height: 5rem; }
+  }
+
   .announcement-bar {
     background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%);
     color: var(--charcoal-950);
