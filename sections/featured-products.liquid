@@ -183,8 +183,10 @@
           function sync() {
             var max = track.scrollWidth - track.clientWidth;
             var sl = track.scrollLeft;
-            var atStart = sl <= 2;
-            var atEnd = sl >= max - 2;
+            // scroll-snap + the carousel's side padding can rest a few px off 0,
+            // so use a small tolerance for the start/end checks.
+            var atStart = sl <= 8;
+            var atEnd = sl >= max - 8;
             prev.forEach(function (b) { b.disabled = atStart; });
             next.forEach(function (b) { b.disabled = atEnd; });
             if (wrap) {
