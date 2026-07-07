@@ -6,12 +6,21 @@ button), then a 3-column grid of article cards with category pills.
 
 <div class="jnl">
   <div class="jnl-container">
-    <!-- Header -->
+    <!-- Header (replicates headless Journal.tsx) -->
     <header class="jnl-header">
-      <div class="jnl-eyebrow">The Journal</div>
-      <h1 class="jnl-h1">Insights for the <span class="text-gradient-gold">Discerning Collector</span></h1>
-      <p class="jnl-sub">Guides, insights, and craftsmanship from the world of luxury humidors.</p>
+      <a href="/" class="jnl-back">&larr; Back to Home</a>
+      <div class="jnl-eyebrow">The Dunn's Journal</div>
+      <h1 class="jnl-h1">Stories of Craft, <span class="text-gradient-gold">Culture &amp; Connoisseurship</span></h1>
+      <p class="jnl-sub">Insights on cigar care, collector culture, and the art of the perfect smoke.</p>
     </header>
+
+    <!-- Category filters (tag-based, like the headless chips) -->
+    <div class="jnl-filters">
+      <a href="{{ blog.url }}" class="jnl-chip {% unless current_tags %}is-active{% endunless %}">All</a>
+      {%- for tag in blog.all_tags limit: 6 -%}
+        <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="jnl-chip {% if current_tags contains tag %}is-active{% endif %}">{{ tag }}</a>
+      {%- endfor -%}
+    </div>
 
     {%- paginate blog.articles by 13 -%}
       {%- if blog.articles.size > 0 -%}
@@ -21,7 +30,7 @@ button), then a 3-column grid of article cards with category pills.
           <article class="jnl-featured">
             <div class="jnl-featured__content">
               <div class="jnl-meta-row">
-                <span class="jnl-pill">Journal</span>
+                <span class="jnl-pill">{{ featured.tags.first | default: 'Journal' }}</span>
                 <span class="jnl-dim">Featured</span>
               </div>
               <h2 class="jnl-featured__title"><a href="{{ featured.url }}">{{ featured.title }}</a></h2>
@@ -51,7 +60,7 @@ button), then a 3-column grid of article cards with category pills.
                 {%- if article.image -%}
                   <img src="{{ article.image | image_url: width: 640 }}" alt="{{ article.image.alt | default: article.title | escape }}" width="640" height="360" loading="lazy" />
                 {%- endif -%}
-                <span class="jnl-pill jnl-pill--float">Journal</span>
+                <span class="jnl-pill jnl-pill--float">{{ article.tags.first | default: 'Journal' }}</span>
               </a>
               <div class="jnl-card__body">
                 <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
@@ -85,7 +94,13 @@ button), then a 3-column grid of article cards with category pills.
 {% stylesheet %}
 .jnl { background: var(--charcoal-950); padding: 4rem 0 5rem; }
 .jnl-container { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; }
-.jnl-header { margin-bottom: 3rem; }
+.jnl-header { margin-bottom: 2rem; }
+.jnl-back { display: inline-flex; align-items: center; gap: 0.5rem; color: rgba(240, 221, 184, 0.4); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; text-decoration: none; margin-bottom: 2.5rem; transition: color 0.2s ease; }
+.jnl-back:hover { color: var(--gold-400); }
+.jnl-filters { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
+.jnl-chip { padding: 0.6rem 1.25rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; color: rgba(240, 221, 184, 0.5); border: 1px solid rgba(83, 72, 68, 0.6); background: transparent; transition: all 0.2s ease; }
+.jnl-chip:hover { border-color: rgba(201, 138, 16, 0.4); color: var(--gold-400); }
+.jnl-chip.is-active { background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%); color: var(--charcoal-950); border-color: transparent; box-shadow: 0 6px 16px rgba(87, 54, 20, 0.3); }
 .jnl-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; color: var(--gold-400); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; }
 .jnl-eyebrow::before { content: ''; width: 2rem; height: 1px; background: var(--gold-500); }
 .jnl-h1 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.25rem, 6vw, 3.75rem); font-weight: 700; color: white; line-height: 1.1; margin: 0 0 1rem; max-width: 48rem; }

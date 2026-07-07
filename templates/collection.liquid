@@ -6,9 +6,16 @@ compact financing banner, "Available Models" toolbar with count + sort,
 {%- endcomment -%}
 
 {%- liquid
-  assign title_words = collection.title | split: ' '
+  # Admin titles carry SEO suffixes ("New Arrivals – Latest Luxury…") — the
+  # headless site showed short display titles, so strip after – or |.
+  assign display_title = collection.title | split: '–' | first | split: '|' | first | strip
+  assign title_words = display_title | split: ' '
   assign last_word = title_words | last
-  assign first_words = collection.title | remove_last: last_word | strip
+  assign first_words = display_title | remove_last: last_word | strip
+  assign is_new_arrivals = false
+  if collection.handle == 'new-arrivals'
+    assign is_new_arrivals = true
+  endif
 -%}
 
 <!-- Breadcrumb -->
@@ -18,7 +25,7 @@ compact financing banner, "Available Models" toolbar with count + sort,
     <span>/</span>
     <a href="{{ routes.collections_url }}">Collections</a>
     <span>/</span>
-    <span class="clp-breadcrumb__current">{{ collection.title }}</span>
+    <span class="clp-breadcrumb__current">{{ display_title }}</span>
   </nav>
 </div>
 
@@ -29,15 +36,21 @@ compact financing banner, "Available Models" toolbar with count + sort,
   {%- endif -%}
   <div class="clp-hero__overlay"></div>
   <div class="clp-container clp-hero__content">
-    <div class="clp-eyebrow">Collection</div>
+    {%- if is_new_arrivals -%}
+      <div class="clp-eyebrow">&#10022; Just In</div>
+    {%- else -%}
+      <div class="clp-eyebrow">Collection</div>
+    {%- endif -%}
     <h1 class="clp-title">
       {%- if first_words != blank -%}
         {{ first_words }} <span class="text-gradient-gold">{{ last_word }}</span>
       {%- else -%}
-        {{ collection.title }}
+        {{ display_title }}
       {%- endif -%}
     </h1>
-    {%- if collection.description != blank -%}
+    {%- if is_new_arrivals -%}
+      <p class="clp-desc">The latest additions to our collection &mdash; grand estate cabinets, precision desktop humidors, and travel companions, all arriving fresh to the catalogue.</p>
+    {%- elsif collection.description != blank -%}
       <p class="clp-desc">{{ collection.description | strip_html | truncate: 180 }}</p>
     {%- endif -%}
     <a href="tel:8884319214" class="clp-phone">&#9742; (888) 431-9214</a>
@@ -49,6 +62,16 @@ compact financing banner, "Available Models" toolbar with count + sort,
 
 <!-- Products -->
 <div class="clp-container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+  {%- if is_new_arrivals -%}
+    <!-- Stats strip (headless NewArrivals.tsx) -->
+    <div class="clp-stats">
+      <div><p>{{ collection.products_count }} New Products</p><span>All freshly added</span></div>
+      <div><p>Up to 4,000 Cigars</p><span>Grand estate cabinets</span></div>
+      <div><p>Dual-Zone Options</p><span>Wine + cigar storage</span></div>
+      <div><p>From $34</p><span>Traveler 5 travel humidor</span></div>
+    </div>
+  {%- endif -%}
+
   <h2 class="clp-h2">Available Models</h2>
 
   {%- paginate collection.products by 24 -%}
@@ -72,7 +95,7 @@ compact financing banner, "Available Models" toolbar with count + sort,
     {%- if collection.products.size > 0 -%}
       <div class="clp-grid">
         {%- for product in collection.products -%}
-          {% render 'product-card', product: product, index: forloop.index %}
+          {% render 'product-card', product: product, index: forloop.index, show_new_badge: is_new_arrivals %}
         {%- endfor -%}
       </div>
 
@@ -131,6 +154,12 @@ compact financing banner, "Available Models" toolbar with count + sort,
 .clp-phone:hover { color: var(--gold-300); }
 
 .clp-h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.875rem; font-weight: 700; color: white; margin: 0 0 2rem; }
+
+.clp-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 2.5rem; }
+@media (min-width: 768px) { .clp-stats { grid-template-columns: repeat(4, 1fr); } }
+.clp-stats > div { background: var(--charcoal-900); border: 1px solid rgba(70, 62, 59, 0.4); border-radius: 0.5rem; padding: 0.85rem 1rem; }
+.clp-stats p { color: var(--cream-100); font-size: 0.8rem; font-weight: 600; margin: 0; }
+.clp-stats span { color: rgba(240, 221, 184, 0.4); font-size: 0.65rem; }
 
 .clp-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(70, 62, 59, 0.5); }
 .clp-count { color: rgba(240, 221, 184, 0.4); font-size: 0.875rem; margin: 0; }
