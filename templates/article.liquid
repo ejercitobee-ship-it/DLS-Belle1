@@ -1,30 +1,135 @@
-<!-- Journal Article -->
-<article class="page-wrapper">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-    <header class="page-header" style="margin-bottom: 2.5rem;">
-      <nav aria-label="Breadcrumb" style="margin-bottom: 1rem; font-size: 0.875rem;">
-        <a href="{{ blog.url }}" class="text-gold" style="text-decoration: none;">&larr; Back to {{ blog.title }}</a>
-      </nav>
-      <h1 class="page-title">{{ article.title }}</h1>
-      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}" style="display: block; margin-top: 0.75rem; opacity: 0.7; font-size: 0.9rem;">
-        {{ article.published_at | date: '%B %d, %Y' }}
-      </time>
-    </header>
+{%- comment -%} Journal Article — mirrors the headless ArticlePage.tsx layout {%- endcomment -%}
 
+{%- comment -%} Derive a display category from tags / blog title {%- endcomment -%}
+{%- assign art_cat = 'Brand Stories' -%}
+{%- assign tag_str = article.tags | join: ',' | downcase -%}
+{%- if tag_str contains 'care' -%}
+  {%- assign art_cat = 'Cigar Care' -%}
+{%- elsif tag_str contains 'arrival' -%}
+  {%- assign art_cat = 'New Arrivals' -%}
+{%- elsif tag_str contains 'brand' or tag_str contains 'story' or tag_str contains 'stories' -%}
+  {%- assign art_cat = 'Brand Stories' -%}
+{%- else -%}
+  {%- assign blog_title_dc = blog.title | downcase -%}
+  {%- if blog_title_dc contains 'care' -%}
+    {%- assign art_cat = 'Cigar Care' -%}
+  {%- elsif blog_title_dc contains 'arrival' -%}
+    {%- assign art_cat = 'New Arrivals' -%}
+  {%- endif -%}
+{%- endif -%}
+
+<article class="jnl-article">
+  <!-- ── Full-width Hero ── -->
+  <div class="jnl-hero">
     {%- if article.image -%}
       <img
-        src="{{ article.image | image_url: width: 1200 }}"
+        class="jnl-hero-img"
+        src="{{ article.image | image_url: width: 1600 }}"
         alt="{{ article.image.alt | default: article.title | escape }}"
-        width="1200"
-        height="675"
-        style="width: 100%; border-radius: 8px; margin-bottom: 2.5rem;"
+        width="1600"
+        height="900"
       />
     {%- endif -%}
+    <div class="jnl-hero-overlay"></div>
 
-    <div class="page-body rte">
-      {{ article.content }}
+    <div class="jnl-hero-top">
+      <a href="{{ blog.url }}" class="jnl-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Back to {{ blog.title }}
+      </a>
+    </div>
+
+    <div class="jnl-hero-meta">
+      <div class="jnl-tags">
+        <span class="jnl-cat">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+          {{ art_cat }}
+        </span>
+        {%- for tag in article.tags limit: 3 -%}
+          <span class="jnl-tag">{{ tag }}</span>
+        {%- endfor -%}
+      </div>
+
+      <h1 class="jnl-title">{{ article.title }}</h1>
+
+      <div class="jnl-byline">
+        {%- if article.author != blank -%}
+          <span class="jnl-byline-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            {{ article.author }}
+          </span>
+          <span class="jnl-byline-divider"></span>
+        {%- endif -%}
+        <span class="jnl-byline-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %d, %Y' }}</time>
+        </span>
+      </div>
     </div>
   </div>
+
+  <!-- ── Body ── -->
+  <div class="jnl-body-wrap">
+    {%- if article.excerpt != blank -%}
+      <p class="jnl-lead">{{ article.excerpt | strip_html }}</p>
+    {%- endif -%}
+
+    <div class="jnl-body rte">
+      {{ article.content }}
+    </div>
+
+    <div class="jnl-body-back">
+      <a href="{{ blog.url }}" class="jnl-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Back to {{ blog.title }}
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Related Articles ── -->
+  {%- assign related_count = 0 -%}
+  {%- assign has_related = false -%}
+  {%- for a in blog.articles limit: 4 -%}
+    {%- unless a.handle == article.handle -%}{%- assign has_related = true -%}{%- endunless -%}
+  {%- endfor -%}
+
+  {%- if has_related -%}
+    <section class="jnl-related">
+      <div class="jnl-related-inner">
+        <div class="jnl-eyebrow">
+          <span class="jnl-eyebrow-line"></span>
+          <span class="jnl-eyebrow-text">Continue Reading</span>
+        </div>
+        <h2 class="jnl-related-title">You May Also Enjoy</h2>
+
+        <div class="jnl-related-grid">
+          {%- for a in blog.articles limit: 4 -%}
+            {%- unless a.handle == article.handle -%}
+              {%- if related_count < 3 -%}
+                <a href="{{ a.url }}" class="jnl-card">
+                  <div class="jnl-card-img">
+                    {%- if a.image -%}
+                      <img src="{{ a.image | image_url: width: 600 }}" alt="{{ a.image.alt | default: a.title | escape }}" width="600" height="338" loading="lazy">
+                    {%- endif -%}
+                  </div>
+                  <div class="jnl-card-body">
+                    <h4 class="jnl-card-title">{{ a.title }}</h4>
+                    {%- if a.excerpt != blank -%}
+                      <p class="jnl-card-excerpt">{{ a.excerpt | strip_html | truncatewords: 18 }}</p>
+                    {%- endif -%}
+                    <span class="jnl-card-cta">Read Article
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </span>
+                  </div>
+                </a>
+                {%- assign related_count = related_count | plus: 1 -%}
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
 </article>
 
 <!-- Article Schema -->
@@ -46,6 +151,218 @@
 }
 </script>
 
-<!-- Related Products + Newsletter -->
-{% section 'featured-products' %}
-{% section 'newsletter' %}
+<style>
+  .jnl-article { background: var(--charcoal-950); }
+
+  /* Hero */
+  .jnl-hero {
+    position: relative;
+    width: 100%;
+    height: 55vh;
+    min-height: 380px;
+    overflow: hidden;
+    background: var(--charcoal-900);
+  }
+  @media (min-width: 768px) { .jnl-hero { height: 65vh; } }
+  @media (min-width: 1024px) { .jnl-hero { height: 72vh; } }
+
+  .jnl-hero-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .jnl-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--charcoal-950) 0%, rgba(28,25,23,0.55) 45%, rgba(28,25,23,0.15) 100%);
+  }
+
+  .jnl-hero-top,
+  .jnl-hero-meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    max-width: 56rem;
+    margin: 0 auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .jnl-hero-top { top: 1.5rem; }
+  .jnl-hero-meta { bottom: 0; padding-bottom: 2.5rem; }
+  @media (min-width: 768px) { .jnl-hero-meta { padding-bottom: 3.5rem; } }
+
+  .jnl-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(240, 221, 184, 0.55);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .jnl-back:hover { color: var(--gold-400); }
+
+  .jnl-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+  .jnl-cat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(201, 138, 16, 0.15);
+    border: 1px solid rgba(201, 138, 16, 0.4);
+    color: var(--gold-400);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+  }
+  .jnl-tag {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(41, 37, 34, 0.7);
+    border: 1px solid rgba(70, 62, 59, 0.5);
+    color: rgba(240, 221, 184, 0.5);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+  }
+
+  .jnl-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.875rem;
+    line-height: 1.15;
+    margin: 0 0 1.25rem;
+    max-width: 48rem;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+  }
+  @media (min-width: 640px) { .jnl-title { font-size: 2.5rem; } }
+  @media (min-width: 768px) { .jnl-title { font-size: 3rem; } }
+
+  .jnl-byline { display: flex; align-items: center; gap: 1rem; color: rgba(240, 221, 184, 0.5); font-size: 0.8rem; }
+  .jnl-byline-item { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .jnl-byline-divider { width: 1px; height: 0.9rem; background: rgba(120, 106, 100, 0.6); }
+
+  /* Body */
+  .jnl-body-wrap {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+  }
+  @media (min-width: 768px) { .jnl-body-wrap { padding-top: 4rem; } }
+
+  .jnl-lead {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    color: rgba(240, 221, 184, 0.8);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin: 0 0 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(70, 62, 59, 0.6);
+  }
+  @media (min-width: 768px) { .jnl-lead { font-size: 1.3rem; } }
+
+  .jnl-body { color: rgba(240, 221, 184, 0.85); font-size: 1.05rem; line-height: 1.85; }
+  .jnl-body p { margin: 0 0 1.5rem; }
+  .jnl-body h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 2.5rem 0 1rem;
+  }
+  .jnl-body h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 2rem 0 0.85rem;
+  }
+  .jnl-body a { color: var(--gold-400); text-decoration: underline; text-underline-offset: 2px; }
+  .jnl-body a:hover { color: var(--gold-300); }
+  .jnl-body ul, .jnl-body ol { margin: 0 0 1.5rem; padding-left: 1.5rem; }
+  .jnl-body li { margin-bottom: 0.5rem; }
+  .jnl-body img { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 1.5rem 0; }
+  .jnl-body blockquote {
+    border-left: 3px solid var(--gold-500);
+    padding-left: 1.25rem;
+    margin: 1.75rem 0;
+    color: rgba(240, 221, 184, 0.7);
+    font-style: italic;
+  }
+
+  .jnl-body-back { margin-top: 3.5rem; padding-top: 2.5rem; border-top: 1px solid rgba(70, 62, 59, 0.6); }
+
+  /* Related */
+  .jnl-related { border-top: 1px solid rgba(70, 62, 59, 0.6); background: var(--charcoal-950); }
+  .jnl-related-inner { max-width: 80rem; margin: 0 auto; padding: 4rem 1.5rem 5rem; }
+  .jnl-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .jnl-eyebrow-line { width: 2rem; height: 1px; background: var(--gold-500); }
+  .jnl-eyebrow-text { color: var(--gold-400); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; }
+  .jnl-related-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #fff;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 2.5rem;
+  }
+  @media (min-width: 768px) { .jnl-related-title { font-size: 2rem; } }
+
+  .jnl-related-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+  @media (min-width: 640px) { .jnl-related-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .jnl-related-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .jnl-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--charcoal-900);
+    border: 1px solid rgba(70, 62, 59, 0.5);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    text-decoration: none;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .jnl-card:hover { border-color: rgba(201, 138, 16, 0.4); transform: translateY(-3px); }
+  .jnl-card-img { aspect-ratio: 16 / 9; overflow: hidden; background: var(--charcoal-800); }
+  .jnl-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+  .jnl-card:hover .jnl-card-img img { transform: scale(1.05); }
+  .jnl-card-body { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
+  .jnl-card-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0 0 0.65rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .jnl-card:hover .jnl-card-title { color: var(--gold-200); }
+  .jnl-card-excerpt {
+    color: rgba(240, 221, 184, 0.45);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin: 0 0 1rem;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .jnl-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--gold-400);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+</style>
