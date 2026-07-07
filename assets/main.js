@@ -89,8 +89,15 @@
               <span class="cart-drawer-subtotal-val">${fmt(cart.total_price)}</span>
             </div>
             <p class="cart-drawer-note">Shipping &amp; taxes calculated at checkout.</p>
-            <a href="/checkout" class="cart-checkout-btn">Checkout</a>
+            <a href="/checkout" class="cart-checkout-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Secure Checkout
+            </a>
             <button type="button" class="cart-continue-btn" data-action="close">Continue Shopping</button>
+            <p class="cart-secure-note">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Encrypted &amp; secure &middot; Shop Pay
+            </p>
           </div>`
           : `
           <div class="cart-drawer-empty">

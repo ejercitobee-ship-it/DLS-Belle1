@@ -23,7 +23,7 @@
           "cta_primary_text": "Explore Collections",
           "cta_primary_url": "shopify://collections/all",
           "cta_secondary_text": "Bespoke Solutions",
-          "cta_secondary_url": "",
+          "cta_secondary_url": "shopify://pages/walk-in-humidor",
           "show_trust_badges": true
         }
       },

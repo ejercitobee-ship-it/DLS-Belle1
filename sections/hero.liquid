@@ -116,7 +116,7 @@
           {%- endif -%}
 
           {%- if section.settings.cta_secondary_text != blank -%}
-            <a href="{{ section.settings.cta_secondary_url }}" class="btn btn-secondary">
+            <a href="{{ section.settings.cta_secondary_url | default: '/pages/walk-in-humidor' }}" class="btn btn-secondary">
               {{ section.settings.cta_secondary_text }}
             </a>
           {%- endif -%}
