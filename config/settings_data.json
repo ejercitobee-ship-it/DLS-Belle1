@@ -17,7 +17,6 @@
       "hero": {
         "type": "hero",
         "settings": {
-          "background_image": "",
           "eyebrow_text": "Crafted for the Discerning Few",
           "heading": "<h1>The World's Finest<br/><em>Humidor Collections</em></h1>",
           "subheading": "<p>Dunn's Luxury Selections brings together the most exceptional humidors and cigar accessories in the world — curated for collectors, lounges, and connoisseurs who settle for nothing but the best.</p>",
@@ -161,6 +160,33 @@
           "section_eyebrow": "Limited Edition Deals",
           "section_heading": "Exclusive Savings",
           "products_count": 3
+        }
+      },
+      "bespoke": {
+        "type": "bespoke",
+        "settings": {
+          "eyebrow": "Bespoke Solutions",
+          "stat_number": "50+",
+          "stat_label": "Bespoke projects worldwide"
+        }
+      },
+      "related-products": {
+        "type": "related-products",
+        "settings": {
+          "heading": "You Might Also Like",
+          "products_count": 4
+        }
+      },
+      "customization": {
+        "type": "customization",
+        "settings": {
+          "label": "BESPOKE & CUSTOM",
+          "title": "Your Vision. Masterfully Crafted",
+          "description": "Work with our expert craftsmen to design the perfect humidor for your collection. From custom dimensions to premium materials, we create bespoke storage solutions that exceed your expectations.",
+          "image": "shopify://shop_images/Dunn_s_Luxury_Selections.png",
+          "show_features": true,
+          "button_text": "Start Your Bespoke Design",
+          "button_url": ""
         }
       }
     },
