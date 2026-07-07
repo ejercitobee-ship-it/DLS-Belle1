@@ -8,14 +8,18 @@
 
 /* ── Color Palette ────────────────────────────────────────────────────────── */
 :root {
-  /* Dark Theme */
+  /* Dark Theme (full headless Tailwind palette) */
   --charcoal-950: #211e1c;
   --charcoal-900: #3d3634;
   --charcoal-800: #463e3b;
   --charcoal-700: #534844;
   --charcoal-600: #665a51;
+  --charcoal-500: #7a6c62;
+  --charcoal-400: #93877d;
+  --charcoal-300: #b4aba3;
 
-  /* Gold Accents */
+  /* Gold Accents — gradients break entirely if ANY referenced step is
+     missing, so the full scale must stay defined */
   --gold-50: #fdf8ee;
   --gold-100: #f9eccc;
   --gold-200: #f3d68b;
@@ -23,11 +27,18 @@
   --gold-400: #e5a524;
   --gold-500: #c98a10;
   --gold-600: #a46c0c;
+  --gold-700: #7d500e;
+  --gold-800: #664014;
+  --gold-900: #573614;
+  --gold-950: #321a07;
 
   /* Cream Text */
   --cream-50: #fdfaf5;
   --cream-100: #f8f0e0;
   --cream-200: #f0ddb8;
+  --cream-300: #e6c58a;
+  --cream-400: #daa85c;
+  --cream-500: #d29040;
 
   /* Semantic */
   --border: rgba(70, 62, 59, 0.4);
