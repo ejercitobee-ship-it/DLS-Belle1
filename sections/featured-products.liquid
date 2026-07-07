@@ -65,9 +65,10 @@
 
 <section class="featured-products-section">
   <div class="featured-background"></div>
-  <div class="featured-hairline" aria-hidden="true"></div>
-
   <div class="fp-container">
+    <div class="fp-frame">
+      <div class="fp-glow" aria-hidden="true"></div>
+
     <!-- Section Header (editorial: text left, controls right) -->
     {%- if section.settings.section_heading != blank -%}
       <div class="fp-head">
@@ -230,6 +231,7 @@
       </div>
       <p class="placeholder-message">No products available. Add products to Shopify and select a collection above.</p>
     {%- endif -%}
+    </div>
   </div>
 </section>
 
@@ -237,7 +239,6 @@
 .featured-products-section {
   position: relative;
   background-color: var(--charcoal-900);
-  padding: 4rem 0;
   overflow: hidden;
 }
 
@@ -248,27 +249,45 @@
   pointer-events: none;
 }
 
-.featured-hairline {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(80rem, calc(100% - 3rem));
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(201, 138, 16, 0.4), transparent);
-}
-
 .fp-container {
   position: relative;
   z-index: 10;
   max-width: 80rem;
   margin: 0 auto;
-  padding: 4.5rem 1.5rem 5rem;
+  padding: 3.5rem 1.5rem 4rem;
 }
 
 @media (min-width: 768px) {
-  .fp-container { padding: 6rem 2rem 6.5rem; }
+  .fp-container { padding: 5rem 2rem; }
 }
+
+/* ── Framed showcase panel (matches the Deals section) ── */
+.fp-frame {
+  position: relative;
+  border: 1px solid rgba(201, 138, 16, 0.28);
+  border-radius: 1.25rem;
+  padding: 2.75rem 1.5rem 3rem;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .fp-frame { padding: 3.5rem 3rem 3.75rem; }
+}
+
+.fp-glow {
+  position: absolute;
+  top: -45%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rem;
+  max-width: 130%;
+  height: 32rem;
+  background: radial-gradient(ellipse at center, rgba(201, 138, 16, 0.16), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.fp-frame > *:not(.fp-glow) { position: relative; z-index: 1; }
 
 /* ── Editorial header ── */
 .fp-head {

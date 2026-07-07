@@ -19,7 +19,7 @@
       "type": "richtext",
       "id": "section_description",
       "label": "Description",
-      "default": "<p>Finance qualifying purchases over $1,500 with Shop Pay Installments. Approved buyers split payments into 4 equal, interest-free installments—zero fees, zero surprises. Decision in under 60 seconds at checkout.</p>"
+      "default": "<p>Split your purchase with Shop Pay Installments, powered by Affirm. Smaller orders can be paid in 4 interest-free installments, one every two weeks; larger collection pieces spread across monthly plans—from 0% APR for qualified buyers, up to 36% APR. You&rsquo;ll see your exact schedule, and any interest, upfront at checkout in under a minute.</p>"
     },
     {
       "type": "text",
@@ -144,33 +144,46 @@
 
           <div class="examples-list">
             <div class="example-item">
-              <span class="example-price">$1,500</span>
+              <span class="example-info">
+                <span class="example-plan">Pay in 4 &middot; Interest-Free</span>
+                <span class="example-price">$2,352 order</span>
+              </span>
               <span class="example-payment">
-                <span class="payment-amount">$375</span>
-                <span class="payment-period">/month</span>
+                <span class="payment-amount">$588</span>
+                <span class="payment-period">every 2 wks</span>
               </span>
             </div>
 
             <div class="example-divider"></div>
 
             <div class="example-item">
-              <span class="example-price">$4,000</span>
+              <span class="example-info">
+                <span class="example-plan">Monthly &middot; 12 mo</span>
+                <span class="example-price">$4,752 order</span>
+              </span>
               <span class="example-payment">
-                <span class="payment-amount">$1,000</span>
-                <span class="payment-period">/month</span>
+                <span class="payment-prefix">from</span>
+                <span class="payment-amount">$396</span>
+                <span class="payment-period">/mo</span>
               </span>
             </div>
 
             <div class="example-divider"></div>
 
             <div class="example-item">
-              <span class="example-price">$6,000</span>
+              <span class="example-info">
+                <span class="example-plan">Monthly &middot; 12 mo</span>
+                <span class="example-price">$6,387 order</span>
+              </span>
               <span class="example-payment">
-                <span class="payment-amount">$1,500</span>
-                <span class="payment-period">/month</span>
+                <span class="payment-prefix">from</span>
+                <span class="payment-amount">$532</span>
+                <span class="payment-period">/mo</span>
               </span>
             </div>
           </div>
+
+          <p class="examples-disclaimer">Pay-in-4 is always 0% interest. Monthly plans range from 0% APR for qualified buyers up to 36% APR&mdash;your exact rate and schedule appear at checkout. Powered by Affirm.</p>
         </div>
       {%- endif -%}
     </div>
@@ -349,8 +362,23 @@
 .example-item {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   gap: 1rem;
+}
+
+.example-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.example-plan {
+  color: var(--gold-400);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .example-price {
@@ -365,6 +393,11 @@
   gap: 0.25rem;
   text-align: right;
   flex-shrink: 0;
+}
+
+.payment-prefix {
+  color: rgba(240, 221, 184, 0.5);
+  font-size: 0.7rem;
 }
 
 .payment-amount {
@@ -382,6 +415,13 @@
 .example-divider {
   height: 1px;
   background-color: rgba(70, 62, 59, 0.5);
+}
+
+.examples-disclaimer {
+  color: rgba(240, 221, 184, 0.4);
+  font-size: 0.7rem;
+  line-height: 1.5;
+  margin: 1.5rem 0 0;
 }
 
 .rte {
