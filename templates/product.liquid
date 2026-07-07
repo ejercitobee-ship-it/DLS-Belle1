@@ -1,126 +1,351 @@
-<!-- Product Detail Page -->
+{%- comment -%}
+Product page — replicates the headless ProductPage.tsx design:
+breadcrumb, square contained gallery + thumbnails, eyebrow/title/stars,
+price + compare, Shop Pay financing callout ($1,500+), variant pills,
+trust checkmarks, metafield specs, add-to-cart, expert consultation
+(opens Tawk), details section with read-more, sticky mobile cart bar.
+{%- endcomment -%}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign price_dollars = product.price | divided_by: 100.0
+  assign monthly = product.price | divided_by: 4 | money
+-%}
 
 <!-- Breadcrumb -->
-<div class="breadcrumb-section">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-    <nav class="breadcrumb">
-      <a href="/" class="breadcrumb-link">Home</a>
-      <span class="breadcrumb-sep">/</span>
-      <a href="/collections" class="breadcrumb-link">Collections</a>
-      <span class="breadcrumb-sep">/</span>
-      <span class="breadcrumb-current">{{ product.title }}</span>
-    </nav>
-  </div>
+<div class="pdp-container" style="padding-top: 1.5rem; padding-bottom: 0.5rem;">
+  <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <span>/</span>
+    <a href="{{ routes.collections_url }}">Collections</a>
+    <span>/</span>
+    <span class="pdp-breadcrumb__current">{{ product.title }}</span>
+  </nav>
 </div>
 
-<!-- Product Main Section -->
-<section class="product-page">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-    <div class="product-layout">
-      <!-- Left: Product Gallery -->
-      <div class="product-gallery-wrapper">
-        {% section 'product-gallery' %}
+<!-- Main grid -->
+<div class="pdp-container" style="padding-top: 1rem;">
+  <div class="pdp-grid">
+
+    <!-- Left: Gallery -->
+    <div>
+      <div class="pdp-media">
+        {%- if product.featured_image -%}
+          <img
+            id="pdp-main-image"
+            src="{{ product.featured_image | image_url: width: 1000 }}"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            width="1000"
+            height="1000"
+          />
+        {%- else -%}
+          <span class="pdp-media__empty">No Image</span>
+        {%- endif -%}
       </div>
 
-      <!-- Right: Product Info -->
-      <div class="product-info-wrapper">
-        {% section 'product-info' %}
+      {%- if product.images.size > 1 -%}
+        <div class="pdp-thumbs">
+          {%- for image in product.images limit: 8 -%}
+            <button
+              type="button"
+              class="pdp-thumb {% if forloop.first %}is-active{% endif %}"
+              data-full="{{ image | image_url: width: 1000 }}"
+              aria-label="View image {{ forloop.index }}"
+            >
+              <img src="{{ image | image_url: width: 160 }}" alt="" width="64" height="64" loading="lazy" />
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Right: Info -->
+    <div class="pdp-info">
+      {%- if product.type != blank -%}
+        <span class="pdp-eyebrow">{{ product.type }}</span>
+      {%- endif -%}
+
+      <h1 class="pdp-title">{{ product.title }}</h1>
+
+      <div class="pdp-rating">
+        <span class="pdp-stars">
+          {%- for i in (1..5) -%}
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l3.09 6.26L20 7.24l-5 4.87 1.18 6.88L10 15.77l-6.18 3.25L5 12.11 0 7.24l6.91-1.01L10 1z" /></svg>
+          {%- endfor -%}
+        </span>
+        <span class="pdp-rating__label">4.9 &middot; Verified Reviews</span>
+      </div>
+
+      <div class="pdp-price-row">
+        <span class="pdp-price" id="pdp-price">{{ current_variant.price | money }}</span>
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          <span class="pdp-compare">{{ current_variant.compare_at_price | money }}</span>
+        {%- endif -%}
+      </div>
+
+      {%- if price_dollars >= 1500 -%}
+        <div class="pdp-financing">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 4V2m-8 2V2M2 11h20"></path></svg>
+          <div>
+            <p>Or 4 interest-free payments of <strong>{{ monthly }}</strong> with Shop&nbsp;Pay</p>
+            <a href="/pages/financing">0% APR &middot; No fees &middot; Learn more &rarr;</a>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <!-- Add to Cart Form -->
+      <form method="post" action="/cart/add" id="pdp-form">
+        {%- if product.variants.size > 1 -%}
+          <span class="pdp-label">Select Option</span>
+          <div class="pdp-variants">
+            {%- for variant in product.variants -%}
+              <button
+                type="button"
+                class="pdp-variant {% if variant.id == current_variant.id %}is-active{% endif %} {% unless variant.available %}is-disabled{% endunless %}"
+                data-variant-id="{{ variant.id }}"
+                data-price="{{ variant.price | money }}"
+                {% unless variant.available %}disabled{% endunless %}
+              >
+                {{ variant.title }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        <input type="hidden" name="id" id="pdp-variant-id" value="{{ current_variant.id }}" />
+
+        <!-- Trust checkmarks -->
+        <ul class="pdp-trust">
+          <li>Ships within 1&ndash;3 business days</li>
+          <li>Full manufacturer warranty</li>
+          <li>10-day return guarantee</li>
+          <li>Expert concierge support &amp; setup included</li>
+        </ul>
+
+        {%- if product.metafields.custom.specifications -%}
+          <div class="pdp-specs">
+            <h3>Specifications</h3>
+            <dl>
+              {%- assign specs = product.metafields.custom.specifications | split: ',' -%}
+              {%- for spec in specs -%}
+                {%- assign spec_parts = spec | split: ':' -%}
+                {%- if spec_parts.size == 2 -%}
+                  <div><dt>{{ spec_parts[0] | strip }}</dt><dd>{{ spec_parts[1] | strip }}</dd></div>
+                {%- endif -%}
+              {%- endfor -%}
+            </dl>
+          </div>
+        {%- endif -%}
+
+        <button type="submit" class="pdp-add" {% unless product.available %}disabled{% endunless %}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          {% if product.available %}Add to Cart{% else %}Out of Stock{% endif %}
+        </button>
+      </form>
+
+      <!-- Expert Consultation (opens Tawk chat) -->
+      <button type="button" class="pdp-consult" onclick="if (window.Tawk_API && window.Tawk_API.maximize) { window.Tawk_API.maximize(); }">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        Expert Consultation
+      </button>
+
+      <!-- Shop with Confidence -->
+      <div class="pdp-confidence">
+        <div><span>&#128737;</span><p>Secure<br />Checkout</p></div>
+        <div><span>&#128666;</span><p>Insured<br />Delivery</p></div>
+        <div><span>&#8634;</span><p>10-Day<br />Returns</p></div>
+        <div><span>&#9742;</span><p>Expert<br />Support</p></div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- Product Financing Section -->
-{% section 'product-financing' %}
+<!-- Details Section -->
+<div class="pdp-container" style="margin-top: 4rem;">
+  <div class="pdp-details">
+    <div class="pdp-details__desc">
+      <h2>Product Details</h2>
+      {%- if product.description != blank -%}
+        <div class="pdp-desc-body" id="pdp-desc">{{ product.description }}</div>
+        <button type="button" class="pdp-readmore" id="pdp-readmore">
+          Read more
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+      {%- else -%}
+        <p class="pdp-muted">No description available.</p>
+      {%- endif -%}
+    </div>
+
+    <div class="pdp-details__aside">
+      {%- if product.tags.size > 0 -%}
+        <div>
+          <h3>Tags</h3>
+          <div class="pdp-tags">
+            {%- for tag in product.tags limit: 10 -%}
+              <span>{{ tag }}</span>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div>
+        <h3>Product Info</h3>
+        <div class="pdp-kv">
+          <div><span>SKU</span><span class="mono">{{ current_variant.sku | default: product.id }}</span></div>
+          {%- if product.type != blank -%}
+            <div><span>Type</span><span>{{ product.type }}</span></div>
+          {%- endif -%}
+          <div><span>Availability</span><span class="{% if product.available %}ok{% endif %}">{% if product.available %}In Stock{% else %}Out of Stock{% endif %}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Related Products -->
 {% section 'related-products' %}
 
-<!-- Testimonials -->
-{% section 'testimonials' %}
+<!-- Customization CTA -->
+{% section 'customization' %}
 
-<!-- Newsletter -->
-{% section 'newsletter' %}
+<!-- Sticky Mobile Add-to-Cart -->
+{%- if product.available -%}
+  <div class="pdp-sticky">
+    <button type="button" onclick="document.getElementById('pdp-form').requestSubmit();">
+      Add to Cart &middot; <span id="pdp-sticky-price">{{ current_variant.price | money }}</span>
+    </button>
+  </div>
+{%- endif -%}
 
-<style>
-  .breadcrumb-section {
-    background-color: var(--charcoal-950);
-    border-bottom: 1px solid rgba(70, 62, 59, 0.4);
-  }
+<script>
+  (function () {
+    // Thumbnail switching
+    var main = document.getElementById('pdp-main-image');
+    document.querySelectorAll('.pdp-thumb').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (main) main.src = this.dataset.full;
+        document.querySelectorAll('.pdp-thumb').forEach(function (b) { b.classList.remove('is-active'); });
+        this.classList.add('is-active');
+      });
+    });
 
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-  }
+    // Variant pills
+    var hidden = document.getElementById('pdp-variant-id');
+    var priceEl = document.getElementById('pdp-price');
+    var stickyPrice = document.getElementById('pdp-sticky-price');
+    document.querySelectorAll('.pdp-variant').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.pdp-variant').forEach(function (b) { b.classList.remove('is-active'); });
+        this.classList.add('is-active');
+        if (hidden) hidden.value = this.dataset.variantId;
+        if (priceEl && this.dataset.price) priceEl.textContent = this.dataset.price;
+        if (stickyPrice && this.dataset.price) stickyPrice.textContent = this.dataset.price;
+      });
+    });
 
-  .breadcrumb-link {
-    color: var(--gold-400);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .breadcrumb-link:hover {
-    color: var(--gold-300);
-  }
-
-  .breadcrumb-sep {
-    color: rgba(240, 221, 184, 0.4);
-  }
-
-  .breadcrumb-current {
-    color: white;
-  }
-
-  .product-page {
-    background-color: var(--charcoal-950);
-  }
-
-  .product-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-
-  @media (max-width: 768px) {
-    .product-layout {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+    // Read more toggle
+    var desc = document.getElementById('pdp-desc');
+    var toggle = document.getElementById('pdp-readmore');
+    if (desc && toggle) {
+      if (desc.scrollHeight <= 200) { toggle.style.display = 'none'; desc.classList.add('is-open'); }
+      toggle.addEventListener('click', function () {
+        desc.classList.toggle('is-open');
+        this.firstChild.textContent = desc.classList.contains('is-open') ? 'Show less ' : 'Read more ';
+        this.querySelector('svg').style.transform = desc.classList.contains('is-open') ? 'rotate(180deg)' : '';
+      });
     }
-  }
+  })();
+</script>
 
-  .product-gallery-wrapper {
-    display: flex;
-    flex-direction: column;
-  }
+{% stylesheet %}
+.pdp-container { max-width: 80rem; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+.pdp-breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+.pdp-breadcrumb a { color: var(--gold-400); text-decoration: none; }
+.pdp-breadcrumb a:hover { color: var(--gold-300); }
+.pdp-breadcrumb span { color: rgba(240, 221, 184, 0.4); }
+.pdp-breadcrumb__current { color: white !important; }
 
-  .product-info-wrapper {
-    display: flex;
-    flex-direction: column;
-  }
+.pdp-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+@media (min-width: 1024px) { .pdp-grid { grid-template-columns: 1fr 1fr; gap: 3.5rem; } }
 
-  .max-w-7xl {
-    max-width: 80rem;
-    margin-left: auto;
-    margin-right: auto;
-  }
+.pdp-media { position: relative; aspect-ratio: 1 / 1; background: var(--charcoal-900); border: 1px solid rgba(70, 62, 59, 0.5); border-radius: 0.75rem; overflow: hidden; }
+.pdp-media img { width: 100%; height: 100%; object-fit: contain; padding: 1.5rem; transition: transform 0.5s ease; }
+.pdp-media:hover img { transform: scale(1.02); }
+.pdp-media__empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(240, 221, 184, 0.2); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; }
 
-  .py-4 {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
+.pdp-thumbs { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.75rem 0 0.25rem; }
+.pdp-thumb { flex-shrink: 0; width: 4rem; height: 4rem; border-radius: 0.5rem; overflow: hidden; border: 2px solid rgba(70, 62, 59, 0.5); background: var(--charcoal-900); cursor: pointer; padding: 0; transition: border-color 0.2s ease; }
+.pdp-thumb.is-active { border-color: var(--gold-500); }
+.pdp-thumb:hover { border-color: rgba(164, 108, 12, 0.4); }
+.pdp-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-  .py-8 {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
+.pdp-info { display: flex; flex-direction: column; }
+.pdp-eyebrow { color: rgba(201, 138, 16, 0.7); font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.pdp-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.875rem, 4vw, 2.25rem); font-weight: 700; color: white; line-height: 1.2; margin: 0 0 0.75rem; }
+.pdp-rating { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+.pdp-stars { display: flex; gap: 2px; color: var(--gold-500); }
+.pdp-rating__label { color: rgba(240, 221, 184, 0.4); font-size: 0.75rem; }
 
-  @media (min-width: 768px) {
-    .md\:py-12 {
-      padding-top: 3rem;
-      padding-bottom: 3rem;
-    }
-  }
-</style>
+.pdp-price-row { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(70, 62, 59, 0.5); }
+.pdp-price { font-family: 'Playfair Display', Georgia, serif; font-size: 1.875rem; font-weight: 700; color: white; }
+.pdp-compare { font-size: 1.1rem; color: rgba(240, 221, 184, 0.3); text-decoration: line-through; }
+
+.pdp-financing { display: flex; gap: 0.85rem; align-items: flex-start; background: rgba(61, 54, 52, 0.4); border: 1px solid rgba(125, 80, 14, 0.25); border-radius: 0.5rem; padding: 1rem 1.15rem; margin-bottom: 1.5rem; color: var(--gold-500); }
+.pdp-financing p { margin: 0; color: rgba(240, 221, 184, 0.75); font-size: 0.85rem; }
+.pdp-financing strong { color: var(--gold-300); }
+.pdp-financing a { color: var(--gold-400); font-size: 0.75rem; text-decoration: none; }
+.pdp-financing a:hover { color: var(--gold-300); }
+
+.pdp-label { display: block; color: rgba(240, 221, 184, 0.4); font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.pdp-variants { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+.pdp-variant { padding: 0.6rem 1rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.03em; cursor: pointer; background: var(--charcoal-900); border: 1px solid rgba(83, 72, 68, 0.5); color: rgba(240, 221, 184, 0.6); transition: all 0.2s ease; }
+.pdp-variant:hover { border-color: rgba(201, 138, 16, 0.4); color: var(--cream-100); }
+.pdp-variant.is-active { background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%); color: var(--charcoal-950); border-color: transparent; }
+.pdp-variant.is-disabled { opacity: 0.35; cursor: not-allowed; }
+
+.pdp-trust { list-style: none; padding: 0; margin: 0 0 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.pdp-trust li { color: rgba(240, 221, 184, 0.6); font-size: 0.75rem; padding-left: 1.4rem; position: relative; }
+.pdp-trust li::before { content: '\2713'; position: absolute; left: 0; color: #34d399; font-weight: 700; }
+
+.pdp-specs { margin-bottom: 1.5rem; background: var(--charcoal-900); border: 1px solid rgba(70, 62, 59, 0.5); border-radius: 0.5rem; padding: 1.25rem; }
+.pdp-specs h3 { color: white; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; margin: 0 0 0.85rem; }
+.pdp-specs dl { margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.pdp-specs dl > div { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.8rem; }
+.pdp-specs dt { color: rgba(240, 221, 184, 0.45); }
+.pdp-specs dd { color: var(--cream-100); margin: 0; text-align: right; }
+
+.pdp-add { width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.75rem; background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%); color: var(--charcoal-950); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 1rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: opacity 0.2s ease, transform 0.1s ease; }
+.pdp-add:hover { opacity: 0.9; }
+.pdp-add:active { transform: scale(0.98); }
+.pdp-add:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.pdp-consult { width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--charcoal-800); color: var(--cream-200); font-size: 0.85rem; padding: 0.8rem; margin-top: 1rem; border: 1px solid rgba(83, 72, 68, 0.5); border-radius: 0.5rem; cursor: pointer; transition: background 0.2s ease; }
+.pdp-consult:hover { background: var(--charcoal-700); }
+
+.pdp-confidence { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(70, 62, 59, 0.5); text-align: center; }
+.pdp-confidence span { display: block; font-size: 1.1rem; color: var(--gold-500); margin-bottom: 0.35rem; }
+.pdp-confidence p { margin: 0; color: rgba(240, 221, 184, 0.5); font-size: 0.65rem; line-height: 1.4; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.pdp-details { border-top: 1px solid rgba(70, 62, 59, 0.5); padding-top: 3rem; display: grid; grid-template-columns: 1fr; gap: 3rem; }
+@media (min-width: 1024px) { .pdp-details { grid-template-columns: 2fr 1fr; } }
+.pdp-details h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; font-weight: 700; color: white; margin: 0 0 1.5rem; }
+.pdp-details h3 { color: white; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; margin: 0 0 1rem; }
+.pdp-desc-body { color: rgba(240, 221, 184, 0.6); font-size: 0.9rem; line-height: 1.7; max-height: 12rem; overflow: hidden; transition: max-height 0.3s ease; }
+.pdp-desc-body.is-open { max-height: none; }
+.pdp-readmore { display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 1rem; background: none; border: none; color: var(--gold-400); font-size: 0.85rem; font-weight: 500; cursor: pointer; }
+.pdp-readmore:hover { color: var(--gold-300); }
+.pdp-readmore svg { transition: transform 0.2s ease; }
+.pdp-muted { color: rgba(240, 221, 184, 0.4); font-size: 0.85rem; }
+.pdp-details__aside { display: flex; flex-direction: column; gap: 2rem; }
+.pdp-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.pdp-tags span { font-size: 0.75rem; color: rgba(240, 221, 184, 0.7); background: var(--charcoal-900); border: 1px solid rgba(70, 62, 59, 0.5); padding: 0.35rem 0.75rem; border-radius: 9999px; }
+.pdp-kv { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; }
+.pdp-kv > div { display: flex; justify-content: space-between; }
+.pdp-kv > div > span:first-child { color: rgba(240, 221, 184, 0.4); }
+.pdp-kv > div > span:last-child { color: var(--cream-100); }
+.pdp-kv .mono { font-family: ui-monospace, monospace; font-size: 0.75rem; }
+.pdp-kv .ok { color: #34d399; font-size: 0.75rem; }
+
+.pdp-sticky { position: fixed; bottom: 0; left: 0; right: 0; background: var(--charcoal-950); border-top: 1px solid rgba(70, 62, 59, 0.5); padding: 1rem; z-index: 40; }
+@media (min-width: 1024px) { .pdp-sticky { display: none; } }
+.pdp-sticky button { width: 100%; background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%); color: var(--charcoal-950); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.85rem; border: none; border-radius: 0.25rem; cursor: pointer; }
+{% endstylesheet %}

@@ -1,65 +1,132 @@
-<!-- Blog / Journal Listing -->
-<div class="page-wrapper">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-    <header class="page-header" style="margin-bottom: 3rem; text-align: center;">
-      <h1 class="page-title">{{ blog.title }}</h1>
-      <p style="opacity: 0.8; margin-top: 0.75rem;">Guides, insights, and craftsmanship from the world of luxury humidors.</p>
+{%- comment -%}
+Journal listing — replicates the headless Journal.tsx: large serif header,
+full-width featured article (split layout, category pill, gold Read Article
+button), then a 3-column grid of article cards with category pills.
+{%- endcomment -%}
+
+<div class="jnl">
+  <div class="jnl-container">
+    <!-- Header -->
+    <header class="jnl-header">
+      <div class="jnl-eyebrow">The Journal</div>
+      <h1 class="jnl-h1">Insights for the <span class="text-gradient-gold">Discerning Collector</span></h1>
+      <p class="jnl-sub">Guides, insights, and craftsmanship from the world of luxury humidors.</p>
     </header>
 
-    {%- paginate blog.articles by 12 -%}
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-        {%- for article in blog.articles -%}
-          <a href="{{ article.url }}" class="journal-card">
-            {%- if article.image -%}
-              <img
-                src="{{ article.image | image_url: width: 600 }}"
-                alt="{{ article.image.alt | default: article.title | escape }}"
-                loading="lazy"
-                width="600"
-                height="400"
-                style="width: 100%; aspect-ratio: 3/2; object-fit: cover; border-radius: 8px 8px 0 0;"
-              />
-            {%- endif -%}
-            <div style="padding: 1.5rem;">
-              <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}" class="text-gold" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">
-                {{ article.published_at | date: '%B %d, %Y' }}
-              </time>
-              <h2 style="margin: 0.5rem 0; font-size: 1.25rem;">{{ article.title }}</h2>
-              <p style="opacity: 0.7; font-size: 0.9rem;">{{ article.excerpt_or_content | strip_html | truncatewords: 25 }}</p>
+    {%- paginate blog.articles by 13 -%}
+      {%- if blog.articles.size > 0 -%}
+        {%- if paginate.current_page == 1 -%}
+          {%- assign featured = blog.articles.first -%}
+          <!-- Featured article -->
+          <article class="jnl-featured">
+            <div class="jnl-featured__content">
+              <div class="jnl-meta-row">
+                <span class="jnl-pill">Journal</span>
+                <span class="jnl-dim">Featured</span>
+              </div>
+              <h2 class="jnl-featured__title"><a href="{{ featured.url }}">{{ featured.title }}</a></h2>
+              {%- assign f_excerpt = featured.excerpt_or_content | strip_html | truncatewords: 40 -%}
+              <p class="jnl-featured__excerpt">{{ f_excerpt }}</p>
+              <div class="jnl-byline">
+                <span>{{ featured.author | default: "Dunn's Luxury Selections" }}</span>
+                <span class="jnl-sep"></span>
+                <span>{{ featured.published_at | date: '%B %d, %Y' }}</span>
+              </div>
+              <a href="{{ featured.url }}" class="btn btn-primary" style="align-self: flex-start;">Read Article &rarr;</a>
             </div>
-          </a>
-        {%- endfor -%}
-      </div>
+            <div class="jnl-featured__media">
+              {%- if featured.image -%}
+                <img src="{{ featured.image | image_url: width: 1000 }}" alt="{{ featured.image.alt | default: featured.title | escape }}" width="1000" height="563" loading="lazy" />
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endif -%}
 
-      {%- if paginate.pages > 1 -%}
-        <nav class="pagination" style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 3rem;">
-          {%- if paginate.previous -%}
-            <a href="{{ paginate.previous.url }}" class="btn btn-secondary">Previous</a>
-          {%- endif -%}
-          {%- if paginate.next -%}
-            <a href="{{ paginate.next.url }}" class="btn btn-secondary">Next</a>
-          {%- endif -%}
-        </nav>
+        <!-- Grid -->
+        <div class="jnl-grid">
+          {%- for article in blog.articles -%}
+            {%- if paginate.current_page == 1 and forloop.first -%}{%- continue -%}{%- endif -%}
+            <article class="jnl-card">
+              <a href="{{ article.url }}" class="jnl-card__media">
+                {%- if article.image -%}
+                  <img src="{{ article.image | image_url: width: 640 }}" alt="{{ article.image.alt | default: article.title | escape }}" width="640" height="360" loading="lazy" />
+                {%- endif -%}
+                <span class="jnl-pill jnl-pill--float">Journal</span>
+              </a>
+              <div class="jnl-card__body">
+                <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
+                <p>{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p>
+                <div class="jnl-byline">
+                  <span>{{ article.author | default: "Dunn's" }}</span>
+                  <span class="jnl-sep"></span>
+                  <span>{{ article.published_at | date: '%b %d, %Y' }}</span>
+                </div>
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="jnl-pagination">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="btn btn-secondary">Previous</a>{%- endif -%}
+            <span>Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="btn btn-secondary">Next</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <p class="jnl-dim" style="text-align: center; padding: 4rem 0;">No articles yet — check back soon.</p>
       {%- endif -%}
     {%- endpaginate -%}
   </div>
 </div>
 
-<!-- Newsletter Signup -->
 {% section 'newsletter' %}
 
-<style>
-  .journal-card {
-    display: block;
-    background: var(--charcoal-900);
-    border: 1px solid rgba(201, 138, 16, 0.2);
-    border-radius: 8px;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.2s ease, transform 0.2s ease;
-  }
-  .journal-card:hover {
-    border-color: rgba(201, 138, 16, 0.5);
-    transform: translateY(-2px);
-  }
-</style>
+{% stylesheet %}
+.jnl { background: var(--charcoal-950); padding: 4rem 0 5rem; }
+.jnl-container { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; }
+.jnl-header { margin-bottom: 3rem; }
+.jnl-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; color: var(--gold-400); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; }
+.jnl-eyebrow::before { content: ''; width: 2rem; height: 1px; background: var(--gold-500); }
+.jnl-h1 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.25rem, 6vw, 3.75rem); font-weight: 700; color: white; line-height: 1.1; margin: 0 0 1rem; max-width: 48rem; }
+.jnl-sub { color: rgba(240, 221, 184, 0.55); font-size: 1.05rem; margin: 0; max-width: 36rem; }
+
+.jnl-featured { display: grid; grid-template-columns: 1fr; border-radius: 0.75rem; overflow: hidden; background: var(--charcoal-900); border: 1px solid rgba(70, 62, 59, 0.5); transition: border-color 0.3s ease; margin-bottom: 3rem; }
+.jnl-featured:hover { border-color: rgba(164, 108, 12, 0.4); }
+@media (min-width: 768px) { .jnl-featured { grid-template-columns: 1fr 1fr; min-height: 26rem; } }
+.jnl-featured__content { display: flex; flex-direction: column; justify-content: center; padding: 2.5rem; order: 2; }
+@media (min-width: 768px) { .jnl-featured__content { order: 1; padding: 3rem; } }
+.jnl-featured__media { position: relative; background: var(--charcoal-800); aspect-ratio: 16 / 9; order: 1; overflow: hidden; }
+@media (min-width: 768px) { .jnl-featured__media { order: 2; aspect-ratio: auto; } }
+.jnl-featured__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+.jnl-featured:hover .jnl-featured__media img { transform: scale(1.05); }
+.jnl-featured__title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; line-height: 1.25; margin: 0 0 1rem; }
+.jnl-featured__title a { color: white; text-decoration: none; transition: color 0.2s ease; }
+.jnl-featured:hover .jnl-featured__title a { color: var(--gold-200); }
+.jnl-featured__excerpt { color: rgba(240, 221, 184, 0.55); font-size: 0.95rem; line-height: 1.65; margin: 0 0 1.75rem; }
+
+.jnl-meta-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+.jnl-pill { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(201, 138, 16, 0.15); border: 1px solid rgba(201, 138, 16, 0.3); color: var(--gold-400); font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.35rem 0.75rem; border-radius: 9999px; }
+.jnl-pill--float { position: absolute; top: 0.75rem; left: 0.75rem; background: rgba(33, 30, 28, 0.8); backdrop-filter: blur(4px); }
+.jnl-dim { color: rgba(240, 221, 184, 0.3); font-size: 0.75rem; }
+.jnl-byline { display: flex; align-items: center; gap: 0.75rem; color: rgba(240, 221, 184, 0.35); font-size: 0.75rem; margin-bottom: 1.75rem; }
+.jnl-sep { width: 1px; height: 0.75rem; background: var(--charcoal-700); }
+
+.jnl-grid { display: grid; grid-template-columns: 1fr; gap: 1.75rem; }
+@media (min-width: 640px) { .jnl-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .jnl-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.jnl-card { display: flex; flex-direction: column; border-radius: 0.75rem; overflow: hidden; background: var(--charcoal-900); border: 1px solid rgba(70, 62, 59, 0.5); transition: border-color 0.3s ease; }
+.jnl-card:hover { border-color: rgba(164, 108, 12, 0.4); }
+.jnl-card__media { position: relative; display: block; aspect-ratio: 16 / 9; background: var(--charcoal-800); overflow: hidden; }
+.jnl-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+.jnl-card:hover .jnl-card__media img { transform: scale(1.05); }
+.jnl-card__body { display: flex; flex-direction: column; flex: 1; padding: 1.5rem; }
+.jnl-card__body h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin: 0 0 0.75rem; }
+.jnl-card__body h3 a { color: white; text-decoration: none; transition: color 0.2s ease; }
+.jnl-card:hover .jnl-card__body h3 a { color: var(--gold-200); }
+.jnl-card__body p { color: rgba(240, 221, 184, 0.5); font-size: 0.85rem; line-height: 1.6; margin: 0 0 1rem; flex: 1; }
+.jnl-card__body .jnl-byline { margin-bottom: 0; margin-top: auto; }
+
+.jnl-pagination { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 3rem; color: rgba(240, 221, 184, 0.4); font-size: 0.8rem; }
+{% endstylesheet %}

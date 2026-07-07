@@ -1,234 +1,309 @@
+{%- comment -%}
+Product card — replicates the headless ProductCard.tsx design:
+square contained image, "New" pill, sequence number, hover "View Product"
+overlay, vendor eyebrow, 5-star row, price + gold Add button.
+
+Params: product (required), index (optional), show_new_badge (optional bool)
+{%- endcomment -%}
+
 {%- liquid
-  assign product_card_product = product
+  assign card_product = product
+  assign card_variant = card_product.selected_or_first_available_variant
 -%}
 
-<div class="product-card">
-  <div class="product-card__image-wrapper">
-    {%- if product_card_product.featured_image -%}
-      <a href="{{ product_card_product.url }}" class="product-card__image-link">
-        <img
-          src="{{ product_card_product.featured_image | img_url: '500x500' }}"
-          alt="{{ product_card_product.featured_image.alt | escape }}"
-          loading="lazy"
-          width="500"
-          height="500"
-          class="product-card__image"
-        />
-      </a>
+<div class="pcard">
+  <!-- Image -->
+  <a href="{{ card_product.url }}" class="pcard__media" aria-label="{{ card_product.title | escape }}">
+    {%- if card_product.featured_image -%}
+      <img
+        src="{{ card_product.featured_image | image_url: width: 600 }}"
+        alt="{{ card_product.featured_image.alt | default: card_product.title | escape }}"
+        loading="lazy"
+        width="600"
+        height="600"
+        class="pcard__img"
+      />
     {%- else -%}
-      <a href="{{ product_card_product.url }}" class="product-card__image-link">
-        <div class="product-card__placeholder">
-          <svg class="placeholder-svg" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        </div>
-      </a>
+      <div class="pcard__placeholder"></div>
     {%- endif -%}
 
-    {%- if product_card_product.available == false -%}
-      <span class="product-card__badge badge--sold-out">Sold out</span>
-    {%- elsif product_card_product.compare_at_price > product_card_product.price -%}
-      <span class="product-card__badge badge--sale">Sale</span>
+    {%- if show_new_badge -%}
+      <span class="pcard__badge-new">&#10022; New</span>
     {%- endif -%}
-  </div>
 
-  <div class="product-card__content">
-    <h3 class="product-card__title">
-      <a href="{{ product_card_product.url }}">{{ product_card_product.title }}</a>
-    </h3>
+    {%- if card_product.compare_at_price > card_product.price -%}
+      <span class="pcard__badge-sale">Sale</span>
+    {%- endif -%}
 
-    <div class="product-card__price">
-      {%- if product_card_product.price_varies -%}
-        <span class="price__label">From</span>
-      {%- endif -%}
-      <span class="price">{{ product_card_product.price | money }}</span>
+    {%- if index -%}
+      <span class="pcard__seq">{{ index | prepend: '00' | slice: -2, 2 }}</span>
+    {%- endif -%}
 
-      {%- if product_card_product.compare_at_price > product_card_product.price -%}
-        <span class="price price--sale">{{ product_card_product.compare_at_price | money }}</span>
-      {%- endif -%}
+    {%- if card_product.available -%}
+      <div class="pcard__overlay"><span>View Product</span></div>
+    {%- else -%}
+      <div class="pcard__soldout"><span>Out of Stock</span></div>
+    {%- endif -%}
+  </a>
+
+  <!-- Info -->
+  <div class="pcard__info">
+    {%- if card_product.type != blank -%}
+      <p class="pcard__type">{{ card_product.type }}</p>
+    {%- endif -%}
+    <h3 class="pcard__title"><a href="{{ card_product.url }}">{{ card_product.title }}</a></h3>
+
+    <div class="pcard__stars" aria-hidden="true">
+      {%- for i in (1..5) -%}
+        <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l3.09 6.26L20 7.24l-5 4.87 1.18 6.88L10 15.77l-6.18 3.25L5 12.11 0 7.24l6.91-1.01L10 1z" /></svg>
+      {%- endfor -%}
     </div>
 
-    {%- if product_card_product.description != blank -%}
-      <p class="product-card__description">
-        {{ product_card_product.description | strip_html | truncatewords: 15 }}
-      </p>
-    {%- endif -%}
-
-    <a href="{{ product_card_product.url }}" class="product-card__link">
-      View Details →
-    </a>
+    <div class="pcard__row">
+      <span class="pcard__price">{{ card_product.price | money }}</span>
+      {%- if card_product.available and card_variant -%}
+        <form method="post" action="/cart/add" class="pcard__add-form">
+          <input type="hidden" name="id" value="{{ card_variant.id }}" />
+          <button type="submit" class="pcard__add" aria-label="Add {{ card_product.title | escape }} to cart">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            <span>Add</span>
+          </button>
+        </form>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 
 {% stylesheet %}
-.product-card {
+.pcard {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--charcoal-900);
-  border: 1px solid rgba(229, 165, 36, 0.1);
-  border-radius: 12px;
+  background: var(--charcoal-950);
+  border: 1px solid rgba(70, 62, 59, 0.5);
+  border-radius: 0.75rem;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  border-color: rgba(229, 165, 36, 0.3);
+.pcard:hover {
+  border-color: rgba(164, 108, 12, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(87, 54, 20, 0.1);
 }
 
-.product-card__image-wrapper {
+.pcard__media {
   position: relative;
-  overflow: hidden;
+  display: block;
   aspect-ratio: 1 / 1;
-  background: var(--charcoal-800);
+  background: var(--charcoal-900);
+  overflow: hidden;
 }
 
-.product-card__image-link {
-  display: block;
-  width: 100%;
-  height: 100%;
+.pcard__title a {
+  color: inherit;
   text-decoration: none;
 }
 
-.product-card__image {
+.pcard__img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  object-fit: contain;
+  padding: 1rem;
+  transition: transform 0.5s ease;
 }
 
-.product-card:hover .product-card__image {
+.pcard:hover .pcard__img {
   transform: scale(1.05);
 }
 
-.product-card__placeholder {
+.pcard__placeholder {
   width: 100%;
   height: 100%;
+  background: var(--charcoal-800);
+}
+
+.pcard__badge-new {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--charcoal-950);
+  color: var(--gold-400);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(164, 108, 12, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.pcard__badge-sale {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: var(--gold-500);
+  color: var(--charcoal-950);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+}
+
+.pcard__seq {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.75rem;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--charcoal-600);
+  user-select: none;
+}
+
+.pcard__overlay {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #463e3b 0%, #3d3634 100%);
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.3s ease;
+  pointer-events: none;
 }
 
-.placeholder-svg {
-  width: 4rem;
-  height: 4rem;
-  color: rgba(240, 221, 184, 0.3);
+.pcard__overlay span {
+  color: white;
+  opacity: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.3s ease;
 }
 
-.product-card__content {
-  padding: 1.5rem;
+.pcard:hover .pcard__overlay {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.pcard:hover .pcard__overlay span {
+  opacity: 0.85;
+}
+
+.pcard__soldout {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(33, 30, 28, 0.6);
+}
+
+.pcard__soldout span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 221, 184, 0.6);
+  background: rgba(61, 54, 52, 0.8);
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.25rem;
+}
+
+.pcard__info {
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
   flex: 1;
 }
 
-.product-card__title {
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.3;
-  margin: 0;
-}
-
-.product-card__title a {
-  color: var(--cream-100);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.product-card__title a:hover {
-  color: var(--gold-400);
-}
-
-.product-card__price {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.price__label {
-  font-size: 0.85rem;
-  color: rgba(240, 221, 184, 0.6);
-}
-
-.price {
-  font-weight: 600;
-  color: var(--gold-400);
-  font-size: 1.1rem;
-}
-
-.price--sale {
-  text-decoration: line-through;
-  color: rgba(240, 221, 184, 0.5);
-  font-weight: normal;
-  font-size: 0.9rem;
-}
-
-.product-card__description {
-  font-size: 0.9rem;
-  color: rgba(240, 221, 184, 0.7);
-  line-height: 1.4;
-  margin: 0;
-  flex: 1;
-}
-
-.product-card__badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
+.pcard__type {
+  color: rgba(201, 138, 16, 0.6);
+  font-size: 10px;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  z-index: 1;
+  margin: 0 0 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.badge--sale {
-  background: var(--gold-400);
-  color: var(--charcoal-950);
-}
-
-.badge--sold-out {
-  background: var(--charcoal-700);
+.pcard__title {
   color: var(--cream-100);
-  border: 1px solid rgba(240, 221, 184, 0.3);
-}
-
-.product-card__link {
-  color: var(--gold-400);
-  text-decoration: none;
+  font-size: 0.85rem;
   font-weight: 500;
+  line-height: 1.4;
+  margin: 0 0 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.2s ease;
+}
+
+.pcard:hover .pcard__title {
+  color: white;
+}
+
+.pcard__stars {
+  display: flex;
+  gap: 2px;
+  color: var(--gold-500);
+}
+
+.pcard__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin-top: auto;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(229, 165, 36, 0.2);
-  display: inline-block;
-  transition: color 0.3s ease;
+  padding-top: 0.65rem;
+}
+
+.pcard__price {
+  color: white;
+  font-weight: 700;
   font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.product-card__link:hover {
-  color: var(--gold-300);
-  text-decoration: underline;
+.pcard__add-form {
+  margin: 0;
+  flex-shrink: 0;
 }
 
-@media (max-width: 768px) {
-  .product-card__content {
-    padding: 1.25rem;
-  }
+.pcard__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.7rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%);
+  color: var(--charcoal-950);
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
 
-  .product-card__title {
-    font-size: 0.95rem;
-  }
+.pcard__add:hover {
+  opacity: 0.9;
+}
 
-  .placeholder-svg {
-    width: 3rem;
-    height: 3rem;
-  }
+.pcard__add:active {
+  transform: scale(0.95);
 }
 {% endstylesheet %}
