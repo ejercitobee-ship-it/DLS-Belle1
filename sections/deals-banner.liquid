@@ -46,41 +46,60 @@
 
 {%- if deal_count > 0 -%}
   <section class="deals-banner">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-      <!-- Header -->
-      <div class="deals-header">
-        <div>
+    <div class="deals-container">
+      <div class="deals-frame">
+        <div class="deals-glow" aria-hidden="true"></div>
+
+        <!-- Header (centered showcase) -->
+        <div class="deals-header">
           <div class="deals-eyebrow">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <span class="deals-eyebrow-line"></span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
               <line x1="7" y1="7" x2="7.01" y2="7"></line>
             </svg>
             <span>{{ section.settings.section_eyebrow }}</span>
+            <span class="deals-eyebrow-line"></span>
           </div>
-          <h2 class="deals-heading">{{ section.settings.section_heading }}</h2>
-        </div>
-        <a href="/collections/on-sale" class="deals-view-all">
-          View All Deals
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </a>
-      </div>
 
-      <!-- Deal Cards -->
-      <div class="deals-grid">
-        {%- assign shown_handles = deal_handles | split: ',' -%}
-        {%- for handle in shown_handles -%}
-          {%- assign deal_product = collections['all'].products | where: 'handle', handle | first -%}
-          {%- if deal_product -%}
-            <div class="deal-item">
-              {%- assign discount = deal_product.compare_at_price | minus: deal_product.price | times: 100.0 | divided_by: deal_product.compare_at_price | round -%}
-              <div class="deal-badge">{{ discount }}% Off</div>
-              {% render 'product-card', product: deal_product, index: forloop.index %}
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
+          <h2 class="deals-heading">
+            {%- assign heading_words = section.settings.section_heading | strip | split: ' ' -%}
+            {%- for w in heading_words -%}
+              {%- if forloop.last -%}<span class="deals-accent">{{ w }}</span>{%- else -%}{{ w }} {% endif -%}
+            {%- endfor -%}
+          </h2>
+
+          <p class="deals-subtext">A curated handful of our finest humidors, offered at rare limited-time pricing.</p>
+        </div>
+
+        <!-- Deal Cards -->
+        <div class="deals-grid">
+          {%- assign shown_handles = deal_handles | split: ',' -%}
+          {%- for handle in shown_handles -%}
+            {%- assign deal_product = collections['all'].products | where: 'handle', handle | first -%}
+            {%- if deal_product -%}
+              <div class="deal-item">
+                {%- assign discount = deal_product.compare_at_price | minus: deal_product.price | times: 100.0 | divided_by: deal_product.compare_at_price | round -%}
+                <div class="deal-badge">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                  Save {{ discount }}%
+                </div>
+                {% render 'product-card', product: deal_product, index: forloop.index %}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <!-- Footer CTA -->
+        <div class="deals-foot">
+          <a href="/collections/on-sale" class="deals-view-all">
+            View All Deals
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -91,78 +110,161 @@
   background-color: var(--charcoal-950);
 }
 
+.deals-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 4rem;
+}
+
+@media (min-width: 768px) {
+  .deals-container { padding: 5rem 2rem; }
+}
+
+/* ── Framed showcase panel ── */
+.deals-frame {
+  position: relative;
+  border: 1px solid rgba(201, 138, 16, 0.28);
+  border-radius: 1.25rem;
+  background: linear-gradient(180deg, rgba(41, 37, 34, 0.5) 0%, rgba(28, 25, 23, 0.15) 100%);
+  padding: 2.75rem 1.5rem 3rem;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .deals-frame { padding: 3.5rem 3rem 3.75rem; }
+}
+
+.deals-glow {
+  position: absolute;
+  top: -45%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rem;
+  max-width: 130%;
+  height: 32rem;
+  background: radial-gradient(ellipse at center, rgba(201, 138, 16, 0.18), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.deals-frame > *:not(.deals-glow) { position: relative; z-index: 1; }
+
+/* ── Header ── */
 .deals-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
+  text-align: center;
+  margin-bottom: 2.75rem;
 }
 
 .deals-eyebrow {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
   color: var(--gold-400);
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.7rem;
+  font-weight: 600;
   letter-spacing: 0.4em;
   text-transform: uppercase;
 }
 
-.deals-eyebrow svg {
-  color: var(--gold-500);
+.deals-eyebrow svg { color: var(--gold-500); }
+
+.deals-eyebrow-line {
+  width: 2rem;
+  height: 1px;
+  background: var(--gold-500);
+  opacity: 0.6;
 }
 
 .deals-heading {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.875rem, 4vw, 2.25rem);
+  font-size: clamp(2rem, 4.5vw, 3rem);
   font-weight: 700;
   color: white;
+  line-height: 1.1;
   margin: 0;
+}
+
+.deals-accent {
+  background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-200) 50%, var(--gold-600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.deals-subtext {
+  color: rgba(240, 221, 184, 0.6);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0.85rem auto 0;
+  max-width: 34rem;
+}
+
+/* ── Grid ── */
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.75rem;
+}
+
+@media (min-width: 900px) {
+  .deals-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.deal-item { position: relative; }
+
+.deal-badge {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: linear-gradient(135deg, var(--gold-300) 0%, var(--gold-500) 55%, var(--gold-700) 100%);
+  color: var(--charcoal-950);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(248, 240, 224, 0.3);
+  box-shadow: 0 6px 16px rgba(201, 138, 16, 0.35);
+}
+
+.deal-badge svg { color: var(--charcoal-950); }
+
+/* ── Footer CTA ── */
+.deals-foot {
+  text-align: center;
+  margin-top: 2.75rem;
 }
 
 .deals-view-all {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--gold-400);
+  padding: 0.85rem 1.85rem;
+  border: 1px solid rgba(201, 138, 16, 0.5);
+  border-radius: 0.5rem;
+  color: var(--gold-300);
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  transition: color 0.2s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
+
+.deals-view-all svg { transition: transform 0.25s ease; }
 
 .deals-view-all:hover {
-  color: var(--gold-300);
+  background: rgba(201, 138, 16, 0.1);
+  border-color: var(--gold-400);
+  color: var(--gold-200);
 }
 
-.deals-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-.deal-item {
-  position: relative;
-}
-
-.deal-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10;
-  background: var(--gold-500);
-  color: var(--charcoal-950);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.35rem 0.75rem;
-  border-radius: 9999px;
-}
+.deals-view-all:hover svg { transform: translateX(3px); }
 {% endstylesheet %}
