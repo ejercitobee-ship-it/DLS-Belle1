@@ -424,4 +424,14 @@
     .mobile-nav.open,
     .mobile-nav-backdrop { display: none !important; }
   }
+
+  /* Bigger tap targets for header icons on phones (icons were 22-24px).
+     Padding expands the hit area; a slightly tighter gap keeps the row balanced. */
+  @media (max-width: 767px) {
+    .header-actions { gap: 1rem; }
+    .search-icon-link,
+    .account-icon-link,
+    .cart-icon-container,
+    .mobile-menu-btn { padding: 0.5rem; }
+  }
 </style>
