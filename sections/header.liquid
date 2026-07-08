@@ -90,6 +90,21 @@
         </div>
       </div>
 
+      <!-- Account -->
+      <a
+        href="{{ routes.account_url }}"
+        class="account-icon-link"
+        aria-label="{% if customer %}Your account{% else %}Sign in{% endif %}"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        {%- if customer -%}
+          <span class="account-greeting">{{ customer.first_name | default: 'Account' }}</span>
+        {%- endif -%}
+      </a>
+
       <button
         class="cart-icon-container"
         id="cart-toggle"
@@ -123,6 +138,7 @@
     <a href="/collections/new-arrivals">New Arrivals</a>
     <a href="/blogs/news">Journal</a>
     <a href="/pages/about-us">About</a>
+    <a href="{{ routes.account_url }}">{% if customer %}My Account{% else %}Sign In{% endif %}</a>
     <a href="/collections/all" class="mobile-nav-cta">Shop All Humidors</a>
   </div>
 </header>
@@ -238,6 +254,30 @@
 
   .search-icon-link:hover {
     color: var(--gold-400);
+  }
+
+  .account-icon-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: rgba(240, 221, 184, 0.85);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .account-icon-link:hover { color: var(--gold-400); }
+  .account-icon-link svg { flex-shrink: 0; }
+  .account-greeting {
+    display: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  @media (min-width: 768px) {
+    .account-greeting { display: inline; }
   }
 
   .search-panel {
