@@ -18,8 +18,8 @@
         "type": "hero",
         "settings": {
           "eyebrow_text": "Crafted for the Discerning Few",
-          "heading": "<h1>The World's Finest<br/><em>Humidor Collections</em></h1>",
-          "subheading": "<p>Dunn's Luxury Selections brings together the most exceptional humidors and cigar accessories in the world — curated for collectors, lounges, and connoisseurs who settle for nothing but the best.</p>",
+          "heading": "<h1>The World’s Finest<br/><em>Humidor Collections</em></h1>",
+          "subheading": "<p>Dunn’s Luxury Selections brings together the most exceptional humidors and cigar accessories in the world — curated for collectors, lounges, and connoisseurs who settle for nothing but the best.</p>",
           "cta_primary_text": "Explore Collections",
           "cta_primary_url": "shopify://collections/all",
           "cta_secondary_text": "Bespoke Solutions",
@@ -56,7 +56,7 @@
             "settings": {
               "author_name": "Marcus de Vries",
               "author_role": "Owner, The Cigar Lounge Amsterdam",
-              "testimonial_text": "Dunn's installed our bespoke walk-in humidor and the result exceeded every expectation. Our clients are consistently amazed. Truly the signature of luxury.",
+              "testimonial_text": "Dunn’s installed our bespoke walk-in humidor and the result exceeded every expectation. Our clients are consistently amazed. Truly the signature of luxury.",
               "rating": 5,
               "product_tag": "Bespoke Walk-in Installation"
             }
@@ -78,7 +78,7 @@
           "testimonial_3"
         ],
         "settings": {
-          "section_eyebrow": "The Aficionado's Verdict",
+          "section_eyebrow": "The Aficionado’s Verdict",
           "section_heading": "Trusted by <span class=\"text-gradient-gold\">Connoisseurs</span>",
           "section_description": ""
         }
@@ -124,7 +124,7 @@
         "settings": {
           "section_eyebrow": "Why Choose Us",
           "section_heading": "Products with the<br><span class=\"text-gradient-gold\">Signature of Luxury</span>",
-          "section_description": "Dunn's Luxury Selections is America's premier destination for fine cigar humidors. We exist for those who understand that the way a cigar is stored is as important as the cigar itself."
+          "section_description": "Dunn’s Luxury Selections is America’s premier destination for fine cigar humidors. We exist for those who understand that the way a cigar is stored is as important as the cigar itself."
         }
       },
       "newsletter": {
@@ -145,7 +145,7 @@
         "settings": {
           "section_label": "Flexible Financing",
           "section_heading": "Remove Barriers to Building Your Collection",
-          "section_description": "<p>Split your purchase with Shop Pay Installments, powered by Affirm. Smaller orders can be paid in 4 interest-free installments, one every two weeks; larger collection pieces spread across monthly plans—from 0% APR for qualified buyers, up to 36% APR. You'll see your exact schedule, and any interest, upfront at checkout in under a minute.</p>",
+          "section_description": "<p>Split your purchase with Shop Pay Installments, powered by Affirm. Smaller orders can be paid in 4 interest-free installments, one every two weeks; larger collection pieces spread across monthly plans—from 0% APR for qualified buyers, up to 36% APR. You’ll see your exact schedule, and any interest, upfront at checkout in under a minute.</p>",
           "cta_primary_text": "Learn About Financing",
           "cta_primary_url": "",
           "cta_secondary_text": "Shop Qualifying Products",
