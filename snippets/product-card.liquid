@@ -119,6 +119,13 @@ Params: product (required), index (optional), show_new_badge (optional bool)
   transform: scale(1.05);
 }
 
+/* On small screens the tile is small, so square/edge-filling product photos
+   (e.g. the RR980) look oversized. Extra padding gives every product
+   consistent breathing room from the frame. */
+@media (max-width: 639px) {
+  .pcard__img { padding: 1.5rem; }
+}
+
 .pcard__placeholder {
   width: 100%;
   height: 100%;
