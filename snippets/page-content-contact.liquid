@@ -8,114 +8,15 @@
       <p class="page-subtitle">We're here to help with any questions about our humidors or financing options.</p>
     </header>
 
-    <!-- Contact Form -->
-    <div class="contact-form-wrapper">
-      <form method="post" action="https://hooks.zapier.com/hooks/catch/28188410/4urkaco/" class="contact-form">
-        {%- if form.posted_successfully? -%}
-          <div class="form-success">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            <h2>Thank you for your message!</h2>
-            <p>We'll get back to you as soon as possible.</p>
-          </div>
-        {%- else -%}
-          <!-- Personal Information -->
-          <fieldset class="form-fieldset">
-            <legend class="form-legend">Your Information</legend>
-
-            <div class="form-group">
-              <label for="contact-name" class="form-label">Name *</label>
-              <input
-                type="text"
-                id="contact-name"
-                name="contact[name]"
-                placeholder="Full Name"
-                required
-                class="form-input"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="contact-email" class="form-label">Email *</label>
-              <input
-                type="email"
-                id="contact-email"
-                name="contact[email]"
-                placeholder="you@example.com"
-                required
-                class="form-input"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="contact-phone" class="form-label">Phone (Optional)</label>
-              <input
-                type="tel"
-                id="contact-phone"
-                name="contact[phone]"
-                placeholder="+1 (555) 000-0000"
-                class="form-input"
-              />
-            </div>
-          </fieldset>
-
-          <!-- Message -->
-          <fieldset class="form-fieldset">
-            <legend class="form-legend">Your Message</legend>
-
-            <div class="form-group">
-              <label for="contact-subject" class="form-label">Subject *</label>
-              <select id="contact-subject" name="contact[subject]" required class="form-select">
-                <option value="">Select a topic...</option>
-                <option value="Product Inquiry">Product Inquiry</option>
-                <option value="Financing Questions">Financing Questions</option>
-                <option value="Order Status">Order Status</option>
-                <option value="Returns & Warranty">Returns & Warranty</option>
-                <option value="Care & Maintenance">Care & Maintenance</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="contact-message" class="form-label">Message *</label>
-              <textarea
-                id="contact-message"
-                name="contact[body]"
-                placeholder="Tell us how we can help..."
-                required
-                rows="6"
-                class="form-textarea"
-              ></textarea>
-            </div>
-          </fieldset>
-
-          <!-- Privacy Notice -->
-          <div class="form-notice">
-            <p>
-              <strong>Privacy:</strong> We respect your privacy. Your information will only be used to respond to your inquiry.
-              <a href="/pages/privacy-policy">Read our Privacy Policy</a>
-            </p>
-          </div>
-
-          <!-- Submit Button -->
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Send Message</button>
-            <p class="form-required">* Required fields</p>
-          </div>
-
-          {%- if form.errors -%}
-            <div class="form-errors">
-              <h3>Please correct the following errors:</h3>
-              <ul>
-                {%- for field in form.errors -%}
-                  <li>{{ field | capitalize }}</li>
-                {%- endfor -%}
-              </ul>
-            </div>
-          {%- endif -%}
-        {%- endif -%}
-      </form>
+    <!-- Calendly Scheduling Section -->
+    <div class="calendly-wrapper">
+      <div class="calendly-content">
+        <h2 class="calendly-title">Schedule a Free Consultation</h2>
+        <p class="calendly-subtitle">Book a 30-minute call to discuss your luxury humidor needs and explore our premium collection.</p>
+        <a href="https://calendly.com/belle-dunnluxuryselections/30min" target="_blank" class="btn btn-primary calendly-btn">
+          Schedule Now
+        </a>
+      </div>
     </div>
 
     <!-- Contact Information -->
@@ -196,6 +97,39 @@
   .page-subtitle {
     color: rgba(240, 221, 184, 0.7);
     font-size: 1.1rem;
+  }
+
+  .calendly-wrapper {
+    background-color: var(--charcoal-900);
+    border: 1px solid rgba(70, 62, 59, 0.4);
+    border-radius: 0.75rem;
+    padding: 3rem 2rem;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+  }
+
+  .calendly-content {
+    text-align: center;
+  }
+
+  .calendly-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 1rem 0;
+  }
+
+  .calendly-subtitle {
+    color: rgba(240, 221, 184, 0.7);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .calendly-btn {
+    display: inline-block;
+    width: auto;
   }
 
   .contact-form-wrapper {
