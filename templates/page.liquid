@@ -4,7 +4,7 @@ Pages ported from the headless storefront render fully-designed baked content
 exactly. Admin page body is ignored for these handles — remove a handle from
 this list to hand control back to the Shopify page editor.
 {%- endcomment -%}
-{%- assign baked_handles = 'about-us,financing,care-guides,delivery-info,returns-warranty,privacy-policy,terms-of-service,cookie-policy,walk-in-humidor' | split: ',' -%}
+{%- assign baked_handles = 'about-us,financing,care-guides,delivery-info,returns-warranty,privacy-policy,terms-of-service,cookie-policy,walk-in-humidor,contact' | split: ',' -%}
 
 {%- if baked_handles contains page.handle -%}
   {%- case page.handle -%}
@@ -17,6 +17,7 @@ this list to hand control back to the Shopify page editor.
     {%- when 'privacy-policy' -%}{% render 'page-content-privacy-policy' %}
     {%- when 'terms-of-service' -%}{% render 'page-content-terms-of-service' %}
     {%- when 'cookie-policy' -%}{% render 'page-content-cookie-policy' %}
+    {%- when 'contact' -%}{% render 'page-content-contact' %}
   {%- endcase -%}
 
   {% section 'newsletter' %}

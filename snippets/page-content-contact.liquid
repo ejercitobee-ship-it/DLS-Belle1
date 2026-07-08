@@ -1,0 +1,482 @@
+<!-- Contact Page Content -->
+
+<div class="page-wrapper">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <!-- Page Header -->
+    <header class="page-header mb-12">
+      <h1 class="page-title">Get in Touch</h1>
+      <p class="page-subtitle">We're here to help with any questions about our humidors or financing options.</p>
+    </header>
+
+    <!-- Contact Form -->
+    <div class="contact-form-wrapper">
+      <form method="post" action="/contact" class="contact-form">
+        {%- if form.posted_successfully? -%}
+          <div class="form-success">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <h2>Thank you for your message!</h2>
+            <p>We'll get back to you as soon as possible.</p>
+          </div>
+        {%- else -%}
+          <!-- Personal Information -->
+          <fieldset class="form-fieldset">
+            <legend class="form-legend">Your Information</legend>
+
+            <div class="form-group">
+              <label for="contact-name" class="form-label">Name *</label>
+              <input
+                type="text"
+                id="contact-name"
+                name="contact[name]"
+                placeholder="Full Name"
+                required
+                class="form-input"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email" class="form-label">Email *</label>
+              <input
+                type="email"
+                id="contact-email"
+                name="contact[email]"
+                placeholder="you@example.com"
+                required
+                class="form-input"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-phone" class="form-label">Phone (Optional)</label>
+              <input
+                type="tel"
+                id="contact-phone"
+                name="contact[phone]"
+                placeholder="+1 (555) 000-0000"
+                class="form-input"
+              />
+            </div>
+          </fieldset>
+
+          <!-- Message -->
+          <fieldset class="form-fieldset">
+            <legend class="form-legend">Your Message</legend>
+
+            <div class="form-group">
+              <label for="contact-subject" class="form-label">Subject *</label>
+              <select id="contact-subject" name="contact[subject]" required class="form-select">
+                <option value="">Select a topic...</option>
+                <option value="Product Inquiry">Product Inquiry</option>
+                <option value="Financing Questions">Financing Questions</option>
+                <option value="Order Status">Order Status</option>
+                <option value="Returns & Warranty">Returns & Warranty</option>
+                <option value="Care & Maintenance">Care & Maintenance</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message" class="form-label">Message *</label>
+              <textarea
+                id="contact-message"
+                name="contact[body]"
+                placeholder="Tell us how we can help..."
+                required
+                rows="6"
+                class="form-textarea"
+              ></textarea>
+            </div>
+          </fieldset>
+
+          <!-- Privacy Notice -->
+          <div class="form-notice">
+            <p>
+              <strong>Privacy:</strong> We respect your privacy. Your information will only be used to respond to your inquiry.
+              <a href="/pages/privacy-policy">Read our Privacy Policy</a>
+            </p>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Send Message</button>
+            <p class="form-required">* Required fields</p>
+          </div>
+
+          {%- if form.errors -%}
+            <div class="form-errors">
+              <h3>Please correct the following errors:</h3>
+              <ul>
+                {%- for field in form.errors -%}
+                  <li>{{ field | capitalize }}</li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      </form>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="contact-info-section mt-16 pt-12 border-t border-charcoal-800">
+      <h2 class="section-heading">Other Ways to Reach Us</h2>
+
+      <div class="contact-info-grid">
+        <div class="contact-info-card">
+          <div class="info-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+          <h3>Address</h3>
+          <p>
+            Dunn Luxury Selections<br/>
+            [Your Address]<br/>
+            [City, State ZIP]<br/>
+            United States
+          </p>
+        </div>
+
+        <div class="contact-info-card">
+          <div class="info-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+          </div>
+          <h3>Phone</h3>
+          <p>
+            <a href="tel:+1-555-000-0000">+1 (555) 000-0000</a><br/>
+            <span class="text-sm">Mon-Fri: 9am - 6pm EST</span><br/>
+            <span class="text-sm">Sat-Sun: 10am - 4pm EST</span>
+          </p>
+        </div>
+
+        <div class="contact-info-card">
+          <div class="info-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+          </div>
+          <h3>Email</h3>
+          <p>
+            <a href="mailto:support@dunnluxuryselections.com">support@dunnluxuryselections.com</a><br/>
+            <span class="text-sm">Response: 2-4 hours</span><br/>
+            <span class="text-sm">We're here to help!</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Newsletter Section -->
+{% section 'newsletter' %}
+
+<style>
+  .page-wrapper {
+    background-color: var(--charcoal-950);
+    min-height: 70vh;
+  }
+
+  .page-header {
+    text-align: center;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-subtitle {
+    color: rgba(240, 221, 184, 0.7);
+    font-size: 1.1rem;
+  }
+
+  .contact-form-wrapper {
+    background-color: var(--charcoal-900);
+    border: 1px solid rgba(70, 62, 59, 0.4);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-legend {
+    font-weight: 600;
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-label {
+    color: rgba(240, 221, 184, 0.8);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 0.75rem 1rem;
+    background-color: var(--charcoal-800);
+    border: 1px solid rgba(70, 62, 59, 0.6);
+    border-radius: 0.375rem;
+    color: white;
+    font-size: 0.95rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    transition: all 0.3s ease;
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: rgba(240, 221, 184, 0.3);
+  }
+
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: var(--gold-500);
+    box-shadow: 0 0 0 3px rgba(201, 138, 16, 0.1);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 150px;
+  }
+
+  .form-select {
+    cursor: pointer;
+  }
+
+  .form-notice {
+    background-color: rgba(201, 138, 16, 0.08);
+    border: 1px solid rgba(201, 138, 16, 0.2);
+    border-radius: 0.375rem;
+    padding: 1rem;
+    color: rgba(240, 221, 184, 0.7);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .form-notice a {
+    color: var(--gold-400);
+    text-decoration: underline;
+  }
+
+  .form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%);
+    color: var(--charcoal-950);
+    box-shadow: 0 4px 12px rgba(201, 138, 16, 0.3);
+    width: 100%;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(201, 138, 16, 0.4);
+  }
+
+  .form-required {
+    color: rgba(240, 221, 184, 0.5);
+    font-size: 0.8rem;
+    text-align: center;
+    margin: 0;
+  }
+
+  .form-success {
+    text-align: center;
+    padding: 2rem;
+    background-color: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 0.5rem;
+  }
+
+  .form-success svg {
+    width: 3rem;
+    height: 3rem;
+    color: #22c55e;
+    margin: 0 auto 1rem;
+  }
+
+  .form-success h2 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-success p {
+    color: rgba(240, 221, 184, 0.7);
+    margin: 0;
+  }
+
+  .form-errors {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 0.375rem;
+    padding: 1rem;
+    color: #ef4444;
+  }
+
+  .form-errors h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.9rem;
+  }
+
+  .form-errors ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .form-errors li {
+    margin-bottom: 0.25rem;
+  }
+
+  .section-heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .contact-info-section {
+    margin-top: 4rem;
+  }
+
+  .contact-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .contact-info-card {
+    background-color: var(--charcoal-900);
+    border: 1px solid rgba(70, 62, 59, 0.4);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .info-icon {
+    width: 3rem;
+    height: 3rem;
+    background-color: rgba(201, 138, 16, 0.1);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-500);
+    margin: 0 auto 1rem;
+  }
+
+  .contact-info-card h3 {
+    font-size: 1.1rem;
+    color: white;
+    margin-bottom: 0.75rem;
+    margin-top: 0;
+  }
+
+  .contact-info-card p {
+    color: rgba(240, 221, 184, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .contact-info-card a {
+    color: var(--gold-400);
+    text-decoration: none;
+  }
+
+  .contact-info-card a:hover {
+    text-decoration: underline;
+  }
+
+  .text-sm {
+    display: block;
+    color: rgba(240, 221, 184, 0.5);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+
+  .mb-12 {
+    margin-bottom: 3rem;
+  }
+
+  .mt-16 {
+    margin-top: 4rem;
+  }
+
+  .pt-12 {
+    padding-top: 3rem;
+  }
+
+  .border-t {
+    border-top: 1px solid;
+  }
+
+  .border-charcoal-800 {
+    border-color: var(--charcoal-800);
+  }
+
+  @media (max-width: 640px) {
+    .contact-form-wrapper {
+      padding: 1.5rem;
+    }
+
+    .contact-info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
