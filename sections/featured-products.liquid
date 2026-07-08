@@ -472,6 +472,15 @@
   .fp-viewall { width: 100%; }
 }
 
+/* ── Mobile frame/spacing proportions ── */
+@media (max-width: 639px) {
+  .fp-container { padding: 3rem 1rem 3.25rem; }
+  .fp-frame { padding: 2rem 1rem 2.25rem; border-radius: 1rem; }
+  .fp-head { margin-bottom: 2rem; }
+  .fp-slide { flex-basis: 84%; }
+  .fp-carousel { gap: 1rem; padding: 0.4rem 0.1rem 1.1rem; }
+}
+
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
