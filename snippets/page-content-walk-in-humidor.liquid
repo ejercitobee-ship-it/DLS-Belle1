@@ -154,26 +154,14 @@
   <div class="dls-container dls-container--narrow">
     <div style="text-align: center; margin-bottom: 2.5rem;">
       <div class="dls-eyebrow dls-eyebrow--center">Start Your Project</div>
-      <h2 class="dls-h2" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Request a <span class="text-gradient-gold">Consultation</span></h2>
-      <p class="dls-muted" style="margin: 1rem 0 0;">Tell us about your space and vision — our team responds within one business day. Or call <a href="tel:8884319214" class="dls-gold">(888) 431-9214</a>.</p>
+      <h2 class="dls-h2" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Request a <span class="text-gradient-gold">Free Consultation</span></h2>
+      <p class="dls-muted" style="margin: 1rem 0 0;">Book a 30-minute call with Belle to discuss your custom walk-in humidor project. Or call <a href="tel:8884319214" class="dls-gold">(888) 431-9214</a>.</p>
     </div>
 
-    <div class="dls-card">
-      {% form 'contact' %}
-        {%- if form.posted_successfully? -%}
-          <p style="color: #34d399; text-align: center; margin: 0 0 1rem;">Thank you — your enquiry has been sent. We'll be in touch within one business day.</p>
-        {%- endif -%}
-        {%- if form.errors -%}
-          <p style="color: #e57373; margin: 0 0 1rem;">{{ form.errors | default_errors }}</p>
-        {%- endif -%}
-
-        <input type="hidden" name="contact[tags]" value="walk-in-enquiry" />
-        <label class="wih-label">Full Name<input type="text" name="contact[name]" class="wih-input" required /></label>
-        <label class="wih-label">Email<input type="email" name="contact[email]" class="wih-input" required /></label>
-        <label class="wih-label">Phone<input type="tel" name="contact[phone]" class="wih-input" required /></label>
-        <label class="wih-label">Tell us about your project<textarea name="contact[body]" class="wih-input" rows="5" placeholder="Space dimensions, residential or commercial, target capacity, timeline..."></textarea></label>
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.25rem;">Send Enquiry</button>
-      {% endform %}
+    <div class="dls-card" style="text-align: center; padding: 2.5rem;">
+      <a href="https://calendly.com/belle-dunnluxuryselections/30min" target="_blank" class="btn btn-primary" style="display: inline-block;">
+        Schedule Your Free Consultation
+      </a>
     </div>
   </div>
 </section>
