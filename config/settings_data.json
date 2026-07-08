@@ -34,7 +34,7 @@
           "section_heading": "Latest. <span class=\"text-gradient-gold\">Acquisitions.</span>",
           "section_description": "<p>Handpicked selections from our most exclusive collection</p>",
           "collection": "new-arrivals",
-          "products_count": 4,
+          "products_count": 3,
           "sort_by": "created"
         }
       },
@@ -187,6 +187,15 @@
           "show_features": true,
           "button_text": "Start Your Bespoke Design",
           "button_url": ""
+        }
+      },
+      "financing-banner-compact": {
+        "type": "financing-banner-compact",
+        "settings": {
+          "heading": "Finance Your Collection",
+          "description": "Shop Pay Installments, powered by Affirm: pay in 4 interest-free, or spread larger pieces over monthly plans. Your rate and schedule are shown at checkout. New to Shop Pay? Create a free Shop account to get started.",
+          "cta_text": "Learn More",
+          "cta_url": ""
         }
       }
     },
