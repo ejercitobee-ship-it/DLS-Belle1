@@ -96,7 +96,9 @@ Params: product (required), index (optional), show_new_badge (optional bool)
 
 .pcard__media {
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   aspect-ratio: 1 / 1;
   background: #ffffff;
   overflow: hidden;
@@ -107,24 +109,21 @@ Params: product (required), index (optional), show_new_badge (optional bool)
   text-decoration: none;
 }
 
+/* Cap every product image to a consistent max footprint, centered by the
+   .pcard__media flexbox. Any photo — square, portrait, or frame-filling — is
+   bounded the same way, so no product dominates the tile and new products need
+   no per-image prep. This replaces the old per-product padding workarounds. */
 .pcard__img {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 80%;
+  max-height: 80%;
   object-fit: contain;
-  padding: 1rem;
   transition: transform 0.5s ease;
 }
 
 .pcard:hover .pcard__img {
   transform: scale(1.05);
-}
-
-/* On phones the tile is small, so square/edge-filling product photos
-   (e.g. the RR980, a 600x600 image) fill the frame and look oversized next
-   to letterboxed portrait photos. Generous padding shrinks every product to
-   a consistent, inset size with clear margin. Covers all phone widths (<768). */
-@media (max-width: 767px) {
-  .pcard__img { padding: 3.5rem; }
 }
 
 .pcard__placeholder {
