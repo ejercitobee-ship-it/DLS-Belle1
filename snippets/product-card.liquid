@@ -119,11 +119,12 @@ Params: product (required), index (optional), show_new_badge (optional bool)
   transform: scale(1.05);
 }
 
-/* On small screens the tile is small, so square/edge-filling product photos
-   (e.g. the RR980) look oversized. Extra padding gives every product
-   consistent breathing room from the frame. */
-@media (max-width: 639px) {
-  .pcard__img { padding: 1.5rem; }
+/* On phones the tile is small, so square/edge-filling product photos
+   (e.g. the RR980, a 600x600 image) fill the frame and look oversized next
+   to letterboxed portrait photos. Generous padding shrinks every product to
+   a consistent, inset size with clear margin. Covers all phone widths (<768). */
+@media (max-width: 767px) {
+  .pcard__img { padding: 2.5rem; }
 }
 
 .pcard__placeholder {
