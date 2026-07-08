@@ -125,8 +125,6 @@ Params: product (required), index (optional), show_new_badge (optional bool)
    a consistent, inset size with clear margin. Covers all phone widths (<768). */
 @media (max-width: 767px) {
   .pcard__img { padding: 2.5rem; }
-  /* Comfier tap target for the add-to-cart button on phones (was ~27px tall). */
-  .pcard__add { padding: 0.7rem 1rem; }
 }
 
 .pcard__placeholder {
@@ -315,5 +313,11 @@ Params: product (required), index (optional), show_new_badge (optional bool)
 
 .pcard__add:active {
   transform: scale(0.95);
+}
+
+/* Comfier tap target for the add-to-cart button on phones (was ~27px tall).
+   Placed after the base .pcard__add rule so it wins on mobile. */
+@media (max-width: 767px) {
+  .pcard__add { padding: 0.7rem 1rem; }
 }
 {% endstylesheet %}
