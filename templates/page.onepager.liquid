@@ -1,0 +1,764 @@
+{% layout none %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bespoke Humidor Craftsmanship | Dunn's Luxury Selections</title>
+  <meta name="description" content="Walk-in humidors, cabinet humidors, and cigar showcases — designed and shipped nationwide with complete installation guidance by Dunn's Luxury Selections. Spanish cedar, precision climate control, Swiss-grade craftsmanship." />
+  <link rel="canonical" href="https://dunnluxuryselections.com/pages/onepager" />
+  <link rel="icon" type="image/png" href="{{ 'favicon.png' | asset_url }}" />
+  <meta property="og:title" content="Bespoke Humidor Craftsmanship | Dunn's Luxury Selections" />
+  <meta property="og:description" content="Walk-in humidors, cabinet humidors, and cigar showcases — custom designed and shipped nationwide with complete installation guidance." />
+  <meta property="og:image" content="{{ 'walkin-cedar-corner.jpg' | asset_url | prepend: 'https:' }}" />
+  <meta property="og:url" content="https://dunnluxuryselections.com/pages/onepager" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal-950: #1c1917;
+      --charcoal-925: #211e1c;
+      --charcoal-900: #292524;
+      --charcoal-800: #3d3634;
+      --charcoal-700: #534844;
+      --gold-200: #f3d68b;
+      --gold-300: #ecbc4a;
+      --gold-400: #e5a524;
+      --gold-500: #c98a10;
+      --gold-600: #a06c0c;
+      --cream-100: #f8f0e0;
+      --cream-200: #f0ddb8;
+      --line: rgba(201, 138, 16, 0.22);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--charcoal-950);
+      color: var(--cream-100);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    ::selection { background: rgba(201, 138, 16, 0.3); color: #fff; }
+    .serif { font-family: 'Playfair Display', Georgia, serif; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    a { color: inherit; }
+
+    /* ── Brand bar ── */
+    .brandbar {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 20;
+      display: flex; align-items: center; justify-content: center;
+      padding: 22px 24px;
+    }
+    .brandmark {
+      font-family: 'Playfair Display', serif; font-weight: 700;
+      font-size: 15px; letter-spacing: 0.42em; text-transform: uppercase;
+      color: #fff; text-decoration: none; padding-left: 0.42em;
+    }
+    .brandmark span { color: var(--gold-400); }
+
+    /* ── Header ── */
+    header {
+      text-align: center; padding: 96px 24px 0; margin: 0;
+      min-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background-image: url('{{ 'walkin-panorama.jpg' | asset_url }}');
+      background-size: cover; background-position: center; background-attachment: fixed;
+      position: relative;
+    }
+    header::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, rgba(28,25,23,0.75) 0%, rgba(28,25,23,0.45) 45%, rgba(28,25,23,0.92) 100%),
+        radial-gradient(ellipse at center, rgba(28,25,23,0.25) 0%, rgba(28,25,23,0.7) 100%);
+      z-index: 1;
+    }
+    header > * { position: relative; z-index: 2; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      color: var(--gold-400); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.42em; text-transform: uppercase;
+    }
+    .eyebrow::before, .eyebrow::after { content: ''; width: 38px; height: 1px; background: var(--gold-500); }
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(38px, 6.4vw, 66px);
+      font-weight: 700; color: #fff; line-height: 1.1; margin: 24px 0 20px;
+      letter-spacing: -0.01em;
+    }
+    h1 em {
+      font-style: italic;
+      background: linear-gradient(110deg, var(--gold-200), var(--gold-400) 55%, var(--gold-500));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lede { color: rgba(248, 240, 224, 0.78); max-width: 660px; margin: 0 auto; font-size: clamp(15px, 2.2vw, 17px); }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px;
+      margin-top: 34px; color: rgba(248, 240, 224, 0.6);
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
+    .hero-meta span::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--gold-500); }
+    .scrollcue {
+      margin-top: 46px; display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(248, 240, 224, 0.35); font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    }
+    .scrollcue i { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold-500), transparent); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* ── Tabs ── */
+    .tabbar {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(28, 25, 23, 0.94); backdrop-filter: blur(10px);
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    }
+    .tabs { display: flex; justify-content: center; gap: 4px; overflow-x: auto; }
+    .tab {
+      appearance: none; background: none; border: none; cursor: pointer;
+      color: rgba(248, 240, 224, 0.5); font-family: 'Inter', sans-serif;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 20px 26px 17px; border-bottom: 2px solid transparent;
+      white-space: nowrap; transition: color .2s, border-color .2s;
+    }
+    .tab:hover { color: var(--cream-100); }
+    .tab[aria-selected="true"] { color: var(--gold-300); border-bottom-color: var(--gold-400); }
+
+    @media (max-width: 768px) {
+      .tabs { justify-content: flex-start; gap: 2px; }
+      .tab { padding: 15px 16px 12px; font-size: 11px; letter-spacing: 0.12em; }
+    }
+    @media (max-width: 600px) {
+      .tabs { flex-wrap: wrap; justify-content: center; gap: 3px; overflow-x: visible; }
+      .tab { flex: 1 1 calc(33.333% - 2px); padding: 13px 8px 10px; font-size: 10px; letter-spacing: 0.06em; text-align: center; }
+      header { min-height: 82vh; padding: 84px 18px 0; }
+      .lede { font-size: 14px; line-height: 1.65; }
+    }
+
+    /* ── Panels ── */
+    .panel { display: none; padding: 72px 0 24px; }
+    .panel.active { display: block; animation: fadeUp .5s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+    .sec-eyebrow {
+      display: inline-flex; align-items: center; gap: 12px;
+      color: var(--gold-400); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.32em; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .sec-eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--gold-500); }
+    .panel h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(28px, 4.2vw, 42px); font-weight: 700; color: #fff; margin-bottom: 16px; letter-spacing: -0.01em;
+    }
+    .panel h2 em { font-style: italic; color: var(--gold-300); }
+    .intro { color: rgba(248, 240, 224, 0.68); max-width: 780px; margin-bottom: 44px; font-size: 15.5px; }
+
+    /* gallery */
+    .gallery { display: grid; gap: 16px; grid-template-columns: repeat(6, 1fr); margin-bottom: 56px; }
+    .gallery figure {
+      position: relative; overflow: hidden; border-radius: 12px;
+      border: 1px solid rgba(70, 62, 59, 0.7); background: var(--charcoal-900); cursor: pointer;
+      transition: border-color .3s, transform .3s;
+    }
+    .gallery figure:hover { border-color: rgba(201, 138, 16, 0.5); transform: translateY(-3px); }
+    .gallery img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .7s ease; }
+    .gallery figure:hover img { transform: scale(1.05); }
+    .gallery figcaption {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 34px 16px 12px; font-size: 11px; letter-spacing: 0.06em;
+      color: rgba(248, 240, 224, 0.9);
+      background: linear-gradient(to top, rgba(20,17,15,0.9), transparent);
+    }
+    .g-span-6 { grid-column: span 6; }
+    .g-span-3 { grid-column: span 3; }
+    .g-span-2 { grid-column: span 2; }
+    .g-tall { aspect-ratio: 4 / 3.4; }
+    .g-wide { aspect-ratio: 16 / 5.5; }
+    .g-std  { aspect-ratio: 16 / 10; }
+    @media (max-width: 640px) {
+      .gallery { gap: 10px; }
+      .g-span-3, .g-span-2 { grid-column: span 6; }
+      .g-wide { aspect-ratio: 16 / 8; }
+    }
+
+    /* feature cards */
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 52px; }
+    .feature {
+      position: relative;
+      background: linear-gradient(160deg, rgba(41, 37, 34, 0.6), rgba(28, 25, 23, 0.3));
+      border: 1px solid rgba(70, 62, 59, 0.6);
+      border-radius: 12px; padding: 26px 24px; transition: border-color .3s, transform .3s;
+    }
+    .feature:hover { border-color: rgba(201, 138, 16, 0.4); transform: translateY(-2px); }
+    .feature h3 {
+      font-size: 13px; font-weight: 600; color: var(--gold-300);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .feature p { font-size: 13.5px; color: rgba(248, 240, 224, 0.62); line-height: 1.7; }
+
+    /* spec strip */
+    .specs {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 18px 48px;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      padding: 30px 12px; margin-bottom: 8px; text-align: center;
+    }
+    .spec b { display: block; font-family: 'Playfair Display', serif; font-size: 26px; color: var(--gold-300); font-weight: 700; }
+    .spec span { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(248, 240, 224, 0.5); }
+    @media (max-width: 600px) { .specs { gap: 16px 0; padding: 22px 10px; } .spec { flex: 1 1 46%; } .spec b { font-size: 20px; } }
+
+    /* process */
+    .process { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; margin: 52px 0 8px; }
+    .step { border-left: 2px solid var(--gold-500); padding: 6px 0 6px 18px; }
+    .step .num { font-family: 'Playfair Display', serif; color: var(--gold-400); font-size: 17px; font-weight: 700; }
+    .step h3 { font-size: 14px; color: #fff; font-weight: 600; margin: 4px 0 6px; letter-spacing: 0.02em; }
+    .step p { font-size: 13px; color: rgba(248, 240, 224, 0.58); line-height: 1.65; }
+
+    /* ── Forms ── */
+    .form-card {
+      margin-top: 56px; padding: 40px 34px;
+      background: linear-gradient(160deg, rgba(41, 37, 34, 0.5), rgba(28, 25, 23, 0.25));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+    .form-card h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(21px, 3vw, 27px); color: #fff; font-weight: 700; margin-bottom: 8px;
+    }
+    .form-card > p { font-size: 14px; color: rgba(248, 240, 224, 0.58); margin-bottom: 28px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .form-grid .third { grid-column: span 1; }
+    @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } .form-grid .third { grid-column: 1 / -1; } .form-card { padding: 28px 20px; } }
+    .fld label {
+      display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(248, 240, 224, 0.55); margin-bottom: 7px;
+    }
+    .fld label b { color: var(--gold-400); font-weight: 500; }
+    .fld input, .fld select, .fld textarea {
+      width: 100%; padding: 13px 15px; border-radius: 8px;
+      background: var(--charcoal-950); border: 1px solid rgba(83, 72, 68, 0.8);
+      color: var(--cream-100); font-family: 'Inter', sans-serif; font-size: 14px;
+      transition: border-color .2s, box-shadow .2s; outline: none;
+    }
+    .fld input:focus, .fld select:focus, .fld textarea:focus { border-color: var(--gold-500); box-shadow: 0 0 0 3px rgba(201, 138, 16, 0.12); }
+    .fld select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c98a10' fill='none' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 15px center; }
+    .fld textarea { min-height: 104px; resize: vertical; }
+    .checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px 16px; }
+    .checks label {
+      display: flex; align-items: center; gap: 9px; font-size: 13px;
+      color: rgba(248, 240, 224, 0.72); text-transform: none; letter-spacing: 0; cursor: pointer;
+    }
+    .checks input { width: auto; accent-color: var(--gold-500); }
+    .form-foot { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
+    .form-foot button {
+      border: none; cursor: pointer; padding: 16px 36px; border-radius: 8px;
+      background: linear-gradient(110deg, var(--gold-300), var(--gold-400) 55%, var(--gold-500));
+      color: var(--charcoal-950); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; transition: transform .12s, box-shadow .2s, opacity .2s;
+      box-shadow: 0 6px 18px rgba(201, 138, 16, 0.22);
+    }
+    .form-foot button:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(201, 138, 16, 0.32); }
+    .form-foot button:active { transform: scale(0.99); }
+    .form-foot button:disabled { opacity: 0.5; cursor: wait; box-shadow: none; }
+    .form-msg { font-size: 13px; }
+    .form-msg.err { color: #e08585; }
+    .form-success { text-align: center; padding: 34px 12px; }
+    .form-success .tick {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 54px; height: 54px; border-radius: 50%; margin-bottom: 6px;
+      border: 1px solid rgba(201, 138, 16, 0.5); background: rgba(201, 138, 16, 0.1);
+      font-size: 26px; color: var(--gold-300);
+    }
+    .form-success h4 { font-family: 'Playfair Display', serif; color: #fff; font-size: 22px; margin: 12px 0 6px; }
+    .form-success p { color: rgba(248, 240, 224, 0.6); font-size: 14px; }
+    .hp { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden; }
+
+    /* ── CTA ── */
+    .cta {
+      text-align: center; margin: 80px auto 0; padding: 60px 28px;
+      max-width: 880px; border: 1px solid var(--line); border-radius: 18px;
+      background: radial-gradient(ellipse at top, rgba(201, 138, 16, 0.16), transparent 70%);
+    }
+    .cta h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 36px); color: #fff; font-weight: 700; margin-bottom: 14px; }
+    .cta p { color: rgba(248, 240, 224, 0.62); max-width: 580px; margin: 0 auto 30px; font-size: 15px; }
+    .btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+    .btn-gold {
+      display: inline-block; padding: 16px 34px; border-radius: 8px;
+      background: linear-gradient(110deg, var(--gold-300), var(--gold-400) 55%, var(--gold-500));
+      color: var(--charcoal-950); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none;
+      transition: transform .12s, box-shadow .2s; box-shadow: 0 6px 18px rgba(201, 138, 16, 0.22);
+    }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(201, 138, 16, 0.32); }
+    .btn-gold:active { transform: scale(0.98); }
+    .btn-line {
+      display: inline-block; padding: 15px 34px; border-radius: 8px;
+      border: 1px solid rgba(201, 138, 16, 0.55); color: var(--gold-300);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+      text-decoration: none; transition: background .2s, border-color .2s;
+    }
+    .btn-line:hover { background: rgba(201, 138, 16, 0.12); border-color: var(--gold-400); }
+    @media (max-width: 560px) { .cta { margin-top: 56px; padding: 40px 20px; } .btn-gold, .btn-line { width: 100%; } }
+
+    /* ── Lightbox ── */
+    .lightbox-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center; padding: 24px;
+      animation: fadeIn .3s ease;
+    }
+    .lightbox-overlay.active { display: flex; }
+    .lightbox-image { max-width: 92vw; max-height: 90vh; object-fit: contain; border-radius: 6px; }
+    .lightbox-close {
+      position: absolute; top: 22px; right: 30px; font-size: 40px;
+      color: #fff; cursor: pointer; background: none; border: none;
+      width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+      transition: color .2s;
+    }
+    .lightbox-close:hover { color: var(--gold-300); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    footer {
+      text-align: center; padding: 60px 20px 44px; margin-top: 40px;
+      border-top: 1px solid rgba(70, 62, 59, 0.5);
+      color: rgba(248, 240, 224, 0.4); font-size: 12px;
+    }
+    footer .fmark { font-family: 'Playfair Display', serif; font-weight: 700; letter-spacing: 0.3em; color: var(--cream-100); font-size: 14px; text-transform: uppercase; }
+    footer .fmark span { color: var(--gold-400); }
+    footer .fmeta { margin-top: 12px; }
+    footer a { color: rgba(248, 240, 224, 0.6); text-decoration: none; }
+    footer a:hover { color: var(--gold-300); }
+  </style>
+</head>
+<body>
+
+  <div class="brandbar">
+    <a class="brandmark" href="https://dunnluxuryselections.com">Dunn&rsquo;s <span>&middot;</span> Luxury Selections</a>
+  </div>
+
+  <header>
+    <span class="eyebrow">Bespoke Atelier</span>
+    <h1>Bespoke Humidor <em>Craftsmanship</em></h1>
+    <p class="lede">
+      Walk-in cigar rooms, cabinet humidors, and display showcases &mdash; designed around your space,
+      built to Swiss standards of precision, and shipped nationwide with complete installation guidance.
+      Every project begins with a complimentary consultation.
+    </p>
+    <div class="hero-meta">
+      <span>Spanish Cedar</span>
+      <span>Precision Climate Control</span>
+      <span>Nationwide Delivery</span>
+    </div>
+    <div class="scrollcue"><span>Explore</span><i></i></div>
+  </header>
+
+  <nav class="tabbar" aria-label="Portfolio categories">
+    <div class="wrap">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" id="tab-walkin" aria-controls="panel-walkin" aria-selected="true" data-panel="walkin">Walk-In Humidors</button>
+        <button class="tab" role="tab" id="tab-cabinets" aria-controls="panel-cabinets" aria-selected="false" data-panel="cabinets">Cabinet Humidors</button>
+        <button class="tab" role="tab" id="tab-showcases" aria-controls="panel-showcases" aria-selected="false" data-panel="showcases">Cigar Showcases</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+
+    <!-- ── WALK-IN HUMIDORS ── -->
+    <section class="panel active" id="panel-walkin" role="tabpanel" aria-labelledby="tab-walkin">
+      <span class="sec-eyebrow">The Signature Build</span>
+      <h2>Walk-In <em>Humidors</em></h2>
+      <p class="intro">
+        A walk-in humidor is a fully climate-controlled room &mdash; a dedicated environment where cedar,
+        light, and design converge to protect and elevate every cigar. We design and build each one
+        around your space, your aesthetic, and your collection: private cigar rooms, retail lounges,
+        members&rsquo; clubs, hotels, and restaurants.
+      </p>
+
+      <div class="gallery">
+        <figure class="g-span-6 g-wide"><img src="{{ 'walkin-panorama.jpg' | asset_url }}" alt="Panoramic view of a complete walk-in humidor room with floor-to-ceiling cedar shelving" loading="eager"><figcaption>Full-room build &middot; floor-to-ceiling Spanish cedar</figcaption></figure>
+        <figure class="g-span-3 g-tall"><img src="{{ 'walkin-cedar-corner.jpg' | asset_url }}" alt="Corner of a walk-in humidor with illuminated Spanish cedar shelving and marble floor" loading="lazy"><figcaption>Integrated LED lighting &middot; marble flooring</figcaption></figure>
+        <figure class="g-span-3 g-tall"><img src="{{ 'walkin-retail-room.jpg' | asset_url }}" alt="Retail walk-in humidor with angled display racks" loading="lazy"><figcaption>Retail presentation racks</figcaption></figure>
+        <figure class="g-span-3 g-std"><img src="{{ 'walkin-ceiling-racks.jpg' | asset_url }}" alt="Wall of cedar racks holding boxed cigars under warm lighting" loading="lazy"><figcaption>Full-box rack storage</figcaption></figure>
+        <figure class="g-span-3 g-std"><img src="{{ 'walkin-tray-detail.jpg' | asset_url }}" alt="Close-up of cedar shelf with premium cigar boxes and loose cigars in trays" loading="lazy"><figcaption>Tray &amp; shelf detail</figcaption></figure>
+      </div>
+
+      <div class="features">
+        <div class="feature"><h3>Spanish Cedar Interior</h3><p>Walls and shelving lined in premium Spanish cedar &mdash; prized for its aroma, humidity regulation, and natural protection against tobacco pests.</p></div>
+        <div class="feature"><h3>Insulation &amp; Sealing</h3><p>Full insulation with vapor barriers, airtight doors, and precision-sealed joints for maximum climate stability.</p></div>
+        <div class="feature"><h3>Airflow Engineering</h3><p>Hidden chambers, grilles, and double cedar back panels guarantee even humidity in every corner of the room.</p></div>
+        <div class="feature"><h3>Professional Climate Control</h3><p>Commercial-grade humidification with stainless ducting &mdash; independent tanks or plumbed supply, with clear calibration and setup guidance for your team.</p></div>
+        <div class="feature"><h3>Cigar-Safe LED Lighting</h3><p>Cold, low-heat LEDs with high color rendering; ambient lighting options elevate presentation.</p></div>
+        <div class="feature"><h3>Custom Configurations</h3><p>Shelves and trays for singles, racks for full boxes, glass display areas &mdash; modules designed around your real inventory.</p></div>
+      </div>
+
+      <div class="specs">
+        <div class="spec"><b>65&ndash;72%</b><span>Relative humidity</span></div>
+        <div class="spec"><b>64&ndash;68&deg;F</b><span>Optimal temperature</span></div>
+        <div class="spec"><b>1,000s</b><span>Of cigars &amp; full boxes</span></div>
+        <div class="spec"><b>Nationwide</b><span>Design &amp; shipping</span></div>
+      </div>
+
+      <div class="process">
+        <div class="step"><span class="num">01</span><h3>Space Assessment</h3><p>Guided measurement and evaluation of your space, insulation, and HVAC.</p></div>
+        <div class="step"><span class="num">02</span><h3>Design Concept</h3><p>Layout proposal &mdash; shelving, doors, lighting, and signage &mdash; for your approval.</p></div>
+        <div class="step"><span class="num">03</span><h3>Workshop Crafting</h3><p>Every component manufactured to measure from premium materials.</p></div>
+        <div class="step"><span class="num">04</span><h3>Ship &amp; Support</h3><p>Complete kit delivered with step-by-step instructions and remote guidance through calibration and handover.</p></div>
+      </div>
+
+      <div class="form-card">
+        <h3>Start Your Custom Walk-In Humidor Project</h3>
+        <p>Tell us about your space &mdash; we&rsquo;ll prepare a design concept and a tailored quotation.</p>
+        <form class="inquiry-form form-grid" data-form-type="walkin" novalidate>
+          <div class="fld"><label>First name <b>*</b></label><input name="firstName" required autocomplete="given-name"></div>
+          <div class="fld"><label>Last name</label><input name="lastName" autocomplete="family-name"></div>
+          <div class="fld"><label>Email <b>*</b></label><input name="email" type="email" required autocomplete="email"></div>
+          <div class="fld"><label>Phone</label><input name="phone" type="tel" autocomplete="tel"></div>
+          <div class="fld"><label>Company (optional)</label><input name="company" autocomplete="organization"></div>
+          <div class="fld"><label>City &amp; State</label><input name="location" placeholder="e.g. Chicago, IL"></div>
+          <div class="fld"><label>Space type</label>
+            <select name="spaceType">
+              <option value="">Select&hellip;</option>
+              <option>Private residence</option>
+              <option>Cigar lounge</option>
+              <option>Retail / tobacconist</option>
+              <option>Hotel / restaurant</option>
+              <option>Members' club</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fld"><label>Approx. dimensions</label><input name="dimensions" placeholder='e.g. 8 &times; 10 ft'></div>
+          <div class="fld full"><label>Project details</label><textarea name="details" placeholder="Tell us about your space, collection size, and vision."></textarea></div>
+          <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot full"><button type="submit">Request My Design Concept</button><span class="form-msg" role="status"></span></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── CABINET HUMIDORS ── -->
+    <section class="panel" id="panel-cabinets" role="tabpanel" aria-labelledby="tab-cabinets" hidden>
+      <span class="sec-eyebrow">Furniture-Grade</span>
+      <h2>Cabinet <em>Humidors</em></h2>
+      <p class="intro">
+        Furniture-grade cabinets for collections that deserve display. From compact units holding
+        20 boxes to large-format cabinets storing 80+, each piece is hand-crafted with a full
+        Spanish cedar interior and finished to match your room &mdash; natural hardwoods or lacquer in
+        any color you can name.
+      </p>
+
+      <div class="gallery">
+        <figure class="g-span-6 g-wide"><img src="{{ 'cabinet-showroom.jpg' | asset_url }}" alt="Three large cabinet humidors in walnut and dark finishes in a marble-floored showroom" loading="lazy"><figcaption>Large-format cabinets &middot; walnut, two-door &amp; display formats</figcaption></figure>
+        <figure class="g-span-2 g-tall"><img src="{{ 'cabinet-white-lacquer.jpg' | asset_url }}" alt="White lacquered cabinet humidor with glass door and warm interior lighting in a living room" loading="lazy"><figcaption>Lacquered finish &middot; residential</figcaption></figure>
+        <figure class="g-span-2 g-tall"><img src="{{ 'cabinet-walnut.jpg' | asset_url }}" alt="Walnut cabinet humidor with lit interior showing cedar trays of cigars" loading="lazy"><figcaption>Natural walnut &middot; LED interior</figcaption></figure>
+        <figure class="g-span-2 g-tall"><img src="{{ 'cabinet-mahogany-tall.jpg' | asset_url }}" alt="Tall mahogany two-door cabinet humidor with glass panels and cedar shelving" loading="lazy"><figcaption>Two-door tall cabinet</figcaption></figure>
+      </div>
+
+      <div class="features">
+        <div class="feature"><h3>Full Cedar Interior</h3><p>Every cabinet is lined in Spanish cedar &mdash; stabilizing humidity, enhancing aroma, and supporting long-term aging.</p></div>
+        <div class="feature"><h3>20 to 80+ Boxes</h3><p>Medium cabinets for private collections; large formats for lounges, hotels, and retail &mdash; shelves, drawers, and cedar trays for singles.</p></div>
+        <div class="feature"><h3>Any Finish</h3><p>Walnut, oak, weng&eacute;, and other hardwoods &mdash; or lacquered in any RAL color: matte, satin, or high gloss.</p></div>
+        <div class="feature"><h3>Reliable Humidification</h3><p>Natural sponge-tray systems or electronic climate control, always paired with a calibrated hygrometer.</p></div>
+      </div>
+
+      <div class="specs">
+        <div class="spec"><b>20&ndash;80+</b><span>Cigar boxes</span></div>
+        <div class="spec"><b>100%</b><span>Spanish cedar interior</span></div>
+        <div class="spec"><b>Any RAL</b><span>Custom finish color</span></div>
+        <div class="spec"><b>Concierge</b><span>Support included</span></div>
+      </div>
+
+      <div class="form-card">
+        <h3>Start Your Custom Cabinet Project</h3>
+        <p>Tell us what you need to store and where it will live &mdash; we&rsquo;ll recommend the right format.</p>
+        <form class="inquiry-form form-grid" data-form-type="cabinets" novalidate>
+          <div class="fld"><label>First name <b>*</b></label><input name="firstName" required autocomplete="given-name"></div>
+          <div class="fld"><label>Last name</label><input name="lastName" autocomplete="family-name"></div>
+          <div class="fld"><label>Email <b>*</b></label><input name="email" type="email" required autocomplete="email"></div>
+          <div class="fld"><label>Phone</label><input name="phone" type="tel" autocomplete="tel"></div>
+          <div class="fld"><label>Type of cabinet</label>
+            <select name="cabinetType">
+              <option value="">Select&hellip;</option>
+              <option>Large cabinet humidor</option>
+              <option>Medium cabinet humidor</option>
+              <option>Small cabinet humidor</option>
+              <option>Not sure — advise me</option>
+            </select>
+          </div>
+          <div class="fld"><label>Preferred function</label>
+            <select name="preferredFunction">
+              <option value="">Select&hellip;</option>
+              <option>Storage-focused</option>
+              <option>Presentation-focused</option>
+              <option>Mixed purpose</option>
+            </select>
+          </div>
+          <div class="fld"><label>Capacity needed</label>
+            <select name="capacity">
+              <option value="">Select&hellip;</option>
+              <option>Up to 20 boxes</option>
+              <option>20–50 boxes</option>
+              <option>50–80 boxes</option>
+              <option>80+ boxes</option>
+            </select>
+          </div>
+          <div class="fld"><label>Exterior finish</label>
+            <select name="exteriorFinish">
+              <option value="">Select&hellip;</option>
+              <option>Natural hardwood (walnut, oak, wengé…)</option>
+              <option>Lacquered — any RAL color</option>
+              <option>Custom / not sure yet</option>
+            </select>
+          </div>
+          <div class="fld full"><label>Options</label>
+            <div class="checks">
+              <label><input type="checkbox" name="options" value="Glass doors"> Glass doors</label>
+              <label><input type="checkbox" name="options" value="Full-wood doors"> Full-wood doors</label>
+              <label><input type="checkbox" name="options" value="LED lighting"> LED lighting</label>
+              <label><input type="checkbox" name="options" value="Lock"> Lock</label>
+              <label><input type="checkbox" name="options" value="Adjustable shelves"> Adjustable shelves</label>
+              <label><input type="checkbox" name="options" value="Extra drawers"> Extra drawers</label>
+              <label><input type="checkbox" name="options" value="Wheels"> Wheels</label>
+            </div>
+          </div>
+          <div class="fld full"><label>Project details</label><textarea name="details" placeholder="Room, style, collection — anything that helps us advise you."></textarea></div>
+          <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot full"><button type="submit">Request My Quotation</button><span class="form-msg" role="status"></span></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── CIGAR SHOWCASES ── -->
+    <section class="panel" id="panel-showcases" role="tabpanel" aria-labelledby="tab-showcases" hidden>
+      <span class="sec-eyebrow">Presentation Pieces</span>
+      <h2>Cigar <em>Showcases</em></h2>
+      <p class="intro">
+        Display vitrines, modular shelving, and presentation cabinets that turn a collection into a
+        centerpiece. Built to measure for retail walls, lounges, and private rooms &mdash; including
+        integrated builds hidden inside staircases, bookshelves, and architectural features.
+      </p>
+
+      <div class="gallery">
+        <figure class="g-span-6 g-wide"><img src="{{ 'showcase-triptych.jpg' | asset_url }}" alt="Three views of a dark wood showcase humidor with cedar shelving, drawers, and hygrometer" loading="lazy"><figcaption>Bespoke formats &middot; shelving, drawers &amp; sideboard builds</figcaption></figure>
+        <figure class="g-span-3 g-tall"><img src="{{ 'showcase-retail-wall.jpg' | asset_url }}" alt="Glass-front retail cigar showcase wall with illuminated cedar shelving" loading="lazy"><figcaption>Retail showcase wall &middot; glass doors</figcaption></figure>
+        <figure class="g-span-3 g-tall"><img src="{{ 'showcase-corner-display.jpg' | asset_url }}" alt="Corner display showcase with lit shelves of boxed cigars" loading="lazy"><figcaption>Corner display &middot; ambient lighting</figcaption></figure>
+      </div>
+
+      <div class="features">
+        <div class="feature"><h3>Every Format</h3><p>Tabletop display cases, tall glass vitrines, freestanding display humidors, wall-mounted and modular shelving systems.</p></div>
+        <div class="feature"><h3>Presentation First</h3><p>Angled display shelves, glass doors, and cigar-safe LED lighting with dimmers and remote control.</p></div>
+        <div class="feature"><h3>Smart Details</h3><p>Electronic locks &mdash; fingerprint, keypad, or magnetic. Hidden wheels for mobility. Light-free "blind" sections for aging.</p></div>
+        <div class="feature"><h3>Built Into Your Space</h3><p>Integrated furniture built into staircases, bookshelves, and lounges; concealed humidor compartments inside wardrobes and walls.</p></div>
+      </div>
+
+      <div class="specs">
+        <div class="spec"><b>Bespoke</b><span>Built to measure</span></div>
+        <div class="spec"><b>LED</b><span>Cigar-safe lighting</span></div>
+        <div class="spec"><b>Biometric</b><span>Lock options</span></div>
+        <div class="spec"><b>Modular</b><span>Grow with your collection</span></div>
+      </div>
+
+      <div class="form-card">
+        <h3>Start Your Custom Showcase Project</h3>
+        <p>Describe the display you have in mind &mdash; we&rsquo;ll design it to measure.</p>
+        <form class="inquiry-form form-grid" data-form-type="showcases" novalidate>
+          <div class="fld"><label>First name <b>*</b></label><input name="firstName" required autocomplete="given-name"></div>
+          <div class="fld"><label>Last name</label><input name="lastName" autocomplete="family-name"></div>
+          <div class="fld"><label>Email <b>*</b></label><input name="email" type="email" required autocomplete="email"></div>
+          <div class="fld"><label>Phone</label><input name="phone" type="tel" autocomplete="tel"></div>
+          <div class="fld full"><label>Type of furniture</label>
+            <select name="furnitureType">
+              <option value="">Select&hellip;</option>
+              <option>Custom cigar cabinet (large storage)</option>
+              <option>Display vitrine (tall glass-front showcase)</option>
+              <option>Freestanding display humidor</option>
+              <option>Cigar display case (tabletop / wall)</option>
+              <option>Modular shelving system</option>
+              <option>Wall-mounted shelving</option>
+              <option>Mixed / custom configuration</option>
+            </select>
+          </div>
+          <div class="fld third"><label>Width</label><input name="width" placeholder='e.g. 48"'></div>
+          <div class="fld third"><label>Height</label><input name="height" placeholder='e.g. 84"'></div>
+          <div class="fld third"><label>Depth</label><input name="depth" placeholder='e.g. 20"'></div>
+          <div class="fld full"><label>Interior layout</label>
+            <div class="checks">
+              <label><input type="checkbox" name="interiorLayout" value="Slotted shelves (for boxes)"> Slotted shelves (boxes)</label>
+              <label><input type="checkbox" name="interiorLayout" value="Angled display shelves"> Angled display shelves</label>
+              <label><input type="checkbox" name="interiorLayout" value="Sliding trays"> Sliding trays</label>
+              <label><input type="checkbox" name="interiorLayout" value="Drawers"> Drawers</label>
+              <label><input type="checkbox" name="interiorLayout" value="Adjustable shelves"> Adjustable shelves</label>
+              <label><input type="checkbox" name="interiorLayout" value="LED interior lighting"> LED interior lighting</label>
+            </div>
+          </div>
+          <div class="fld"><label>Exterior finish</label>
+            <select name="exteriorFinish">
+              <option value="">Select&hellip;</option>
+              <option>Walnut</option>
+              <option>Oak</option>
+              <option>Cherry</option>
+              <option>Wengé</option>
+              <option>Lacquered — any RAL color</option>
+              <option>Glass doors</option>
+              <option>Other / not sure</option>
+            </select>
+          </div>
+          <div class="fld"><label>Capacity</label><input name="capacity" placeholder="e.g. 500 cigars / 30 boxes"></div>
+          <div class="fld full"><label>Project details</label><textarea name="details" placeholder="Tell us about your space, your collection, or attach references when we reply."></textarea></div>
+          <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot full"><button type="submit">Request My Design</button><span class="form-msg" role="status"></span></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <div class="cta">
+      <span class="sec-eyebrow" style="justify-content:center;">Let's Begin</span>
+      <h2>Start Your Custom Project</h2>
+      <p>
+        Tell us about your space and your collection &mdash; we&rsquo;ll prepare a design concept and a tailored
+        quotation. Our specialists guide every project from first design concept to final calibration.
+      </p>
+      <div class="btns">
+        <a class="btn-gold" href="tel:+18884319214">Call (888) 431-9214</a>
+        <a class="btn-line" href="mailto:support@dunnluxuryselections.com?subject=Custom%20Humidor%20Project">Email a Specialist</a>
+      </div>
+    </div>
+  </main>
+
+  <div class="lightbox-overlay" id="lightbox">
+    <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+    <img class="lightbox-image" alt="" />
+  </div>
+
+  <footer>
+    <div class="fmark">Dunn&rsquo;s <span>&middot;</span> Luxury Selections</div>
+    <div class="fmeta">
+      <a href="https://dunnluxuryselections.com">dunnluxuryselections.com</a> &nbsp;&middot;&nbsp;
+      <a href="tel:+18884319214">(888) 431-9214</a> &nbsp;&middot;&nbsp;
+      Mon&ndash;Fri 9:00 AM &ndash; 6:00 PM CST &nbsp;&middot;&nbsp; &copy; 2026 Dunn&rsquo;s Luxury Selections
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // ── Lightbox ──
+      var lightbox = document.getElementById('lightbox');
+      var lightboxImg = lightbox.querySelector('img');
+      var lightboxClose = lightbox.querySelector('.lightbox-close');
+
+      document.querySelectorAll('.gallery figure').forEach(function (fig) {
+        fig.addEventListener('click', function () {
+          var img = fig.querySelector('img');
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.classList.add('active');
+        });
+      });
+
+      lightboxClose.addEventListener('click', function () {
+        lightbox.classList.remove('active');
+      });
+
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) lightbox.classList.remove('active');
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+          lightbox.classList.remove('active');
+        }
+      });
+
+      // ── Tabs ──
+      var tabs = document.querySelectorAll('.tab');
+      var panels = document.querySelectorAll('.panel');
+      var NAMES = ['walkin', 'cabinets', 'showcases'];
+      function activate(name, updateUrl) {
+        tabs.forEach(function (t) {
+          var on = t.dataset.panel === name;
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        panels.forEach(function (p) {
+          var on = p.id === 'panel-' + name;
+          p.classList.toggle('active', on);
+          p.hidden = !on;
+        });
+        if (updateUrl && history.replaceState) history.replaceState(null, '', '/onepager/' + name);
+      }
+      tabs.forEach(function (t) {
+        t.addEventListener('click', function () {
+          activate(t.dataset.panel, true);
+          // keep the reader at the top of the newly selected panel
+          var bar = document.querySelector('.tabbar');
+          var y = bar.getBoundingClientRect().top + window.scrollY;
+          if (window.scrollY > y) window.scrollTo({ top: y, behavior: 'instant' });
+        });
+      });
+      // initial tab from /onepager/<name> path, with legacy #<name> fallback
+      var fromPath = (location.pathname.match(/\/onepager\/([a-z-]+)/) || [])[1];
+      var fromHash = location.hash.replace('#', '');
+      var initial = NAMES.indexOf(fromPath) !== -1 ? fromPath : NAMES.indexOf(fromHash) !== -1 ? fromHash : null;
+      if (initial) activate(initial, fromHash === initial);
+
+      // ── Project inquiry forms ──
+      document.querySelectorAll('.inquiry-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var msg = form.querySelector('.form-msg');
+          var btn = form.querySelector('button[type="submit"]');
+          msg.textContent = '';
+          msg.classList.remove('err');
+
+          // collect fields; checkboxes with the same name join into one value
+          var data = { formType: form.dataset.formType };
+          var fd = new FormData(form);
+          fd.forEach(function (value, key) {
+            value = String(value).trim();
+            if (!value) return;
+            data[key] = data[key] ? data[key] + ', ' + value : value;
+          });
+
+          if (!data.firstName || !data.email) {
+            msg.textContent = 'Please fill in your name and email.';
+            msg.classList.add('err');
+            return;
+          }
+
+          btn.disabled = true;
+          var label = btn.textContent;
+          btn.textContent = 'Sending…';
+
+          fetch('/api/project-inquiry', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          })
+            .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+            .then(function (res) {
+              if (!res.ok) throw new Error(res.j.error || 'Something went wrong.');
+              // Track form submission as conversion in Google Ads
+              if (typeof window !== 'undefined' && window.gtag) {
+                window.gtag('event', 'generate_lead', {
+                  'value': 1,
+                  'currency': 'USD',
+                  'form_type': form.dataset.formType || 'inquiry',
+                });
+              }
+              form.parentElement.innerHTML =
+                '<div class="form-success"><div class="tick">✓</div>' +
+                '<h4>Thank you — request received.</h4>' +
+                '<p>A specialist will contact you within one business day to discuss your project.</p></div>';
+            })
+            .catch(function (err) {
+              msg.textContent = err.message + ' You can also call (888) 431-9214.';
+              msg.classList.add('err');
+              btn.disabled = false;
+              btn.textContent = label;
+            });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
