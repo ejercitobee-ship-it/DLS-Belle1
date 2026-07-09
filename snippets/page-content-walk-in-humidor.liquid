@@ -155,13 +155,49 @@
     <div style="text-align: center; margin-bottom: 2.5rem;">
       <div class="dls-eyebrow dls-eyebrow--center">Start Your Project</div>
       <h2 class="dls-h2" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Request a <span class="text-gradient-gold">Free Consultation</span></h2>
-      <p class="dls-muted" style="margin: 1rem 0 0;">Book a 30-minute call with Belle to discuss your custom walk-in humidor project. Or call <a href="tel:8884319214" class="dls-gold">(888) 431-9214</a>.</p>
+      <p class="dls-muted" style="margin: 1rem 0 0;">Tell us about your space and vision — a specialist will follow up within one business day. Or call <a href="tel:8884319214" class="dls-gold">(888) 431-9214</a>.</p>
     </div>
 
-    <div class="dls-card" style="text-align: center; padding: 2.5rem;">
-      <a href="https://calendly.com/belle-dunnluxuryselections/30min" target="_blank" class="btn btn-primary" style="display: inline-block;">
-        Schedule Your Free Consultation
-      </a>
+    <div class="dls-card" style="padding: 2.5rem;">
+      <form class="wih-consult-form" data-form-type="walkin-consultation" novalidate>
+        <div class="wih-form-grid">
+          <label class="wih-label">First name <span style="color: var(--gold-400);">*</span>
+            <input class="wih-input" name="firstName" required autocomplete="given-name" />
+          </label>
+          <label class="wih-label">Last name
+            <input class="wih-input" name="lastName" autocomplete="family-name" />
+          </label>
+          <label class="wih-label">Email <span style="color: var(--gold-400);">*</span>
+            <input class="wih-input" name="email" type="email" required autocomplete="email" />
+          </label>
+          <label class="wih-label">Phone
+            <input class="wih-input" name="phone" type="tel" autocomplete="tel" />
+          </label>
+          <label class="wih-label" style="grid-column: 1 / -1;">City &amp; State
+            <input class="wih-input" name="location" placeholder="e.g. Chicago, IL" />
+          </label>
+          <label class="wih-label" style="grid-column: 1 / -1;">Project details
+            <textarea class="wih-input" name="details" rows="4" placeholder="Space dimensions, residential or commercial, target capacity, timeline..."></textarea>
+          </label>
+        </div>
+
+        <!-- honeypot: hidden from people, catches bots -->
+        <div style="position: absolute; left: -9999px;" aria-hidden="true">
+          <label>Website <input name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <div style="margin-top: 1.5rem; text-align: center;">
+          <button type="submit" class="btn btn-primary">Request My Free Consultation</button>
+          <p class="wih-form-msg" role="status" style="margin: 0.85rem 0 0; font-size: 0.85rem;"></p>
+        </div>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid rgba(70, 62, 59, 0.5);">
+        <p class="dls-muted" style="margin: 0 0 0.85rem; font-size: 0.85rem;">Prefer to talk it through? Book a 30-minute call directly.</p>
+        <a href="https://calendly.com/belle-dunnluxuryselections/30min" target="_blank" rel="noopener" class="btn btn-secondary" style="display: inline-block;">
+          Schedule a 30-Minute Call
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -177,4 +213,68 @@
   .wih-features li::before { content: '\2713'; position: absolute; left: 0; color: var(--gold-500); font-weight: 700; }
   .wih-label { display: block; color: rgba(240, 221, 184, 0.7); font-size: 0.85rem; margin-bottom: 1rem; }
   .wih-input { display: block; width: 100%; margin-top: 0.35rem; padding: 0.75rem 1rem; background: var(--charcoal-950); border: 1px solid rgba(164, 108, 12, 0.3); border-radius: 0.25rem; color: var(--cream-100); font-family: inherit; }
+  .wih-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 1.25rem; text-align: left; }
+  @media (max-width: 560px) { .wih-form-grid { grid-template-columns: 1fr; } }
+  .wih-form-grid .wih-label { margin-bottom: 0.5rem; }
+  .wih-form-msg.err { color: #e08585; }
+  .wih-form-success { text-align: center; }
+  .wih-form-success .tick { width: 3rem; height: 3rem; margin: 0 auto 1rem; border-radius: 9999px; background: rgba(52, 211, 153, 0.15); color: #34d399; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 </style>
+
+<script>
+  (function () {
+    var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw3bkr1qS8wJ7GrQeqhp4UytVlSMPwtacyG3IkD0dxNmi36YoX5jU-hcBpRPqe3m8Jq/exec';
+    var form = document.querySelector('.wih-consult-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = form.querySelector('.wih-form-msg');
+      var btn = form.querySelector('button[type="submit"]');
+      msg.textContent = '';
+      msg.classList.remove('err');
+
+      var data = { formType: form.dataset.formType };
+      new FormData(form).forEach(function (value, key) {
+        value = String(value).trim();
+        if (value) data[key] = data[key] ? data[key] + ', ' + value : value;
+      });
+
+      if (!data.firstName || !data.email) {
+        msg.textContent = 'Please fill in your name and email.';
+        msg.classList.add('err');
+        return;
+      }
+
+      var label = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      // Same pattern as the one-pager: plain-text JSON, no-cors (Apps Script
+      // returns no CORS headers), opaque response treated as success.
+      fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
+        .then(function () {
+          if (window.gtag) {
+            window.gtag('event', 'generate_lead', {
+              'value': 1,
+              'currency': 'USD',
+              'form_type': form.dataset.formType || 'walkin-consultation',
+            });
+          }
+          var card = form.closest('.dls-card');
+          if (card) {
+            card.innerHTML =
+              '<div class="wih-form-success"><div class="tick">&#10003;</div>' +
+              '<h3 style="font-family: \'Playfair Display\', serif; color: #fff; margin: 0 0 0.5rem;">Thank you &mdash; request received.</h3>' +
+              '<p class="dls-muted" style="margin: 0;">A specialist will contact you within one business day to discuss your project.</p></div>';
+          }
+        })
+        .catch(function () {
+          msg.textContent = 'Something went wrong. Please call (888) 431-9214 or email support@dunnluxuryselections.com.';
+          msg.classList.add('err');
+          btn.disabled = false;
+          btn.textContent = label;
+        });
+    });
+  })();
+</script>
