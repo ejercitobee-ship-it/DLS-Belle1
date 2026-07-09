@@ -28,16 +28,19 @@
 <section style="padding: 3.5rem 0; background: var(--charcoal-950);">
   <div class="dls-container">
     <div class="guide-band">
-      <div class="guide-band__icon" aria-hidden="true">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      <div class="guide-band__media">
+        <img src="{{ 'buyer-guide-cover.jpg' | asset_url }}" alt="The Ultimate Luxury Humidor Buyer's Guide by Dunn's Luxury Selections" width="1200" height="800" loading="lazy" />
       </div>
-      <p class="dls-eyebrow dls-eyebrow--center guide-band__eyebrow">Free Download</p>
-      <h2 class="guide-band__title">The Humidor Buyer's Guide</h2>
-      <p class="guide-band__desc">Everything to weigh before commissioning a bespoke humidor &mdash; sizing, climate control, Spanish cedar, finishes, and budgeting. Free, and no obligation.</p>
-      <button type="button" class="btn btn-primary guide-open">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 0.4rem;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        Download Free Buyer's Guide
-      </button>
+      <div class="guide-band__content">
+        <p class="dls-eyebrow guide-band__eyebrow">Free Download</p>
+        <h2 class="guide-band__title">The Ultimate Luxury Humidor Buyer's Guide</h2>
+        <p class="guide-band__desc">Everything serious collectors weigh before commissioning a bespoke humidor &mdash; sizing, climate control, Spanish cedar, finishes, and budgeting.</p>
+        <button type="button" class="btn btn-primary guide-open">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 0.4rem;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download Free Buyer's Guide
+        </button>
+        <p class="guide-band__trust">23-page guide &middot; Instant PDF &middot; No obligation</p>
+      </div>
     </div>
   </div>
 </section>
@@ -266,13 +269,21 @@
   .wih-form-success { text-align: center; }
   .wih-form-success .tick { width: 3rem; height: 3rem; margin: 0 auto 1rem; border-radius: 9999px; background: rgba(52, 211, 153, 0.15); color: #34d399; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 
-  /* Free Buyer's Guide band — centered card */
-  .guide-band { max-width: 46rem; margin: 0 auto; text-align: center; background: var(--charcoal-900); border: 1px solid rgba(164, 108, 12, 0.3); border-radius: 0.75rem; padding: 2.75rem 2rem; }
-  .guide-band__icon { width: 3.5rem; height: 3.5rem; margin: 0 auto 1.25rem; border-radius: 9999px; border: 1px solid rgba(164, 108, 12, 0.4); background: rgba(164, 108, 12, 0.1); color: var(--gold-500); display: flex; align-items: center; justify-content: center; }
-  .guide-band__eyebrow { justify-content: center; margin-bottom: 0.85rem; }
-  .guide-band__title { font-family: 'Playfair Display', Georgia, serif; color: #fff; font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 0.85rem; }
-  .guide-band__desc { color: rgba(240, 221, 184, 0.6); font-size: 0.95rem; line-height: 1.65; max-width: 34rem; margin: 0 auto 1.75rem; }
+  /* Free Buyer's Guide band — book cover + copy */
+  .guide-band { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 2.5rem; align-items: center; max-width: 60rem; margin: 0 auto; background: var(--charcoal-900); border: 1px solid rgba(164, 108, 12, 0.3); border-radius: 0.9rem; padding: 2.25rem; }
+  .guide-band__media img { width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 22px 45px rgba(0, 0, 0, 0.55); display: block; }
+  .guide-band__content { text-align: left; }
+  .guide-band__eyebrow { margin-bottom: 0.85rem; }
+  .guide-band__title { font-family: 'Playfair Display', Georgia, serif; color: #fff; font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.15; margin: 0 0 0.85rem; }
+  .guide-band__desc { color: rgba(240, 221, 184, 0.6); font-size: 0.95rem; line-height: 1.65; margin: 0 0 1.5rem; }
   .guide-band .guide-open { display: inline-flex; align-items: center; }
+  .guide-band__trust { color: rgba(240, 221, 184, 0.4); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 1rem 0 0; }
+  @media (max-width: 760px) {
+    .guide-band { grid-template-columns: 1fr; gap: 1.75rem; text-align: center; padding: 2rem 1.5rem; }
+    .guide-band__media { max-width: 20rem; margin: 0 auto; }
+    .guide-band__content { text-align: center; }
+    .guide-band__eyebrow { justify-content: center; }
+  }
 
   /* Buyer's Guide modal */
   .guide-modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.25rem; }
