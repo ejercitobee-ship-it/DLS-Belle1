@@ -140,16 +140,21 @@ button,
   transform: scale(0.98);
 }
 
-/* Secondary Button */
+/* Secondary Button — gold-framed outline.
+   The border uses !important because various section stylesheets bundle a
+   generic `.btn { border: none }` that loads after this file and would
+   otherwise erase the frame, leaving the button looking like plain text.
+   A faint gold fill gives it presence on busy hero images too. */
 .btn-secondary {
-  background-color: transparent;
-  color: var(--gold-400);
-  border: 2px solid var(--gold-500);
+  background-color: rgba(201, 138, 16, 0.08);
+  color: var(--gold-300);
+  border: 1.5px solid var(--gold-500) !important;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(229, 165, 36, 0.1);
-  border-color: var(--gold-400);
+  background-color: rgba(201, 138, 16, 0.18);
+  border-color: var(--gold-300) !important;
+  color: var(--gold-200);
 }
 
 /* Ghost Button */
