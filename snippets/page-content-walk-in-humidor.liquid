@@ -24,6 +24,26 @@
   </div>
 </section>
 
+<!-- Free Buyer's Guide lead magnet -->
+<section style="padding: 3.5rem 0; background: var(--charcoal-950);">
+  <div class="dls-container">
+    <div class="guide-band">
+      <div class="guide-band__icon" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      </div>
+      <div class="guide-band__text">
+        <p class="dls-eyebrow" style="margin-bottom: 0.5rem;">Free Download</p>
+        <h2 style="font-family: 'Playfair Display', Georgia, serif; color: #fff; font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 0.5rem;">The Humidor Buyer's Guide</h2>
+        <p class="dls-muted" style="margin: 0;">Everything to weigh before commissioning a bespoke humidor &mdash; sizing, climate control, Spanish cedar, finishes, and budgeting. Free, no obligation.</p>
+      </div>
+      <button type="button" class="btn btn-primary guide-open" style="flex-shrink: 0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 0.4rem;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Download Free Buyer's Guide
+      </button>
+    </div>
+  </div>
+</section>
+
 <!-- Three Pillars -->
 <section class="dls-page">
   <div class="dls-container dls-container--wide">
@@ -202,6 +222,34 @@
   </div>
 </section>
 
+<!-- Buyer's Guide lead-capture modal -->
+<div class="guide-modal" id="guideModal" hidden>
+  <div class="guide-modal__backdrop" data-guide-close></div>
+  <div class="guide-modal__panel" role="dialog" aria-modal="true" aria-labelledby="guideModalTitle">
+    <button type="button" class="guide-modal__close" data-guide-close aria-label="Close">&#10005;</button>
+    <div class="dls-eyebrow dls-eyebrow--center" style="justify-content: center;">Free Buyer's Guide</div>
+    <h3 id="guideModalTitle" style="font-family: 'Playfair Display', Georgia, serif; color: #fff; font-size: 1.5rem; text-align: center; margin: 0 0 0.5rem;">Where should we send it?</h3>
+    <p class="dls-muted" style="text-align: center; margin: 0 0 1.5rem; font-size: 0.9rem;">Enter your details and your guide downloads instantly.</p>
+
+    <form class="guide-form" data-form-type="buyers-guide" novalidate>
+      <label class="wih-label">First name <span style="color: var(--gold-400);">*</span>
+        <input class="wih-input" name="firstName" required autocomplete="given-name" />
+      </label>
+      <label class="wih-label">Email <span style="color: var(--gold-400);">*</span>
+        <input class="wih-input" name="email" type="email" required autocomplete="email" />
+      </label>
+      <label class="wih-label">Phone (optional)
+        <input class="wih-input" name="phone" type="tel" autocomplete="tel" />
+      </label>
+      <div style="position: absolute; left: -9999px;" aria-hidden="true">
+        <label>Website <input name="website" tabindex="-1" autocomplete="off" /></label>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.75rem;">Get My Free Guide</button>
+      <p class="guide-msg" role="status" style="margin: 0.85rem 0 0; font-size: 0.85rem; text-align: center;"></p>
+    </form>
+  </div>
+</div>
+
 <style>
   .wih-hero { position: relative; min-height: 85vh; display: flex; align-items: center; overflow: hidden; }
   .wih-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -219,6 +267,25 @@
   .wih-form-msg.err { color: #e08585; }
   .wih-form-success { text-align: center; }
   .wih-form-success .tick { width: 3rem; height: 3rem; margin: 0 auto 1rem; border-radius: 9999px; background: rgba(52, 211, 153, 0.15); color: #34d399; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+  /* Free Buyer's Guide band */
+  .guide-band { display: flex; align-items: center; gap: 1.75rem; background: var(--charcoal-900); border: 1px solid rgba(164, 108, 12, 0.3); border-radius: 0.75rem; padding: 2rem 2.25rem; }
+  .guide-band__icon { flex-shrink: 0; width: 3.5rem; height: 3.5rem; border-radius: 9999px; border: 1px solid rgba(164, 108, 12, 0.4); background: rgba(164, 108, 12, 0.1); color: var(--gold-500); display: flex; align-items: center; justify-content: center; }
+  .guide-band__text { flex: 1; min-width: 0; }
+  @media (max-width: 720px) {
+    .guide-band { flex-direction: column; text-align: center; gap: 1.25rem; }
+    .guide-band__text { text-align: center; }
+    .guide-band .dls-eyebrow { justify-content: center; }
+  }
+
+  /* Buyer's Guide modal */
+  .guide-modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.25rem; }
+  .guide-modal[hidden] { display: none; }
+  .guide-modal__backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.72); backdrop-filter: blur(2px); }
+  .guide-modal__panel { position: relative; z-index: 1; width: 100%; max-width: 26rem; background: var(--charcoal-900); border: 1px solid rgba(164, 108, 12, 0.3); border-radius: 0.9rem; padding: 2.25rem; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6); }
+  .guide-modal__close { position: absolute; top: 0.9rem; right: 0.9rem; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; background: none; border: none; color: rgba(240, 221, 184, 0.5); font-size: 1rem; cursor: pointer; border-radius: 9999px; transition: color 0.2s ease, background 0.2s ease; }
+  .guide-modal__close:hover { color: var(--gold-400); background: rgba(201, 138, 16, 0.1); }
+  .guide-msg.err { color: #e08585; }
 </style>
 
 <script>
@@ -271,6 +338,93 @@
         })
         .catch(function () {
           msg.textContent = 'Something went wrong. Please call (888) 431-9214 or email support@dunnluxuryselections.com.';
+          msg.classList.add('err');
+          btn.disabled = false;
+          btn.textContent = label;
+        });
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw3bkr1qS8wJ7GrQeqhp4UytVlSMPwtacyG3IkD0dxNmi36YoX5jU-hcBpRPqe3m8Jq/exec';
+    var GUIDE_URL = '{{ 'buyer-guide.pdf' | asset_url }}';
+    var GUIDE_FILENAME = 'Dunns-Luxury-Selections-Humidor-Buyers-Guide.pdf';
+    var modal = document.getElementById('guideModal');
+    var form = modal ? modal.querySelector('.guide-form') : null;
+    if (!modal || !form) return;
+
+    var lastFocus = null;
+    function openModal() {
+      lastFocus = document.activeElement;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      var first = form.querySelector('input[name="firstName"]');
+      if (first) first.focus();
+    }
+    function closeModal() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    document.querySelectorAll('.guide-open').forEach(function (b) { b.addEventListener('click', openModal); });
+    modal.querySelectorAll('[data-guide-close]').forEach(function (b) { b.addEventListener('click', closeModal); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+
+    function downloadGuide() {
+      var a = document.createElement('a');
+      a.href = GUIDE_URL;
+      a.setAttribute('download', GUIDE_FILENAME);
+      a.target = '_blank';
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = form.querySelector('.guide-msg');
+      var btn = form.querySelector('button[type="submit"]');
+      msg.textContent = '';
+      msg.classList.remove('err');
+
+      var data = { formType: form.dataset.formType };
+      new FormData(form).forEach(function (value, key) {
+        value = String(value).trim();
+        if (value) data[key] = value;
+      });
+
+      if (!data.firstName || !data.email) {
+        msg.textContent = 'Please enter your name and email.';
+        msg.classList.add('err');
+        return;
+      }
+
+      var label = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Preparing…';
+
+      // Same Google Sheet endpoint / no-cors pattern as the other forms.
+      fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
+        .then(function () {
+          if (window.gtag) {
+            window.gtag('event', 'generate_lead', { 'value': 1, 'currency': 'USD', 'form_type': 'buyers-guide' });
+          }
+          downloadGuide();
+          var panel = modal.querySelector('.guide-modal__panel');
+          panel.innerHTML =
+            '<button type="button" class="guide-modal__close" data-guide-close aria-label="Close">&#10005;</button>' +
+            '<div class="wih-form-success"><div class="tick">&#10003;</div>' +
+            '<h3 style="font-family: \'Playfair Display\', Georgia, serif; color: #fff; margin: 0 0 0.5rem;">Your guide is downloading.</h3>' +
+            '<p class="dls-muted" style="margin: 0 0 1.25rem;">If it didn\'t start automatically, use the button below.</p>' +
+            '<a href="' + GUIDE_URL + '" target="_blank" rel="noopener" class="btn btn-primary" download="' + GUIDE_FILENAME + '">Download the Guide</a></div>';
+          panel.querySelectorAll('[data-guide-close]').forEach(function (b) { b.addEventListener('click', closeModal); });
+        })
+        .catch(function () {
+          msg.textContent = 'Something went wrong. Please call (888) 431-9214.';
           msg.classList.add('err');
           btn.disabled = false;
           btn.textContent = label;
