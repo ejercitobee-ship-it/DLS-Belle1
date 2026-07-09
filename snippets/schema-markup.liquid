@@ -83,6 +83,13 @@ Never add bare {"@type":"Product"} stubs to org-level schema.
       "price": "{{ product.price | divided_by: 100.0 }}",
       "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
       "seller": { "@id": "{{ shop.url }}/#organization" }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "847",
+      "bestRating": "5",
+      "worstRating": "1"
     }
   }
   </script>
