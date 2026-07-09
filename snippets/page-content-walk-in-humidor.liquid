@@ -31,12 +31,10 @@
       <div class="guide-band__icon" aria-hidden="true">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
       </div>
-      <div class="guide-band__text">
-        <p class="dls-eyebrow" style="margin-bottom: 0.5rem;">Free Download</p>
-        <h2 style="font-family: 'Playfair Display', Georgia, serif; color: #fff; font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 0.5rem;">The Humidor Buyer's Guide</h2>
-        <p class="dls-muted" style="margin: 0;">Everything to weigh before commissioning a bespoke humidor &mdash; sizing, climate control, Spanish cedar, finishes, and budgeting. Free, no obligation.</p>
-      </div>
-      <button type="button" class="btn btn-primary guide-open" style="flex-shrink: 0;">
+      <p class="dls-eyebrow dls-eyebrow--center guide-band__eyebrow">Free Download</p>
+      <h2 class="guide-band__title">The Humidor Buyer's Guide</h2>
+      <p class="guide-band__desc">Everything to weigh before commissioning a bespoke humidor &mdash; sizing, climate control, Spanish cedar, finishes, and budgeting. Free, and no obligation.</p>
+      <button type="button" class="btn btn-primary guide-open">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 0.4rem;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         Download Free Buyer's Guide
       </button>
@@ -268,15 +266,13 @@
   .wih-form-success { text-align: center; }
   .wih-form-success .tick { width: 3rem; height: 3rem; margin: 0 auto 1rem; border-radius: 9999px; background: rgba(52, 211, 153, 0.15); color: #34d399; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 
-  /* Free Buyer's Guide band */
-  .guide-band { display: flex; align-items: center; gap: 1.75rem; background: var(--charcoal-900); border: 1px solid rgba(164, 108, 12, 0.3); border-radius: 0.75rem; padding: 2rem 2.25rem; }
-  .guide-band__icon { flex-shrink: 0; width: 3.5rem; height: 3.5rem; border-radius: 9999px; border: 1px solid rgba(164, 108, 12, 0.4); background: rgba(164, 108, 12, 0.1); color: var(--gold-500); display: flex; align-items: center; justify-content: center; }
-  .guide-band__text { flex: 1; min-width: 0; }
-  @media (max-width: 720px) {
-    .guide-band { flex-direction: column; text-align: center; gap: 1.25rem; }
-    .guide-band__text { text-align: center; }
-    .guide-band .dls-eyebrow { justify-content: center; }
-  }
+  /* Free Buyer's Guide band — centered card */
+  .guide-band { max-width: 46rem; margin: 0 auto; text-align: center; background: var(--charcoal-900); border: 1px solid rgba(164, 108, 12, 0.3); border-radius: 0.75rem; padding: 2.75rem 2rem; }
+  .guide-band__icon { width: 3.5rem; height: 3.5rem; margin: 0 auto 1.25rem; border-radius: 9999px; border: 1px solid rgba(164, 108, 12, 0.4); background: rgba(164, 108, 12, 0.1); color: var(--gold-500); display: flex; align-items: center; justify-content: center; }
+  .guide-band__eyebrow { justify-content: center; margin-bottom: 0.85rem; }
+  .guide-band__title { font-family: 'Playfair Display', Georgia, serif; color: #fff; font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 0.85rem; }
+  .guide-band__desc { color: rgba(240, 221, 184, 0.6); font-size: 0.95rem; line-height: 1.65; max-width: 34rem; margin: 0 auto 1.75rem; }
+  .guide-band .guide-open { display: inline-flex; align-items: center; }
 
   /* Buyer's Guide modal */
   .guide-modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.25rem; }
