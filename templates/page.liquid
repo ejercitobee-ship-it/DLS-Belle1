@@ -1,4 +1,13 @@
 {%- comment -%}
+The one-pager is a full standalone landing document (its own <head>/<body>),
+so it renders with no theme chrome via a conditional layout. Everything else
+falls through to the normal page rendering below.
+{%- endcomment -%}
+{%- if page.handle == 'onepager' -%}
+  {%- layout none -%}
+  {%- render 'onepager-doc' -%}
+{%- else -%}
+{%- comment -%}
 Pages ported from the headless storefront render fully-designed baked content
 (snippets/page-content-<handle>.liquid) so they match dunnluxuryselections.com
 exactly. Admin page body is ignored for these handles — remove a handle from
@@ -264,3 +273,4 @@ this list to hand control back to the Shopify page editor.
     }
   }
 </style>
+{%- endif -%}
