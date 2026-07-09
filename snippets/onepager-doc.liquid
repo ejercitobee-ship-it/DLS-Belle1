@@ -53,11 +53,16 @@
       padding: 22px 24px;
     }
     .brandmark {
-      font-family: 'Playfair Display', serif; font-weight: 700;
-      font-size: 15px; letter-spacing: 0.42em; text-transform: uppercase;
-      color: #fff; text-decoration: none; padding-left: 0.42em;
+      display: inline-flex; align-items: center;
+      text-decoration: none;
     }
-    .brandmark span { color: var(--gold-400); }
+    .brandlogo {
+      height: 60px; width: auto; display: block;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.55));
+    }
+    @media (max-width: 640px) {
+      .brandlogo { height: 46px; }
+    }
 
     /* ── Header ── */
     header {
@@ -333,7 +338,9 @@
 <body>
 
   <div class="brandbar">
-    <a class="brandmark" href="https://dunnluxuryselections.com">Dunn&rsquo;s <span>&middot;</span> Luxury Selections</a>
+    <a class="brandmark" href="https://dunnluxuryselections.com" aria-label="Dunn's Luxury Selections — Home">
+      <img class="brandlogo" src="{{ 'logo.png' | asset_url }}" alt="Dunn's Luxury Selections" width="260" height="86" />
+    </a>
   </div>
 
   <header>
