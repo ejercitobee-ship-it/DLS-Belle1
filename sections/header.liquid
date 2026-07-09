@@ -425,13 +425,49 @@
     .mobile-nav-backdrop { display: none !important; }
   }
 
-  /* Bigger tap targets for header icons on phones (icons were 22-24px).
-     Padding expands the hit area; a slightly tighter gap keeps the row balanced. */
+  /* ── Mobile header layout ───────────────────────────────────
+     On phones the row was logo + search + account + cart + hamburger,
+     which overflowed; because body has overflow-x: hidden the last
+     item (the hamburger) got clipped off-screen and looked missing.
+     Tighten the row, let the logo shrink, keep the action icons from
+     collapsing, and move the account icon into the drawer so the menu
+     button always fits. */
   @media (max-width: 767px) {
-    .header-actions { gap: 1rem; }
+    .header-container {
+      padding: 0.75rem 1rem;
+      gap: 0.5rem;
+    }
+
+    /* Desktop nav is already empty on mobile; remove it entirely so
+       space-between only balances the logo and the action icons. */
+    .primary-nav { display: none; }
+
+    .logo--image { min-width: 0; }
+    .logo-img {
+      height: 2.75rem;
+      max-width: 150px;
+    }
+
+    .header-actions {
+      gap: 0.25rem;
+      flex-shrink: 0;
+    }
+
+    /* Account is reachable from the mobile menu — drop the top-bar icon. */
+    .account-icon-link { display: none; }
+
     .search-icon-link,
-    .account-icon-link,
     .cart-icon-container,
-    .mobile-menu-btn { padding: 0.5rem; }
+    .mobile-menu-btn {
+      padding: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    /* Guarantee the menu button renders on top of the row. */
+    .mobile-menu-btn {
+      display: flex;
+      position: relative;
+      z-index: 1;
+    }
   }
 </style>
