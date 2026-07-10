@@ -427,6 +427,67 @@
     });
   }
 
+  // ── Scroll Reveal (subtle fade-up as content enters view) ───────────────────
+  // Luxury-restraint motion: elements start slightly lower + transparent and
+  // ease into place once. Fail-safe: the opacity:0 rule only applies when JS
+  // adds `reveal-on` to <html>, so if this never runs, nothing is hidden.
+  // Skipped entirely for prefers-reduced-motion.
+  function initScrollReveal() {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+
+    var SELECTORS = [
+      '.section-header',
+      '.fp-slide',
+      '.bsp-media-wrap', '.bsp-title', '.bsp-features',
+      '.deals-header', '.deal-item', '.deals-foot',
+      '.testimonial-card',
+      '.signal-card',
+      '.pcard',
+      '.clp-hero__content', '.clp-explore__link',
+      '.jnl-featured', '.jnl-card',
+      '.pdp-media', '.pdp-info', '.pdp-details',
+      '.dls-card', '.dls-h1', '.dls-h2',
+      '.guide-band',
+      '.wih-consult-form',
+      '.srch-card'
+    ];
+
+    var seen = [];
+    SELECTORS.forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        if (el.classList.contains('reveal')) return;
+        el.classList.add('reveal');
+        seen.push(el);
+      });
+    });
+    if (!seen.length) return;
+
+    // Gently stagger siblings that share a parent (grids/rows) for a cascade.
+    var counts = new WeakMap();
+    seen.forEach(function (el) {
+      var parent = el.parentElement;
+      if (!parent) return;
+      var idx = counts.get(parent) || 0;
+      counts.set(parent, idx + 1);
+      var delay = (idx % 4) * 0.08;
+      if (delay) el.style.transitionDelay = delay + 's';
+    });
+
+    document.documentElement.classList.add('reveal-on');
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+    seen.forEach(function (el) { io.observe(el); });
+  }
+
   // ── Initialize All Modules ──────────────────────────────────────────────────
   function init() {
     if (document.readyState === 'loading') {
@@ -442,6 +503,7 @@
     initQuantitySelector();
     initNewsletterForm();
     initSmoothScroll();
+    initScrollReveal();
 
     console.log('DLS-Belle1 Theme initialized');
   }

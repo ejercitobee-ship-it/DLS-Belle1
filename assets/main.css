@@ -1192,6 +1192,24 @@ section {
   box-shadow: var(--shadow-sm);
 }
 
+/* ── Scroll reveal ──────────────────────────────────────────────────────────
+   Subtle fade + rise as content enters the viewport. The hidden state only
+   applies when JS has added `reveal-on` to <html>, so content is never stuck
+   invisible if the script fails. Disabled for reduced-motion users. */
+@media (prefers-reduced-motion: no-preference) {
+  html.reveal-on .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html.reveal-on .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .shadow-md {
   box-shadow: var(--shadow-md);
 }
