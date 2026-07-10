@@ -486,6 +486,20 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
 
     seen.forEach(function (el) { io.observe(el); });
+
+    // Safety net: immediately reveal anything already in view on load. The
+    // observer's initial in-view batch can be missed before layout settles,
+    // which would leave above-the-fold content hidden until the first scroll.
+    requestAnimationFrame(function () {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      seen.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top < vh * 0.95 && r.bottom > 0) {
+          el.classList.add('is-visible');
+          io.unobserve(el);
+        }
+      });
+    });
   }
 
   // ── Initialize All Modules ──────────────────────────────────────────────────
