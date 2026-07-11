@@ -740,8 +740,22 @@
             data[key] = data[key] ? data[key] + ', ' + value : value;
           });
 
+          var emailOk = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(data.email || '');
+          var phoneDigits = (data.phone || '').replace(/\D/g, '').replace(/^1(\d{10})$/, '$1');
+          var phoneOk = !data.phone || (/^[2-9]\d{2}[2-9]\d{6}$/.test(phoneDigits) && !/^(\d)\1{9}$/.test(phoneDigits));
+
           if (!data.firstName || !data.email) {
             msg.textContent = 'Please fill in your name and email.';
+            msg.classList.add('err');
+            return;
+          }
+          if (!emailOk) {
+            msg.textContent = 'Please enter a valid email address.';
+            msg.classList.add('err');
+            return;
+          }
+          if (!phoneOk) {
+            msg.textContent = 'Please enter a valid phone number.';
             msg.classList.add('err');
             return;
           }
