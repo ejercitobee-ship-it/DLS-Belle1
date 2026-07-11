@@ -709,6 +709,20 @@
 
       // ── Project inquiry forms → Google Sheet (Apps Script Web App) ──
       var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw3bkr1qS8wJ7GrQeqhp4UytVlSMPwtacyG3IkD0dxNmi36YoX5jU-hcBpRPqe3m8Jq/exec';
+      // Instant heads-up to the internal Google Chat space. Apps Script itself
+      // can't call Google's own Chat API (credential conflict), so we post from
+      // the browser, which works. Fire-and-forget — never blocks the form.
+      var CHAT_WEBHOOK = 'https://chat.googleapis.com/v1/spaces/AAQAJQZfKTI/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=qHgGguu_2oJoYXLqU6mV-aIVS9H7GUsE_veiGPzJ1pw';
+      function pingChat(data) {
+        try {
+          var m = '*🔔 New Lead — ' + (data.formType || 'Website') + '*';
+          Object.keys(data).forEach(function (k) {
+            if (k === 'website' || k === 'formType') return;
+            if (data[k]) m += '\n*' + k.charAt(0).toUpperCase() + k.slice(1) + ':* ' + data[k];
+          });
+          fetch(CHAT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: m }) });
+        } catch (e) {}
+      }
       document.querySelectorAll('.inquiry-form').forEach(function (form) {
         form.addEventListener('submit', function (e) {
           e.preventDefault();
@@ -746,6 +760,7 @@
             body: JSON.stringify(data),
           })
             .then(function () {
+              pingChat(data);
               // Track form submission as a conversion in Google Ads
               if (typeof window !== 'undefined' && window.gtag) {
                 window.gtag('event', 'generate_lead', {

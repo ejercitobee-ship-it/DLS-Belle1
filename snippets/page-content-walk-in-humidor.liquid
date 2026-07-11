@@ -298,6 +298,19 @@
 <script>
   (function () {
     var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw3bkr1qS8wJ7GrQeqhp4UytVlSMPwtacyG3IkD0dxNmi36YoX5jU-hcBpRPqe3m8Jq/exec';
+    // Instant Chat heads-up posted from the browser (Apps Script can't call
+    // Google's own Chat API). Fire-and-forget — never blocks the submission.
+    var CHAT_WEBHOOK = 'https://chat.googleapis.com/v1/spaces/AAQAJQZfKTI/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=qHgGguu_2oJoYXLqU6mV-aIVS9H7GUsE_veiGPzJ1pw';
+    function pingChat(data) {
+      try {
+        var m = '*🔔 New Lead — ' + (data.formType || 'Website') + '*';
+        Object.keys(data).forEach(function (k) {
+          if (k === 'website' || k === 'formType') return;
+          if (data[k]) m += '\n*' + k.charAt(0).toUpperCase() + k.slice(1) + ':* ' + data[k];
+        });
+        fetch(CHAT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: m }) });
+      } catch (e) {}
+    }
     var form = document.querySelector('.wih-consult-form');
     if (!form) return;
 
@@ -328,6 +341,7 @@
       // returns no CORS headers), opaque response treated as success.
       fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
         .then(function () {
+          pingChat(data);
           if (window.gtag) {
             window.gtag('event', 'generate_lead', {
               'value': 1,
@@ -356,6 +370,17 @@
 <script>
   (function () {
     var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw3bkr1qS8wJ7GrQeqhp4UytVlSMPwtacyG3IkD0dxNmi36YoX5jU-hcBpRPqe3m8Jq/exec';
+    var CHAT_WEBHOOK = 'https://chat.googleapis.com/v1/spaces/AAQAJQZfKTI/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=qHgGguu_2oJoYXLqU6mV-aIVS9H7GUsE_veiGPzJ1pw';
+    function pingChat(data) {
+      try {
+        var m = '*🔔 New Lead — ' + (data.formType || 'Website') + '*';
+        Object.keys(data).forEach(function (k) {
+          if (k === 'website' || k === 'formType') return;
+          if (data[k]) m += '\n*' + k.charAt(0).toUpperCase() + k.slice(1) + ':* ' + data[k];
+        });
+        fetch(CHAT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: m }) });
+      } catch (e) {}
+    }
     var GUIDE_URL = '{{ 'buyer-guide.pdf' | asset_url }}';
     var GUIDE_FILENAME = 'Dunns-Luxury-Selections-Humidor-Buyers-Guide.pdf';
     var modal = document.getElementById('guideModal');
@@ -417,6 +442,7 @@
       // Same Google Sheet endpoint / no-cors pattern as the other forms.
       fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
         .then(function () {
+          pingChat(data);
           if (window.gtag) {
             window.gtag('event', 'generate_lead', { 'value': 1, 'currency': 'USD', 'form_type': 'buyers-guide' });
           }
