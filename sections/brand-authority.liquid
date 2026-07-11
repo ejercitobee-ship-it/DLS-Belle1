@@ -152,17 +152,18 @@
 
 /* Uniform monochrome wordmark treatment so mismatched brands read as one set */
 .brand-authority-section .ba-name {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.1rem, 2vw, 1.45rem);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: rgba(240, 221, 184, 0.85);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--gold-300);
   white-space: nowrap;
   transition: color 0.3s ease;
 }
 
 .brand-authority-section .ba-brand:hover .ba-name {
-  color: var(--gold-300);
+  color: #fff;
 }
 
 /* Any uploaded logo is normalized to a uniform light monochrome */
