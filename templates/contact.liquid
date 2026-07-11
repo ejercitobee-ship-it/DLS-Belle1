@@ -10,16 +10,8 @@
 
     <!-- Contact Form -->
     <div class="contact-form-wrapper">
-      <form method="post" action="https://hooks.zapier.com/hooks/catch/28188410/4urkaco/" class="contact-form">
-        {%- if form.posted_successfully? -%}
-          <div class="form-success">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            <h2>Thank you for your message!</h2>
-            <p>We'll get back to you as soon as possible.</p>
-          </div>
-        {%- else -%}
+      <form class="contact-form" data-form-type="Contact" novalidate>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
           <!-- Personal Information -->
           <fieldset class="form-fieldset">
             <legend class="form-legend">Your Information</legend>
@@ -29,7 +21,7 @@
               <input
                 type="text"
                 id="contact-name"
-                name="contact[name]"
+                name="name"
                 placeholder="Full Name"
                 required
                 class="form-input"
@@ -41,7 +33,7 @@
               <input
                 type="email"
                 id="contact-email"
-                name="contact[email]"
+                name="email"
                 placeholder="you@example.com"
                 required
                 class="form-input"
@@ -53,7 +45,7 @@
               <input
                 type="tel"
                 id="contact-phone"
-                name="contact[phone]"
+                name="phone"
                 placeholder="+1 (555) 000-0000"
                 class="form-input"
               />
@@ -66,7 +58,7 @@
 
             <div class="form-group">
               <label for="contact-subject" class="form-label">Subject *</label>
-              <select id="contact-subject" name="contact[body]" required class="form-select">
+              <select id="contact-subject" name="subject" required class="form-select">
                 <option value="">Select a topic...</option>
                 <option value="Product Inquiry">Product Inquiry</option>
                 <option value="Financing Questions">Financing Questions</option>
@@ -81,7 +73,7 @@
               <label for="contact-message" class="form-label">Message *</label>
               <textarea
                 id="contact-message"
-                name="contact[body]"
+                name="message"
                 placeholder="Tell us how we can help..."
                 required
                 rows="6"
@@ -104,17 +96,7 @@
             <p class="form-required">* Required fields</p>
           </div>
 
-          {%- if form.errors -%}
-            <div class="form-errors">
-              <h3>Please correct the following errors:</h3>
-              <ul>
-                {%- for field in form.errors -%}
-                  <li>{{ field | capitalize }}</li>
-                {%- endfor -%}
-              </ul>
-            </div>
-          {%- endif -%}
-        {%- endif -%}
+          <p class="contact-form-msg" role="status" aria-live="polite" style="margin-top:1rem;"></p>
       </form>
     </div>
 
@@ -175,6 +157,56 @@
 <!-- Newsletter Section -->
 {% section 'newsletter' %}
 
+<script>
+  (function () {
+    var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw3bkr1qS8wJ7GrQeqhp4UytVlSMPwtacyG3IkD0dxNmi36YoX5jU-hcBpRPqe3m8Jq/exec';
+    var form = document.querySelector('.contact-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = form.querySelector('.contact-form-msg');
+      var btn = form.querySelector('button[type="submit"]');
+      if (msg) { msg.textContent = ''; msg.classList.remove('err'); }
+
+      // Honeypot: silently ignore bots
+      if (form.website && form.website.value) return;
+
+      var data = { formType: 'Contact' };
+      new FormData(form).forEach(function (value, key) {
+        value = String(value).trim();
+        if (value && key !== 'website') data[key] = value;
+      });
+
+      if (!data.name || !data.email) {
+        if (msg) { msg.textContent = 'Please fill in your name and email.'; msg.classList.add('err'); }
+        return;
+      }
+
+      var label = btn ? btn.textContent : '';
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+      // Same proven pattern as the other lead forms: plain-text JSON, no-cors.
+      fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
+        .then(function () {
+          if (window.gtag) {
+            window.gtag('event', 'generate_lead', { 'value': 1, 'currency': 'USD', 'form_type': 'contact' });
+          }
+          var wrap = form.closest('.contact-form-wrapper') || form.parentNode;
+          wrap.innerHTML =
+            '<div class="form-success">' +
+            '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+            '<h2>Thank you for your message!</h2>' +
+            '<p>We&rsquo;ll get back to you as soon as possible.</p></div>';
+        })
+        .catch(function () {
+          if (msg) { msg.textContent = 'Something went wrong. Please call (888) 431-9214 or email support@dunnluxuryselections.com.'; msg.classList.add('err'); }
+          if (btn) { btn.disabled = false; btn.textContent = label; }
+        });
+    });
+  })();
+</script>
+
 <style>
   .contact-page {
     background-color: var(--charcoal-950);
@@ -211,6 +243,16 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+  }
+
+  .contact-form-msg {
+    margin: 0;
+    color: rgba(240, 221, 184, 0.7);
+    font-size: 0.9rem;
+  }
+
+  .contact-form-msg.err {
+    color: #e08585;
   }
 
   .form-fieldset {
