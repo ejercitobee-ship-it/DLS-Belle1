@@ -63,8 +63,9 @@
       <p class="ba-heading">{{ section.settings.heading }}</p>
     {%- endif -%}
 
-    {%- if section.blocks.size > 0 -%}
-      <div class="ba-brands">
+    <div class="ba-brands">
+      {%- if section.blocks.size > 0 -%}
+        {%- comment -%} Editor/JSON-template context: use configured blocks {%- endcomment -%}
         {%- for block in section.blocks -%}
           <div class="ba-brand" {{ block.shopify_attributes }}>
             {%- if block.settings.logo != blank -%}
@@ -80,8 +81,16 @@
             {%- endif -%}
           </div>
         {%- endfor -%}
-      </div>
-    {%- endif -%}
+      {%- else -%}
+        {%- comment -%} Static .liquid-template context: blocks are unavailable, use defaults {%- endcomment -%}
+        {%- assign default_brands = "Xikar,Humidor Supreme,Raching,Hydra" | split: "," -%}
+        {%- for name in default_brands -%}
+          <div class="ba-brand">
+            <span class="ba-name">{{ name }}</span>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
   </div>
 </section>
 
