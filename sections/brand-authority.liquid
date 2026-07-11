@@ -1,0 +1,205 @@
+{% schema %}
+{
+  "name": "Brand Authority",
+  "class": "section-brand-authority",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Authorized Retailer"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "An authorized retailer of the brands serious collectors trust"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Brand Name"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo (optional — overrides the name when set)",
+          "info": "Upload a transparent or white-background logo. It is auto-tinted to a uniform monochrome so all brands match."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Authority",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "Xikar" } },
+        { "type": "brand", "settings": { "name": "Humidor Supreme" } },
+        { "type": "brand", "settings": { "name": "Raching" } },
+        { "type": "brand", "settings": { "name": "Hydra" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="brand-authority-section reveal">
+  <div class="ba-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="ba-eyebrow">
+        <span class="ba-eyebrow-line"></span>
+        <span>{{ section.settings.eyebrow }}</span>
+        <span class="ba-eyebrow-line"></span>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <p class="ba-heading">{{ section.settings.heading }}</p>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="ba-brands">
+        {%- for block in section.blocks -%}
+          <div class="ba-brand" {{ block.shopify_attributes }}>
+            {%- if block.settings.logo != blank -%}
+              <img
+                class="ba-logo"
+                src="{{ block.settings.logo | image_url: width: 320 }}"
+                alt="{{ block.settings.name | default: 'Authorized brand' | escape }}"
+                loading="lazy"
+                width="140"
+                height="56">
+            {%- elsif block.settings.name != blank -%}
+              <span class="ba-name">{{ block.settings.name }}</span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.brand-authority-section {
+  background-color: var(--charcoal-950);
+  border-top: 1px solid rgba(201, 138, 16, 0.14);
+  border-bottom: 1px solid rgba(201, 138, 16, 0.14);
+  padding: 3.25rem 0;
+}
+
+.brand-authority-section .ba-inner {
+  text-align: center;
+}
+
+.brand-authority-section .ba-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--gold-400);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.brand-authority-section .ba-eyebrow-line {
+  width: 2rem;
+  height: 1px;
+  background: var(--gold-500);
+}
+
+.brand-authority-section .ba-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  font-style: italic;
+  font-weight: 500;
+  color: rgba(240, 221, 184, 0.92);
+  line-height: 1.4;
+  max-width: 46rem;
+  margin: 0 auto 2.25rem;
+}
+
+.brand-authority-section .ba-brands {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem 3rem;
+}
+
+.brand-authority-section .ba-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Uniform monochrome wordmark treatment so mismatched brands read as one set */
+.brand-authority-section .ba-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(240, 221, 184, 0.85);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.brand-authority-section .ba-brand:hover .ba-name {
+  color: var(--gold-300);
+}
+
+/* Any uploaded logo is normalized to a uniform light monochrome */
+.brand-authority-section .ba-logo {
+  height: 2.5rem;
+  width: auto;
+  max-width: 11rem;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.brand-authority-section .ba-brand:hover .ba-logo {
+  opacity: 1;
+}
+
+/* Thin gold dividers between brands (desktop only) */
+.brand-authority-section .ba-brand:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -1.5rem;
+  height: 1.5rem;
+  width: 1px;
+  background: rgba(201, 138, 16, 0.28);
+}
+
+.brand-authority-section .ba-brand {
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .brand-authority-section {
+    padding: 2.5rem 0;
+  }
+  .brand-authority-section .ba-brands {
+    gap: 1.25rem 2rem;
+  }
+  .brand-authority-section .ba-brand:not(:last-child)::after {
+    display: none;
+  }
+}
+
+.brand-authority-section .max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+{% endstylesheet %}
