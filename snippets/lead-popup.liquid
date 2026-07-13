@@ -1,47 +1,41 @@
 {%- comment -%}
-  Inner Circle lead-capture popup — ported from the headless React LeadPopup.tsx.
+  Inner Circle lead-capture popup — single step, 3 fields (Full name, Email, Phone).
   CLS-safe: position:fixed overlay (never shifts page flow) + triggers only AFTER
   engagement (scroll > 300px, exit-intent, or 45s fallback), so its appearance is
   never counted toward Cumulative Layout Shift. Shows once per session.
   Leads POST to the shared Google Apps Script → Google Sheet endpoint (formType
-  "inner-circle"), same no-cors pattern as the other theme forms, and fire a
-  gtag generate_lead conversion. See memory: dls-belle1-core-web-vitals.
+  "inner-circle"), same no-cors pattern as the other theme forms, ping Google Chat,
+  and fire a gtag generate_lead conversion. See memory: dls-belle1-core-web-vitals
+  and dls-belle1-chat-lead-notifications.
 {%- endcomment -%}
 <style>
   .dls-lp-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(10,10,12,.8);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
   .dls-lp-overlay.is-open{display:flex}
-  .dls-lp-modal{position:relative;width:100%;max-width:26rem;background:var(--charcoal-900,#17181c);border:1px solid var(--charcoal-700,#3a3d45);border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.6);padding:1.5rem;color:var(--cream-100,#f5f1e8);animation:dls-lp-in .3s ease}
+  .dls-lp-modal{position:relative;width:100%;max-width:26rem;background:var(--charcoal-900,#17181c);border:1px solid var(--charcoal-700,#3a3d45);border-radius:1rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.6);padding:1.75rem;color:var(--cream-100,#f5f1e8);animation:dls-lp-in .3s ease}
   @keyframes dls-lp-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   .dls-lp-close{position:absolute;top:.75rem;right:.75rem;z-index:2;display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border:0;border-radius:.5rem;background:transparent;color:rgba(245,241,232,.5);cursor:pointer;transition:color .2s,background .2s}
   .dls-lp-close:hover{color:var(--cream-100,#f5f1e8);background:rgba(255,255,255,.06)}
-  .dls-lp-head{text-align:center;margin-bottom:1.25rem}
-  .dls-lp-title{font-family:var(--font-serif,'Playfair Display',serif);font-size:1.35rem;line-height:1.2;color:#fff;margin:0 0 .35rem}
+  .dls-lp-head{text-align:center;margin-bottom:1.1rem}
+  .dls-lp-eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-400,#d4af37);margin:0 0 .5rem}
+  .dls-lp-title{font-family:var(--font-serif,'Playfair Display',serif);font-size:1.6rem;line-height:1.15;color:#fff;margin:0 0 .4rem}
   .dls-lp-title .dls-lp-accent{background:linear-gradient(90deg,var(--gold-400,#d4af37),var(--gold-600,#b8860b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .dls-lp-sub{font-size:.875rem;color:rgba(245,241,232,.6);margin:0}
-  .dls-lp-field{width:100%;box-sizing:border-box;background:var(--charcoal-950,#0e0f12);border:1px solid var(--charcoal-700,#3a3d45);border-radius:.5rem;padding:.65rem 1rem;color:var(--cream-100,#f5f1e8);font-size:.9rem;margin-bottom:.75rem;transition:border-color .2s,box-shadow .2s}
-  .dls-lp-field::placeholder{color:rgba(245,241,232,.3)}
+  .dls-lp-sub{font-size:.875rem;line-height:1.45;color:rgba(245,241,232,.62);margin:0}
+  .dls-lp-perks{list-style:none;margin:0 0 1.15rem;padding:0;display:flex;flex-direction:column;gap:.55rem}
+  .dls-lp-perks li{display:flex;align-items:flex-start;gap:.6rem;font-size:.85rem;color:rgba(245,241,232,.85);line-height:1.35}
+  .dls-lp-perks svg{flex:none;width:1.05rem;height:1.05rem;color:var(--gold-400,#d4af37);margin-top:.06rem}
+  .dls-lp-field{width:100%;box-sizing:border-box;background:var(--charcoal-950,#0e0f12);border:1px solid var(--charcoal-700,#3a3d45);border-radius:.5rem;padding:.7rem 1rem;color:var(--cream-100,#f5f1e8);font-size:.9rem;margin-bottom:.7rem;transition:border-color .2s,box-shadow .2s}
+  .dls-lp-field::placeholder{color:rgba(245,241,232,.35)}
   .dls-lp-field:focus{outline:none;border-color:var(--gold-500,#c9a227);box-shadow:0 0 0 3px rgba(201,162,39,.15)}
-  .dls-lp-btn{width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:.5rem;border:0;border-radius:.5rem;padding:.7rem 1rem;font-size:.9rem;font-weight:600;cursor:pointer;background:linear-gradient(90deg,var(--gold-600,#b8860b),var(--gold-500,#c9a227));color:var(--charcoal-950,#0e0f12);transition:filter .2s,opacity .2s}
-  .dls-lp-btn:hover{filter:brightness(1.07)}
-  .dls-lp-btn:disabled{opacity:.5;cursor:not-allowed}
-  .dls-lp-ghost{width:100%;border:0;background:transparent;color:rgba(245,241,232,.5);font-size:.85rem;padding:.5rem;margin-top:.25rem;cursor:pointer;transition:color .2s}
+  .dls-lp-btn{width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:.5rem;border:0;border-radius:.5rem;padding:.8rem 1rem;font-size:.92rem;font-weight:700;letter-spacing:.02em;cursor:pointer;background:linear-gradient(90deg,var(--gold-600,#b8860b),var(--gold-500,#c9a227));color:var(--charcoal-950,#0e0f12);box-shadow:0 8px 22px rgba(201,162,39,.28);transition:filter .2s,opacity .2s,transform .15s}
+  .dls-lp-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .dls-lp-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .dls-lp-ghost{width:100%;border:0;background:transparent;color:rgba(245,241,232,.5);font-size:.85rem;padding:.5rem;margin-top:.35rem;cursor:pointer;transition:color .2s}
   .dls-lp-ghost:hover{color:rgba(245,241,232,.85)}
-  .dls-lp-summary{background:rgba(255,255,255,.04);border-radius:.5rem;padding:.65rem 1rem;font-size:.8rem;color:rgba(245,241,232,.6);margin-bottom:.75rem}
-  .dls-lp-summary strong{color:var(--cream-100,#f5f1e8);font-weight:600}
-  .dls-lp-opts{display:flex;flex-direction:column;gap:.25rem;margin:.25rem 0 .85rem}
-  .dls-lp-opt{display:flex;align-items:center;gap:.65rem;padding:.6rem;border-radius:.5rem;cursor:pointer;transition:background .2s}
-  .dls-lp-opt:hover{background:rgba(255,255,255,.05)}
-  .dls-lp-opt input{accent-color:var(--gold-500,#c9a227);width:1rem;height:1rem}
-  .dls-lp-opt span{font-size:.875rem;color:var(--cream-100,#f5f1e8)}
-  .dls-lp-label{font-size:.85rem;font-weight:500;color:rgba(245,241,232,.7);margin:0 0 .25rem}
-  .dls-lp-hint{font-size:.72rem;color:rgba(245,241,232,.4);margin:.25rem 0 0}
-  .dls-lp-fine{font-size:.72rem;color:rgba(245,241,232,.3);text-align:center;margin:.85rem 0 0}
+  .dls-lp-fine{font-size:.72rem;color:rgba(245,241,232,.3);text-align:center;margin:.9rem 0 0}
   .dls-lp-err{display:none;font-size:.82rem;color:#f87171;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:.5rem;padding:.5rem .75rem;margin-bottom:.75rem}
   .dls-lp-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
   .dls-lp-success{text-align:center;padding:1.5rem 0}
   .dls-lp-success svg{width:3.25rem;height:3.25rem;color:var(--gold-400,#d4af37);margin:0 auto 1rem;display:block}
-  .dls-lp-step{display:none}
-  .dls-lp-step.is-active{display:block}
 </style>
 
 <div class="dls-lp-overlay" id="dls-lead-popup" role="dialog" aria-modal="true" aria-labelledby="dls-lp-title" aria-hidden="true">
@@ -52,58 +46,47 @@
 
     <div class="dls-lp-body">
       <div class="dls-lp-head">
-        <h3 class="dls-lp-title" id="dls-lp-title">Enter the <span class="dls-lp-accent">Inner Circle</span></h3>
-        <p class="dls-lp-sub">Pre-release collections, expert consultation, and personal concierge — exclusively for you.</p>
+        <p class="dls-lp-eyebrow">By Invitation</p>
+        <h3 class="dls-lp-title" id="dls-lp-title">Join the <span class="dls-lp-accent">Inner Circle</span></h3>
+        <p class="dls-lp-sub">The private list for serious collectors — first access, expert guidance, and members-only offers.</p>
       </div>
+
+      <ul class="dls-lp-perks">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          First access to new &amp; pre-release humidors
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          A private concierge &amp; expert consultation
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Members-only previews &amp; exclusive offers
+        </li>
+      </ul>
 
       <div class="dls-lp-err" id="dls-lp-err"></div>
 
-      <!-- Step 1: name + email -->
-      <form class="dls-lp-step is-active" data-lp-step="1" id="dls-lp-step1" novalidate>
-        <input class="dls-lp-field" type="text" name="firstName" id="dls-lp-first" placeholder="First name" autocomplete="given-name" required>
+      <form class="dls-lp-form" id="dls-lp-form" novalidate>
+        <input class="dls-lp-field" type="text" name="name" id="dls-lp-name" placeholder="Full name" autocomplete="name" required>
         <input class="dls-lp-field" type="email" name="email" id="dls-lp-email" placeholder="Email address" autocomplete="email" required>
+        <input class="dls-lp-field" type="tel" name="phone" id="dls-lp-phone" placeholder="Phone number" autocomplete="tel" required>
         <input class="dls-lp-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button class="dls-lp-btn" type="submit">Continue
+        <button class="dls-lp-btn" type="submit" id="dls-lp-submit">Claim My Access
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="dls-lp-ghost" type="button" data-lp-skip>Skip for now</button>
+        <button class="dls-lp-ghost" type="button" data-lp-skip>Maybe later</button>
       </form>
 
-      <!-- Step 2: interest -->
-      <form class="dls-lp-step" data-lp-step="2" id="dls-lp-step2" novalidate>
-        <div class="dls-lp-summary" data-lp-summary></div>
-        <p class="dls-lp-label">What draws you to humidors?</p>
-        <div class="dls-lp-opts">
-          <label class="dls-lp-opt"><input type="radio" name="collectorType" value="Desktop Collection"><span>Desktop Collection</span></label>
-          <label class="dls-lp-opt"><input type="radio" name="collectorType" value="Cabinet Installation"><span>Cabinet Installation</span></label>
-          <label class="dls-lp-opt"><input type="radio" name="collectorType" value="Walk-in Sanctuary"><span>Walk-in Sanctuary</span></label>
-          <label class="dls-lp-opt"><input type="radio" name="collectorType" value="Travel Preservation"><span>Travel Preservation</span></label>
-          <label class="dls-lp-opt"><input type="radio" name="collectorType" value="Investment Pieces"><span>Investment Pieces</span></label>
-          <label class="dls-lp-opt"><input type="radio" name="collectorType" value="Something Else"><span>Something Else</span></label>
-        </div>
-        <button class="dls-lp-btn" type="submit" data-lp-next2 disabled>Next
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="dls-lp-ghost" type="button" data-lp-back="1">Back</button>
-      </form>
-
-      <!-- Step 3: optional phone + submit -->
-      <form class="dls-lp-step" data-lp-step="3" id="dls-lp-step3" novalidate>
-        <div class="dls-lp-summary" data-lp-summary2></div>
-        <input class="dls-lp-field" type="tel" name="phone" id="dls-lp-phone" placeholder="Phone number (optional)" autocomplete="tel">
-        <p class="dls-lp-hint">Add your phone to discuss your collection goals (optional).</p>
-        <button class="dls-lp-btn" type="submit" id="dls-lp-submit">Request Preview Access</button>
-        <button class="dls-lp-ghost" type="button" data-lp-back="2">Back</button>
-      </form>
-
-      <p class="dls-lp-fine">We respect your privacy. Unsubscribe at any time.</p>
+      <p class="dls-lp-fine">No spam, ever. Unsubscribe anytime.</p>
     </div>
 
     <!-- Success -->
     <div class="dls-lp-success" id="dls-lp-success" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       <h3 class="dls-lp-title">Welcome to the Inner Circle</h3>
-      <p class="dls-lp-sub">Your details are in. Our team will reach out with your preview access shortly.</p>
+      <p class="dls-lp-sub">You're on the list. Our team will reach out with your first-access previews shortly.</p>
       <button class="dls-lp-btn" type="button" data-lp-dismiss style="margin-top:1.25rem;max-width:10rem;margin-left:auto;margin-right:auto">Close</button>
     </div>
   </div>
@@ -125,13 +108,13 @@
         fetch(CHAT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: m }) });
       } catch (e) {}
     }
-    var KEY = 'dlsLeadPopup';               // 'seen' guard for this session
+
+    var KEY = 'dlsLeadPopup';                 // 'seen' guard for this session
     var overlay = document.getElementById('dls-lead-popup');
     if (!overlay) return;
-    if (sessionStorage.getItem(KEY)) return; // already shown/handled this session
+    if (sessionStorage.getItem(KEY)) return;  // already shown/handled this session
 
     var opened = false, delayTimer = null;
-    var data = {};
 
     // Tawk chat renders above everything and would overlap the popup's submit
     // button — hide it while the popup is open (handles Tawk loading either
@@ -160,7 +143,7 @@
       overlay.classList.add('is-open');
       overlay.setAttribute('aria-hidden', 'false');
       hideTawk();
-      var f = document.getElementById('dls-lp-first');
+      var f = document.getElementById('dls-lp-name');
       if (f) { try { f.focus(); } catch (e) {} }
     }
     function dismiss() {
@@ -180,64 +163,33 @@
     document.addEventListener('mouseout', onMouseOut);
     delayTimer = setTimeout(show, 45000);
 
-    // ---- step navigation ----
-    function step(n) {
-      var steps = overlay.querySelectorAll('.dls-lp-step');
-      for (var i = 0; i < steps.length; i++) {
-        steps[i].classList.toggle('is-active', steps[i].getAttribute('data-lp-step') === String(n));
-      }
-    }
     function showErr(msg) {
       var el = document.getElementById('dls-lp-err');
       el.textContent = msg; el.style.display = 'block';
     }
     function clearErr() { var el = document.getElementById('dls-lp-err'); el.style.display = 'none'; }
 
-    // Step 1 → 2
-    document.getElementById('dls-lp-step1').addEventListener('submit', function (e) {
+    document.getElementById('dls-lp-form').addEventListener('submit', function (e) {
       e.preventDefault();
       clearErr();
-      var first = document.getElementById('dls-lp-first').value.trim();
-      var email = document.getElementById('dls-lp-email').value.trim();
-      if (!first || !email) { showErr('Please enter your name and email.'); return; }
-      data.firstName = first; data.email = email;
-      var s = first + ' · ' + email;
-      overlay.querySelector('[data-lp-summary]').innerHTML = '<strong>' + first + '</strong> · ' + email;
-      overlay.querySelector('[data-lp-summary2]').innerHTML = '<strong>' + first + '</strong> · ' + email;
-      step(2);
-    });
 
-    // Enable Next on interest select
-    var nextBtn = overlay.querySelector('[data-lp-next2]');
-    overlay.querySelectorAll('input[name="collectorType"]').forEach(function (r) {
-      r.addEventListener('change', function () { data.collectorType = r.value; nextBtn.disabled = false; });
-    });
-    // Step 2 → 3
-    document.getElementById('dls-lp-step2').addEventListener('submit', function (e) { e.preventDefault(); step(3); });
-
-    // Back buttons
-    overlay.querySelectorAll('[data-lp-back]').forEach(function (b) {
-      b.addEventListener('click', function () { step(parseInt(b.getAttribute('data-lp-back'), 10)); });
-    });
-
-    // Step 3 → submit
-    document.getElementById('dls-lp-step3').addEventListener('submit', function (e) {
-      e.preventDefault();
-      clearErr();
       // honeypot
       var hp = overlay.querySelector('input[name="website"]');
       if (hp && hp.value) { dismiss(); return; }
+
+      var name = document.getElementById('dls-lp-name').value.trim();
+      var email = document.getElementById('dls-lp-email').value.trim();
       var phone = document.getElementById('dls-lp-phone').value.trim();
+
+      if (!name) { showErr('Please enter your full name.'); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)) { showErr('Please enter a valid email address.'); return; }
+      var pd = phone.replace(/\D/g, '').replace(/^1(\d{10})$/, '$1');
+      if (!(/^[2-9]\d{2}[2-9]\d{6}$/.test(pd) && !/^(\d)\1{9}$/.test(pd))) { showErr('Please enter a valid phone number.'); return; }
+
       var btn = document.getElementById('dls-lp-submit');
       btn.disabled = true; btn.textContent = 'Sending…';
 
-      var payload = {
-        formType: 'inner-circle',
-        firstName: data.firstName || '',
-        email: data.email || '',
-        phone: phone,
-        collectorType: data.collectorType || ''
-      };
+      var payload = { formType: 'inner-circle', name: name, email: email, phone: phone };
       fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
         .then(function () {
           pingChat(payload);
@@ -248,12 +200,12 @@
           document.getElementById('dls-lp-success').style.display = 'block';
         })
         .catch(function () {
-          btn.disabled = false; btn.textContent = 'Request Preview Access';
+          btn.disabled = false; btn.textContent = 'Claim My Access';
           showErr('Something went wrong. Please try again.');
         });
     });
 
-    // Dismiss (X, Close, Skip, backdrop)
+    // Dismiss (X, Close, Maybe later, backdrop, Esc)
     overlay.querySelectorAll('[data-lp-dismiss],[data-lp-skip]').forEach(function (b) {
       b.addEventListener('click', dismiss);
     });
