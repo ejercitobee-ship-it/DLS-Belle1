@@ -84,19 +84,36 @@
     <!-- Analytics event tracking (add-to-cart, search, newsletter, etc.) -->
     {% render 'analytics-events' %}
 
-    <!-- Tawk.to Live Chat (deferred until window load, same as the headless site) -->
+    <!-- Tawk.to Live Chat — loaded on first user interaction so its widget
+         injection happens AFTER the visitor engages and never counts toward
+         Cumulative Layout Shift (CLS). Loading on window.load was still early
+         enough on mobile to shift the page (measured CLS 0.67 -> 0.0005 with
+         the widget removed). See memory: dls-belle1-core-web-vitals. -->
     <script>
-      window.addEventListener('load', function () {
-        var Tawk_API = window.Tawk_API || {}, Tawk_LoadStart = new Date();
-        window.Tawk_API = Tawk_API;
-        var s1 = document.createElement('script');
-        var s0 = document.getElementsByTagName('script')[0];
-        s1.async = true;
-        s1.src = 'https://embed.tawk.to/69fb527d491d631c393ede51/1jnurkehu';
-        s1.charset = 'UTF-8';
-        s1.setAttribute('crossorigin', '*');
-        s0.parentNode.insertBefore(s1, s0);
-      });
+      (function () {
+        var loaded = false;
+        var events = ['scroll', 'pointerdown', 'touchstart', 'keydown', 'mousemove'];
+        function loadTawk() {
+          if (loaded) return;
+          loaded = true;
+          events.forEach(function (evt) { window.removeEventListener(evt, loadTawk); });
+          var Tawk_API = window.Tawk_API || {}, Tawk_LoadStart = new Date();
+          window.Tawk_API = Tawk_API;
+          var s1 = document.createElement('script');
+          var s0 = document.getElementsByTagName('script')[0];
+          s1.async = true;
+          s1.src = 'https://embed.tawk.to/69fb527d491d631c393ede51/1jnurkehu';
+          s1.charset = 'UTF-8';
+          s1.setAttribute('crossorigin', '*');
+          s0.parentNode.insertBefore(s1, s0);
+        }
+        events.forEach(function (evt) {
+          window.addEventListener(evt, loadTawk, { passive: true });
+        });
+        // Fallback so idle visitors still get chat (rare on mobile — almost
+        // everyone scrolls first, which triggers the load above).
+        window.addEventListener('load', function () { setTimeout(loadTawk, 10000); });
+      })();
     </script>
   </body>
 </html>
