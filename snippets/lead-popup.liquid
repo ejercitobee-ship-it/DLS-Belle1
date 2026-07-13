@@ -133,6 +133,24 @@
     var opened = false, delayTimer = null;
     var data = {};
 
+    // Tawk chat renders above everything and would overlap the popup's submit
+    // button — hide it while the popup is open (handles Tawk loading either
+    // before OR after the popup opens), restore it on close.
+    function hideTawk() {
+      try {
+        window.Tawk_API = window.Tawk_API || {};
+        if (window.Tawk_API.hideWidget) window.Tawk_API.hideWidget();
+        var prev = window.Tawk_API.onLoad;
+        window.Tawk_API.onLoad = function () {
+          if (typeof prev === 'function') { try { prev(); } catch (e) {} }
+          try { if (overlay.classList.contains('is-open') && window.Tawk_API.hideWidget) window.Tawk_API.hideWidget(); } catch (e) {}
+        };
+      } catch (e) {}
+    }
+    function showTawk() {
+      try { if (window.Tawk_API && window.Tawk_API.showWidget) window.Tawk_API.showWidget(); } catch (e) {}
+    }
+
     function show() {
       if (opened) return;
       opened = true;
@@ -141,12 +159,14 @@
       removeTriggers();
       overlay.classList.add('is-open');
       overlay.setAttribute('aria-hidden', 'false');
+      hideTawk();
       var f = document.getElementById('dls-lp-first');
       if (f) { try { f.focus(); } catch (e) {} }
     }
     function dismiss() {
       overlay.classList.remove('is-open');
       overlay.setAttribute('aria-hidden', 'true');
+      showTawk();
     }
     function onScroll() { if ((window.scrollY || window.pageYOffset) > 300) show(); }
     function onMouseOut(e) { if (e.clientY <= 5) show(); } // desktop exit-intent
