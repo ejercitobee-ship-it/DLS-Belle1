@@ -208,13 +208,13 @@
     },
     "content_for_index": [],
     "blocks": {
-      "13768625480086291342": {
-        "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
-        "disabled": false,
-        "settings": {}
-      },
       "9365423049038898845": {
         "type": "shopify://apps/tawk-to-live-chat/blocks/widget-embed-code/91169e75-f163-40ce-90e0-9059f3c9b772",
+        "disabled": true,
+        "settings": {}
+      },
+      "13768625480086291342": {
+        "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
         "disabled": true,
         "settings": {}
       }
