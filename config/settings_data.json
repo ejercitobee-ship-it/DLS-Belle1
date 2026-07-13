@@ -197,6 +197,13 @@
           "cta_text": "Learn More",
           "cta_url": ""
         }
+      },
+      "brand-authority": {
+        "type": "brand-authority",
+        "settings": {
+          "eyebrow": "Authorized Retailer",
+          "heading": "An authorized retailer of the brands serious collectors trust"
+        }
       }
     },
     "content_for_index": [],
@@ -208,7 +215,7 @@
       },
       "9365423049038898845": {
         "type": "shopify://apps/tawk-to-live-chat/blocks/widget-embed-code/91169e75-f163-40ce-90e0-9059f3c9b772",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       }
     }
