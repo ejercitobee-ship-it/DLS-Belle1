@@ -112,6 +112,19 @@
 <script>
   (function () {
     var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw3bkr1qS8wJ7GrQeqhp4UytVlSMPwtacyG3IkD0dxNmi36YoX5jU-hcBpRPqe3m8Jq/exec';
+    // Instant Chat heads-up posted from the browser (Apps Script can't call
+    // Google's own Chat API — returns API_KEY_INVALID). Fire-and-forget.
+    var CHAT_WEBHOOK = 'https://chat.googleapis.com/v1/spaces/AAQAJQZfKTI/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=qHgGguu_2oJoYXLqU6mV-aIVS9H7GUsE_veiGPzJ1pw';
+    function pingChat(data) {
+      try {
+        var m = '*🔔 New Lead — ' + (data.formType || 'Website') + '*';
+        Object.keys(data).forEach(function (k) {
+          if (k === 'website' || k === 'formType') return;
+          if (data[k]) m += '\n*' + k.charAt(0).toUpperCase() + k.slice(1) + ':* ' + data[k];
+        });
+        fetch(CHAT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: m }) });
+      } catch (e) {}
+    }
     var KEY = 'dlsLeadPopup';               // 'seen' guard for this session
     var overlay = document.getElementById('dls-lead-popup');
     if (!overlay) return;
@@ -207,6 +220,7 @@
       };
       fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
         .then(function () {
+          pingChat(payload);
           try {
             if (window.gtag) window.gtag('event', 'generate_lead', { value: 1, currency: 'USD', form_type: 'inner-circle' });
           } catch (e) {}
