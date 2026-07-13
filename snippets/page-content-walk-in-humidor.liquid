@@ -24,6 +24,49 @@
   </div>
 </section>
 
+<!-- Video: Inside Our Manufacturing Center -->
+<section style="padding: 5rem 0; background: var(--charcoal-900); border-top: 1px solid rgba(70, 62, 59, 0.5);">
+  <div class="dls-container" style="max-width: 60rem;">
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+      <div class="dls-eyebrow dls-eyebrow--center">See It Made</div>
+      <h2 class="dls-h2" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Inside Our <span class="text-gradient-gold">Manufacturing Center</span></h2>
+      <p class="dls-muted" style="max-width: 34rem; margin: 1rem auto 0;">Go behind the scenes and see the craftsmanship, materials, and precision behind every bespoke Dunn's build.</p>
+    </div>
+    <div class="wih-video" id="wihVideo" data-ytid="JeyVjX7Ltuk" style="position: relative; aspect-ratio: 16 / 9; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 26px 55px rgba(0, 0, 0, 0.55); background: #000;">
+      <img
+        src="https://img.youtube.com/vi/JeyVjX7Ltuk/maxresdefault.jpg"
+        onerror="this.onerror=null;this.src='https://img.youtube.com/vi/JeyVjX7Ltuk/hqdefault.jpg';"
+        alt="Inside the Dunn's Luxury Selections custom humidor manufacturing center"
+        width="1280" height="720" loading="lazy"
+        style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+      <span aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+        <span style="display: flex; align-items: center; justify-content: center; width: 5rem; height: 5rem; border-radius: 9999px; background: rgba(201, 138, 16, 0.92); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="#1a1512" aria-hidden="true" style="margin-left: 3px;"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+      </span>
+      <button type="button" class="wih-video__btn" aria-label="Play video: Inside Our Custom Humidor Manufacturing Center" style="position: absolute; inset: 0; width: 100%; height: 100%; background: transparent; border: 0; cursor: pointer;"></button>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var wrap = document.getElementById('wihVideo');
+    if (!wrap) return;
+    wrap.addEventListener('click', function () {
+      var id = wrap.getAttribute('data-ytid');
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+      iframe.title = 'Inside Our Custom Humidor Manufacturing Center';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;';
+      wrap.innerHTML = '';
+      wrap.appendChild(iframe);
+    });
+  })();
+</script>
+
 <!-- Free Buyer's Guide lead magnet -->
 <section style="padding: 5rem 0; background: var(--charcoal-950);">
   <div class="dls-container">
