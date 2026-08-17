@@ -9,7 +9,7 @@
 /* ── Color Palette ────────────────────────────────────────────────────────── */
 :root {
   /* Dark Theme (full headless Tailwind palette) */
-  --charcoal-950: #211e1c;
+  --charcoal-950: #141110;
   --charcoal-900: #3d3634;
   --charcoal-800: #463e3b;
   --charcoal-700: #534844;
@@ -126,17 +126,17 @@ button,
 
 /* Primary Button */
 .btn-primary {
-  background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-600) 100%);
-  color: var(--charcoal-950);
+  background: linear-gradient(180deg, var(--gold-200) 0%, var(--gold-400) 55%, var(--gold-500) 100%);
+  color: #14100a;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(229, 165, 36, 0.3);
+  box-shadow: 0 6px 20px rgba(236, 188, 74, 0.42);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--gold-400) 0%, var(--gold-500) 100%);
+  background: linear-gradient(180deg, var(--gold-100) 0%, var(--gold-300) 55%, var(--gold-400) 100%);
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(229, 165, 36, 0.4);
+  box-shadow: 0 12px 28px rgba(236, 188, 74, 0.55);
 }
 
 .btn-primary:active {
