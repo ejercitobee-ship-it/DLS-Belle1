@@ -2050,19 +2050,20 @@ a.dls-gold:hover { color: var(--gold-300); }
 .dls-quote { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.5rem, 4vw, 2.25rem); color: var(--gold-400); font-style: italic; line-height: 1.5; }
 .dls-topbar { height: 4px; background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%); border-radius: 0.5rem 0.5rem 0 0; }
 
-/* ── Wave 2: Ivory "breather" band ───────────────────────────────────────────
-   Turns the Testimonials section into a warm ivory light band to break up the
-   long dark scroll (premium rhythm). Scoped to .section-testimonials so the
+/* ── Wave 2: Champagne "breather" band ───────────────────────────────────────
+   Turns the Testimonials section into a warm champagne light band (the palest
+   step of the gold ramp, not a neutral ivory) to break up the long dark scroll.
+   Scoped to .section-testimonials so the
    shared generic classes (.section-title, .eyebrow-text, etc.) never leak to
    other sections. Selectors are 0-2-0 so they win over the section's own
    compiled stylesheet regardless of load order. Kept in main.css because
    section {% stylesheet %} changes deploy unreliably through Shopify. */
 :root {
-  --ivory: #f6f1e7;
-  --ivory-ink: #211e1c;
-  --ivory-ink-soft: #4a4038;
-  --ivory-muted: #6b6154;
-  --ivory-line: #e6dcc9;
+  --ivory: #f3ebd7;
+  --ivory-ink: #1c1712;
+  --ivory-ink-soft: #463d30;
+  --ivory-muted: #6f6350;
+  --ivory-line: #eaddc2;
 }
 
 .section-testimonials .testimonials-section { background-color: var(--ivory); }
@@ -2079,7 +2080,7 @@ a.dls-gold:hover { color: var(--gold-300); }
 .section-testimonials .author-role { color: var(--ivory-muted); }
 
 .section-testimonials .testimonial-card {
-  background-color: #ffffff;
+  background-color: #fffdf7;
   border-color: var(--ivory-line);
 }
 .section-testimonials .testimonial-card:hover { border-color: rgba(201, 138, 16, 0.45); }
@@ -2091,3 +2092,28 @@ a.dls-gold:hover { color: var(--gold-300); }
 .section-testimonials .testimonial-author-section { border-top-color: var(--ivory-line); }
 
 .section-testimonials .product-tag { color: var(--gold-700); }
+
+/* ── Wave 1 hero fix: mirror hero.liquid's overlay + CTA into main.css ────────
+   The hero's {% stylesheet %} edits (lighter directional overlay, glowing gold
+   button) never reached the live compiled section CSS because Shopify's
+   section-stylesheet sync is stuck. Re-declare them here, scoped to
+   .section-hero at 0-2-0 so they deploy via the reliable main.css path and win
+   over the stale compiled rules. Remove once the section sync is fixed. */
+.section-hero .hero-overlay,
+.section-hero .hero-overlay-only {
+  background: linear-gradient(90deg, rgba(15,12,11,0.94) 0%, rgba(15,12,11,0.72) 42%, rgba(15,12,11,0.34) 72%, rgba(15,12,11,0.12) 100%),
+              linear-gradient(180deg, rgba(15,12,11,0) 55%, rgba(15,12,11,0.55) 100%);
+}
+.section-hero .hero-overlay-only {
+  background: linear-gradient(90deg, rgba(15,12,11,0.94) 0%, rgba(15,12,11,0.72) 42%, rgba(15,12,11,0.34) 72%, rgba(15,12,11,0.12) 100%);
+}
+.section-hero .btn-primary {
+  background: linear-gradient(180deg, var(--gold-200) 0%, var(--gold-400) 55%, var(--gold-500) 100%);
+  color: #14100a;
+  box-shadow: 0 6px 20px rgba(236, 188, 74, 0.42);
+}
+.section-hero .btn-primary:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, var(--gold-100) 0%, var(--gold-300) 55%, var(--gold-400) 100%);
+  box-shadow: 0 12px 28px rgba(236, 188, 74, 0.55);
+}
