@@ -2049,3 +2049,45 @@ a.dls-gold:hover { color: var(--gold-300); }
 .dls-legal-section ul { padding-left: 1.25rem; margin: 0.75rem 0; display: flex; flex-direction: column; gap: 0.5rem; }
 .dls-quote { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.5rem, 4vw, 2.25rem); color: var(--gold-400); font-style: italic; line-height: 1.5; }
 .dls-topbar { height: 4px; background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-700) 100%); border-radius: 0.5rem 0.5rem 0 0; }
+
+/* ── Wave 2: Ivory "breather" band ───────────────────────────────────────────
+   Turns the Testimonials section into a warm ivory light band to break up the
+   long dark scroll (premium rhythm). Scoped to .section-testimonials so the
+   shared generic classes (.section-title, .eyebrow-text, etc.) never leak to
+   other sections. Selectors are 0-2-0 so they win over the section's own
+   compiled stylesheet regardless of load order. Kept in main.css because
+   section {% stylesheet %} changes deploy unreliably through Shopify. */
+:root {
+  --ivory: #f6f1e7;
+  --ivory-ink: #211e1c;
+  --ivory-ink-soft: #4a4038;
+  --ivory-muted: #6b6154;
+  --ivory-line: #e6dcc9;
+}
+
+.section-testimonials .testimonials-section { background-color: var(--ivory); }
+
+.section-testimonials .section-title,
+.section-testimonials .tst-score { color: var(--ivory-ink); }
+
+.section-testimonials .eyebrow-text { color: var(--gold-600); }
+
+.section-testimonials .section-description,
+.section-testimonials .testimonial-text { color: var(--ivory-ink-soft); }
+
+.section-testimonials .tst-count,
+.section-testimonials .author-role { color: var(--ivory-muted); }
+
+.section-testimonials .testimonial-card {
+  background-color: #ffffff;
+  border-color: var(--ivory-line);
+}
+.section-testimonials .testimonial-card:hover { border-color: rgba(201, 138, 16, 0.45); }
+
+.section-testimonials .testimonial-quote { color: rgba(164, 108, 12, 0.45); }
+
+.section-testimonials .author-name { color: var(--ivory-ink); }
+
+.section-testimonials .testimonial-author-section { border-top-color: var(--ivory-line); }
+
+.section-testimonials .product-tag { color: var(--gold-700); }
