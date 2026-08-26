@@ -5,8 +5,10 @@
   never counted toward Cumulative Layout Shift. Shows once per session.
   Leads POST to the shared Google Apps Script → Google Sheet endpoint (formType
   "inner-circle"), same no-cors pattern as the other theme forms, ping Google Chat,
-  and fire a gtag generate_lead conversion. See memory: dls-belle1-core-web-vitals
-  and dls-belle1-chat-lead-notifications.
+  fire a gtag generate_lead conversion, AND subscribe the lead to the Klaviyo "Inner
+  Circle (Double Opt-In)" list (id XCX5a9) via the client subscriptions API, which
+  triggers the "Welcome Series - VIP" flow. See memory: dls-belle1-core-web-vitals,
+  dls-belle1-chat-lead-notifications, and dls-belle1-klaviyo-audit.
 {%- endcomment -%}
 <style>
   .dls-lp-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(10,10,12,.8);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
@@ -109,6 +111,33 @@
       } catch (e) {}
     }
 
+    // Subscribe the lead to the Klaviyo "Inner Circle" list (double opt-in) →
+    // triggers the "Welcome Series - VIP" flow. Fire-and-forget; never blocks the
+    // existing Sheet/Chat lead capture. company_id is Klaviyo's PUBLIC key.
+    function subscribeKlaviyo(name, email, pd) {
+      try {
+        var parts = (name || '').trim().split(/\s+/);
+        var fn = parts.shift() || '';
+        var ln = parts.join(' ');
+        var attrs = { email: email, first_name: fn, last_name: ln };
+        if (pd) attrs.phone_number = '+1' + pd;
+        fetch('https://a.klaviyo.com/client/subscriptions/?company_id=Wp37xM', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', revision: '2024-10-15' },
+          body: JSON.stringify({
+            data: {
+              type: 'subscription',
+              attributes: {
+                custom_source: 'Inner Circle popup',
+                profile: { data: { type: 'profile', attributes: attrs } }
+              },
+              relationships: { list: { data: { type: 'list', id: 'XCX5a9' } } }
+            }
+          })
+        });
+      } catch (e) {}
+    }
+
     var KEY = 'dlsLeadPopup';                 // 'seen' guard for this session
     var overlay = document.getElementById('dls-lead-popup');
     if (!overlay) return;
@@ -193,6 +222,7 @@
       fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
         .then(function () {
           pingChat(payload);
+          subscribeKlaviyo(name, email, pd);
           try {
             if (window.gtag) window.gtag('event', 'generate_lead', { value: 1, currency: 'USD', form_type: 'inner-circle' });
           } catch (e) {}
