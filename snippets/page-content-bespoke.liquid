@@ -1,0 +1,212 @@
+{%- comment -%}
+  Dunn's Bespoke — Phase 2 flagship division page. Presents the custom-build
+  business as tiered packages (Collector / Lounge / Estate / Club) on the
+  pre-install, made-to-spec model: design → build to the client's dimensions
+  at our manufacturing center → ship a complete ready-to-install build →
+  client's contractor installs with our drawings + remote guidance.
+  Reuses global dls-* / btn utility classes. Enquiry form reuses the shared
+  lead plumbing (Google Sheet + Chat + Klaviyo XCX5a9 + gtag), formType
+  "bespoke". Routed via templates/page.liquid handle `bespoke`.
+{%- endcomment -%}
+
+<!-- Intro -->
+<section class="dls-page" style="text-align:center;">
+  <div class="dls-container dls-container--narrow">
+    <div class="dls-eyebrow dls-eyebrow--center">Dunn's Bespoke</div>
+    <h1 class="dls-h1" style="font-size:clamp(2.25rem,5.5vw,3.75rem);">Custom cigar storage, designed and built to your <span class="text-gradient-gold">exact specification</span></h1>
+    <p class="dls-lead" style="max-width:40rem;margin:1.25rem auto 2rem;">From a furniture-grade cabinet to a full cigar room, we design to your dimensions and style, craft it at our manufacturing center, and ship a complete, ready-to-install build. Your contractor installs it with our drawings and hands-on remote guidance. Every project begins with a private consultation.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+      <a href="#bsp-enquire" class="btn btn-primary">Start Your Project</a>
+      <a href="tel:8884319214" class="btn btn-secondary">&#9742; (888) 431-9214</a>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="dls-page" style="background:var(--charcoal-900);">
+  <div class="dls-container dls-container--wide">
+    <div style="text-align:center;margin-bottom:3rem;">
+      <div class="dls-eyebrow dls-eyebrow--center">How It Works</div>
+      <h2 class="dls-h2" style="font-size:clamp(1.75rem,4vw,2.5rem);">Designed here, built to fit, <span class="text-gradient-gold">installed with you</span></h2>
+    </div>
+    <div class="bsp-grid4">
+      {%- assign step_t = 'Design,Build,Ship,Install' | split: ',' -%}
+      {%- assign step_d = 'We design to your exact dimensions, capacity, and style, and confirm every measurement before anything is cut.|Your piece is crafted to specification at our manufacturing center, in Spanish cedar with precise climate control.|It arrives as a complete, ready-to-install build, packed and labeled for a straightforward installation.|Your contractor installs it using our detailed drawings, step-by-step instructions, and remote support from our team.' | split: '|' -%}
+      {%- for t in step_t -%}
+        <div class="dls-card" style="position:relative;">
+          <span class="bsp-num">0{{ forloop.index }}</span>
+          <h3 style="font-family:'Playfair Display',serif;color:#fff;font-size:1.15rem;margin:0 0 .6rem;">{{ t }}</h3>
+          <p class="dls-muted" style="margin:0;font-size:.9rem;">{{ step_d[forloop.index0] }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<!-- Tiers -->
+<section class="dls-page">
+  <div class="dls-container dls-container--wide">
+    <div style="text-align:center;margin-bottom:3rem;">
+      <div class="dls-eyebrow dls-eyebrow--center">Choose Your Scale</div>
+      <h2 class="dls-h2" style="font-size:clamp(2rem,5vw,3rem);">Four ways to <span class="text-gradient-gold">build with us</span></h2>
+      <p class="dls-muted" style="max-width:34rem;margin:1rem auto 0;">Indicative starting investment. Every project is quoted to your exact dimensions and design.</p>
+    </div>
+    <div class="bsp-grid2">
+      <div class="dls-card bsp-tier">
+        <div class="dls-eyebrow">The Collector</div>
+        <div class="bsp-price">from $8,000</div>
+        <p class="dls-muted bsp-tier-desc">A custom cabinet or furniture-integrated humidor, built to your room and your taste.</p>
+        <ul class="bsp-feat">
+          <li>Bespoke dimensions and finish</li>
+          <li>Precision electronic climate control</li>
+          <li>Spanish cedar interior and shelving</li>
+          <li>Furniture-grade craftsmanship</li>
+        </ul>
+        <a href="#bsp-enquire" class="btn btn-secondary bsp-tier-cta">Request a Consultation</a>
+      </div>
+      <div class="dls-card bsp-tier">
+        <div class="dls-eyebrow">The Lounge</div>
+        <div class="bsp-price">from $20,000</div>
+        <p class="dls-muted bsp-tier-desc">A dedicated cigar room for the home, designed as a space to gather and enjoy.</p>
+        <ul class="bsp-feat">
+          <li>Full cedar-lined room design</li>
+          <li>Integrated humidification and cooling</li>
+          <li>Custom cabinetry and display</li>
+          <li>Ambient lighting design</li>
+        </ul>
+        <a href="#bsp-enquire" class="btn btn-secondary bsp-tier-cta">Request a Consultation</a>
+      </div>
+      <div class="dls-card bsp-tier">
+        <div class="dls-eyebrow">The Estate</div>
+        <div class="bsp-price">from $50,000</div>
+        <p class="dls-muted bsp-tier-desc">A full luxury cigar room, designed as a centerpiece of the home.</p>
+        <ul class="bsp-feat">
+          <li>Architectural design collaboration</li>
+          <li>Commercial-grade climate systems</li>
+          <li>Walk-in capacity and glass display</li>
+          <li>Bespoke millwork, lighting, and seating layout</li>
+        </ul>
+        <a href="#bsp-enquire" class="btn btn-secondary bsp-tier-cta">Request a Consultation</a>
+      </div>
+      <div class="dls-card bsp-tier">
+        <div class="dls-eyebrow">The Club</div>
+        <div class="bsp-price">from $100,000</div>
+        <p class="dls-muted bsp-tier-desc">A commercial lounge or storage installation for a venue or membership.</p>
+        <ul class="bsp-feat">
+          <li>High-capacity commercial storage</li>
+          <li>Multi-zone climate and monitoring</li>
+          <li>Member locker and display systems</li>
+          <li>Built for high-traffic hospitality</li>
+        </ul>
+        <a href="/pages/commercial" class="btn btn-secondary bsp-tier-cta">Explore Commercial</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Enquiry -->
+<section class="dls-page" id="bsp-enquire" style="background:var(--charcoal-900);scroll-margin-top:90px;">
+  <div class="dls-container dls-container--narrow">
+    <div style="text-align:center;margin-bottom:2.5rem;">
+      <div class="dls-eyebrow dls-eyebrow--center">Start Your Project</div>
+      <h2 class="dls-h2" style="font-size:clamp(1.75rem,4vw,2.5rem);">Request a <span class="text-gradient-gold">private consultation</span></h2>
+      <p class="dls-muted" style="margin:1rem 0 0;">Tell us what you have in mind and a specialist will follow up personally. No obligation. Or call <a href="tel:8884319214" class="dls-gold">(888) 431-9214</a>.</p>
+    </div>
+    <div class="dls-card" style="padding:2.5rem;">
+      <form class="dvf" data-form-type="bespoke" novalidate>
+        <div class="dvf-grid">
+          <label class="dvf-label">Full name <span class="dvf-req">*</span><input class="dvf-input" name="name" required autocomplete="name"></label>
+          <label class="dvf-label">Email <span class="dvf-req">*</span><input class="dvf-input" name="email" type="email" required autocomplete="email"></label>
+          <label class="dvf-label">Phone <span class="dvf-req">*</span><input class="dvf-input" name="phone" type="tel" required autocomplete="tel"></label>
+          <label class="dvf-label">Which best fits your project?
+            <select class="dvf-input" name="tier">
+              <option value="">Select one</option>
+              <option>The Collector (custom cabinet)</option>
+              <option>The Lounge (home cigar room)</option>
+              <option>The Estate (full luxury room)</option>
+              <option>The Club (commercial)</option>
+              <option>Not sure yet</option>
+            </select>
+          </label>
+          <label class="dvf-label">Budget
+            <select class="dvf-input" name="budget">
+              <option value="">Select a range</option>
+              <option>$8,000 to $20,000</option>
+              <option>$20,000 to $50,000</option>
+              <option>$50,000 to $100,000</option>
+              <option>$100,000+</option>
+              <option>Not sure yet</option>
+            </select>
+          </label>
+          <label class="dvf-label">City &amp; state<input class="dvf-input" name="location" placeholder="e.g. Chicago, IL"></label>
+          <label class="dvf-label dvf-full">Your vision<textarea class="dvf-input" name="vision" rows="4" placeholder="Dimensions, capacity, style, timeline..."></textarea></label>
+        </div>
+        <div class="dvf-hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <div style="margin-top:1.5rem;text-align:center;">
+          <button type="submit" class="btn btn-primary">Request My Consultation</button>
+          <p class="dvf-msg" role="status" style="margin:.85rem 0 0;font-size:.85rem;"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bsp-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+  .bsp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+  @media(max-width:900px){.bsp-grid4{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){.bsp-grid4,.bsp-grid2{grid-template-columns:1fr}}
+  .bsp-num{position:absolute;top:1.1rem;right:1.25rem;font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:rgba(164,108,12,.4);line-height:1}
+  .bsp-tier{display:flex;flex-direction:column}
+  .bsp-price{font-family:'Playfair Display',serif;color:var(--gold-400,#d4af37);font-size:1.6rem;font-weight:700;margin:.4rem 0 .75rem}
+  .bsp-tier-desc{margin:0 0 1.1rem;font-size:.92rem}
+  .bsp-feat{list-style:none;padding:0;margin:0 0 1.5rem;display:flex;flex-direction:column;gap:.5rem}
+  .bsp-feat li{color:rgba(240,221,184,.62);font-size:.85rem;padding-left:1.4rem;position:relative}
+  .bsp-feat li::before{content:'\2713';position:absolute;left:0;color:var(--gold-500,#c9a227);font-weight:700}
+  .bsp-tier-cta{margin-top:auto;align-self:flex-start}
+  .dvf-grid{display:grid;grid-template-columns:1fr 1fr;gap:.25rem 1.25rem;text-align:left}
+  @media(max-width:560px){.dvf-grid{grid-template-columns:1fr}}
+  .dvf-label{display:block;color:rgba(240,221,184,.7);font-size:.85rem;margin-bottom:1rem}
+  .dvf-req{color:var(--gold-400,#d4af37)}
+  .dvf-full{grid-column:1/-1}
+  .dvf-input{display:block;width:100%;box-sizing:border-box;margin-top:.35rem;padding:.75rem 1rem;background:var(--charcoal-950,#0e0f12);border:1px solid rgba(164,108,12,.3);border-radius:.35rem;color:var(--cream-100,#f5f1e8);font-family:inherit;font-size:.92rem}
+  .dvf-input:focus{outline:none;border-color:var(--gold-500,#c9a227)}
+  .dvf-hp{position:absolute;left:-9999px}
+  .dvf-msg.err{color:#e08585}
+  .dvf-ok{text-align:center}
+  .dvf-ok .tick{width:3rem;height:3rem;margin:0 auto 1rem;border-radius:9999px;background:rgba(201,162,39,.15);color:var(--gold-400,#d4af37);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+</style>
+
+<script>
+  (function () {
+    var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw3bkr1qS8wJ7GrQeqhp4UytVlSMPwtacyG3IkD0dxNmi36YoX5jU-hcBpRPqe3m8Jq/exec';
+    var CHAT_WEBHOOK = 'https://chat.googleapis.com/v1/spaces/AAQAJQZfKTI/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=qHgGguu_2oJoYXLqU6mV-aIVS9H7GUsE_veiGPzJ1pw';
+    function pingChat(data){try{var m='*🏛️ New Bespoke Lead*';Object.keys(data).forEach(function(k){if(k==='website'||k==='formType')return;if(data[k])m+='\n*'+k.charAt(0).toUpperCase()+k.slice(1)+':* '+data[k];});fetch(CHAT_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:m})});}catch(e){}}
+    function subscribeKlaviyo(name,email,pd){try{var parts=(name||'').trim().split(/\s+/);var fn=parts.shift()||'';var ln=parts.join(' ');var attrs={email:email,first_name:fn,last_name:ln};if(pd)attrs.phone_number='+1'+pd;fetch('https://a.klaviyo.com/client/subscriptions/?company_id=Wp37xM',{method:'POST',headers:{'Content-Type':'application/json',revision:'2024-10-15'},body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'Bespoke Enquiry',profile:{data:{type:'profile',attributes:attrs}}},relationships:{list:{data:{type:'list',id:'XCX5a9'}}}}})});}catch(e){}}
+    var form=document.querySelector('.dvf[data-form-type="bespoke"]');
+    if(!form)return;
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      var msg=form.querySelector('.dvf-msg');var btn=form.querySelector('button[type="submit"]');
+      msg.textContent='';msg.classList.remove('err');
+      var hp=form.querySelector('input[name="website"]');if(hp&&hp.value)return;
+      var data={formType:'bespoke'};
+      new FormData(form).forEach(function(v,k){v=String(v).trim();if(v&&k!=='website')data[k]=v;});
+      var emailOk=/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(data.email||'');
+      var pd=(data.phone||'').replace(/\D/g,'').replace(/^1(\d{10})$/,'$1');
+      var phoneOk=/^[2-9]\d{2}[2-9]\d{6}$/.test(pd)&&!/^(\d)\1{9}$/.test(pd);
+      if(!data.name){msg.textContent='Please enter your name.';msg.classList.add('err');return;}
+      if(!emailOk){msg.textContent='Please enter a valid email address.';msg.classList.add('err');return;}
+      if(!phoneOk){msg.textContent='Please enter a valid phone number.';msg.classList.add('err');return;}
+      var label=btn.textContent;btn.disabled=true;btn.textContent='Sending…';
+      fetch(LEAD_ENDPOINT,{method:'POST',mode:'no-cors',body:JSON.stringify(data)})
+        .then(function(){
+          pingChat(data);subscribeKlaviyo(data.name,data.email,pd);
+          try{if(window.gtag)window.gtag('event','generate_lead',{value:1,currency:'USD',form_type:'bespoke'});}catch(e){}
+          var card=form.closest('.dls-card');
+          if(card)card.innerHTML='<div class="dvf-ok"><div class="tick">&#10003;</div><h3 style="font-family:\'Playfair Display\',serif;color:#fff;margin:0 0 .5rem;">Thank you. Your request is in.</h3><p class="dls-muted" style="margin:0;">A specialist will reach out personally to begin designing your project.</p></div>';
+        })
+        .catch(function(){msg.textContent='Something went wrong. Please call (888) 431-9214.';msg.classList.add('err');btn.disabled=false;btn.textContent=label;});
+    });
+  })();
+</script>
