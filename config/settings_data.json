@@ -17,13 +17,13 @@
       "hero": {
         "type": "hero",
         "settings": {
-          "eyebrow_text": "Crafted for the Discerning Few",
-          "heading": "<h1>The World’s Finest<br/><em>Humidor Collections</em></h1>",
-          "subheading": "<p>Dunn’s Luxury Selections brings together the most exceptional humidors and cigar accessories in the world — curated for collectors, lounges, and connoisseurs who settle for nothing but the best.</p>",
-          "cta_primary_text": "Explore Collections",
-          "cta_primary_url": "shopify://collections/all",
-          "cta_secondary_text": "Bespoke Solutions",
-          "cta_secondary_url": "shopify://pages/walk-in-humidor",
+          "eyebrow_text": "Designed Around Your Collection",
+          "heading": "<h1>Your Cigars Deserve<br/><em>More Than a Humidor</em></h1>",
+          "subheading": "<p>We design and source luxury cigar storage, from a collector's first humidor to bespoke cabinets, climate-controlled rooms, and full lounge environments for homes, estates, clubs, and commercial spaces.</p>",
+          "cta_primary_text": "Design Your Cigar Room",
+          "cta_primary_url": "shopify://pages/walk-in-humidor",
+          "cta_secondary_text": "Explore Collections",
+          "cta_secondary_url": "shopify://collections/all",
           "show_trust_badges": true
         }
       },
