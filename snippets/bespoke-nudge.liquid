@@ -1,0 +1,20 @@
+{%- comment -%}
+  On-site nudge (Phase 2 GTM): routes existing catalog shoppers toward the
+  Bespoke funnel. Rendered on collection pages (after the product grid).
+  Self-contained; btn classes are global.
+{%- endcomment -%}
+<aside class="bnudge">
+  <div class="bnudge-inner">
+    <div class="bnudge-eyebrow">Dunn's Bespoke</div>
+    <h2 class="bnudge-title">Not finding your exact piece?</h2>
+    <p class="bnudge-text">We design and build custom humidors and cigar rooms to your exact dimensions and style, from a bespoke cabinet to a full walk-in room. Built to spec, shipped ready to install.</p>
+    <a href="/pages/bespoke" class="btn btn-primary">Explore Bespoke</a>
+  </div>
+</aside>
+<style>
+  .bnudge{margin:1.5rem 0 0}
+  .bnudge-inner{background:var(--charcoal-900,#1c1712);border:1px solid rgba(201,138,16,.3);border-radius:1rem;padding:2.5rem 2rem;text-align:center}
+  .bnudge-eyebrow{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;font-weight:700;color:var(--gold-400,#d4af37);margin:0 0 .75rem}
+  .bnudge-title{font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:clamp(1.5rem,3vw,2rem);margin:0 0 .75rem}
+  .bnudge-text{color:rgba(240,221,184,.7);max-width:38rem;margin:0 auto 1.6rem;font-size:1rem;line-height:1.65}
+</style>
