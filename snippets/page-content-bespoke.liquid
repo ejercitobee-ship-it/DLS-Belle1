@@ -148,12 +148,19 @@
 
 <!-- Free Buyer's Guide -->
 <section class="dls-page" style="background:var(--charcoal-900);">
-  <div class="dls-container" style="max-width:46rem;text-align:center;">
-    <div class="dls-eyebrow dls-eyebrow--center">Free Download</div>
-    <h2 class="dls-h2" style="font-size:clamp(1.75rem,4vw,2.5rem);">The Ultimate Luxury Humidor <span class="text-gradient-gold">Buyer's Guide</span></h2>
-    <p class="dls-muted" style="max-width:34rem;margin:1rem auto 1.75rem;">Everything serious collectors weigh before commissioning a bespoke humidor or cigar room: sizing, climate control, Spanish cedar, finishes, and budgeting.</p>
-    <a href="{{ 'buyer-guide.pdf' | asset_url }}" target="_blank" rel="noopener" class="btn btn-primary" download>Download the Buyer's Guide</a>
-    <p class="dls-muted" style="font-size:.8rem;letter-spacing:.04em;margin:1rem 0 0;">23-page PDF &middot; No obligation</p>
+  <div class="dls-container">
+    <div class="bgd-band">
+      <div class="bgd-media">
+        <img src="{{ 'dls-buyer-guide.jpg' | asset_url }}" alt="The Ultimate Luxury Humidor Buyer's Guide by Dunn's Luxury Selections" width="1100" height="733" loading="lazy">
+      </div>
+      <div class="bgd-content">
+        <div class="dls-eyebrow">Free Download</div>
+        <h2 class="dls-h2" style="font-size:clamp(1.6rem,3.5vw,2.4rem);margin:.5rem 0 0;">The Ultimate Luxury Humidor <span class="text-gradient-gold">Buyer's Guide</span></h2>
+        <p class="dls-muted" style="margin:1rem 0 1.75rem;">Everything serious collectors weigh before commissioning a bespoke humidor or cigar room: sizing, climate control, Spanish cedar, finishes, and budgeting.</p>
+        <a href="{{ 'buyer-guide.pdf' | asset_url }}" target="_blank" rel="noopener" class="btn btn-primary" download>Download the Buyer's Guide</a>
+        <p class="dls-muted" style="font-size:.8rem;letter-spacing:.04em;margin:1rem 0 0;">23-page PDF &middot; No obligation</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -209,6 +216,10 @@
   .bsp-hero__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .bsp-hero__overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(20,17,16,.94),rgba(20,17,16,.72) 50%,rgba(20,17,16,.42))}
   .bsp-hero__content{position:relative;z-index:1;width:100%;padding-top:5rem;padding-bottom:5rem}
+  .bgd-band{display:grid;grid-template-columns:1fr 1.05fr;gap:3.5rem;align-items:center;max-width:72rem;margin:0 auto;background:var(--charcoal-950,#141110);border:1px solid rgba(201,138,16,.28);border-radius:1rem;padding:3rem}
+  .bgd-media img{width:100%;height:auto;border-radius:.6rem;box-shadow:0 26px 55px rgba(0,0,0,.6);display:block}
+  .bgd-content{text-align:left}
+  @media(max-width:860px){.bgd-band{grid-template-columns:1fr;gap:2rem;text-align:center;padding:2.25rem 1.75rem;max-width:34rem}.bgd-content{text-align:center}.bgd-content .dls-eyebrow{justify-content:center}.bgd-media{max-width:24rem;margin:0 auto}}
   .bsp-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
   .bsp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
   @media(max-width:900px){.bsp-grid4{grid-template-columns:1fr 1fr}}
