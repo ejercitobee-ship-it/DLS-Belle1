@@ -3,7 +3,11 @@ The one-pager is a full standalone landing document (its own <head>/<body>),
 so it renders with no theme chrome via a conditional layout. Everything else
 falls through to the normal page rendering below.
 {%- endcomment -%}
-{%- if page.handle == 'onepager' -%}
+{%- if page.handle == 'walk-in-humidor' -%}
+  {%- comment -%}Retired: route the old walk-in page to the Bespoke flagship.{%- endcomment -%}
+  {%- layout none -%}
+  <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Redirecting to Dunn's Bespoke</title><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=/pages/bespoke"><link rel="canonical" href="/pages/bespoke"><script>window.location.replace('/pages/bespoke');</script></head><body style="font-family:Georgia,serif;background:#141110;color:#f0e6d0;padding:3rem;text-align:center"><p>This page has moved. Redirecting to <a href="/pages/bespoke" style="color:#e7c66b">Dunn&rsquo;s Bespoke</a>.</p></body></html>
+{%- elsif page.handle == 'onepager' -%}
   {%- layout none -%}
   {%- render 'onepager-doc' -%}
 {%- else -%}
