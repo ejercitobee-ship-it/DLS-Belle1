@@ -6,15 +6,19 @@
   rep's wholesale lane. Routed via templates/page.liquid handle `commercial`.
 {%- endcomment -%}
 
-<!-- Intro -->
-<section class="dls-page" style="text-align:center;">
-  <div class="dls-container dls-container--narrow">
-    <div class="dls-eyebrow dls-eyebrow--center">Commercial &amp; Trade</div>
-    <h1 class="dls-h1" style="font-size:clamp(2.25rem,5.5vw,3.75rem);">Cigar environments for <span class="text-gradient-gold">lounges, clubs, and hospitality</span></h1>
-    <p class="dls-lead" style="max-width:40rem;margin:1.25rem auto 2rem;">We design and build commercial-grade cigar storage and lounge environments for venues that treat cigars as an experience. Made to your space, shipped complete, and installed by your team with our guidance. One point of contact from design to handover.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
-      <a href="#com-enquire" class="btn btn-primary">Discuss Your Venue</a>
-      <a href="tel:8884319214" class="btn btn-secondary">&#9742; (888) 431-9214</a>
+<!-- Hero -->
+<section class="com-hero">
+  <img src="{{ 'commercial-hero.webp' | asset_url }}" alt="A luxury cigar lounge with backlit humidor displays and leather seating, designed by Dunn's Luxury Selections" class="com-hero__img" width="1600" height="901" fetchpriority="high">
+  <div class="com-hero__overlay"></div>
+  <div class="dls-container com-hero__content">
+    <div style="max-width:42rem;">
+      <div class="dls-eyebrow">Commercial &amp; Trade</div>
+      <h1 class="dls-h1" style="font-size:clamp(2.25rem,5.5vw,3.75rem);">Cigar environments for <span class="text-gradient-gold">lounges, clubs, and hospitality</span></h1>
+      <p class="dls-lead" style="margin:1.25rem 0 2rem;font-size:1.15rem;">We design and build commercial-grade cigar storage and lounge environments for venues that treat cigars as an experience. Made to your space, shipped complete, and installed by your team with our guidance.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;">
+        <a href="#com-enquire" class="btn btn-primary">Discuss Your Venue</a>
+        <a href="tel:8884319214" class="btn btn-secondary">&#9742; (888) 431-9214</a>
+      </div>
     </div>
   </div>
 </section>
@@ -123,6 +127,10 @@
 </section>
 
 <style>
+  .com-hero{position:relative;min-height:60vh;display:flex;align-items:center;overflow:hidden}
+  .com-hero__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .com-hero__overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(20,17,16,.92),rgba(20,17,16,.7) 50%,rgba(20,17,16,.4))}
+  .com-hero__content{position:relative;z-index:1;width:100%;padding-top:5rem;padding-bottom:5rem}
   .com-tags{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;max-width:52rem;margin:0 auto}
   .com-tag{border:1px solid rgba(201,138,16,.3);background:var(--charcoal-950,#0e0f12);color:rgba(240,221,184,.82);border-radius:100px;padding:.6rem 1.1rem;font-size:.9rem}
   .bsp-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
