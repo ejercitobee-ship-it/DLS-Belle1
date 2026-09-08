@@ -156,6 +156,7 @@
     var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw3bkr1qS8wJ7GrQeqhp4UytVlSMPwtacyG3IkD0dxNmi36YoX5jU-hcBpRPqe3m8Jq/exec';
     var CHAT_WEBHOOK = 'https://chat.googleapis.com/v1/spaces/AAQAJQZfKTI/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=qHgGguu_2oJoYXLqU6mV-aIVS9H7GUsE_veiGPzJ1pw';
     function pingChat(data){try{var m='*🏢 New Commercial Lead*';Object.keys(data).forEach(function(k){if(k==='website'||k==='formType')return;if(data[k])m+='\n*'+k.charAt(0).toUpperCase()+k.slice(1)+':* '+data[k];});fetch(CHAT_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:m})});}catch(e){}}
+    function subscribeKlaviyo(name,business,email,pd){try{var parts=(name||'').trim().split(/\s+/);var fn=parts.shift()||'';var ln=parts.join(' ');var attrs={email:email,first_name:fn,last_name:ln,properties:{lead_source:'Commercial'}};if(pd)attrs.phone_number='+1'+pd;if(business)attrs.organization=business;fetch('https://a.klaviyo.com/client/subscriptions/?company_id=Wp37xM',{method:'POST',headers:{'Content-Type':'application/json',revision:'2024-10-15'},body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'Commercial Enquiry',profile:{data:{type:'profile',attributes:attrs}}},relationships:{list:{data:{type:'list',id:'YtqBkk'}}}}})});}catch(e){}}
     var form=document.querySelector('.dvf[data-form-type="commercial"]');
     if(!form)return;
     form.addEventListener('submit',function(e){
@@ -175,6 +176,7 @@
       fetch(LEAD_ENDPOINT,{method:'POST',mode:'no-cors',body:JSON.stringify(data)})
         .then(function(){
           pingChat(data);
+          subscribeKlaviyo(data.name,data.business,data.email,pd);
           try{if(window.gtag)window.gtag('event','generate_lead',{value:1,currency:'USD',form_type:'commercial'});}catch(e){}
           var card=form.closest('.dls-card');
           if(card)card.innerHTML='<div class="dvf-ok"><div class="tick">&#10003;</div><h3 style="font-family:\'Playfair Display\',serif;color:#fff;margin:0 0 .5rem;">Thank you. Your inquiry is in.</h3><p class="dls-muted" style="margin:0;">A specialist will reach out to scope your project.</p></div>';
